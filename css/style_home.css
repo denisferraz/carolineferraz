@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+:root{
+    --red:#d63a25;
+    --green:#228B22;
+    --white:#fff;
+    --dark:#1e1c2a;
+    --grey:rgb(230, 230, 230);
+}
+
+.visao-desktop{
+    display: block;
+}
+
+.visao-mobile{
+    display: none;
+}
+
+body{
+    color: var(--dark);
+    background: var(--white);
+}
+
+.logo span{
+    color: var(--dark);
+}
+
+.home{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10%;
+}
+.home-text,.home-text-agenda00, .home-text-agenda01, .home-text-agenda02{
+    max-width: 37rem;
+}
+.home-text-agenda00, .home-text-agenda02{
+    margin-top: 150px;
+}
+.home-text-agenda01{
+    margin-top: 270px;
+}
+.home-text .text-h4, .home-text-agenda00 .text-h4, .home-text-agenda01 .text-h4, .home-text-agenda02 .text-h4{
+    font-size: 1.5rem;
+    color: var(--red);
+    margin-bottom: 1rem;
+}
+.text-h4 a{
+    color: black;
+}
+.text-h4 a:hover{
+    color: var(--green);
+}
+.home-text .text-h1{
+    font-size: 4rem;
+    color: var(--green);
+    margin-bottom: 1rem;
+    line-height: 4rem;
+}
+.home-text p{
+    margin-bottom: 4rem;
+}
+.home-center{
+    width: 100%;
+    font-size: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10%;
+    font-size: 15px;
+}
+.home-center p{
+    color: var(--red);
+    font-size: 1.7rem;
+}
+.home-center-left{
+    max-width: 34rem;
+    font-size: 20px;
+    float: left;
+    margin-left: 20px;
+}
+.home-center-right{
+    max-width: 34rem;
+    font-size: 20px;
+    float: right;
+    margin-right: 20px;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    }
+    
+form input, form select{
+        outline:unset ;
+        padding: 15px;
+        width: 200px;
+        border: 1px solid;
+        border-radius: 15px;
+        margin-left: auto;
+        margin-right: auto;
+}
+.home-table{
+    margin: 0 auto;
+    border: 2px solid;
+    border-radius: 10px;
+}
+.home-table legend{
+    margin: auto;
+    padding: 2px;
+}
+.home-table td{
+    padding: 5px;
+}
+.home-btn{
+    padding: 15px 45px;
+    background: var(--red);
+    color: var(--white);
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.5s;
+}
+.home-btn-cancelar{
+    padding: 15px 45px;
+    background: black;
+    color: var(--white);
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.5s;
+}
+.home-btn-alterar{
+    padding: 15px 45px;
+    background: blue;
+    color: var(--white);
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.5s;
+}
+.home-btn:hover, .home-btn-alterar:hover, .home-btn-cancelar:hover{
+    background: var(--green);
+}
+.home-img img{
+    width: 80%;
+}
+
+footer{
+    background-color:rgb(13, 51, 0);
+    color: var(--white);
+    width: 100%;
+    font-size: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10%;
+    font-size: 15px;
+}
+
+/*
+Barra de Progresso
+*/
+#progress-bar {
+    background-color: darkgrey;
+    height: 20px;
+    width: clamp(250px, 100px + 50vw, 550px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  #progress-bar .filled {
+    background-color: darkgreen;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  #progress-bar .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+  }
+
+/*
+Carrossel
+*/
+.carrossel-mobile, .carrossel2-mobile{
+    display: none;
+}
+.carrossel-desktop, .carrossel2-desktop{
+    box-shadow: 2px 2px 4p black;
+    overflow: hidden;
+    min-height: 333px;
+    max-width: 500px;
+}
+.container-desktop, .container2-desktop{
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0);
+
+}
+.container-desktop img, .container2-desktop #img2-desktop{
+    object-fit: cover;
+    min-height: 333px;
+    max-width: 500px;
+    
+}
+
+.dp-menu{
+    margin: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dp-menu ul{
+    display: flex;
+    justify-content: space-evenly;
+    list-style-type: none;
+    background-color: var(--red);
+    border-radius: 10px;
+}
+
+.dp-menu ul li{
+    display: inline;
+    position: relative;
+}
+
+.dp-menu ul li a{
+    color: var(--white);
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    transition: background .4s;
+}
+
+.dp-menu ul li a:hover{
+    color: var(--red);
+    text-decoration: underline;
+    background-color:rgb(250, 220, 220);
+    border-radius: 5px;
+}
+
+.dp-menu ul ul{
+    display: none;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+}
+
+.dp-menu ul li:hover ul{
+    display: block;
+}
+
+.dp-menu ul ul li a{
+    display: block;
+}
+
+nav.mobile{
+    display: none;
+}
+
+@media screen and (max-width:750px) {
+
+    .visao-desktop{
+        display: none;
+    }
+
+    .visao-mobile{
+        display: block;
+    }
+
+    /*main*/
+    .home{
+        padding: 100px 2%;
+        flex-direction: column;
+        text-align: center;
+        gap: 5rem;
+    }
+    .home-text-agenda00, .home-text-agenda01, .home-text-agenda02{
+        margin-top: 10px;
+    }
+    .home .text-h4, .home-text-agenda00 .text-h4, .home-text-agenda01 .text-h4, .home-text-agenda02 .text-h4{
+        font-size: 15px;
+    }
+    .home .text-h1{
+        font-size: 2.5rem;
+        line-height: 3rem;
+    }
+    .home p{
+        font-size: 15px;
+    }
+    .home-img{
+        width: 80%;
+    }
+
+    .home-btn, .home-btn-cancelar, .home-btn-alterar{
+        padding: 10px;
+        border-radius: 7px;
+    }
+
+    .home-table{
+        display:flex;
+        border: 1px solid;
+        border-radius: 7px;
+        padding: 5px;
+    }
+
+/*
+Carrossel
+*/
+.carrossel-desktop, .carrossel2-desktop{
+    display: none;
+}
+.carrossel-mobile, .carrossel2-mobile{
+    display: flex;
+}
+.carrossel-mobile, .carrossel2-mobile{
+    box-shadow: 2px 2px 4p black;
+    overflow: hidden;
+    min-height: 166px;
+    max-width: 250px;
+}
+.container-mobile, .container2-mobile{
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0);
+
+}
+.container-mobile img, .container2-mobile #img2-mobile{
+    object-fit: cover;
+    min-height: 166px;
+    max-width: 250px;
+    
+}
+
+.home-table{
+    display: block;
+}
+/*
+Ajuste Menu para Mobile
+*/
+nav a{
+    padding: 1px;
+    }
+
+    nav.dp-menu{
+        display: none;
+    }
+
+    nav.mobile{
+        display: block;
+    }
+
+    .botao-menu-mobile{
+        background-color: var(--grey);
+        font-size: 45px;
+        cursor: pointer;
+        color: var(--red);
+        text-align: center;
+    }
+
+    .botao-menu-mobile .logo{
+        color: var(--red);
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+
+    nav.mobile ul{
+        display: none;
+        margin-top: 5px;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+    }
+
+    nav.mobile li{
+        font-weight: 300;
+        width: 100%;
+        display: block;
+        background: var(--grey);
+        border-bottom: 1px solid #ccc;
+        font-size: 17px;
+        padding: 8px 0;
+    }
+
+    nav.mobile li a{
+        display: block;
+        color: var(--red);
+        text-decoration: none;
+    }
+
+}

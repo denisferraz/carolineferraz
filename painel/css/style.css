@@ -1,0 +1,250 @@
+:root {
+    --cor-background: hsl(200, 50%, 20%);
+    --cor-fundo: hsl(200, 50%, 30%);
+    --cor-hover: hsl(200, 50%, 60%);
+    --cor-primaria: hsl(0, 0%, 100%);
+    --cor-h1: hsl(0, 100%, 50%);
+    --button-left: hsl(200, 50%, 20%);
+    --button-right: hsl(200, 50%, 50%);
+    --button-left-black: hsl(0, 0%, 20%);
+    --button-right-black: hsl(0, 0%, 50%);
+    --button-left-green: hsl(120, 100%, 20%);
+    --button-right-green: hsl(120, 100%, 50%);
+    --button-left-red: hsl(0, 100%, 20%);
+    --button-right-red: hsl(0, 100%, 50%);
+}
+
+body{
+    background-color: var(--cor-background);
+    color: var(--cor-primaria);
+}
+
+.form{
+    width: 400px;
+    margin: auto;
+    padding-top: 40px;
+}
+
+.card{
+    box-shadow: 1px 1px 5px #ccc;
+    background-color: hsl(0, 0%, 100%);
+    padding: 30px;
+    border-radius: 5px;
+    
+}
+
+.card-top{
+    text-align: center;
+}
+
+.card-group{
+    margin-bottom: 10px;
+}
+.card-group > label{
+    width: 100%;
+    color: hsl(0, 0%, 0%);
+    display: block;
+}
+
+.card-group > input{
+    border-radius: 5px;
+    outline: 0;
+    width: 100%;
+    height: 25px;
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+.card-group > button{
+    background-image: linear-gradient(to right, var(--button-right), var(--button-left));
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    border: 0px;
+    outline: 0;
+}
+
+.card-group button:hover{
+    background-image: linear-gradient(to right, var(--button-left), var(--button-right));
+}
+
+.card-group-red > button{
+    background-image: linear-gradient(to right, var(--button-right-red), var(--button-left-red));
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    border: 0px;
+    outline: 0;
+}
+
+.card-group-red button:hover{
+    background-image: linear-gradient(to right, var(--button-left-red), var(--button-right-red));
+}
+
+.card-group-green > button{
+    background-image: linear-gradient(to right, var(--button-right-green), var(--button-left-green));
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    border: 0px;
+    outline: 0;
+}
+
+.card-group-green button:hover{
+    background-image: linear-gradient(to right, var(--button-left-green), var(--button-right-green));
+}
+
+.card-group-black > button{
+    background-image: linear-gradient(to right, var(--button-right-black), var(--button-left-black));
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    border: 0px;
+    outline: 0;
+}
+
+.card-group-black button:hover{
+    background-image: linear-gradient(to right, var(--button-left-black), var(--button-right-black));
+}
+
+.image-login{
+    border-radius: 20px;
+    width: 70px;
+    box-shadow: grey 8px 8px 2px;
+}
+
+.title{
+    color: var(--cor-h1);
+}
+
+a{
+    text-decoration: var(--cor-h1);
+}
+
+.title-cadastro{
+    color: var(--cor-h1);
+}
+
+.dp-menu ul {
+    background-color: var(--cor-fundo);
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+}
+
+.dp-menu ul li {
+    display: inline;
+    position: relative;
+    margin-left: 30px;
+}
+
+.dp-menu ul li a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    transition: background .3s;
+}
+
+.dp-menu ul li a:hover {
+    background-color: var(--cor-hover);
+}
+
+/*sub menu*/
+.dp-menu ul ul {
+    display: none;
+    left: 0;
+    position: absolute;
+    width: 150px;
+}
+
+.dp-menu ul li:hover ul {
+    display: block;
+}
+
+.dp-menu ul ul li a {
+    display: block;
+}
+
+iframe#iframe-home{
+    width: 85%;
+    height: 800px;
+    border: none;
+    overflow: hidden;
+}
+
+iframe#iframe-home::-webkit-scrollbar{
+    display: none;
+}
+
+
+input[type=checkbox] {
+    background-color: blanchedalmond;
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  
+  input[type=checkbox] + label {
+    position: relative;
+    cursor: pointer;
+    padding-left: 30px;
+  }
+  
+  input[type=checkbox] + label::before {
+    background-color: white;
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    bottom: 0;
+    border: solid 2px;
+    border-radius: 25%;
+    vertical-align: bottom;
+  }
+  
+  input[type=checkbox]:checked + label::after {
+    background-color: hsl(200, 100%, 50%);
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    bottom: 0;
+    border: solid 2px;
+    border-radius: 25%;
+    vertical-align: bottom;
+  }
+  
+  #progress-bar {
+    background-color: darkgrey;
+    height: 20px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  #progress-bar .filled {
+    background-color: darkgreen;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  #progress-bar .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+  }

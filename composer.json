@@ -1,0 +1,17 @@
+{
+    "name": "denis/htdocs",
+    "autoload": {
+        "psr-4": {
+            "Denis\\Htdocs\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Denis Ferraz",
+            "email": "denis_ferraz359@hotmail.com"
+        }
+    ],
+    "require": {
+        "dompdf/dompdf": "^2.0"
+    }
+}

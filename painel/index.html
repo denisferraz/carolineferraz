@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Controle de Acesso</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <form class="form" action="login.php" method="POST">
+        <div class="card">
+            <div class="card-top">
+                <img class="image-login" src="images/login.png" alt="Login">
+                <h2 class="title">Painel de Controle</h2>
+                <p>Gerenciar sua conta</p>
+            </div>
+
+            <div class="card-group">
+                <label>Email</label>
+                <input type="email" minlength="10" maxlength="35" name="email" placeholder="E-mail" required>
+                <label>Senha</label>
+                <input type="password" minlength="5" maxlength="20" name="senha" placeholder="Senha" required>
+
+                <div class="card-group btn"><button type="submit">Acessar</button></div>
+
+            </div>
+        </div>
+    </form>
+
+</body>
+</html>

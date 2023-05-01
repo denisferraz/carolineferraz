@@ -1,0 +1,79 @@
+<?php
+
+//ini_set('display_errors', 0 );
+//error_reporting(0);
+
+session_start();
+require('../conexao.php');
+require('verifica_login.php');
+
+$hoje = date('Y-m-d');
+
+?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="ajax/jquery.2.1.3.min.js"></script>
+    <script>
+            function buscar(palavra)
+            {
+                //O método $.ajax(); é o responsável pela requisição
+                $.ajax
+                        ({
+                            //Configurações
+                            type: 'POST',//Método que está sendo utilizado.
+                            dataType: 'html',//É o tipo de dado que a página vai retornar.
+                            url: 'buscar.php',//Indica a página que está sendo solicitada.
+                            //função que vai ser executada assim que a requisição for enviada
+                            beforeSend: function () {
+                                $("#resultado").html("Carregando...");
+                            },
+                            data: {palavra: palavra},//Dados para consulta
+                            //função que será executada quando a solicitação for finalizada.
+                            success: function (msg)
+                            {
+                                $("#resultado").html(msg);
+                            }
+                        });
+            }
+            
+            
+            $('#buscar').click(function () {
+                buscar($("#palavra").val())
+            });
+        </script>
+    <title>Historico</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <form class="form" action="buscar.php" method="POST">
+        <div class="card">
+            <div class="card-top">
+                <h2 class="title-cadastro">Sistema de Busca</h2>
+            </div>
+
+            <div class="card-group">
+                <label>Nome Ou Confirmação ou Ação</label>
+                <input type="text" minlength="5" maxlength="30" name="busca" placeholder="Para total, deixe em branco">
+                <label>Inicio</label>
+                <input type="date" max="<?php echo $hoje ?>" value="<?php echo $hoje ?>" name="historico_inicio" required>
+                <label>Fim</label>
+                <input type="date" max="<?php echo $hoje ?>" value="<?php echo $hoje ?>" name="historico_fim" required>
+                <br>
+                <div class="card-group btn"><button type="submit">Buscar</button></div>
+
+            </div>
+        </div>
+    </form>
+
+    <br><div id="resultado"></div>
+
+</body>
+</html>
