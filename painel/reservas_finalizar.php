@@ -61,8 +61,6 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="time" name="atendimento_hora" required>
             <label>E-mail</label>
             <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $doc_email ?>" required>
-            <label>Mensagem Finalização</label>
-            <textarea name="msg_finalizar" rows="5" cols="43" required><?php echo $config_msg_finalizar ?></textarea><br><br>
             <input type="hidden" name="status_reserva" value="<?php echo $id_job ?>">
             <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone?>">
             <input type="hidden" name="feitapor" value="Painel">

@@ -851,10 +851,10 @@ if($envio_whatsapp == 'ativado'){
 
 
 
-}else if($status_reserva == 'Em Andamento'){
+}else if($status_reserva == 'EmAndamento'){
 
     $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-    $msg_finalizacao = mysqli_real_escape_string($conn_msqli, $_POST['msg_finalizar']);
+    $status_reserva = 'Em Andamento';
 
     $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
     $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
@@ -865,77 +865,6 @@ if($envio_whatsapp == 'ativado'){
     $query->execute(array('status_reserva' => $status_reserva, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
     $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $confirmacao"));  
-
-            //Envio de Email	
-
-        $data_email = date('d/m/Y \-\ H:i:s');
-        $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-        $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
-        
-        $pdf_corpo_00 = 'Olá';
-        $pdf_corpo_01 = 'Sessão Finalizada';
-        $pdf_corpo_02 = 'a sua sessão';
-        $pdf_corpo_03 = 'foi finalizada com sucesso';
-        $pdf_corpo_05 = 'Obrigado';
-        $pdf_corpo_07 = 'Sessão finalizada em';
-
-    $mail = new PHPMailer(true);
-
-    try {
-        //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        $mail->CharSet = 'UTF-8';
-        $mail->isSMTP();
-        $mail->Host = "$mail_Host";
-        $mail->SMTPAuth = true;
-        $mail->Username = "$mail_Username";
-        $mail->Password = "$mail_Password";
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = "$mail_Port";
-
-        $mail->setFrom("$config_email", "$config_empresa");
-        $mail->addAddress("$doc_email", "$doc_nome");
-        $mail->addBCC("$config_email");
-        
-        $mail->isHTML(true);                                 
-        $mail->Subject = "$pdf_corpo_01 - $confirmacao";
-      // INICIO MENSAGEM  
-        $mail->Body = "
-
-        <fieldset>
-        <legend>$pdf_corpo_01 $confirmacao</legend>
-        <br>
-        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
-        <p>Data: <b>$atendimento_dia_str</b> ás: <b>$atendimento_hora_str</b>h</p>
-        <br><b>$pdf_corpo_07 $data_email</b>
-        </fieldset>
-        <br>
-        <fieldset>
-        <legend><b><u>$pdf_corpo_05</u></b></legend>
-        <p><b>$msg_finalizacao</b></p>
-        </fieldset><br><fieldset>
-        <legend><b><u>$config_empresa</u></legend>
-        <p>CNPJ: $config_cnpj</p>
-        <p>$config_telefone - $config_email</p>
-        <p>$config_endereco</p></b>
-        </fieldset>
-        "; // FIM MENSAGEM
-    
-            $mail->send();
-            
-            echo "<script>
-            window.location.replace('painel/home.php')
-                    </script>";
-             exit();
-
-        } catch (Exception $e) {
-
-            echo "<script>
-            window.location.replace('painel/home.php')
-                    </script>";
-
-        }
-
-//Fim Envio de Email
 
 //Incio Envio Whatsapp
 if($envio_whatsapp == 'ativado'){
@@ -975,8 +904,15 @@ if($envio_whatsapp == 'ativado'){
     }
     //Fim Envio Whatsapp
 
+    echo "<script>
+            alert('Sessão Finalizada com Sucesso')
+            window.location.replace('painel/home.php')
+                    </script>";
+            exit();
+
         }else{
             echo "<script>
+            alert('Erro ao Finalizar Sessao')
             window.location.replace('painel/home.php')
                     </script>";
             exit();

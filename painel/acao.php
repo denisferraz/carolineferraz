@@ -104,199 +104,6 @@ if($id_job == 'editar_configuracoes'){
     </script>";
     exit();
 
-}else if($id_job == 'editar_info'){
-
-    $senha_antiga = mysqli_real_escape_string($conn_msqli, $_POST['senha_antiga']);
-    $senha_nova = mysqli_real_escape_string($conn_msqli, $_POST['senha_nova']);
-    $senha_nova_2 = mysqli_real_escape_string($conn_msqli, $_POST['senha_nova_2']);
-    $unico_usuario = mysqli_real_escape_string($conn_msqli, $_POST['unico_usuario']);
-
-    if($senha_nova != $senha_nova_2 || $senha_antiga == $senha_nova){
-    echo "<script>
-    alert('Senha Nova igual a Antiga, ou Senhas não coferem')
-    window.location.replace('editar.php?unico_usuario=$unico_usuario')
-    </script>";
-    exit();
-    }
-
-    $senha_antiga = md5($senha_antiga);
-    $senha_nova = md5($senha_nova);
-
-    $result_check = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE unico = :unico_usuario AND senha = :senha_antiga");
-    $result_check->execute(array('unico_usuario' => $unico_usuario, 'senha_antiga' => $senha_antiga));
-    $row_check = $result_check->rowCount();
-
-        if($row_check == 1){
-
-    $query = $conexao->prepare("UPDATE $tabela_painel_users SET senha = :senha_nova WHERE unico = :unico_usuario");
-    $query->execute(array('unico_usuario' => $unico_usuario, 'senha_nova' => $senha_nova));
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou sua Senha'));
-
-    echo "<script>
-    alert('Dados editados com sucesso')
-    window.location.replace('home.php')
-    </script>";
-    exit();
-
-        }else{
-
-    echo "<script>
-    alert('Senha Inválida')
-    window.location.replace('editar.php?unico_usuario=$unico_usuario')
-    </script>";
-    exit();
-
-        }
-
-}else if($id_job == 'editar_todos'){
-
-    $senha_nova = mysqli_real_escape_string($conn_msqli, $_POST['senha_nova']);
-    $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
-    $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
-    $telefone = mysqli_real_escape_string($conn_msqli, $_POST['telefone']);
-    $unico_usuario = mysqli_real_escape_string($conn_msqli, $_POST['unico_usuario']);
-
-    if(isset($_POST['aut_reservas'])){
-        $aut_reservas = 0;
-        } else {
-        $aut_reservas = 1;
-        }
-    if(isset($_POST['aut_disponibilidade'])){
-        $aut_disponibilidade = 0;
-        } else {
-        $aut_disponibilidade = 1;
-        }
-    if(isset($_POST['aut_configuracoes'])){
-        $aut_configuracoes = 0;
-        } else {
-        $aut_configuracoes = 1;
-        }
-        if(isset($_POST['aut_acessos'])){
-        $aut_acessos = 0;
-        } else {
-        $aut_acessos = 1;
-        }
-
-    if($senha_nova == ''){
-
-    $query = $conexao->prepare("UPDATE $tabela_painel_users SET email = :email, nome = :nome, telefone = :telefone, aut_reservas = :aut_reservas, aut_disponibilidade = :aut_disponibilidade, aut_configuracoes = :aut_configuracoes, aut_acessos = :aut_acessos WHERE unico = :unico_usuario");
-    $query->execute(array('email' => $email, 'nome' => $nome, 'telefone' => $telefone, 'aut_reservas' => $aut_reservas, 'aut_disponibilidade' => $aut_disponibilidade, 'aut_configuracoes' => $aut_configuracoes, 'aut_acessos' => $aut_acessos, 'unico_usuario' => $unico_usuario));
-
-    }else{
-    
-    $senha_nova = md5($senha_nova);
-    $query = $conexao->prepare("UPDATE $tabela_painel_users SET senha = :senha_nova, email = :email, nome = :nome, telefone = :telefone, aut_reservas = :aut_reservas, aut_disponibilidade = :aut_disponibilidade, aut_configuracoes = :aut_configuracoes, aut_acessos = :aut_acessos WHERE unico = :unico_usuario");
-    $query->execute(array('senha_nova' => $senha_nova, 'email' => $email, 'nome' => $nome, 'telefone' => $telefone, 'aut_reservas' => $aut_reservas, 'aut_disponibilidade' => $aut_disponibilidade, 'aut_configuracoes' => $aut_configuracoes, 'aut_acessos' => $aut_acessos, 'unico_usuario' => $unico_usuario));
-
-    }
-
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Alterou as informações de $nome - $email"));
-
-    echo "<script>
-    alert('Dados de $nome alterados com Sucesso')
-    window.location.replace('editar_todos.php?unico_usuario=$unico_usuario')
-    </script>";
-    exit();
-
-}else if($id_job == 'cadastrar_acesso'){
-
-    $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
-    $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
-    $telefone = mysqli_real_escape_string($conn_msqli, $_POST['telefone']);
-    $senha_nova = mysqli_real_escape_string($conn_msqli, $_POST['senha_nova']);
-    $unico_usuario = mysqli_real_escape_string($conn_msqli, $_POST['unico_usuario']);
-    if(isset($_POST['aut_reservas'])){
-        $aut_reservas = 0;
-        } else {
-        $aut_reservas = 1;
-        }
-    if(isset($_POST['aut_disponibilidade'])){
-        $aut_disponibilidade = 0;
-        } else {
-        $aut_disponibilidade = 1;
-        }
-    if(isset($_POST['aut_configuracoes'])){
-        $aut_configuracoes = 0;
-        } else {
-        $aut_configuracoes = 1;
-        }
-        if(isset($_POST['aut_acessos'])){
-        $aut_acessos = 0;
-        } else {
-        $aut_acessos = 1;
-        }
-
-    $senha_nova = md5($senha_nova);
-
-    function validaCPF($unico_usuario) {
- 
-        // Extrai somente os números
-        $unico_usuario = preg_replace( '/[^0-9]/is', '', $unico_usuario );
-         
-        // Verifica se foi informado todos os digitos corretamente
-        if (strlen($unico_usuario) != 11) {
-            return false;
-        }
-    
-        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
-        if (preg_match('/(\d)\1{10}/', $unico_usuario)) {
-            return false;
-        }
-    
-        // Faz o calculo para validar o CPF
-        for ($t = 9; $t < 11; $t++) {
-            for ($d = 0, $c = 0; $c < $t; $c++) {
-                $d += $unico_usuario[$c] * (($t + 1) - $c);
-            }
-            $d = ((10 * $d) % 11) % 10;
-            if ($unico_usuario[$c] != $d) {
-                return false;
-            }
-        }
-        return true;
-    
-    }
-
-    if(validaCPF($unico_usuario)){
-
-    $unico_usuario = substr_replace(preg_replace( '/[^0-9]/is', '', $unico_usuario ), 'cpf-', 0, 0);
-    $result_check = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email OR unico = :unico_usuario");
-    $result_check->execute(array('email' => $email, 'unico_usuario' => $unico_usuario));
-    $row_check = $result_check->rowCount();
-
-        if($row_check == 1){
-
-        echo "<script>
-        alert('Email ou CPF ja existe')
-        window.location.replace('cadastrar_acesso.php')
-        </script>";
-        exit();
-
-        }
-
-    $query = $conexao->prepare("INSERT INTO $tabela_painel_users (email, senha, nome, telefone, unico, aut_reservas, aut_disponibilidade, aut_configuracoes, aut_acessos) VALUES (:email, :senha_nova, :nome, :telefone, :unico_usuario, :aut_reservas, :aut_disponibilidade, :aut_configuracoes, :aut_acessos)");
-    $query->execute(array('senha_nova' => $senha_nova, 'email' => $email, 'nome' => $nome, 'telefone' => $telefone, 'aut_reservas' => $aut_reservas, 'aut_disponibilidade' => $aut_disponibilidade, 'aut_configuracoes' => $aut_configuracoes, 'aut_acessos' => $aut_acessos, 'unico_usuario' => $unico_usuario));
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo acesso: $nome - $email"));
-
-    echo "<script>
-    alert('Acesso Cadastrado com Sucesso')
-    window.location.replace('home.php')
-    </script>";
-    exit();
-
-    }else{
-
-        echo "<script>
-        alert('CPF Inválido')
-        window.location.replace('cadastrar_acesso.php')
-        </script>";
-        exit();
-
-    }
-
 }else if($id_job == 'disponibilidade_fechar'){
 
     $fechar_inicio = mysqli_real_escape_string($conn_msqli, $_POST['fechar_inicio']);
@@ -431,52 +238,6 @@ echo "<script>
     echo "<script>
     alert('Produto Lançado com Sucesso na Reserva $confirmacao')
     window.location.replace('reserva.php?confirmacao=$confirmacao')
-    </script>";
-
-}else if($id_job == 'noticias'){
-
-    $titulo = mysqli_real_escape_string($conn_msqli, $_POST['titulo']);
-    $noticia = mysqli_real_escape_string($conn_msqli, $_POST['noticia']);
-
-    $query = $conexao->prepare("INSERT INTO $tabela_noticias (titulo, noticia, quando, feitapor) VALUES (:titulo, :noticia, '{$historico_data}', '{$historico_quem}')");
-    $query->execute(array('titulo' => $titulo, 'noticia' => $noticia));
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou a noticia $titulo"));
-
-    echo "<script>
-    alert('Noticia Cadastrada com Sucesso')
-    window.location.replace('noticias.php')
-    </script>";
-
-}else if($id_job == 'imagens'){
-
-    $arquivo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo']);
-    $imagem = $_FILES['imagem'];
-
-    if($imagem['type'] != 'image/jpeg'){
-        echo "<script>
-        alert('Selecione apenas arquivos tipo JPG')
-        window.location.replace('imagens.php')
-        </script>";
-        exit();
-    }
-
-    $imgs = 1;
-    $arquivos = "../img/$arquivo";
-    while(file_exists("$arquivos") == True){
-        $imgs++;
-        $arquivo = "carrossel_$imgs.jpg";
-        $arquivos = "../img/$arquivo";
-    }
-
-    move_uploaded_file($imagem['tmp_name'], '../img/'.$arquivo);
-
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou uma nova Imagem"));
-
-    echo "<script>
-    alert('Imagem Cadastrada com Sucesso')
-    window.location.replace('imagens.php')
     </script>";
 
 }else if($id_job == 'Formulario' || $id_job == 'Formulario_2'){
@@ -1182,9 +943,58 @@ $dompdf->stream(
     $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_valor, :confirmacao)");
     $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'confirmacao' => $confirmacao));
 
+    //Envio de Email	
+
+    $data_email = date('d/m/Y \-\ H:i:s');
+
+    $mail = new PHPMailer(true);
+
+try {
+    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    $mail->CharSet = 'UTF-8';
+    $mail->isSMTP();
+    $mail->Host = "$mail_Host";
+    $mail->SMTPAuth = true;
+    $mail->Username = "$mail_Username";
+    $mail->Password = "$mail_Password";
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = "$mail_Port";
+
+    $mail->setFrom("$config_email", "$config_empresa");
+    $mail->addAddress("$email", "$nome");
+    $mail->addBCC("$config_email");
+    
+    $mail->isHTML(true);                                 
+    $mail->Subject = "Contrato $confirmacao - $config_empresa";
+  // INICIO MENSAGEM  
+    $mail->Body = "
+
+    <fieldset>
+    <legend><b>Contrato $confirmacao</b></legend>
+    <br>
+    Ola <b>$nome</b>, tudo bem?<br>
+    $config_empresa lhe enviou o <b><u>Contrato $confirmacao</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
+    <b>Contrato enviado em $data_email</b>
+    </fieldset><br><fieldset>
+    <legend><b><u>$config_empresa</u></legend>
+    <p>CNPJ: $config_cnpj</p>
+    <p>$config_telefone - $config_email</p>
+    <p>$config_endereco</p></b>
+    </fieldset>
+    
+    "; // FIM MENSAGEM
+
+        $mail->send();
+
+    } catch (Exception $e) {
+
+    }
+
+//Fim Envio de Email
+
     echo "<script>
     alert('Contrato Enviado com Sucesso')
-    window.location.replace('cadastro.php?email=$email&confirmacao=$confirmacao')
+    window.location.replace('reserva.php?confirmacao=$confirmacao')
     </script>";
     exit();
 
@@ -1202,7 +1012,7 @@ $dompdf->stream(
 
     echo "<script>
     alert('Tratamento Enviado com Sucesso')
-    window.location.replace('cadastro.php?email=$email&confirmacao=$confirmacao')
+    window.location.replace('reserva.php?confirmacao=$confirmacao')
     </script>";
     exit();
 
@@ -1219,7 +1029,7 @@ $dompdf->stream(
 
     echo "<script>
     alert('Sessao $tratamento_sessao Cadastrada com Sucesso')
-    window.location.replace('cadastro.php?email=$email&confirmacao=$confirmacao')
+    window.location.replace('reserva.php?confirmacao=$confirmacao')
     </script>";
     exit();
 
@@ -1235,7 +1045,7 @@ $dompdf->stream(
 
     echo "<script>
     alert('Sessao Finalizada com Sucesso')
-    window.location.replace('cadastro.php?email=$email&confirmacao=$confirmacao')
+    window.location.replace('reserva.php?confirmacao=$confirmacao')
     </script>";
     exit();
 

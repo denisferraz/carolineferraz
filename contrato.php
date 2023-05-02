@@ -124,8 +124,7 @@ ______________________________________________________<br>
 <?php }else{ ?>
 <h3>(Não Assinado)</h3>
 <?php } ?>
-<br><br><br>
-<br><br><br>
+<img src="assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
 ______________________________________________________<br>
 <b>Caroline Chagas Ferraz</b>
 <h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$procedimento_data")) ?>)</h3>
@@ -211,8 +210,8 @@ function draw(e) {
 
 canvas.addEventListener('mousedown', (e) => {
   isDrawing = true;
-  lastX = e.clientX - canvas.offsetLeft;
-  lastY = e.clientY - canvas.offsetTop;
+  lastX = e.offsetX;
+  lastY = e.offsetY;
 });
 
 canvas.addEventListener('mousemove', draw);
@@ -223,8 +222,8 @@ canvas.addEventListener('mouseup', () => {
 
 canvas.addEventListener('touchstart', (e) => {
   isDrawing = true;
-  lastX = e.touches[0].clientX - canvas.offsetLeft;
-  lastY = e.touches[0].clientY - canvas.offsetTop;
+  lastX = e.touches[0].pageX - canvas.offsetLeft;
+  lastY = e.touches[0].pageY - canvas.offsetTop;
 });
 
 canvas.addEventListener('touchmove', draw);

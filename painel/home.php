@@ -68,7 +68,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
     <td><?php echo $doc_nome ?> [ <?php echo $doc_email ?> ]</td>
     <td align="center"><?php echo date('d/m/Y', $atendimento_dia) ?></td>
     <td align="center"><?php echo date('H:i\h', $atendimento_hora) ?></td>
-    <td align="center"><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>$id_job=Em20%Andamento","iframe-home")'><button>Finalizar</button></a></td>
+    <td align="center"><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")'><button>Finalizar</button></a></td>
     <?php if($atendimento_dia < strtotime("$hoje")){ ?>
     <td><a href="javascript:void(0)" onclick='window.open("reservas_noshow.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>NoShow</button></a></td>
     <?php }else{ ?>
