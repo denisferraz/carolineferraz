@@ -5,24 +5,16 @@ error_reporting(0);
 $hoje = date('Y-m-d');
 
 require('conexao.php');
-require('verifica_login.php');
-
-if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
-    echo "<script>
-    window.location.replace('home.php')
-    </script>";
-    exit();
- }
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
-$result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE token = :token AND status_reserva = 'Confirmada' AND atendimento_dia >= '{$hoje}'");
+$result_check = $conexao->prepare("SELECT * FROM painel_users WHERE token = :token");
 $result_check->execute(array('token' => $token));
 $row_check = $result_check->rowCount();
 while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select['confirmacao'];
-$email = $select['doc_email'];
-$nome = $select['doc_nome'];
-$telefone = $select['doc_telefone'];
+$email = $select['email'];
+$nome = $select['nome'];
+$telefone = $select['telefone'];
+$nascimento = $select['nascimento'];
 }
 
 ?>
@@ -133,8 +125,6 @@ $telefone = $select['doc_telefone'];
                 <fieldset><legend><u><b>Dados do Cliente</b></u></legend>
             <table width="100%" border="2px">
             <tr>
-            <td><label>Nº Confirmação</label><br>
-            <input width="100%" type="text" minlength="10" maxlength="10" name="confirmacao" value="<?php echo $confirmacao ?>" required></td>
             <td><label>Nome</label><br>
             <input type="text" minlength="5" maxlength="30" name="nome" value="<?php echo $nome ?>" required></td>
             <td><label>E-mail</label><br>
@@ -159,7 +149,7 @@ $telefone = $select['doc_telefone'];
             <td><label>Estado Civil</label><br>
             <input type="text" minlength="5" maxlength="15" name="estado_civil" required></td>
             <td><label>Nascimento</label><br>
-            <input type="date" name="nascimento" required></td>
+            <input type="date" name="nascimento" value="<?php echo $nascimento ?>" required></td>
             </tr>
             </table></fieldset><br>
             <fieldset><legend><u><b>Avaliação do Problema</b></u></legend>

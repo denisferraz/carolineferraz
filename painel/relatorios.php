@@ -55,7 +55,7 @@ require('verifica_login.php');
                 <option value="No-Shows Ano">No-Shows Ano</option>
                 </select></b></label><br>
                 <label>Data Relatorio</label>
-                <input type="date" max="<?php echo $min_dia ?>" name="relatorio_inicio" required>
+                <input type="date" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" name="relatorio_inicio" required>
                 <br>
                 <div class="card-group btn"><button type="submit">Gerar Relatorio</button></div>
 

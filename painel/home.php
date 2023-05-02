@@ -30,7 +30,7 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='60'>";
 <div id="atendimentos">
 <!-- Check-In -->
 <?php
-    $query_checkin = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia <= '{$hoje}' AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento') ORDER BY atendimento_dia, atendimento_hora ASC");
+    $query_checkin = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia <= '{$hoje}' AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento') AND status_sessao = 'Confirmada' ORDER BY atendimento_dia, atendimento_hora ASC");
     $checkin_qtd = $query_checkin->rowCount();
 ?>
 
@@ -68,7 +68,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
     <td><?php echo $doc_nome ?> [ <?php echo $doc_email ?> ]</td>
     <td align="center"><?php echo date('d/m/Y', $atendimento_dia) ?></td>
     <td align="center"><?php echo date('H:i\h', $atendimento_hora) ?></td>
-    <td align="center"><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Finalizar</button></a></td>
+    <td align="center"><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>$id_job=Em20%Andamento","iframe-home")'><button>Finalizar</button></a></td>
     <?php if($atendimento_dia < strtotime("$hoje")){ ?>
     <td><a href="javascript:void(0)" onclick='window.open("reservas_noshow.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>NoShow</button></a></td>
     <?php }else{ ?>
@@ -83,7 +83,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
 
 <!-- Proximos Dias -->
 <?php
-    $query_proximos_dias = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$proximos_dias_amanha}' AND atendimento_dia <= '{$proximos_dias}') AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento') ORDER BY atendimento_dia ASC");
+    $query_proximos_dias = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$proximos_dias_amanha}' AND atendimento_dia <= '{$proximos_dias}') AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ORDER BY atendimento_dia ASC");
     $proximos_dias_qtd = $query_proximos_dias->rowCount();
     ?>
 <fieldset>

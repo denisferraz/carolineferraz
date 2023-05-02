@@ -68,6 +68,9 @@ $atendimento_hora = $select['atendimento_hora'];
     <label for="overbook_data">Forçar Data/Horario</label>
     <br>
     <input type="hidden" name="id" value="<?php echo $id ?>">
+    <input type="hidden" name="atendimento_dia_anterior" value="<?php echo $select['atendimento_dia'] ?>">
+    <input type="hidden" name="atendimento_hora_anterior" value="<?php echo $atendimento_hora ?>">
+    <input type="hidden" name="id_job" value="<?php echo $select['tipo_consulta'] ?>">
     <input type="hidden" name="confirmacao" value="<?php echo $select['confirmacao'] ?>">
     <input type="hidden" name="new_token" value="<?php echo $token ?>">
     <div class="card-group btn"><button type="submit">Alterar Reserva</button></div>

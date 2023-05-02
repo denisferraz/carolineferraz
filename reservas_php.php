@@ -137,7 +137,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao));
     
     if($status_reserva == 'Confirmada'){
-    $query_2 = $conexao->prepare("INSERT INTO $tabela_reservas (atendimento_inicio, atendimento_dia, atendimento_hora, confirmacao, tipo_consulta, status_sessao, doc_email, doc_nome, doc_cpf, doc_telefone, status_reserva, data_cancelamento, confirmacao_cancelamento, feitapor, token) VALUES (:atendimento_inicio, :atendimento_dia, :atendimento_hora, :confirmacao, :tipo_consulta, 'A Confirmar', :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :status_reserva, :data_cancelamento, 'Ativa', :feitapor, :token)");
+    $query_2 = $conexao->prepare("INSERT INTO $tabela_reservas (atendimento_inicio, atendimento_dia, atendimento_hora, confirmacao, tipo_consulta, status_sessao, doc_email, doc_nome, doc_cpf, doc_telefone, status_reserva, data_cancelamento, confirmacao_cancelamento, feitapor, token) VALUES (:atendimento_inicio, :atendimento_dia, :atendimento_hora, :confirmacao, :tipo_consulta, 'Confirmada', :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :status_reserva, :data_cancelamento, 'Ativa', :feitapor, :token)");
     $query_2->execute(array('atendimento_inicio' => $atendimento_dia, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_reserva' => $status_reserva, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token));
     }else{
     $query_2 = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_reserva = :status_reserva, token = :token, tipo_consulta = 'Nova Sessão', status_sessao = 'Confirmada' WHERE doc_email = :doc_email AND confirmacao = :confirmacao");
@@ -224,16 +224,20 @@ window.location.replace('agendar_ok.php?token=$token')
 
 }else if($status_reserva == 'Cancelada' || $status_reserva == 'Cancelado'){
 
+    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
+    $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
+    
     if($atendimento_dia < $hoje){
-        echo $msg_not_found;
-        exit();
+        echo    "<script>
+                window.location.replace('cancelar.php?typeerror=1&token=$token')
+                </script>";
+         exit();
     }
 
     $status_reserva = 'Cancelada';
-    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
     $confirmacao_cancelamento = strtoupper(substr(md5(date("YmdHismm")), 0, 10));
 
-        $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND status_reserva = 'Confirmada'");
+        $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
         $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'doc_email' => $doc_email, 'confirmacao' => $confirmacao));
         $row_check = $result_check->rowCount();
 
@@ -242,10 +246,16 @@ window.location.replace('agendar_ok.php?token=$token')
             }
 
         if($row_check >= 1){
-        $query = $conexao->prepare("UPDATE $tabela_reservas SET status_reserva = :status_reserva, data_cancelamento = :data_cancelamento, confirmacao_cancelamento = :confirmacao_cancelamento WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
+        $query = $conexao->prepare("UPDATE $tabela_reservas SET status_sessao = :status_reserva, data_cancelamento = :data_cancelamento, confirmacao_cancelamento = :confirmacao_cancelamento WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
         $query->execute(array('status_reserva' => $status_reserva, 'data_cancelamento' => $historico_data, 'confirmacao_cancelamento' => $confirmacao_cancelamento ,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'doc_email' => $doc_email, 'confirmacao' => $confirmacao));
-        $query_2 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE id >= 1 AND confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia");
-        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'confirmacao' => $confirmacao));
+        
+        if($id_job == 'Consulta Capilar'){
+        $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
+        $query_2 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE id >= 1 AND confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
+        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'confirmacao' => $confirmacao, 'atendimento_hora' => $atendimento_hora_mais));
+        }
+        $query_2 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE id >= 1 AND confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
+        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'confirmacao' => $confirmacao, 'atendimento_hora' => $atendimento_hora));
 
         if($feitapor != 'Site'){
         $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
@@ -320,12 +330,14 @@ window.location.replace('agendar_ok.php?token=$token')
 
 
         }else{
-            echo $msg_not_found;
-            exit();
+            echo    "<script>
+                window.location.replace('cancelar.php?typeerror=2&token=$token')
+                </script>";
+         exit();
         }
 
 echo   "<script>
-window.location.replace('reserva.php?confirmacao=$confirmacao')
+window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
         </script>";
 
 }else if($status_reserva == 'Alterada' || $status_reserva == 'Alterado'){
@@ -333,6 +345,8 @@ window.location.replace('reserva.php?confirmacao=$confirmacao')
         $horario = '';
         $token = mysqli_real_escape_string($conn_msqli, $_POST['new_token']);
         $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
+        $atendimento_dia_anterior = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia_anterior']);
+        $atendimento_hora_anterior = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_anterior']);
 
         if($atendimento_dia < $hoje){
             echo "<script>
@@ -452,8 +466,8 @@ window.location.replace('reserva.php?confirmacao=$confirmacao')
 
             }
 
-            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, alt_status, id_job) VALUES (:token, :atendimento_dia, :atendimento_hora, :id_job, 'Pendente')");
-            $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_job' => $id_job));
+            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, :id_job, 'Pendente')");
+            $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job));
 
             $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
             $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao));
@@ -557,10 +571,13 @@ curl_close($curl);
         }
         //Fim do Aguarda retorno em casos de alterações antes das 24h
 
-            $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao");
-            $query_3->execute(array('confirmacao' => $confirmacao));
+            $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
+            $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior));
 
             if($id_job == 'Consulta Capilar'){
+            $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
+            $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
+            $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
             $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
             $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao));
             }
@@ -675,7 +692,7 @@ window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
     $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
     $msg_finalizacao = mysqli_real_escape_string($conn_msqli, $_POST['msg_finalizar']);
 
-    $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND status_reserva = 'Confirmada'");
+    $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
     $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
     $row_check = $result_check->rowCount();
 
@@ -760,7 +777,171 @@ window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
 if($envio_whatsapp == 'ativado'){
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, o seu Atendimento foi Finalizado com sucesso em $data_email! Não esqueça de nos avaliar!";
+    $msg_wahstapp = "Olá $doc_nome, o seu Atendimento foi Finalizado com sucesso em $data_email! Não esqueça de nos avaliar em https://g.page/r/CY8KhBQj3vtrEB0/review!";
+    
+    $curl = curl_init();
+    
+    
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => "{
+        \"number\": \"$doc_telefonewhats\",
+        \"text\": \"$msg_wahstapp\"
+    }",
+      CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        "SecretKey: $whatsapp_secretkey",
+        "PublicToken: $whatsapp_publictoken",
+        "DeviceToken: $whatsapp_devicetoken",
+        "Authorization: $whatsapp_authorization"
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    
+    curl_close($curl);
+
+    $msg_wahstapp = 'https://g.page/r/CY8KhBQj3vtrEB0/review!';
+    
+    $curl = curl_init();
+    
+    
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => "{
+        \"number\": \"$doc_telefonewhats\",
+        \"text\": \"$msg_wahstapp\"
+    }",
+      CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        "SecretKey: $whatsapp_secretkey",
+        "PublicToken: $whatsapp_publictoken",
+        "DeviceToken: $whatsapp_devicetoken",
+        "Authorization: $whatsapp_authorization"
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    
+    curl_close($curl);
+    
+    }
+    //Fim Envio Whatsapp
+
+        }else{
+            echo "<script>
+            window.location.replace('painel/home.php')
+                    </script>";
+            exit();
+        }
+
+
+
+}else if($status_reserva == 'Em Andamento'){
+
+    $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+    $msg_finalizacao = mysqli_real_escape_string($conn_msqli, $_POST['msg_finalizar']);
+
+    $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
+    $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
+    $row_check = $result_check->rowCount();
+
+    if($row_check >= 1){
+    $query = $conexao->prepare("UPDATE $tabela_reservas SET status_sessao = :status_reserva WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
+    $query->execute(array('status_reserva' => $status_reserva, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
+    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $confirmacao"));  
+
+            //Envio de Email	
+
+        $data_email = date('d/m/Y \-\ H:i:s');
+        $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
+        $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
+        
+        $pdf_corpo_00 = 'Olá';
+        $pdf_corpo_01 = 'Sessão Finalizada';
+        $pdf_corpo_02 = 'a sua sessão';
+        $pdf_corpo_03 = 'foi finalizada com sucesso';
+        $pdf_corpo_05 = 'Obrigado';
+        $pdf_corpo_07 = 'Sessão finalizada em';
+
+    $mail = new PHPMailer(true);
+
+    try {
+        //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->CharSet = 'UTF-8';
+        $mail->isSMTP();
+        $mail->Host = "$mail_Host";
+        $mail->SMTPAuth = true;
+        $mail->Username = "$mail_Username";
+        $mail->Password = "$mail_Password";
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = "$mail_Port";
+
+        $mail->setFrom("$config_email", "$config_empresa");
+        $mail->addAddress("$doc_email", "$doc_nome");
+        $mail->addBCC("$config_email");
+        
+        $mail->isHTML(true);                                 
+        $mail->Subject = "$pdf_corpo_01 - $confirmacao";
+      // INICIO MENSAGEM  
+        $mail->Body = "
+
+        <fieldset>
+        <legend>$pdf_corpo_01 $confirmacao</legend>
+        <br>
+        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
+        <p>Data: <b>$atendimento_dia_str</b> ás: <b>$atendimento_hora_str</b>h</p>
+        <br><b>$pdf_corpo_07 $data_email</b>
+        </fieldset>
+        <br>
+        <fieldset>
+        <legend><b><u>$pdf_corpo_05</u></b></legend>
+        <p><b>$msg_finalizacao</b></p>
+        </fieldset><br><fieldset>
+        <legend><b><u>$config_empresa</u></legend>
+        <p>CNPJ: $config_cnpj</p>
+        <p>$config_telefone - $config_email</p>
+        <p>$config_endereco</p></b>
+        </fieldset>
+        "; // FIM MENSAGEM
+    
+            $mail->send();
+            
+            echo "<script>
+            window.location.replace('painel/home.php')
+                    </script>";
+             exit();
+
+        } catch (Exception $e) {
+
+            echo "<script>
+            window.location.replace('painel/home.php')
+                    </script>";
+
+        }
+
+//Fim Envio de Email
+
+//Incio Envio Whatsapp
+if($envio_whatsapp == 'ativado'){
+
+    $doc_telefonewhats = "55$doc_telefone";
+    $msg_wahstapp = "Olá $doc_nome, o sua Sessão foi Finalizada com sucesso em $data_email! Aproveite e ja Marque a sua Proxima Sessão!";
     
     $curl = curl_init();
     

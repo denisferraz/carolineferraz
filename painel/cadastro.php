@@ -23,7 +23,6 @@ $hoje = date('Y-m-d');
 <div class="card">
 <?php
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $query->execute(array('email' => $email));
@@ -34,23 +33,6 @@ $cpf = $select['unico'];
 $nascimento = $select['nascimento'];
 $telefone = $select['telefone'];
 $token = $select['token'];
-}
-//Contratos
-$query_contrato = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao");
-$query_contrato->execute(array('email' => $email, 'confirmacao' => $confirmacao));
-$contrato_row = $query_contrato->rowCount();
-
-//Plano de Tratamento
-$query_tratamento = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND sessao_status = 'Em Andamento' AND confirmacao = :confirmacao");
-$query_tratamento->execute(array('email' => $email, 'confirmacao' => $confirmacao));
-$tratamento_row = $query_tratamento->rowCount();
-
-if($tratamento_row > 0){
-while($select_cadastrar = $query_tratamento->fetch(PDO::FETCH_ASSOC)){
-    $sessao_atual = $select_cadastrar['sessao_atual'];
-    $sessao_total = $select_cadastrar['sessao_total'];
-}
-$progress = $sessao_atual/$sessao_total*100;
 }
 ?>
 <fieldset>
@@ -73,24 +55,8 @@ if($tratamento_row > 0){
 <label><b>RG: </b><?php echo $rg ?></label><br>
 <label><b>CPF: </b><?php echo $cpf ?></label><br>
 <label><b>Data Nascimento: </b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></label><br><br>
-
-<?php
-if($contrato_row > 0){
-?>
-<a href="javascript:void(0)" onclick='window.open("../contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-green btn"><button>Ver Contrato</button></div></a> 
-<?php }else{ ?>
-<a href="javascript:void(0)" onclick='window.open("cadastro_contrato.php?email=<?php echo $email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-red btn"><button>Enviar Contrato</button></div></a>
-<?php }  ?>
-<br>
-<?php
-if($tratamento_row > 0){
-?>
-<a href="javascript:void(0)" onclick='window.open("../tratamento.php?token=<?php echo $token ?>","iframe-home")'><div class="card-group-green btn"><button>Ver Tratamento</button></div></a><br>
-<a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=cadastrar&email=<?php echo $email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group btn"><button>Cadastrar Sessão</button></div></a><br>
-<a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=finalizar&email=<?php echo $email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Finalizar Tratamento</button></div></a> 
-<?php }else{ ?>
-<a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-red btn"><button>Enviar Tratamento</button></div></a>
-<?php }  ?>
+<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a><br><br>
+<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a>
 </font>
 </fieldset>
 <br>

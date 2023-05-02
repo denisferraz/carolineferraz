@@ -22,10 +22,10 @@ $dompdf = new DOMPDF();
 
 $relatorio_inicio = mysqli_real_escape_string($conn_msqli, $_POST['relatorio_inicio']);
 $relatorio_fim = date('y-m-d', strtotime("$relatorio_inicio") + 86400);
+$relatorio_fim_outros = date('y-m-d', strtotime("$relatorio_inicio"));
 $relatorio_inicio_str = date('d/m/Y', strtotime("$relatorio_inicio"));
 $data_gerador = date('d/m/Y \- H:i:s\h');
 $relatorio = mysqli_real_escape_string($conn_msqli, $_POST['relatorio']);
-$inicio_fim = 1;
 
 $relatorio_inicio_mes = date('Y-m-1', strtotime("$relatorio_inicio"));
 $relatorio_inicio_ano = date('Y-1-1', strtotime("$relatorio_inicio"));
@@ -163,7 +163,7 @@ $dias_trabalho++;
         $receita_lancamento_dia = 0;
     }
 
-    $lucro_liquido_dia = number_format(($receita_lancamentos_dia - $despesa_total_dia) ,2,",",".");
+    $lucro_liquido_dia = number_format(($receita_lancamento_dia - $despesa_total_dia) ,2,",",".");
 
     $despesa_total_dia = number_format($despesa_total_dia ,2,",",".");
     $receita_lancamentos_dia = number_format($receita_lancamento_dia ,2,",",".");
@@ -266,7 +266,7 @@ $dias_trabalho++;
         $receita_lancamento_mes = 0;
     }
     
-    $lucro_liquido_mes = number_format(($receita_lancamentos_mes - $despesa_total_mes) ,2,",",".");
+    $lucro_liquido_mes = number_format(($receita_lancamento_mes - $despesa_total_mes) ,2,",",".");
     
     $despesa_total_mes = number_format($despesa_total_mes ,2,",",".");
     $receita_lancamentos_mes = number_format($receita_lancamento_mes ,2,",",".");
@@ -369,7 +369,7 @@ $dias_trabalho++;
         $receita_lancamento_ano = 0;
     }
     
-    $lucro_liquido_ano = number_format(($receita_lancamentos_ano - $despesa_total_ano) ,2,",",".");
+    $lucro_liquido_ano = number_format(($receita_lancamento_ano - $despesa_total_ano) ,2,",",".");
     
     $despesa_total_ano = number_format($despesa_total_ano ,2,",",".");
     $receita_lancamentos_ano = number_format($receita_lancamento_ano ,2,",",".");
@@ -425,11 +425,11 @@ $dias_trabalho++;
 
 $resultado_estorno = '';
 if($relatorio == 'Estornos Dia'){
-$query_estorno = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_estorno = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
 }else if($relatorio == 'Estornos Mes'){
-$query_estorno = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_estorno = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
 }else{
-$query_estorno = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_estorno = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
 }
 $estorno_total = $query_estorno->rowCount();
 if($estorno_total > 0){
@@ -470,11 +470,11 @@ $resultado_estorno
 
 $resultado_lanc = '';
 if($relatorio == 'Lançamentos Dia'){
-$query_lanc = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim}' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_lanc = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
 }else if($relatorio == 'Lançamentos Mes'){
-$query_lanc = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim}' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_lanc = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
 }else{
-$query_lanc = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim}' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_lanc = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
 }
 $lanc_total = $query_lanc->rowCount();
 if($lanc_total > 0){
@@ -516,11 +516,11 @@ $resultado_lanc
 
 $resultado_pgto = '';
 if($relatorio == 'Pagamentos Dia'){
-$query_pgto = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim}' AND tipo = 'Pagamento' ORDER BY quando DESC");
+$query_pgto = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
 }else if($relatorio == 'Pagamentos Mes'){
-$query_pgto = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim}' AND tipo = 'Pagamento' ORDER BY quando DESC");
+$query_pgto = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
 }else{
-$query_pgto = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim}' AND tipo = 'Pagamento' ORDER BY quando DESC");
+$query_pgto = $conexao->query("SELECT * FROM $tabela_lancamentos WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
 }
 $pgto_total = $query_pgto->rowCount();
 if($pgto_total > 0){
@@ -562,11 +562,11 @@ $resultado_pgto
 
 $resultado_despesa = '';
 if($relatorio == 'Despesas Dia'){
-$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio}' AND despesa_dia <= '{$relatorio_fim}' ORDER BY despesa_tipo, despesa_dia DESC");
+$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
 }else if($relatorio == 'Despesas Mes'){
-$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio_mes}' AND despesa_dia <= '{$relatorio_fim}' ORDER BY despesa_tipo, despesa_dia DESC");
+$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio_mes}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
 }else{
-$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio_ano}' AND despesa_dia <= '{$relatorio_fim}' ORDER BY despesa_tipo, despesa_dia DESC");
+$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio_ano}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
 }
 $despesas_total = $query_despesas->rowCount();
 if($despesas_total > 0){

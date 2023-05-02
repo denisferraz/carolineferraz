@@ -96,23 +96,19 @@ if($aut_acesso == 1){
     </script>
 </head>
 <body>
-
-    <form action="acao.php" method="POST">
-        <div>
-            <div class="card-top">
-                <h2 class="title-cadastro">Formulario</h2>
-            </div>
 <?php
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+$email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+$id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 
-$query_2 = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao");
-$query_2->execute(array('confirmacao' => $confirmacao));
+$query_2 = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query_2->execute(array('email' => $email));
 while($select_2 = $query_2->fetch(PDO::FETCH_ASSOC)){
-$doc_nome = $select_2['doc_nome'];
-$doc_email = $select_2['doc_email'];
-$doc_telefone = $select_2['doc_telefone'];
+$doc_nome = $select_2['nome'];
+$doc_telefone = $select_2['telefone'];
+$token = $select_2['token'];
 }
 
+if($id_job == 'Ver'){
 $query = $conexao->prepare("SELECT * FROM $tabela_formulario WHERE confirmacao = :confirmacao");
 $query->execute(array('confirmacao' => $confirmacao));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
@@ -179,6 +175,11 @@ $protocolo_realizado_04 = $select['protocolo_realizado_04'];
 $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
 }
 ?>
+<form action="acao.php" method="POST">
+        <div>
+            <div class="card-top">
+                <h2 class="title-cadastro">Formulario</h2>
+            </div>
             <div class="card-group">
             <fieldset><legend><u><b>Dados do Cliente</b></u></legend>
             <table width="100%" border="2px">
@@ -188,7 +189,7 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
             <td><label>Nome </label>
             <input type="text" minlength="5" maxlength="30" name="nome" value="<?php echo $doc_nome ?>" required></td>
             <td><label>E-mail </label>
-            <input minlength="10" maxlength="35" type="email" name="email" value="<?php echo $doc_email ?>" required></td>
+            <input minlength="10" maxlength="35" type="email" name="email" value="<?php echo $email ?>" required></td>
             </tr><tr>
             <td><label>CEP </label>
             <input type="text" minlength="8" maxlength="10" id="cep" name="cep" value="<?php echo $cep ?>" required></td>
@@ -456,7 +457,26 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
             </div>
         </div>
     </form>
+<?php }else{ ?>
 
+    <form class="form" action="acao.php" method="POST">
+    <div class="card">
+            <div class="card-top">
+                <h2 class="title-cadastro">Enviar Fomulario</h2>
+            </div>
+    <div class="card-group">
+            <label>Nome</label>
+            <input type="text" minlength="8" maxlength="30" name="doc_nome" value="<?php echo $doc_nome ?>" required>
+            <label>E-mail</label>
+            <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $email ?>" required>
+            <input type="hidden" name="id_job" value="formulario_enviar">
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <div class="card-group-green btn"><button type="submit">Enviar Formulario</button></div>
+
+        </div>
+    </div>
+
+<?php } ?>
 </body>
 </html>
 <?php } ?>

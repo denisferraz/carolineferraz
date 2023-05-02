@@ -43,7 +43,7 @@ $row_check = $check_history->rowCount();
 
 if($row_check < 1){
 
-    echo "<center><b>$nome</b>, nenhum <b>Atendimento</b> foi localizado em seu nome! Agende sua Consulta com <b>$config_empresa</b> agora mesmo</center>";
+    echo "<center><b>$nome</b>, nenhuma <b>Consulta</b> foi localizada em seu nome! Agende sua Consulta com <b>$config_empresa</b> agora mesmo</center>";
 
 }else{
 
@@ -52,7 +52,8 @@ $history_conf = $history['confirmacao'];
 $history_inicio = $history['atendimento_inicio'];
 $history_data = $history['atendimento_dia'];
 $history_hora = $history['atendimento_hora'];
-$history_status = $history['status_reserva'];
+$history_status = $history['status_sessao'];
+$status_reserva = $history['status_reserva'];
 
 $check = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email AND confirmacao = :confirmacao");
 $check->execute(array('email' => $_SESSION['email'], 'confirmacao' => $history_conf));
@@ -80,9 +81,19 @@ if($sessao_atual == '' && $sessao_total == ''){
     </tr>
     <tr>
         <td align="center"><?php echo date('d/m/Y', strtotime("$history_inicio")) ?></td>
+        <?php if($history_status == 'Em Andamento' && ($status_reserva == 'Em Andamento' || $status_reserva == 'Confirmada')){ ?>
+        <td align="center">Aguardando Novo Agendamento</td>
+        <?php }else if($status_reserva == 'Finalizada'){ ?>
+        <td align="center">Contrato Finalizado</td>
+        <?php }else{ ?>
         <td align="center"><?php echo date('d/m/Y', strtotime("$history_data")) ?> as <?php echo date('H:i\h', strtotime("$history_hora")) ?></td>
+        <?php } ?>
         <td align="center"><?php echo $sessao_atual ?>/<?php echo $sessao_total ?> </td>
+        <?php if($status_reserva == 'Finalizada'){ ?>
+        <td align="center">Contrato Finalizado</td>
+        <?php }else{ ?>
         <td align="center"><?php echo $history_status ?> </td>
+        <?php } ?>
     </tr>
     </table><br>
 </fieldset>
@@ -92,9 +103,19 @@ if($sessao_atual == '' && $sessao_total == ''){
     <br><fieldset class="home-table">
         <legend><a href="reserva.php?confirmacao=<?php echo $history_conf ?>&token=<?php echo $token ?>"><button class="home-btn"><?php echo $history_conf ?></button></a></legend><br>
         <b>Inicio: </b><?php echo date('d/m/Y', strtotime("$history_inicio")) ?><br>
+        <?php if($status_reserva == 'Finalizada'){ ?>
+        <b>Status: </b>Contrato Finalizado<br><br>
+        <?php }else{ ?>
         <b>Status: </b><?php echo $history_status ?><br><br>
+        <?php } ?>
         <b>Sessões: </b><?php echo $sessao_atual ?>/<?php echo $sessao_total ?><br>
+        <?php if($history_status == 'Em Andamento' && ($status_reserva == 'Em Andamento' || $status_reserva == 'Confirmada')){ ?>
+        <b>Proxima Sessão: </b>Aguardando Novo Agendamento<br>
+        <?php }else if($status_reserva == 'Finalizada'){ ?>
+        <b>Proxima Sessão: </b>Contrato Finalizado<br>
+        <?php }else{ ?>
         <b>Proxima Sessão: </b><?php echo date('d/m/Y', strtotime("$history_data")) ?> às <?php echo date('H:i\h', strtotime("$history_hora")) ?><br>
+        <?php } ?>
         </fieldset>
 </div><br>
 <?php

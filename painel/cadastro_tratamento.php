@@ -9,6 +9,7 @@ require('verifica_login.php');
 
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
+$id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
 $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
@@ -60,15 +61,14 @@ if($id_job == 'enviar'){
 <?php
 }else if($id_job == 'cadastrar'){
 
-$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND sessao_status = 'Em Andamento' AND confirmacao = :confirmacao");
-$query_cadastrar->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND sessao_status = 'Em Andamento' AND confirmacao = :confirmacao AND id = :id");
+$query_cadastrar->execute(array('email' => $email, 'confirmacao' => $confirmacao, 'id' => $id));
 while($select_cadastrar = $query_cadastrar->fetch(PDO::FETCH_ASSOC)){
     $plano_descricao = $select_cadastrar['plano_descricao'];
     $plano_data = $select_cadastrar['plano_data'];
     $sessao_atual = $select_cadastrar['sessao_atual'];
     $sessao_total = $select_cadastrar['sessao_total'];
     $sessao_status = $select_cadastrar['sessao_status'];
-    $id = $select_cadastrar['id'];
 }
 
 $progress = $sessao_atual/$sessao_total*100;
@@ -106,15 +106,14 @@ $progress = $sessao_atual/$sessao_total*100;
 <?php
 }else if($id_job == 'finalizar'){
 
-$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND sessao_status = 'Em Andamento' AND confirmacao = :confirmacao");
-$query_cadastrar->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND sessao_status = 'Em Andamento' AND confirmacao = :confirmacao AND id = :id");
+$query_cadastrar->execute(array('email' => $email, 'confirmacao' => $confirmacao, 'id' => $id));
 while($select_cadastrar = $query_cadastrar->fetch(PDO::FETCH_ASSOC)){
 $plano_descricao = $select_cadastrar['plano_descricao'];
 $plano_data = $select_cadastrar['plano_data'];
 $sessao_atual = $select_cadastrar['sessao_atual'];
 $sessao_total = $select_cadastrar['sessao_total'];
 $sessao_status = $select_cadastrar['sessao_status'];
-$id = $select_cadastrar['id'];
 }
 
 $progress = $sessao_atual/$sessao_total*100;

@@ -5,6 +5,8 @@ require('conexao.php');
 require('verifica_login.php');
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+$typeerror = mysqli_real_escape_string($conn_msqli, $_GET['typeerror']);
+
 $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE token = :token");
 $result_check->execute(array('token' => $token));
 
@@ -13,8 +15,14 @@ $confirmacao = $select['confirmacao'];
 $doc_email = $select['doc_email'];
 $atendimento_dia = $select['atendimento_dia'];
 $atendimento_hora = $select['atendimento_hora'];
+$id_job = $select['tipo_consulta'];
 }
 
+if($typeerror == 1){
+$typeerror= 'Não é possivel cancelar uma sessão com a data inferir ao dia de hoje!';
+}else if($typeerror == 2){
+$typeerror= 'Esta Sessão não foi encontrada ou não existe!';
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,17 +47,26 @@ $atendimento_hora = $select['atendimento_hora'];
     <main>
         <section class="home">
             <div class="home-text">
-            <h4 class="text-h4">Cancelamento de Atendimento - <?php echo $confirmacao ?></h4><br>
+            <h4 class="text-h4">Cancelamento de Sessão - <?php echo $confirmacao ?></h4><br>
+            <?php
+                if($typeerror == 0){
+            ?>
             <form action="reservas_php.php" method="post">
                 <input type="hidden" name="atendimento_dia" value="<?php echo $atendimento_dia ?>">
                 <input type="hidden" name="atendimento_hora" value="<?php echo $atendimento_hora ?>">
                 <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
+                <input type="hidden" name="token" value="<?php echo $token ?>">
                 <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
                 <input type="hidden" name="status_reserva" value="Cancelada">
                 <input type="hidden" name="feitapor" value="Site"><br>
-                <input type="hidden" name="id_job" value="1"><br>
+                <input type="hidden" name="id_job" value="<?php echo $id_job ?>"><br>
                 <button class="home-btn-cancelar" type="submit">Cancelar</button>
             </form>
+            <?php
+             }else{
+                echo "$typeerror";
+             }
+            ?>
 
 </div>
         </section>

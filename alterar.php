@@ -15,6 +15,8 @@ $confirmacao = $select['confirmacao'];
 $email = $select['doc_email'];
 $doc_telefone = $select['doc_telefone'];
 $id_job = $select['tipo_consulta'];
+$atendimento_dia_anterior = $select['atendimento_dia'];
+$atendimento_hora_anterior = $select['atendimento_hora'];
 }
 
 
@@ -69,6 +71,8 @@ $id_job = $select['tipo_consulta'];
                         ?>
                 </select>
                 <br><br>
+                <input type="hidden" name="atendimento_dia_anterior" value="<?php echo $atendimento_dia_anterior ?>">
+                <input type="hidden" name="atendimento_hora_anterior" value="<?php echo $atendimento_hora_anterior ?>">
                 <input type="hidden" name="doc_email" value="<?php echo $email ?>">
                 <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
                 <input type="hidden" name="new_token" value="<?php echo $new_token ?>">

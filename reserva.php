@@ -15,13 +15,16 @@ $doc_email = $select['doc_email'];
 $doc_telefone = $select['doc_telefone'];
 $nome = $select['doc_nome'];
 $tipo_consulta = $select['tipo_consulta'];
+$atendimento_inicio = $select['atendimento_inicio'];
+$atendimento_inicio = strtotime("$atendimento_inicio");
 $atendimento_dia = $select['atendimento_dia'];
 $atendimento_dia = strtotime("$atendimento_dia");
 $atendimento_hora = $select['atendimento_hora'];
 $atendimento_hora = strtotime("$atendimento_hora");
 $cancelamento_quando = $select['data_cancelamento'];
 $cancelamento_quando = strtotime("$cancelamento_quando");
-$status_reserva = $select['status_sessao'];
+$status_reserva = $select['status_reserva'];
+$status_sessao = $select['status_sessao'];
 $token_reserva = $select['token'];
 }
 
@@ -68,49 +71,81 @@ $sessao_total = 1;
             <?php
             if($status_reserva == 'Cancelada'){
             ?>
+            <b>Status Consulta:</b> Cancelada<br>
             <b>Cancelada em:</b> <?php echo date('d/m/Y \a\s H:i\h', $cancelamento_quando) ?><br>
             <?php
             }
             ?>
             <br>
             <b>Proxima Sessão</b><br>
+            <?php
+            if($status_sessao == 'Em Andamento' && ($status_reserva == 'Em Andamento' || $status_reserva == 'Confirmada')){
+            ?>
+            <b>Status:</b> Aguardando Novo Agendamento
+            <?php
+            }else if($status_reserva == 'Finalizada'){
+            ?>
+            <b>Status:</b> Contrato Finalizado
+            <?php
+            }else{
+            ?>
             <b>Data:</b> <?php echo date('d/m/Y', $atendimento_dia) ?><br>
             <b>Hora:</b> <?php echo date('H:i\h', $atendimento_hora) ?><br>
-            <b>Status:</b> <?php echo $status_reserva ?>
+            <b>Status:</b> <?php echo $status_sessao ?>
+            <?php
+            }
+            ?>
             <br><br>
             <?php
-            if($status_reserva == 'Confirmada' || $status_reserva == 'A Confirmar'){
+            if($status_sessao == 'Confirmada'){
             ?>
             <div class="visao-desktop">
             <table>
                 <tr>
                     <td><a href="alterar.php?token=<?php echo $token_reserva ?>" class="home-btn-alterar">Alterar</a></td>
-                    <td><a href="cancelar.php?token=<?php echo $token_reserva ?>" class="home-btn-cancelar">Cancelar</a></td>
+                    <td><a href="cancelar.php?token=<?php echo $token_reserva ?>&typeerror=0" class="home-btn-cancelar">Cancelar</a></td>
                 </tr>
             </table>
             </div>
             <div class="visao-mobile"><center>
                     <br><a href="alterar.php?token=<?php echo $token_reserva ?>" class="home-btn-alterar">Alterar</a><br><br><br>
-                    <a href="cancelar.php?token=<?php echo $token_reserva ?>" class="home-btn-cancelar">Cancelar</a><br>
+                    <a href="cancelar.php?token=<?php echo $token_reserva ?>&typeerror=0" class="home-btn-cancelar">Cancelar</a><br>
             </center></div>
             <br><br>
             <?php
-            }else if($status_reserva == 'Finalizada'){
+            }else if(($status_sessao == 'Finalizada' || $status_sessao == 'Cancelada' || $status_sessao == 'Em Andamento') && ($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada')){
             ?>
-                    <a href="imprimir_rps.php?confirmacao=<?php echo $confirmacao ?>" class="home-btn">Ver Recibo</a>
+            <div class="visao-desktop">
+            <table>
+                <tr>
+                    <td><a href="agendar.php?id_job=Nova%20Sessão&confirmacao=<?php echo $confirmacao ?>" class="home-btn">Nova Sessão</a></td>
+                </tr>
+            </table><br>
+            </div>
+            <div class="visao-mobile"><center>
+                    <a href="agendar.php?id_job=Nova%20Sessão&confirmacao=<?php echo $confirmacao ?>" class="home-btn">Nova Sessão</a>
+            </center><br></div>
             <?php
-            }else if($status_reserva == 'Em Andamento'){
+            }else if($status_reserva == 'Finalizada'){
                 ?>
-                        <center><a href="agendar.php?id_job=Nova%20Sessão&confirmacao=<?php echo $confirmacao ?>" class="home-btn">Nova Sessão</a></center>
-                        <br>
+            <div class="visao-desktop">
+            <table>
+                <tr>
+                    <td><a href="imprimir_rps.php?confirmacao=<?php echo $confirmacao ?>" class="home-btn-cancelar">Ver Recibo</a></td>
+                </tr>
+            </table><br>
+            </div>
+            <div class="visao-mobile"><center>
+            <a href="imprimir_rps.php?confirmacao=<?php echo $confirmacao ?>" class="home-btn-cancelar">Ver Recibo</a>
+            </center><br></div>
                 <?php
-                }
+            }
             ?>
         </fieldset>
         </section>
-<!-- ACOMPANHAMENTOS !-->
+<!-- TRATAMENTO !-->
         <section class="home-center"><br><br><br>
-        <center><p>Acompanhamentos</b></p></center><br>
+        <center><p>Plano de Tratamento</b></p></center><br>
 
 <?php
 $check_detalhes = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND confirmacao = :confirmacao ORDER BY id DESC");
@@ -176,6 +211,56 @@ $progress = $sessao_atual/$sessao_total*100;
 }}
 ?>
         </section>
+<!-- SESSÕES !-->
+<section class="home-center"><br>
+<fieldset class="home-table">
+<legend><center><p>Sessões</b></p></center></legend>
+
+<?php
+$check_sessao = $conexao->prepare("SELECT * FROM disponibilidade_atendimento WHERE confirmacao = :confirmacao ORDER BY atendimento_dia DESC, atendimento_hora ASC");
+$check_sessao->execute(array('confirmacao' => $confirmacao));
+
+$row_check_sessao = $check_sessao->rowCount();
+
+if($row_check_sessao < 1){
+
+    echo "<center><b>$nome</b>, nenhuma <b>Sessão</b> foi localizado em seu nome! Agende a sua proxima sessão logo acima</center>";
+
+}else{
+
+while($select4 = $check_sessao->fetch(PDO::FETCH_ASSOC)){
+$sessao_confirmacao = $select4['confirmacao'];
+$sessao_data = $select4['atendimento_dia'];
+$sessao_hora = $select4['atendimento_hora'];
+
+?>
+<div class="visao-desktop">
+<table class="home-table"><br>
+    <tr>
+        <td align="center"><b>Confirmação</b></td>
+        <td align="center"><b>Data</b></td>
+        <td align="center"><b>Hora</b></td>
+    </tr>
+    <tr>
+        <td align="center"><?php echo $sessao_confirmacao ?></td>
+        <td align="center"><?php echo date('d/m/Y', strtotime("$sessao_data")) ?></td>
+        <td align="center"><?php echo date('H:i\h', strtotime("$sessao_hora")) ?></td>
+    </tr>
+    </table>
+</div>
+
+<div class="visao-mobile">
+        <b>Confirmação: </b><?php echo $sessao_confirmacao ?><br>
+        <b>Data: </b><?php echo date('d/m/Y', strtotime("$sessao_data")) ?><br>
+        <b>Hora: </b><?php echo date('H:i\h', strtotime("$sessao_hora")) ?><br>
+<br>
+</div>
+
+<?php
+}}
+?><br>
+</fieldset>
+        </section>
 <!-- CONTRATOS !-->
         <section class="home-center"><br>
         <center><p>Contratos</b></p></center><br>
@@ -199,7 +284,7 @@ $procedimento = $select3['procedimento'];
 $procedimento_valor = $select3['procedimento_valor'];
 ?>
 <fieldset class="home-table">
-<legend><a href="contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>"><button class="home-btn">Contrato</button></a></legend>
+<legend><a href="contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>"><button class="home-btn">Contrato <?php echo $confirmacao ?></button></a></legend>
 <table class="home-table"><br>
     <tr>
         <td align="center"><b>Assinado</b></td>

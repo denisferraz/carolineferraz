@@ -21,7 +21,7 @@ $hoje = date('Y-m-d');
 <body>
 <div class="card">
 <?php
-$query = $conexao->query("SELECT * FROM painel_users WHERE id >= 1 ORDER BY nome ASC");
+$query = $conexao->query("SELECT * FROM painel_users WHERE id >= 1 AND tipo = 'Paciente' ORDER BY nome ASC");
 $query_row = $query->rowCount();
 ?>
 

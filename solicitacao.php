@@ -19,6 +19,8 @@ $result_check->execute(array('token' => $token));
 while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
 $atendimento_dia = $select['atendimento_dia'];
 $atendimento_hora = $select['atendimento_hora'];
+$atendimento_dia_anterior = $select['atendimento_dia_anterior'];
+$atendimento_hora_anterior = $select['atendimento_hora_anterior'];
 $id_job = $select['id_job'];
 }
 
@@ -94,8 +96,17 @@ $doc_telefone = preg_replace('/[^\d]/', '', $doc_telefone);
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
     if($alt_status == 'Aceita'){
-        $query = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_reserva = 'Confirmada' WHERE token = :token");
+        $query = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_sessao = 'Confirmada' WHERE token = :token");
         $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'token' => $token));
+
+        $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
+        $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior));
+    
+    if($id_job == 'Consulta Capilar'){
+        $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
+        $query_4 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
+        $query_4->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
+    }
 
     //Envio de Email	
     
@@ -162,6 +173,14 @@ $doc_telefone = preg_replace('/[^\d]/', '', $doc_telefone);
         }
     
     //Fim Envio de Email
+    }else{
+
+    $query = $conexao->prepare("UPDATE $tabela_reservas SET status_sessao = 'Recusada' WHERE token = :token");
+    $query->execute(array('token' => $token));
+
+    $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
+    $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
+
     }
 
 //Incio Envio Whatsapp

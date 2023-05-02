@@ -7,6 +7,12 @@ require('verifica_login.php');
 require '../vendor/autoload.php';
 use Dompdf\Dompdf;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
     alert('Você não tem permissão para acessar esta pagina.')
@@ -475,7 +481,6 @@ echo "<script>
 
 }else if($id_job == 'Formulario' || $id_job == 'Formulario_2'){
 
-    $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
     $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $cep = mysqli_real_escape_string($conn_msqli, $_POST['cep']);
@@ -756,8 +761,8 @@ echo "<script>
     $query = $conexao->prepare("UPDATE $tabela_formulario SET feitopor = :feitopor, nome = :nome, nascimento = :nascimento, endereco = :endereco, cep = :cep, bairro = :bairro, municipio = :municipio, uf = :uf, celular = :celular, profissao = :profissao, estado_civil = :estado_civil, queixa_principal = :queixa_principal, doenca_outras_areas = :doenca_outras_areas, doenca_outras_areas_tempo = :doenca_outras_areas_tempo, doenca_outras_areas_status = :doenca_outras_areas_status, doenca_outras_areas_cabelo = :doenca_outras_areas_cabelo, doenca_outras_areas_alteracoes = :doenca_outras_areas_alteracoes, doenca_outras_areas_crises = :doenca_outras_areas_crises, doencas_ultimas = :doencas_ultimas, doencas_atual = :doenca_atuals, endocrino = :endocrino, cardiaco = :cardiaco, marca_passo = :marca_passo, medicacao = :medicacao, precederam_problema = :precederam_problema, alergias = :alergias, filhos = :filhos, gravidez = :gravidez, carne = :carne, alteracao_menstrual = :alteracao_menstrual, familiares = :familiares, quimica_cabelos_atual = :quimica_cabelos_atual, cuidado_cabelo_usa = :cuidado_cabelo_usa, cuidado_cabelo_lavagem = :cuidado_cabelo_lavagem, cuidado_cabelo_produtos = :cuidado_cabelo_produtos, exm_fisico_volume_cabelo = :exm_fisico_volume_cabelo, exm_fisico_comprimento_cabelo = :exm_fisico_comprimento_cabelo, exm_fisico_quimica = :exm_fisico_quimica, quimica_cabelos_atual_frequencia = :quimica_cabelos_atual_frequencia, exm_fisico_cabelo = :exm_fisico_cabelo, exm_fisico_pontas = :exm_fisico_pontas, exm_fisico_couro_cabeludo = :exm_fisico_couro_cabeludo, exm_fisico_presenca = :exm_fisico_presenca, alopecia = :alopecia, alopecia_localizacao = :alopecia_localizacao, alopecia_lesoes = :alopecia_lesoes, alopecia_formato = :alopecia_formato, alopecia_formato_2 = :alopecia_formato_2, alopecia_tamanho = :alopecia_tamanho, alopecia_reposicao = :alopecia_reposicao, alopecia_couro = :alopecia_couro, alopecia_obs = :alopecia_obs, alteracao_encontrada = :alteracao_encontrada, protocolo_sugerio = :protocolo_sugerido, protocolo_realizado_01 = :protocolo_realizado_01, protocolo_realizado_02 = :protocolo_realizado_02, protocolo_realizado_03 = :protocolo_realizado_03, protocolo_realizado_04 = :protocolo_realizado_04, protocolo_realizado_01_data = :protocolo_realizado_01_data, protocolo_realizado_02_data = :protocolo_realizado_02_data, protocolo_realizado_03_data = :protocolo_realizado_03_data, protocolo_realizado_04_data = :protocolo_realizado_04_data WHERE confirmacao = :confirmacao AND email = :email");
     $query->execute(array('feitopor' => $feitopor, 'nome' => $nome, 'nascimento' => $nascimento, 'endereco' => $endereco, 'cep' => $cep, 'bairro' => $bairro, 'municipio' => $municipio, 'uf' => $uf, 'celular' => $celular, 'profissao' => $profissao, 'estado_civil' => $estado_civil, 'queixa_principal' => $queixa_principal, 'doenca_outras_areas' => $doenca_outras_areass, 'doenca_outras_areas_tempo' => $doenca_outras_areas_tempo, 'doenca_outras_areas_status' => $doenca_outras_areas_status, 'doenca_outras_areas_cabelo' => $doenca_outras_areas_cabelo, 'doenca_outras_areas_alteracoes' => $doenca_outras_areas_alteracoes, 'doenca_outras_areas_crises' => $doenca_outras_areas_crisess, 'doencas_ultimas' => $doencas_ultimas, 'doenca_atuals' => $doenca_atuals, 'endocrino' => $endocrinos, 'cardiaco' => $cardiaco, 'marca_passo' => $marca_passo, 'medicacao' => $medicacaos, 'precederam_problema' => $precederam_problema, 'alergias' => $alergiass, 'filhos' => $filhoss, 'gravidez' => $gravidezs, 'carne' => $carne, 'alteracao_menstrual' => $alteracao_menstruals, 'familiares' => $familiaress, 'quimica_cabelos_atual' => $quimica_cabelos_atuals, 'cuidado_cabelo_usa' => $cuidado_cabelo_usa, 'cuidado_cabelo_lavagem' => $cuidado_cabelo_lavagem, 'cuidado_cabelo_produtos' => $cuidado_cabelo_produtos, 'exm_fisico_volume_cabelo' => $exm_fisico_volume_cabelo, 'exm_fisico_comprimento_cabelo' => $exm_fisico_comprimento_cabelo, 'exm_fisico_quimica' => $exm_fisico_quimicas, 'quimica_cabelos_atual_frequencia' => $quimica_cabelos_atual_frequencia, 'exm_fisico_cabelo' => $exm_fisico_cabelo, 'exm_fisico_pontas' => $exm_fisico_pontass, 'exm_fisico_couro_cabeludo' => $exm_fisico_couro_cabeludo, 'exm_fisico_presenca' => $exm_fisico_presencas, 'alopecia' => $alopecia, 'alopecia_localizacao' => $alopecia_localizacao, 'alopecia_lesoes' => $alopecia_lesoes, 'alopecia_formato' => $alopecia_formato, 'alopecia_formato_2' => $alopecia_formato_2, 'alopecia_tamanho' => $alopecia_tamanho, 'alopecia_reposicao' => $alopecia_fios, 'alopecia_couro' => $alopecia_couro, 'alopecia_obs' => $alopecia_obs, 'alteracao_encontrada' => $alteracao_encontrada, 'protocolo_sugerido' => $protocolo_sugerido, 'protocolo_realizado_01' => $protocolo_realizado_01, 'protocolo_realizado_02' => $protocolo_realizado_02, 'protocolo_realizado_03' => $protocolo_realizado_03, 'protocolo_realizado_04' => $protocolo_realizado_04, 'protocolo_realizado_01_data' => $protocolo_realizado_01_data, 'protocolo_realizado_02_data' => $protocolo_realizado_02_data, 'protocolo_realizado_03_data' => $protocolo_realizado_03_data, 'protocolo_realizado_04_data' => $protocolo_realizado_04_data , 'confirmacao' => $confirmacao, 'email' => $email));
     }else{
-    $query = $conexao->prepare("INSERT INTO $tabela_formulario (feitopor, nome, nascimento, endereco, cep, bairro, municipio, uf, celular, profissao, estado_civil, queixa_principal, doenca_outras_areas, doenca_outras_areas_tempo, doenca_outras_areas_status, doenca_outras_areas_cabelo, doenca_outras_areas_alteracoes, doenca_outras_areas_crises, doencas_ultimas, doencas_atual, endocrino, cardiaco, marca_passo, medicacao, precederam_problema, alergias, filhos, gravidez, carne, alteracao_menstrual, familiares, quimica_cabelos_atual, cuidado_cabelo_usa, cuidado_cabelo_lavagem, cuidado_cabelo_produtos, exm_fisico_volume_cabelo, exm_fisico_comprimento_cabelo, exm_fisico_quimica, quimica_cabelos_atual_frequencia, exm_fisico_cabelo, exm_fisico_pontas, exm_fisico_couro_cabeludo, exm_fisico_presenca, alopecia, alopecia_localizacao, alopecia_lesoes, alopecia_formato, alopecia_formato_2, alopecia_tamanho, alopecia_reposicao, alopecia_couro, alopecia_obs, alteracao_encontrada, protocolo_sugerio, protocolo_realizado_01, protocolo_realizado_02, protocolo_realizado_03, protocolo_realizado_04, protocolo_realizado_01_data, protocolo_realizado_02_data, protocolo_realizado_03_data, protocolo_realizado_04_data, confirmacao, email) VALUES (:feitopor, :nome, :nascimento, :endereco, :cep, :bairro, :municipio, :uf, :celular, :profissao, :estado_civil, :queixa_principal, :doenca_outras_areas, :doenca_outras_areas_tempo, :doenca_outras_areas_status, :doenca_outras_areas_cabelo, :doenca_outras_areas_alteracoes, :doenca_outras_areas_crises, :doencas_ultimas, :doenca_atuals, :endocrino, :cardiaco, :marca_passo, :medicacao, :precederam_problema, :alergias, :filhos, :gravidez, :carne, :alteracao_menstrual, :familiares, :quimica_cabelos_atual, :cuidado_cabelo_usa, :cuidado_cabelo_lavagem, :cuidado_cabelo_produtos, :exm_fisico_volume_cabelo, :exm_fisico_comprimento_cabelo, :exm_fisico_quimica, :quimica_cabelos_atual_frequencia, :exm_fisico_cabelo, :exm_fisico_pontas, :exm_fisico_couro_cabeludo, :exm_fisico_presenca, :alopecia, :alopecia_localizacao, :alopecia_lesoes, :alopecia_formato, :alopecia_formato_2, :alopecia_tamanho, :alopecia_reposicao, :alopecia_couro, :alopecia_obs, :alteracao_encontrada, :protocolo_sugerido, :protocolo_realizado_01, :protocolo_realizado_02, :protocolo_realizado_03, :protocolo_realizado_04, :protocolo_realizado_01_data, :protocolo_realizado_02_data, :protocolo_realizado_03_data, :protocolo_realizado_04_data, :confirmacao, :email)");
-    $query->execute(array('feitopor' => $feitopor, 'nome' => $nome, 'nascimento' => $nascimento, 'endereco' => $endereco, 'cep' => $cep, 'bairro' => $bairro, 'municipio' => $municipio, 'uf' => $uf, 'celular' => $celular, 'profissao' => $profissao, 'estado_civil' => $estado_civil, 'queixa_principal' => $queixa_principal, 'doenca_outras_areas' => $doenca_outras_areass, 'doenca_outras_areas_tempo' => $doenca_outras_areas_tempo, 'doenca_outras_areas_status' => $doenca_outras_areas_status, 'doenca_outras_areas_cabelo' => $doenca_outras_areas_cabelo, 'doenca_outras_areas_alteracoes' => $doenca_outras_areas_alteracoes, 'doenca_outras_areas_crises' => $doenca_outras_areas_crisess, 'doencas_ultimas' => $doencas_ultimas, 'doenca_atuals' => $doenca_atuals, 'endocrino' => $endocrinos, 'cardiaco' => $cardiaco, 'marca_passo' => $marca_passo, 'medicacao' => $medicacaos, 'precederam_problema' => $precederam_problema, 'alergias' => $alergiass, 'filhos' => $filhoss, 'gravidez' => $gravidezs, 'carne' => $carne, 'alteracao_menstrual' => $alteracao_menstruals, 'familiares' => $familiaress, 'quimica_cabelos_atual' => $quimica_cabelos_atuals, 'cuidado_cabelo_usa' => $cuidado_cabelo_usa, 'cuidado_cabelo_lavagem' => $cuidado_cabelo_lavagem, 'cuidado_cabelo_produtos' => $cuidado_cabelo_produtos, 'exm_fisico_volume_cabelo' => $exm_fisico_volume_cabelo, 'exm_fisico_comprimento_cabelo' => $exm_fisico_comprimento_cabelo, 'exm_fisico_quimica' => $exm_fisico_quimicas, 'quimica_cabelos_atual_frequencia' => $quimica_cabelos_atual_frequencia, 'exm_fisico_cabelo' => $exm_fisico_cabelo, 'exm_fisico_pontas' => $exm_fisico_pontass, 'exm_fisico_couro_cabeludo' => $exm_fisico_couro_cabeludo, 'exm_fisico_presenca' => $exm_fisico_presencas, 'alopecia' => $alopecia, 'alopecia_localizacao' => $alopecia_localizacao, 'alopecia_lesoes' => $alopecia_lesoes, 'alopecia_formato' => $alopecia_formato, 'alopecia_formato_2' => $alopecia_formato_2, 'alopecia_tamanho' => $alopecia_tamanho, 'alopecia_reposicao' => $alopecia_fios, 'alopecia_couro' => $alopecia_couro, 'alopecia_obs' => $alopecia_obs, 'alteracao_encontrada' => $alteracao_encontrada, 'protocolo_sugerido' => $protocolo_sugerido, 'protocolo_realizado_01' => $protocolo_realizado_01, 'protocolo_realizado_02' => $protocolo_realizado_02, 'protocolo_realizado_03' => $protocolo_realizado_03, 'protocolo_realizado_04' => $protocolo_realizado_04, 'protocolo_realizado_01_data' => $protocolo_realizado_01_data, 'protocolo_realizado_02_data' => $protocolo_realizado_02_data, 'protocolo_realizado_03_data' => $protocolo_realizado_03_data, 'protocolo_realizado_04_data' => $protocolo_realizado_04_data , 'confirmacao' => $confirmacao, 'email' => $email));
+    $query = $conexao->prepare("INSERT INTO $tabela_formulario (feitopor, nome, nascimento, endereco, cep, bairro, municipio, uf, celular, profissao, estado_civil, queixa_principal, doenca_outras_areas, doenca_outras_areas_tempo, doenca_outras_areas_status, doenca_outras_areas_cabelo, doenca_outras_areas_alteracoes, doenca_outras_areas_crises, doencas_ultimas, doencas_atual, endocrino, cardiaco, marca_passo, medicacao, precederam_problema, alergias, filhos, gravidez, carne, alteracao_menstrual, familiares, quimica_cabelos_atual, cuidado_cabelo_usa, cuidado_cabelo_lavagem, cuidado_cabelo_produtos, exm_fisico_volume_cabelo, exm_fisico_comprimento_cabelo, exm_fisico_quimica, quimica_cabelos_atual_frequencia, exm_fisico_cabelo, exm_fisico_pontas, exm_fisico_couro_cabeludo, exm_fisico_presenca, alopecia, alopecia_localizacao, alopecia_lesoes, alopecia_formato, alopecia_formato_2, alopecia_tamanho, alopecia_reposicao, alopecia_couro, alopecia_obs, alteracao_encontrada, protocolo_sugerio, protocolo_realizado_01, protocolo_realizado_02, protocolo_realizado_03, protocolo_realizado_04, protocolo_realizado_01_data, protocolo_realizado_02_data, protocolo_realizado_03_data, protocolo_realizado_04_data, confirmacao, email) VALUES (:feitopor, :nome, :nascimento, :endereco, :cep, :bairro, :municipio, :uf, :celular, :profissao, :estado_civil, :queixa_principal, :doenca_outras_areas, :doenca_outras_areas_tempo, :doenca_outras_areas_status, :doenca_outras_areas_cabelo, :doenca_outras_areas_alteracoes, :doenca_outras_areas_crises, :doencas_ultimas, :doenca_atuals, :endocrino, :cardiaco, :marca_passo, :medicacao, :precederam_problema, :alergias, :filhos, :gravidez, :carne, :alteracao_menstrual, :familiares, :quimica_cabelos_atual, :cuidado_cabelo_usa, :cuidado_cabelo_lavagem, :cuidado_cabelo_produtos, :exm_fisico_volume_cabelo, :exm_fisico_comprimento_cabelo, :exm_fisico_quimica, :quimica_cabelos_atual_frequencia, :exm_fisico_cabelo, :exm_fisico_pontas, :exm_fisico_couro_cabeludo, :exm_fisico_presenca, :alopecia, :alopecia_localizacao, :alopecia_lesoes, :alopecia_formato, :alopecia_formato_2, :alopecia_tamanho, :alopecia_reposicao, :alopecia_couro, :alopecia_obs, :alteracao_encontrada, :protocolo_sugerido, :protocolo_realizado_01, :protocolo_realizado_02, :protocolo_realizado_03, :protocolo_realizado_04, :protocolo_realizado_01_data, :protocolo_realizado_02_data, :protocolo_realizado_03_data, :protocolo_realizado_04_data, :email)");
+    $query->execute(array('feitopor' => $feitopor, 'nome' => $nome, 'nascimento' => $nascimento, 'endereco' => $endereco, 'cep' => $cep, 'bairro' => $bairro, 'municipio' => $municipio, 'uf' => $uf, 'celular' => $celular, 'profissao' => $profissao, 'estado_civil' => $estado_civil, 'queixa_principal' => $queixa_principal, 'doenca_outras_areas' => $doenca_outras_areass, 'doenca_outras_areas_tempo' => $doenca_outras_areas_tempo, 'doenca_outras_areas_status' => $doenca_outras_areas_status, 'doenca_outras_areas_cabelo' => $doenca_outras_areas_cabelo, 'doenca_outras_areas_alteracoes' => $doenca_outras_areas_alteracoes, 'doenca_outras_areas_crises' => $doenca_outras_areas_crisess, 'doencas_ultimas' => $doencas_ultimas, 'doenca_atuals' => $doenca_atuals, 'endocrino' => $endocrinos, 'cardiaco' => $cardiaco, 'marca_passo' => $marca_passo, 'medicacao' => $medicacaos, 'precederam_problema' => $precederam_problema, 'alergias' => $alergiass, 'filhos' => $filhoss, 'gravidez' => $gravidezs, 'carne' => $carne, 'alteracao_menstrual' => $alteracao_menstruals, 'familiares' => $familiaress, 'quimica_cabelos_atual' => $quimica_cabelos_atuals, 'cuidado_cabelo_usa' => $cuidado_cabelo_usa, 'cuidado_cabelo_lavagem' => $cuidado_cabelo_lavagem, 'cuidado_cabelo_produtos' => $cuidado_cabelo_produtos, 'exm_fisico_volume_cabelo' => $exm_fisico_volume_cabelo, 'exm_fisico_comprimento_cabelo' => $exm_fisico_comprimento_cabelo, 'exm_fisico_quimica' => $exm_fisico_quimicas, 'quimica_cabelos_atual_frequencia' => $quimica_cabelos_atual_frequencia, 'exm_fisico_cabelo' => $exm_fisico_cabelo, 'exm_fisico_pontas' => $exm_fisico_pontass, 'exm_fisico_couro_cabeludo' => $exm_fisico_couro_cabeludo, 'exm_fisico_presenca' => $exm_fisico_presencas, 'alopecia' => $alopecia, 'alopecia_localizacao' => $alopecia_localizacao, 'alopecia_lesoes' => $alopecia_lesoes, 'alopecia_formato' => $alopecia_formato, 'alopecia_formato_2' => $alopecia_formato_2, 'alopecia_tamanho' => $alopecia_tamanho, 'alopecia_reposicao' => $alopecia_fios, 'alopecia_couro' => $alopecia_couro, 'alopecia_obs' => $alopecia_obs, 'alteracao_encontrada' => $alteracao_encontrada, 'protocolo_sugerido' => $protocolo_sugerido, 'protocolo_realizado_01' => $protocolo_realizado_01, 'protocolo_realizado_02' => $protocolo_realizado_02, 'protocolo_realizado_03' => $protocolo_realizado_03, 'protocolo_realizado_04' => $protocolo_realizado_04, 'protocolo_realizado_01_data' => $protocolo_realizado_01_data, 'protocolo_realizado_02_data' => $protocolo_realizado_02_data, 'protocolo_realizado_03_data' => $protocolo_realizado_03_data, 'protocolo_realizado_04_data' => $protocolo_realizado_04_data , 'email' => $email));
     }
 
     $nascimento = date('d/m/Y', strtotime("$nascimento"));
@@ -903,7 +908,6 @@ echo "<script>
             <fieldset><small><u><b>Dados do Cliente</b></u></small><br>
             <table width=\"100%\" border=\"2px\">
             <tr>
-            <td><label><small>Nº Confirmação</small><b>$confirmacao</b></label></td>
             <td><label><small>Nome</small><b>$nome</b></label></td>
             <td><label><small>E-mail</small><b>$email</b></label></td>
             </tr><tr>
@@ -1232,6 +1236,71 @@ $dompdf->stream(
     echo "<script>
     alert('Sessao Finalizada com Sucesso')
     window.location.replace('cadastro.php?email=$email&confirmacao=$confirmacao')
+    </script>";
+    exit();
+
+
+}else if($id_job == 'formulario_enviar'){
+
+    $email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
+    $nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
+
+    //Envio de Email	
+
+    $data_email = date('d/m/Y \-\ H:i:s');
+
+    $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
+
+    $mail = new PHPMailer(true);
+
+try {
+    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    $mail->CharSet = 'UTF-8';
+    $mail->isSMTP();
+    $mail->Host = "$mail_Host";
+    $mail->SMTPAuth = true;
+    $mail->Username = "$mail_Username";
+    $mail->Password = "$mail_Password";
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = "$mail_Port";
+
+    $mail->setFrom("$config_email", "$config_empresa");
+    $mail->addAddress("$email", "$nome");
+    $mail->addBCC("$config_email");
+    
+    $mail->isHTML(true);                                 
+    $mail->Subject = "Formulario Anamnese - $config_empresa";
+  // INICIO MENSAGEM  
+    $mail->Body = "
+
+    <fieldset>
+    <legend><b>Formulario Anamnese</b></legend>
+    <br>
+    Ola <b>$nome</b>, tudo bem?<br>
+    $config_empresa lhe enviou um <b><u>Formulario de Anamnese</u></b>, preencha-o assim que possivel.<br>
+    <p>Preencha o formulario, $link_formulario</p>
+    <b>Formulario enviado em $data_email</b>
+    </fieldset><br><fieldset>
+    <legend><b><u>$config_empresa</u></legend>
+    <p>CNPJ: $config_cnpj</p>
+    <p>$config_telefone - $config_email</p>
+    <p>$config_endereco</p></b>
+    </fieldset>
+    
+    "; // FIM MENSAGEM
+
+        $mail->send();
+
+    } catch (Exception $e) {
+
+    }
+
+//Fim Envio de Email
+
+    echo "<script>
+    alert('Formulario Enviado com Sucesso')
+    window.location.replace('cadastro.php?email=$email')
     </script>";
     exit();
 

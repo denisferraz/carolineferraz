@@ -37,6 +37,7 @@ if($aut_acesso == 1){
             </div>
 <?php
 $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+$id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 
 $query = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao");
 $query->execute(array('confirmacao' => $confirmacao));
@@ -62,7 +63,7 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $doc_email ?>" required>
             <label>Mensagem Finalização</label>
             <textarea name="msg_finalizar" rows="5" cols="43" required><?php echo $config_msg_finalizar ?></textarea><br><br>
-            <input type="hidden" name="status_reserva" value="Finalizada">
+            <input type="hidden" name="status_reserva" value="<?php echo $id_job ?>">
             <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone?>">
             <input type="hidden" name="feitapor" value="Painel">
             <div class="card-group-green btn"><button type="submit">Finalizar</button></div>
