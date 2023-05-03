@@ -1,0 +1,149 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+body {
+    overflow: hidden;
+}
+
+:root{
+    --red:#d63a25;
+    --green:#228B22;
+    --white:#fff;
+    --dark:#1e1c2a;
+    --grey:rgb(230, 230, 230);
+}
+
+.logo span{
+    color: var(--dark);
+}
+
+.iframe-container {
+    position: relative;
+    width: 100%;
+    height: 92vh;
+  }
+  
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.dp-menu{
+    margin: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dp-menu ul{
+    display: flex;
+    justify-content: space-evenly;
+    list-style-type: none;
+    background-color: var(--red);
+    border-radius: 10px;
+}
+
+.dp-menu ul li{
+    display: inline;
+    position: relative;
+}
+
+.dp-menu ul li a{
+    color: var(--white);
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    transition: background .4s;
+}
+
+.dp-menu ul li a:hover{
+    color: var(--red);
+    text-decoration: underline;
+    background-color:rgb(250, 220, 220);
+    border-radius: 5px;
+}
+
+.dp-menu ul ul{
+    display: none;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+}
+
+.dp-menu ul li:hover ul{
+    display: block;
+}
+
+.dp-menu ul ul li a{
+    display: block;
+}
+
+nav.mobile{
+    display: none;
+}
+
+@media screen and (max-width:750px) {
+
+/*
+Ajuste Menu para Mobile
+*/
+nav a{
+    padding: 1px;
+}
+
+nav.dp-menu{
+    display: none;
+}
+
+nav.mobile{
+    display: block;
+}
+
+.botao-menu-mobile{
+    background-color: var(--grey);
+    font-size: 45px;
+    cursor: pointer;
+    color: var(--red);
+    text-align: center;
+}
+
+.botao-menu-mobile .logo{
+    color: var(--red);
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+nav.mobile ul{
+    display: none;
+    margin-top: 5px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+}
+
+nav.mobile li{
+    font-weight: 300;
+    width: 100%;
+    display: block;
+    background: var(--grey);
+    border-bottom: 1px solid #ccc;
+    font-size: 17px;
+    padding: 8px 0;
+}
+
+nav.mobile li a{
+    display: block;
+    color: var(--red);
+    text-decoration: none;
+}
+
+}

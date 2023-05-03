@@ -45,7 +45,7 @@ if($row == 1){
     $query->execute(array('email' => $email));
 
     $_SESSION['email'] = $email;
-    header('Location: home.php');
+    header('Location: index.php');
     exit();
 
 }else{
@@ -160,7 +160,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $query2->execute(array('email' => $email, 'nome' => $nome, 'cpf' => $doc_cpf, 'token' => $token, 'rg' => $rg, 'nascimento' => $nascimento, 'telefone' => $telefone, 'senha' => $crip_senha));
         
         $_SESSION['email'] = $email;
-        header('Location: home.php');
+        header('Location: index.php');
         exit();
 
 }else if($id_job == 'recuperar'){

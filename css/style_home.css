@@ -42,16 +42,11 @@ body{
     justify-content: space-between;
     padding: 0px 10%;
 }
-.home-text,.home-text-agenda00, .home-text-agenda01, .home-text-agenda02{
+.home-text{
     max-width: 37rem;
 }
-.home-text-agenda00, .home-text-agenda02{
-    margin-top: 150px;
-}
-.home-text-agenda01{
-    margin-top: 270px;
-}
-.home-text .text-h4, .home-text-agenda00 .text-h4, .home-text-agenda01 .text-h4, .home-text-agenda02 .text-h4{
+
+.home-text .text-h4{
     font-size: 1.5rem;
     color: var(--red);
     margin-bottom: 1rem;
@@ -289,10 +284,7 @@ nav.mobile{
         text-align: center;
         gap: 5rem;
     }
-    .home-text-agenda00, .home-text-agenda01, .home-text-agenda02{
-        margin-top: 10px;
-    }
-    .home .text-h4, .home-text-agenda00 .text-h4, .home-text-agenda01 .text-h4, .home-text-agenda02 .text-h4{
+    .home .text-h4{
         font-size: 15px;
     }
     .home .text-h1{

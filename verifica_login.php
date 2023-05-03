@@ -5,7 +5,7 @@ error_reporting(0);
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
-    window.location.replace('painel.php')
+    window.location.replace('index.html')
     </script>";
     exit();
  }
@@ -13,6 +13,6 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
 session_start();
 
 if(!$_SESSION['email']){
-    header('Location: painel.php');
+    header('Location: index.html');
     exit();
 }

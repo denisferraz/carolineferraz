@@ -132,7 +132,7 @@ if($typeerror == '1'){
                         </div>
                         </form>
                         <div class="signin">
-                            <span>Ja tem Conta? <a href="index.php">Acesse Aqui</a></span>
+                            <span>Ja tem Conta? <a href="painel.php">Acesse Aqui</a></span>
                         </div>
 
                     <?php
@@ -162,7 +162,7 @@ if($typeerror == '1'){
                         </div>
                         </form>
                         <div class="signin">
-                            <span>Ja tem Conta? <a href="index.php">Acesse Aqui</a></span>
+                            <span>Ja tem Conta? <a href="painel.php">Acesse Aqui</a></span>
                         </div>
 
                     <?php

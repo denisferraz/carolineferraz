@@ -1,13 +1,11 @@
 <?php
 
-error_reporting(1);
-
 session_start();
 require('conexao.php');
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
-    window.location.replace('home.php')
+    window.location.replace('index.html')
     </script>";
     exit();
  }
@@ -869,8 +867,9 @@ if($envio_whatsapp == 'ativado'){
 //Incio Envio Whatsapp
 if($envio_whatsapp == 'ativado'){
 
+    $data_email = date('d/m/Y \-\ H:i:s');
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, o sua Sessão foi Finalizada com sucesso em $data_email! Aproveite e ja Marque a sua Proxima Sessão!";
+    $msg_wahstapp = "Olá $doc_nome, o sua Sessão foi Finalizada com sucesso em $data_email! Aproveite e já Marque a sua Próxima Sessão!";
     
     $curl = curl_init();
     

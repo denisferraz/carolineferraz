@@ -1,16 +1,3 @@
-<?php
-
-session_start();
-require('conexao.php');
-require('verifica_login.php');
-
-$query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $nome = $select['nome'];
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="Pt-br">
 <head>
@@ -28,35 +15,35 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <header>
         <nav class="dp-menu">
             <ul>
-                    <li><a class="logo" href="logout.php">Log<span>Out</span></a></li>
-                        <li><a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $nome ?>.%20Gostaria%20de%20tirar%20algumas%20duvidas!" target="_blank"><img src="images/whatsapp.jpg" alt="WhatsApp"></a></li>
+                    <li><a class="logo" href="painel.php">Acessar<span> Conta</span></a></li>
+                        <li><a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20tirar%20algumas%20duvidas!" target="_blank"><img src="images/whatsapp.jpg" alt="WhatsApp"></a></li>
                         <li><a href="https://www.instagram.com/carolferraztricologia/" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("home.html", "iframe-container")'><b><i>Inicio</i></b></a></li>
                         <li><a>Como Começar</a>
                     <ul>
-                        <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Avaliação%20Capilar", "iframe-container")'>Avaliação Capilar</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Capilar", "iframe-container")'>Consulta Capilar</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Online", "iframe-container")'>Consulta Online</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("agendar_off.php?id_job=Avaliação%20Capilar", "iframe-container")'>Avaliação Capilar</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("agendar_off.php?id_job=Consulta%20Capilar", "iframe-container")'>Consulta Capilar</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("agendar_off.php?id_job=Consulta%20Online", "iframe-container")'>Consulta Online</a></li>
                     </ul></li>
                         <li><a class="logo">Prof<span>ile</span></a>
                     <ul>
-                        <li><a href="javascript:void(0)" onclick='window.open("reservas.php", "iframe-container")'>Acompanhamentos</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("profile_off.html", "iframe-container")'>Acompanhamentos</a></li>
                     </ul></li>
             </ul>
         </nav>
         <nav class="mobile right">
                     <div class="botao-menu-mobile">
-                    <a class="logo" href="logout.php">Log<span>Out</span></a>
+                    <a class="logo" href="painel.php">Acessar<span> Conta</span></a>
                     <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20tirar%20algumas%20duvidas!" target="_blank"><img src="images/whatsapp.jpg" alt="WhatsApp"></a>
                     <a href="https://www.instagram.com/carolferraztricologia/" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a>
                     <i class="fas fa-bars"></i>
                     </div>
                     <ul>
                         <li><a href="javascript:void(0)" onclick='window.open("home.html", "iframe-container")'><b><i>Inicio</i></b></a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Avaliação%20Capilar", "iframe-container")'>Avaliação Capilar</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Capilar", "iframe-container")'>Consulta Capilar</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Online", "iframe-container")'>Consulta Online</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("reservas.php", "iframe-container")'>Acompanhamentos</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("agendar_off.php?id_job=Avaliação%20Capilar", "iframe-container")'>Avaliação Capilar</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("agendar_off.php?id_job=Consulta%20Capilar", "iframe-container")'>Consulta Capilar</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("agendar_off.php?id_job=Consulta%20Online", "iframe-container")'>Consulta Online</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("profile_off.html", "iframe-container")'>Acompanhamentos</a></li>
                     </ul>
                 </nav>
     </header>
