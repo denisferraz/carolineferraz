@@ -1007,7 +1007,7 @@ try {
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
 
-    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, confirmacao) VALUES (:email, :plano_descricao, :plano_data, 1, :sessao_total, 'Em Andamento', :confirmacao)");
+    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, confirmacao) VALUES (:email, :plano_descricao, :plano_data, 0, :sessao_total, 'Em Andamento', :confirmacao)");
     $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => $tratamento_sessao, 'confirmacao' => $confirmacao));
 
     echo "<script>

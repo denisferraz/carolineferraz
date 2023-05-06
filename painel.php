@@ -44,7 +44,7 @@ require('conexao.php');
                         </div>
                         </form>
                         <div class="signin">
-                            <span>Ainda não tem sua Conta? <a href="registro.php">Registre-se Aqui</a></span>
+                            <span>Ainda não tem sua Conta? <a href="registro.php?id_job=Registrar">Registre-se Aqui</a></span>
                         </div>
                      </div>
                 </div>

@@ -5,7 +5,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 $typeerror = mysqli_real_escape_string($conn_msqli, $_GET['typeerror']);
 
 if($typeerror == '1'){
-    $typeerror = 'E-mail e/ou Senha Invalidos! Favor tentar novamente';   
+    $typeerror = 'E-mail e/ou Senha Invalidos e/ou Celular não Verificado! Caso ja tenha verificado seu Celular, tente novamente abaixo ou Recupere sua conta.';   
 }else if($typeerror == '2'){
     $typeerror = 'Sua Conta esta Temporariamente Bloqueada. Se o erro persistir, entre em contato conoscoo!';   
 }else if($typeerror == '3'){

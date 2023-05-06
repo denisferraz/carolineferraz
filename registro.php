@@ -2,7 +2,7 @@
 require('conexao.php');
 
 
-
+$id_registro = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 
 $min_nasc = date('Y-m-d', strtotime("-110 years",strtotime($hoje))); 
 $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje))); 
@@ -43,6 +43,9 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                      <div class="input-box">
                         <header>Registre-se</header>
                         <form action="login.php" method="post">
+                        <?php
+                            if($id_registro == 'Registrar'){
+                        ?>
                         <div class="input-field">
                             <input type="txt" class="input" minlength="8" maxlength="45" name="nome" required>
                             <label for="nome">Nome Completo</label>
@@ -75,9 +78,29 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                             <input type="password" class="input" minlength="8" maxlength="20" name="conf_password" required>
                             <label for="conf_password">Confirmar Senha</label>
                         </div>
+                        <?php
+                            }else if($id_registro == 'Codigo'){
+
+                            $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+                            $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+
+                        ?>
                         <div class="input-field">
+                            <input type="email" class="input" minlength="8" maxlength="50" name="email" value="<?php echo $email; ?>" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" class="input" minlength="8" maxlength="8" name="codigo" required>
+                            <label for="codigo">Codigo</label>
+                        </div>
+                        <input type="hidden" name="token" value="<?php echo $token; ?>">
+                        <?php
+                            }
+                        ?>
+                        <div class="input-field">
+                        <input type="hidden" name="id_registro" value="<?php echo $id_registro; ?>">
                         <input type="hidden" name="id_job" value="registro">
-                            <input type="submit" class="submit" value="Registrar"> 
+                            <input type="submit" class="submit" value="Confirmar"> 
                         </div>
                         </form>
                         <div class="signin">

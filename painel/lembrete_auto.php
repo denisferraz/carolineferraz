@@ -23,7 +23,7 @@ $amanha = date('Y-m-d', strtotime('+2 days'));
 
 
 //Envia E-mail
-$result_check = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$hoje}' AND atendimento_dia <= '{$amanha}') AND status_reserva = 'Confirmada' ");
+$result_check = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$hoje}' AND atendimento_dia <= '{$amanha}') AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ");
 while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
 $atendimento_dia= $select_check['atendimento_dia'];
 $atendimento_hora = $select_check['atendimento_hora'];
@@ -49,7 +49,6 @@ $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
 
     $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
     $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
-    $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
 
     $mail = new PHPMailer(true);
 
@@ -78,7 +77,6 @@ try {
     <br>
     $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
     <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
-    <p>Preencha o formulario, $link_formulario</p>
     <b>$pdf_corpo_07 $data_email</b>
     </fieldset><br><fieldset>
     <legend><b><u>$pdf_corpo_04</u></legend>
@@ -138,8 +136,6 @@ try {
     $response = curl_exec($curl);
     
     curl_close($curl);
-    
-    echo $response;
 
     //Fim Envio Whatsapp
 
@@ -179,8 +175,6 @@ curl_setopt_array($curl, array(
 $response = curl_exec($curl);
 
 curl_close($curl);
-
-echo $response;
 
 //Fim Envio Whatsapp
 
