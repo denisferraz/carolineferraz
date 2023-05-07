@@ -17,17 +17,20 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
-$senha = mysqli_real_escape_string($conn_msqli, $_POST['password']);
-$crip_senha = md5($senha);
 
 $tentativas = 0;
 
  if($id_job == 'login'){
 
-$query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND senha = :senha AND codigo != '0'");
+$senha = mysqli_real_escape_string($conn_msqli, $_POST['password']);
+$crip_senha = md5($senha);
+
+$query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND senha = :senha");
 $query->execute(array('email' => $email, 'senha' => $crip_senha));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $tentativas = $select['tentativas'];
+    $codigo = $select['codigo'];
+    $token = $select['token'];
 }
 
 if($tentativas >= 5){
@@ -35,7 +38,8 @@ if($tentativas >= 5){
         window.location.replace('login_error.php?id_job=login&typeerror=8&amount=$tentativas')
         </script>";
         exit();
-    }
+}
+
 
 $row = $query->rowCount();
 
@@ -43,6 +47,13 @@ if($row == 1){
 
     $query = $conexao->prepare("UPDATE $tabela_painel_users SET tentativas = '0' WHERE email = :email");
     $query->execute(array('email' => $email));
+
+    if($codigo != '0'){
+        echo "<script>
+            window.location.replace('login_error.php?id_job=login&typeerror=11&amount=$tentativas&email=$email&token=$token')
+            </script>";
+            exit();
+    }
 
     $_SESSION['email'] = $email;
     header('Location: index.php');
@@ -80,6 +91,9 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $id_registro = mysqli_real_escape_string($conn_msqli, $_POST['id_registro']);
 
     if($id_registro == 'Registrar'){
+
+    $senha = mysqli_real_escape_string($conn_msqli, $_POST['password']);
+    $crip_senha = md5($senha);
 
     if(empty($_POST['email']) || empty($_POST['password'])){
         header('Location: registro.php?id_job=Registrar');
@@ -201,7 +215,6 @@ curl_close($curl);
 
 //Fim Envio Whatsapp
 
-        $_SESSION['email'] = $email;
         echo "<script>
         alert('Um Codigo foi Enviado para o seu Celular!')
         window.location.replace('registro.php?id_job=Codigo&token=$token&email=$email')
@@ -221,6 +234,7 @@ curl_close($curl);
         $query2 = $conexao->prepare("UPDATE $tabela_painel_users SET codigo = 0 WHERE email = :email AND token = :token");
         $query2->execute(array('email' => $email, 'token' => $token));
 
+        $_SESSION['email'] = $email;
         header("Location: index.php");
         exit();
 
@@ -314,6 +328,8 @@ try {
 }else if($id_job == 'recuperar_codigo'){
 
     $conf_senha = mysqli_real_escape_string($conn_msqli, $_POST['conf_password']);
+    $senha = mysqli_real_escape_string($conn_msqli, $_POST['password']);
+    $crip_senha = md5($senha);
 
     if($senha != $conf_senha){
         echo "<script>
