@@ -25,6 +25,7 @@ $amanha = date('Y-m-d', strtotime('+2 days'));
 $atendimentos_dia = '';
 //Envia E-mail
 $result_check = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$hoje}' AND atendimento_dia <= '{$amanha}') AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ");
+if ($result_check->rowCount() > 0) {
 while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
 $atendimento_dia= $select_check['atendimento_dia'];
 $atendimento_hora = $select_check['atendimento_hora'];
@@ -146,11 +147,15 @@ try {
 
 }
 
+$msg_wahstapp = "Bom dia Carol. Seguem seus proximos atendimento:$atendimentos_dia";
+}else{
+$msg_wahstapp = "Bom dia Carol. Você não tem nenhum atendimento para hoje e nem amanhã"; 
+}
 //Incio Envio Whatsapp
 
 
 $doc_telefonewhats = "5571997417190";
-$msg_wahstapp = "Bom dia Carol. Seguem seus proximos atendimento:$atendimentos_dia";
+
 
 $curl = curl_init();
 

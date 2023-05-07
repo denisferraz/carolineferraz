@@ -34,7 +34,7 @@ require('verifica_login.php');
                                 <?php
 
 $limite_dia = $config_limitedia;
-$reserva_dias = 15;
+$reserva_dias = 20;
 $atendimento_dia =  date('Y-m-d');
 $atendimento_hora_comeco =  $config_atendimento_hora_comeco;
 $atendimento_hora_fim =  $config_atendimento_hora_fim;

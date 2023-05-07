@@ -83,7 +83,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
 
 <!-- Proximos Dias -->
 <?php
-    $query_proximos_dias = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$proximos_dias_amanha}' AND atendimento_dia <= '{$proximos_dias}') AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ORDER BY atendimento_dia ASC");
+    $query_proximos_dias = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$proximos_dias_amanha}' AND atendimento_dia <= '{$proximos_dias}') AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ORDER BY atendimento_dia, atendimento_hora ASC");
     $proximos_dias_qtd = $query_proximos_dias->rowCount();
     ?>
 <fieldset>
@@ -94,7 +94,7 @@ if($proximos_dias_qtd == 0){
     <?php
 }else{
     ?>
-<legend>Atendimentos para os Proximos Dias [ <?php echo $proximos_dias_qtd ?> ]</legend>
+<legend>Atendimentos para os Proximos 07 Dias [ <?php echo $proximos_dias_qtd ?> ]</legend>
 <table widht="1200" border="1px">
 <tr>
     <td width="15%" align="center">Reserva</td>
@@ -131,6 +131,55 @@ while($select_proximos_dias = $query_proximos_dias->fetch(PDO::FETCH_ASSOC)){
 </table>
 </fieldset><br>
 
+<!-- Futuras Totais -->
+<?php
+    $query_proximos_dias = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= '{$proximos_dias}' AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ORDER BY atendimento_dia, atendimento_hora ASC");
+    $proximos_dias_qtd = $query_proximos_dias->rowCount();
+    ?>
+<fieldset>
+    <?php
+if($proximos_dias_qtd == 0){
+    ?>
+<legend>Sem Atendimentos apos 07 dias</legend>
+    <?php
+}else{
+    ?>
+<legend>Atendimentos Futuros [ <?php echo $proximos_dias_qtd ?> ]</legend>
+<table widht="1200" border="1px">
+<tr>
+    <td width="15%" align="center">Reserva</td>
+    <td width="70%" align="center">Nome [ E-mail ]</td>
+    <td width="15%" align="center">Data</td>
+    <td width="15%" align="center">Horario</td>
+    <td width="15%" align="center">Alterar</td>
+    <td width="15%" align="center">Cancelar</td>
+</tr>
+<?php
+}
+while($select_proximos_dias = $query_proximos_dias->fetch(PDO::FETCH_ASSOC)){
+    $confirmacao = $select_proximos_dias['confirmacao'];
+    $doc_nome = $select_proximos_dias['doc_nome'];
+    $doc_email = $select_proximos_dias['doc_email'];
+    $atendimento_dia = $select_proximos_dias['atendimento_dia'];
+    $atendimento_dia = strtotime("$atendimento_dia");
+    $atendimento_hora = $select_proximos_dias['atendimento_hora'];
+    $atendimento_hora = strtotime("$atendimento_hora");
+    $id = $select_proximos_dias['id'];
+?>
+<tr>
+    <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button><?php echo $confirmacao ?></button></a></td>
+    <td><?php echo $doc_nome ?> [ <?php echo $doc_email ?> ]</td>
+    <td align="center"><?php echo date('d/m/Y', $atendimento_dia) ?></td>
+    <td align="center"><?php echo date('H:i\h', $atendimento_hora) ?></td>
+    <td><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")'><button>Alterar</button></td>
+    <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Cancelar</button></a></td>
+</tr>
+
+<?php
+}
+    ?>
+</table>
+</fieldset><br>
 <!-- Fim -->
 </div>
 </body>

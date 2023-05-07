@@ -85,6 +85,7 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                             $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
                         ?>
+                        <center><p>Digite o codigo enviado para o seu Celular!</p></center><br>
                         <div class="input-field">
                             <input type="email" class="input" minlength="8" maxlength="50" name="email" value="<?php echo $email; ?>" required>
                             <label for="email">Email</label>
