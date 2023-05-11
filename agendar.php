@@ -62,7 +62,7 @@ $status_reserva = 'Confirmada';
             <br><b>10.</b> Trinta dias de suporte direto com a Tricologista via Whatsapp.
             <br><br>Este primeiro atendimento terá duração de <b>2hs</b> e te dá direito a um retorno (<i>se necessário</i>) em <b>até 90 dias</b>.
             <br><br>A avaliação de retorno terá duração e <b>40 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
-            <br><br><b>Investimento:</b> R$350,00<br><br>
+            <br><br><b>Investimento:</b> R$300,00<br><br>
         </div>
         <?php }else if($id_job == 'Consulta Online'){?>
         <div class="home-text">

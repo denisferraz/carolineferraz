@@ -10,21 +10,16 @@ require '../PHPMailer/src/SMTP.php';
 
 $diasemana_numero = date('w', time());
 
-if($diasemana_numero = 0){
-$hoje = date('Y-m-d', strtotime('+1 days'));
-$amanha = date('Y-m-d', strtotime('+1 days'));
-}
-if($diasemana_numero = 6){
-$amanha = date('Y-m-d', strtotime('+3 days'));
-}
-if($diasemana_numero = 7){
+if($diasemana_numero == 6){
 $amanha = date('Y-m-d', strtotime('+2 days'));
+}else{
+$amanha = date('Y-m-d', strtotime('+1 days'));
 }
 
 
 $atendimentos_dia = '';
 //Envia E-mail
-$result_check = $conexao->query("SELECT * FROM $tabela_reservas WHERE (atendimento_dia >= '{$hoje}' AND atendimento_dia <= '{$amanha}') AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ");
+$result_check = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia = '{$amanha}' AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ");
 if ($result_check->rowCount() > 0) {
 while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
 $atendimento_dia= $select_check['atendimento_dia'];
@@ -149,7 +144,7 @@ try {
 
 $msg_wahstapp = "Bom dia Carol. Seguem seus proximos atendimento:$atendimentos_dia";
 }else{
-$msg_wahstapp = "Bom dia Carol. Você não tem nenhum atendimento para hoje e nem amanhã"; 
+$msg_wahstapp = "Bom dia Carol. Você não tem nenhum atendimento para amanhã"; 
 }
 //Incio Envio Whatsapp
 

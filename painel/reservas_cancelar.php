@@ -61,6 +61,7 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <label>E-mail</label>
             <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $doc_email ?>" required>
             <input type="hidden" name="status_reserva" value="Cancelado">
+            <input type="hidden" name="doc_telefone" value="<?php echo $select['doc_telefone'] ?>">
             <input type="hidden" name="token" value="<?php echo $select['token'] ?>">
             <input type="hidden" name="id_job" value="<?php echo $select['tipo_consulta'] ?>">
             <input type="hidden" name="feitapor" value="Painel">

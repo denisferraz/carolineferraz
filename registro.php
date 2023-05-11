@@ -27,6 +27,14 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
         }
   
         }
+
+        function removerZero(input) {
+        var valor = input.value;
+        if (valor.startsWith("0")) {
+            input.value = valor.substring(1);
+        }
+    }
+
     </script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
@@ -67,7 +75,7 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                             <input type="date" min="<?php echo $min_nasc ?>" max="<?php echo $max_nasc ?>" class="input" name="nascimento" required>
                         </div>
                         <div class="input-field">
-                            <input type="txt" class="input" minlength="13" maxlength="13" name="telefone" OnKeyPress="formatar('##-#####-####', this)" required>
+                            <input type="txt" class="input" minlength="13" maxlength="14" name="telefone" OnKeyPress="formatar('##-#####-####', this)" onblur="removerZero(this)" required>
                             <label for="telefone">Telefone</label>
                         </div>
                         <div class="input-field">
