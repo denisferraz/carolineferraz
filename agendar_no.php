@@ -13,11 +13,17 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 }
 
 $token = md5(date("YmdHismm"));
-$confirmacao = gerarConfirmacao();
 
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 $typeerror = mysqli_real_escape_string($conn_msqli, $_GET['typeerror']);
+$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+
+if($id_job == 'Nova Sessão'){
+$status_reserva = 'Em Andamento';
+}else{
+$status_reserva = 'Confirmada';
+}
 
 if($typeerror == '1'){
     $typeerror = 'não funcionamos nesta data.';   
@@ -114,7 +120,11 @@ while($dias < $reserva_dias){
 $dias = 0;
 $reserva_horas = $reserva_dias * $reserva_horas_qtd * (60 / $config_atendimento_hora_intervalo) + ($reserva_dias * (60 / $config_atendimento_hora_intervalo));
 $atendimento_horas = date('H:i:s', strtotime("$atendimento_hora_comeco") - $atendimento_hora_intervalo);
-$atendimento_dias = $atendimento_dia;
+
+$atendimento_dias = date('Y-m-d', strtotime("$atendimento_dia") - (86400 * 3));
+if($atendimento_dias <= $hoje){
+$atendimento_dias = date('Y-m-d', strtotime("$atendimento_dia") + 86400);
+}
 while($dias < $reserva_horas){
 
 
@@ -147,7 +157,6 @@ while($dias < $reserva_horas){
 
     $check_disponibilidade = $conexao->query("SELECT * FROM $tabela_disponibilidade WHERE atendimento_dia = '{$atendimento_dia}' AND atendimento_hora = '{$atendimento_horas}'");
     while($select = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
-        $confirmacao = $select['confirmacao'];
     }
     $total_reservas = $check_disponibilidade->rowCount();
 
@@ -174,7 +183,7 @@ while($dias < $reserva_horas){
 <?php 
 if(is_numeric($total) || $total == 'Closed'){
 }else{
-    ?><button><a href="reserva.php?confirmacao=<?php echo $total; ?>"><?php echo $total; ?></a></button><?php
+    ?>-<?php
 }
 ?>
 </b>
@@ -250,7 +259,7 @@ if(is_numeric($total) || $total == 'Closed'){
                             <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone ?>">
                             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
                             <input type="hidden" name="token" value="<?php echo $token ?>">
-                            <input type="hidden" name="status_reserva" value="Confirmada">
+                            <input type="hidden" name="status_reserva" value="<?php echo $status_reserva ?>">
                             <input type="hidden" name="feitapor" value="Site">
                             <input type="hidden" name="id_job" value="<?php echo $id_job ?>">
                             <button class="home-btn" type="submit">Confirmar</button>

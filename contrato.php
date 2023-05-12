@@ -167,6 +167,7 @@ const ctx = canvas.getContext('2d');
 let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
+let hasDrawn = false;
 
 function draw(e) {
 
@@ -206,6 +207,9 @@ function draw(e) {
   // Salva as últimas coordenadas
   lastX = x;
   lastY = y;
+
+  // Define a variável hasDrawn como true quando há algum desenho
+  hasDrawn = true;
 }
 
 canvas.addEventListener('mousedown', (e) => {
@@ -239,6 +243,31 @@ clearButton.addEventListener('click', () => {
 
 const saveButton = document.querySelector('#save');
 saveButton.addEventListener('click', () => {
+
+  const Toast = Swal.mixin({
+  toast: true,
+  position: 'center',
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+
+  // Retorna se não houver desenho realizado
+  if (!hasDrawn) {
+
+  Toast.fire({
+  icon: 'error',
+  title: 'Assintura em branco!'
+  });
+
+    return;
+
+  }else{
+
   const image = canvas.toDataURL('image/png');
   
   const formData = new FormData();
@@ -253,25 +282,14 @@ saveButton.addEventListener('click', () => {
   };
   xhr.send(formData);
 
-  const Toast = Swal.mixin({
-  toast: true,
-  position: 'center',
-  showConfirmButton: false,
-  timer: 2000,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
-  }
-})
-
   Toast.fire({
   icon: 'success',
-  title: 'Sua Assinatura foi Salva'
+  title: 'Sua Assinatura foi Salva!'
   }).then(() => {
     location.replace('reserva.php?confirmacao=<?php echo $confirmacao ?>&token=<?php echo $token ?>');
   });
   
+}
 });
     </script> 
 
