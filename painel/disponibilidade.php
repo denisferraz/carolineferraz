@@ -77,7 +77,8 @@ while($dias < $reserva_dias){
         }
     ?>
     <td bgcolor="#000000"><font color="white">
-    <?php echo date("d/m", strtotime("$atendimento_dias")); ?>
+    <?php echo date("d/m", strtotime("$atendimento_dias")); ?><br>
+    <?php echo date("D", strtotime("$atendimento_dias")); ?>
     </font></td>
     <?php
 

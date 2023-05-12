@@ -58,7 +58,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
     if(!isset($_POST['overbook_data']) && (( (date('w', strtotime("$atendimento_dia")) == 1) && $config_dia_segunda == -1) || ( (date('w', strtotime("$atendimento_dia")) == 2) && $config_dia_terca == -1) || ( (date('w', strtotime("$atendimento_dia")) == 3) && $config_dia_quarta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 4) && $config_dia_quinta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 5) && $config_dia_sexta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 6) && $config_dia_sabado == -1) || ( (date('w', strtotime("$atendimento_dia")) == 0) && $config_dia_domingo == -1))){
         echo   "<script>
-        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=1')
+        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=1&atendimento_dia=$atendimento_dia')
                 </script>";
          exit();
         }
@@ -72,7 +72,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
     if($atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
         echo   "<script>
-        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=2')
+        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=2&atendimento_dia=$atendimento_dia')
                 </script>";
         exit();   
     }
@@ -102,7 +102,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
     if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
         echo   "<script>
-        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3')
+        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3&atendimento_dia=$atendimento_dia')
                 </script>";
          exit();
     }
@@ -120,7 +120,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         
         if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
             echo   "<script>
-            window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3')
+            window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3&atendimento_dia=$atendimento_dia')
                     </script>";
                 exit();
         }
