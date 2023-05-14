@@ -1,8 +1,17 @@
 <?php
 
 session_start();
+ob_start();
 require('conexao.php');
-require('verifica_login.php');
+include_once 'validar_token.php';
+
+if(!validarToken()){
+    header("Location: index.html");
+    exit();
+}
+
+$email = recuperarEmailToken();
+$nome = recuperarNomeToken();
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
@@ -29,7 +38,7 @@ $token_reserva = $select['token'];
 }
 
 $check = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email AND confirmacao = :confirmacao");
-$check->execute(array('email' => $_SESSION['email'], 'confirmacao' => $confirmacao));
+$check->execute(array('email' => $email, 'confirmacao' => $confirmacao));
 while($select1 = $check->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select1['sum(sessao_atual)'];
     $sessao_total = $select1['sum(sessao_total)'];
@@ -53,9 +62,6 @@ $sessao_total = 1;
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
-    <header>
-    <?php echo $menu_site_logado ?>
-    </header>
     <main>
 <!-- DETALHES !-->
     <section class="home-center"><br>
@@ -145,7 +151,7 @@ $sessao_total = 1;
 
 <?php
 $check_detalhes = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND confirmacao = :confirmacao ORDER BY id DESC");
-$check_detalhes->execute(array('email' => $_SESSION['email'], 'confirmacao' => $confirmacao));
+$check_detalhes->execute(array('email' => $email, 'confirmacao' => $confirmacao));
 
 $row_check_detalhes = $check_detalhes->rowCount();
 
@@ -263,7 +269,7 @@ $sessao_hora = $select4['atendimento_hora'];
 
 <?php
 $check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao");
-$check_contratos->execute(array('email' => $_SESSION['email'], 'confirmacao' => $confirmacao));
+$check_contratos->execute(array('email' => $email, 'confirmacao' => $confirmacao));
 
 $row_check_contratos = $check_contratos->rowCount();
 

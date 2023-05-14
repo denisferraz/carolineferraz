@@ -104,8 +104,25 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                         </div>
                         <input type="hidden" name="token" value="<?php echo $token; ?>">
                         <?php
-                            }
-                        ?>
+                            }else if($id_registro == 'RecCodigo'){
+
+                                $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+                                $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+    
+                            ?>
+                            <center><p>Confirme o seu Celular!</p></center><br>
+                            <div class="input-field">
+                                <input type="email" class="input" minlength="8" maxlength="50" name="email" value="<?php echo $email; ?>" required>
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="txt" class="input" minlength="13" maxlength="14" name="telefone" OnKeyPress="formatar('##-#####-####', this)" onblur="removerZero(this)" required>
+                                <label for="telefone">Telefone</label>
+                             </div>
+                            <input type="hidden" name="token" value="<?php echo $token; ?>">
+                            <?php
+                                }
+                            ?>
                         <div class="input-field">
                         <input type="hidden" name="id_registro" value="<?php echo $id_registro; ?>">
                         <input type="hidden" name="id_job" value="registro">

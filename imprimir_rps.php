@@ -1,11 +1,14 @@
 <?php
 
-//error_reporting(0);
-
 session_start();
+ob_start();
 require('conexao.php');
-require('verifica_login.php');
-//include_once("recaptchalib.php");
+include_once 'validar_token.php';
+
+if(!validarToken()){
+    header("Location: index.html");
+    exit();
+}
 
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {

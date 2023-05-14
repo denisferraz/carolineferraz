@@ -1,8 +1,14 @@
 <?php
 
 session_start();
+ob_start();
 require('conexao.php');
-require('verifica_login.php');
+include_once 'validar_token.php';
+
+if(!validarToken()){
+    header("Location: index.html");
+    exit();
+}
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 $typeerror = mysqli_real_escape_string($conn_msqli, $_GET['typeerror']);

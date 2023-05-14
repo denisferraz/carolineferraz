@@ -15,9 +15,9 @@ if($typeerror == '1'){
 }else if($typeerror == '3'){
     $typeerror = 'Senhas não Conferem! Favor repita a mesma senha nos dois campos.';   
 }else if($typeerror == '4'){
-    $typeerror = 'Email ja existe. Tente recuperar a sua senha!';   
+    $typeerror = 'Email ou CPF ja existe. Tente recuperar a sua senha!';   
 }else if($typeerror == '5'){
-    $typeerror = 'CPF ja existe. Tente recuperar a sua senha!';   
+    $typeerror = 'Email ou CPF ja existe. Tente recuperar a sua senha!';   
 }else if($typeerror == '6'){
     $typeerror = 'CPF invalido. Verifique seu CPF digitado';   
 }else if($typeerror == '7'){

@@ -20,73 +20,7 @@ $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
 
 $tentativas = 0;
 
- if($id_job == 'login'){
-
-$senha = mysqli_real_escape_string($conn_msqli, $_POST['password']);
-$crip_senha = md5($senha);
-
-$query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND senha = :senha");
-$query->execute(array('email' => $email, 'senha' => $crip_senha));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $tentativas = $select['tentativas'];
-    $codigo = $select['codigo'];
-    $token = $select['token'];
-}
-
-if($tentativas >= 5){
-    echo "<script>
-        window.location.replace('login_error.php?id_job=login&typeerror=8&amount=$tentativas')
-        </script>";
-        exit();
-}
-
-
-$row = $query->rowCount();
-
-if($row == 1){
-
-    $query = $conexao->prepare("UPDATE $tabela_painel_users SET tentativas = '0' WHERE email = :email");
-    $query->execute(array('email' => $email));
-
-    if($codigo != '0'){
-        echo "<script>
-            window.location.replace('login_error.php?id_job=login&typeerror=11&amount=$tentativas&email=$email&token=$token')
-            </script>";
-            exit();
-    }
-
-    $_SESSION['email'] = $email;
-    header('Location: index.php');
-    exit();
-
-}else{
-
-$query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email");
-$query->execute(array('email' => $email));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $tentativas = $select['tentativas'];
-}
-
-    $tentativas = $tentativas + 1;
-
-    $query = $conexao->prepare("UPDATE $tabela_painel_users SET tentativas = :tentativas WHERE email = :email");
-    $query->execute(array('tentativas' => $tentativas, 'email' => $email));
-
-    if($tentativas >= 5){
-    echo "<script>
-        window.location.replace('login_error.php?id_job=login&typeerror=8&amount=$tentativas')
-        </script>";
-        exit();
-    }else{
-    echo "<script>
-        window.location.replace('login_error.php?id_job=login&typeerror=1&amount=$tentativas')
-        </script>";
-        exit();  
-    }
-
-}
-
-}else if($id_job == 'registro'){
+if($id_job == 'registro'){
 
     $id_registro = mysqli_real_escape_string($conn_msqli, $_POST['id_registro']);
 
@@ -220,7 +154,7 @@ curl_close($curl);
         window.location.replace('registro.php?id_job=Codigo&token=$token&email=$email')
         </script>";
         exit();
-    }else{
+    }else if($id_registro == 'Codigo'){
 
     $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
     $codigo = mysqli_real_escape_string($conn_msqli, $_POST['codigo']);
@@ -234,21 +168,94 @@ curl_close($curl);
         $query2 = $conexao->prepare("UPDATE $tabela_painel_users SET codigo = 0 WHERE email = :email AND token = :token");
         $query2->execute(array('email' => $email, 'token' => $token));
 
-        $_SESSION['email'] = $email;
-        header("Location: index.php");
+        echo "<script>
+        alert('E-mail cadastrado com sucesso! Acesse abaixo')
+        window.location.replace('painel.php')
+        </script>";
         exit();
 
     }else{
 
         echo "<script>
         alert('Codigo Invalido!')
-        window.location.replace('registro.php?id_job=Codigo&token=$token&email=$email')
+        window.location.replace('registro.php?id_job=RecCodigo&token=$token&email=$email')
         </script>";
         exit(); 
 
     }
 
-    }
+    }else if($id_registro == 'RecCodigo'){
+
+        $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
+        $telefone = preg_replace('/[^\d]/', '', mysqli_real_escape_string($conn_msqli, $_POST['telefone']));
+    
+        $query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND token = :token");
+        $query->execute(array('email' => $email, 'token' => $token));
+        $row = $query->rowCount();
+        
+        if($row == 1){
+
+        while($select = $query->fetch(PDO::FETCH_ASSOC)){
+            $nome = $select['nome'];
+            $codigo = $select['codigo'];
+        }
+    
+            $query2 = $conexao->prepare("UPDATE $tabela_painel_users SET telefone = :telefone WHERE email = :email AND token = :token");
+            $query2->execute(array('telefone' => $telefone, 'email' => $email, 'token' => $token));
+
+ //Incio Envio Whatsapp
+
+$doc_telefonewhats = "55$telefone";
+$msg_wahstapp = "Ola $nome, tudo bem? Que bom ter você conosco! Para completar o seu cadastro, coloque este codigo: $codigo";
+
+$curl = curl_init();
+
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'POST',
+  CURLOPT_POSTFIELDS => "{
+    \"number\": \"$doc_telefonewhats\",
+    \"text\": \"$msg_wahstapp\"
+}",
+  CURLOPT_HTTPHEADER => array(
+    'Content-Type: application/json',
+    "SecretKey: $whatsapp_secretkey",
+    "PublicToken: $whatsapp_publictoken",
+    "DeviceToken: $whatsapp_devicetoken",
+    "Authorization: $whatsapp_authorization"
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+
+//Fim Envio Whatsapp
+    
+            echo "<script>
+            alert('Novo condigo enviado!')
+            window.location.replace('registro.php?id_job=Codigo&token=$token&email=$email')
+            </script>";
+            exit();
+    
+        }else{
+    
+            echo "<script>
+            alert('E-mail não existe. Cadastre!')
+            window.location.replace('registro.php?id_job=Registrar')
+            </script>";
+            exit(); 
+    
+        }
+    
+        }
 
 }else if($id_job == 'recuperar'){
 

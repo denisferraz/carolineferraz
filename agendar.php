@@ -1,12 +1,20 @@
 <?php
 
 session_start();
+ob_start();
 require('conexao.php');
-require('verifica_login.php');
+include_once 'validar_token.php';
 
-$query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+if(!validarToken()){
+    header("Location: index.html");
+    exit();
+}
+
+$doc_nome = recuperarNomeToken();
+$email = recuperarEmailToken();
+
+$query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$email}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $doc_nome = $select['nome'];
     $doc_cpf = $select['unico'];
     $doc_email= $select['email'];
     $doc_telefone = $select['telefone'];

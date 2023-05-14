@@ -1,10 +1,14 @@
 <?php
 
-error_reporting(0);
-
-$hoje = date('Y-m-d');
-
+session_start();
+ob_start();
 require('conexao.php');
+include_once 'validar_token.php';
+
+if(!validarToken()){
+    header("Location: index.html");
+    exit();
+}
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 $result_check = $conexao->prepare("SELECT * FROM painel_users WHERE token = :token");

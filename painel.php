@@ -1,6 +1,60 @@
 <?php
+
+session_start();
+ob_start();
+
 require('conexao.php');
 
+$dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+if (!empty($dados['SendLogin'])) {
+
+    $query_usuario = "SELECT id, nome, email, senha 
+                FROM painel_users
+                WHERE email =:email
+                LIMIT 1";
+
+    $result_usuario = $conexao->prepare($query_usuario);
+    $result_usuario->bindParam(':email', $dados['email']);
+    $result_usuario->execute();
+
+    if (($result_usuario) and ($result_usuario->rowCount() != 0)) {
+        $row_usuario = $result_usuario->fetch(PDO::FETCH_ASSOC);
+
+        if (md5($dados['senha']) == $row_usuario['senha']) {
+
+        // Chave secreta e única
+        $chave = "CGBU85S4623M5W4X6ODF";
+
+            $header = [
+                'alg' => 'HS256',
+                'typ' => 'JWT'
+                ];
+
+            $header = json_encode($header);
+            $header = base64_encode($header);
+            $duracao = time() + (7 * 24 * 60 * 60);
+            $payload = [
+                'exp' => $duracao,
+                'id' => $row_usuario['id'],
+                'nome' => $row_usuario['nome'],
+                'email' => $row_usuario['email']
+            ];
+            $payload = json_encode($payload);
+            $payload = base64_encode($payload);
+            
+            $signature = hash_hmac('sha256', "$header.$payload", $chave, true);
+            $signature = base64_encode($signature);
+            setcookie('token', "$header.$payload.$signature", (time() + (7 * 24 * 60 * 60)));
+            header("Location: index.php");
+
+        } else {
+            $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Email ou senha inválida!</p>";
+        }
+    } else {
+        $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Email ou senha inválida!</p>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,18 +82,39 @@ require('conexao.php');
                 <div class="col-md-6 right">
                      <div class="input-box">
                         <header>Bem Vindo(a)</header>
-                        <form action="login.php" method="post">
+                        <?php
+                        if (isset($_SESSION['msg'])) {
+                            // Imprimir o valor da variável global "msg"
+                            echo $_SESSION['msg']."<br>";
+                        
+                            // Destruir a variável globar "msg"
+                            unset($_SESSION['msg']);
+                        }
+                        ?>
+                        <form action="" method="POST">
+<?php
+$email = "";
+if (isset($dados['email'])) {
+$email = $dados['email'];
+}
+?>
                         <div class="input-field">
-                            <input type="email" class="input" name="email" required>
+                            <input type="email" class="input" name="email" value="<?php echo $email; ?>" required>
                             <label for="email">Email</label>
                         </div>
+<?php
+$senha = "";
+if (isset($dados['senha'])) {
+$senha = $dados['senha'];
+}
+?> 
                         <div class="input-field">
-                            <input type="password" class="input" name="password" required>
-                            <label for="password">Senha</label>
+                            <input type="password" class="input" name="senha" value="<?php echo $senha; ?>" required>
+                            <label for="senha">Senha</label>
                         </div>
                         <div class="input-field">
                         <input type="hidden" name="id_job" value="login">
-                            <input type="submit" class="submit" value="Acessar">
+                            <input type="submit" class="submit" name="SendLogin" value="Acessar">
                             
                         </div>
                         </form>

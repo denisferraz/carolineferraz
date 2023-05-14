@@ -1,13 +1,20 @@
 <?php
 
 session_start();
+ob_start();
 require('conexao.php');
-require('verifica_login.php');
+include_once 'validar_token.php';
 
+if(!validarToken()){
+    header("Location: index.html");
+    exit();
+}
 
-$query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$email = recuperarEmailToken();
+$nome = recuperarNomeToken();
+
+$query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$email}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $nome = $select['nome'];
     $token = $select['token'];
 }
 ?>
@@ -24,9 +31,6 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
-    <header>
-    <?php echo $menu_site_logado ?>
-    </header>
     <main>
         <section class="home-center">
             <br><br>
@@ -34,7 +38,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 
 <?php
 $check_history = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE doc_email = :email ORDER BY atendimento_dia DESC LIMIT 10");
-$check_history->execute(array('email' => $_SESSION['email']));
+$check_history->execute(array('email' => $email));
 
 $row_check = $check_history->rowCount();
 
@@ -53,7 +57,7 @@ $history_status = $history['status_sessao'];
 $status_reserva = $history['status_reserva'];
 
 $check = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email AND confirmacao = :confirmacao");
-$check->execute(array('email' => $_SESSION['email'], 'confirmacao' => $history_conf));
+$check->execute(array('email' => $email, 'confirmacao' => $history_conf));
 while($select2 = $check->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select2['sum(sessao_atual)'];
     $sessao_total = $select2['sum(sessao_total)'];
