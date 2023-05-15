@@ -34,7 +34,7 @@ if($aut_acesso == 1){
     <form class="form" action="acao.php" method="POST" enctype="multipart/form-data">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Salve um Novo Arquivo</h2>
+                <h2 class="title-cadastro">Salve um Novo Arquivo <?php echo $confirmacao ?></h2>
             </div>
 
             <div class="card-group">

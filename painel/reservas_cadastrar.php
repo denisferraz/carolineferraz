@@ -70,6 +70,7 @@ if($aut_acesso == 1){
                 <option value="Avaliação Capilar">Avaliação Capilar</option>
                 <option value="Consulta Capilar">Consulta Capilar</option>
                 <option value="Consulta Online">Consulta Online</option>
+                <option value="Nova Sessão">Nova Sessão</option>
                 </select></b></label><br>
             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">

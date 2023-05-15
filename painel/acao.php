@@ -1120,7 +1120,7 @@ try {
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
     $arquivo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo']).'.pdf';
     $arquivos = $_FILES['arquivos'];
-    $dirAtual = dirname(__DIR__).'\arquivos'.'/'.$confirmacao.'/';
+    $dirAtual = '../arquivos/'.$confirmacao.'/';
 
     if($arquivos['type'] != 'application/pdf'){
         echo "<script>
@@ -1134,13 +1134,13 @@ try {
         mkdir($dirAtual);
     }
 
-    move_uploaded_file($arquivos['tmp_name'], '../arquivos/'.$confirmacao.'/'.$arquivo);
+    move_uploaded_file($arquivos['tmp_name'], $dirAtual.$arquivo);
 
     $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo Arquivo $arquivo na Confirmação $confirmacao"));
 
     echo "<script>
-    alert('Arquivo Cadastrado com Sucesso')
+    alert('Arquivo Cadastrado com Sucesso $confirmacao')
     window.location.replace('reserva.php?confirmacao=$confirmacao')
     </script>";
     exit();

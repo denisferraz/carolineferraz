@@ -282,7 +282,7 @@ if($numFiles < 1){
     foreach ($files as $file) {
         $fileName = basename($file);
         echo '<br><center><div>';
-        echo '<a href="javascript:void(0)" onclick=\'window.open("' . $file . '","_blank")\'"><button>' . $fileName . '</button></a>';
+        echo '<a href="javascript:void(0)" onclick=\'window.open("' . $file . '","_blank")\'"><button class="home-btn">' . $fileName . '</button></a>';
         echo '</div></center>';
     }
 

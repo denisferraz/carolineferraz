@@ -1,12 +1,14 @@
 <?php
 
-$cpf = '123456';
-$dirAtual = dirname(__DIR__).'\arquivos'.'/'.$cpf.'/';
+$hoje = date('Y-m-d');
+$atendimento_dia = '2023-05-16';
 
-if (!is_dir($dirAtual)) {
-    mkdir($dirAtual);
-}else{
-    echo "Existe: " . $dirAtual . "<br>";
+$reserva_dias = 5;
+$atendimento_dias = date('Y-m-d', strtotime("$atendimento_dia") - (86400 * 3));
+
+if($atendimento_dias <= $hoje){
+$atendimento_dias = date('Y-m-d', strtotime("$hoje") + 86400);
 }
 
+echo $hoje.'<br>'.$atendimento_dias;
 ?>

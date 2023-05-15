@@ -60,8 +60,8 @@ if($typeerror == '1'){
                 <h4 class="text-h4">Desculpa <?php echo $doc_nome ?>, mas <?php echo $typeerror ?> Veja abaixo datas/horarios proximos</h4>
                 
                 <style type="text/css">
-                                table {border: 0px; border-spacing: 3px; border-collapse: separate;}
-                                table td{border: 1px solid black; text-align: center; padding: 3px; margin: 3px}
+                                table {margin-left: 45px; border: 0px; border-spacing: 3px; border-collapse: separate;}
+                                table td{border: 2px solid orangered; text-align: center; padding: 5px; border-radius: 10px;}
                                 </style>
                                 <table border="1px"><tr>
                                 <?php
@@ -86,7 +86,7 @@ $reserva_dias = 5;
 $atendimento_dias = date('Y-m-d', strtotime("$atendimento_dia") - (86400 * 3));
 
 if($atendimento_dias <= $hoje){
-$atendimento_dias = date('Y-m-d', strtotime("$atendimento_dia") + 86400);
+$atendimento_dias = date('Y-m-d', strtotime("$hoje") + 86400);
 }
 
 while($dias < $reserva_dias){
@@ -172,7 +172,7 @@ while($dias < $reserva_horas){
 
     if($total_reservas >= $limite_dia){
         $total = 'Closed';
-        ?> <td bgcolor="#000000"> <?php
+        ?> <td bgcolor="#000000"><font color="grey"> <?php
     }else if( ($limite_dia - $total_reservas) <= ( $limite_dia / 4 ) ){
         $total = $limite_dia - $total_reservas;
         ?> <td bgcolor="#A0522D"> <?php
@@ -186,7 +186,7 @@ while($dias < $reserva_horas){
 
 ?>
 <b>
-<?php echo date("H:i", strtotime("$atendimento_horas")); ?>h
+<?php echo date("H:i", strtotime("$atendimento_horas")); ?>h</font>
 <br>
 <?php 
 if(is_numeric($total) || $total == 'Closed'){
@@ -194,8 +194,7 @@ if(is_numeric($total) || $total == 'Closed'){
     ?>-<?php
 }
 ?>
-</b>
-</font></td>
+</b></td>
 
 <?php
 }
