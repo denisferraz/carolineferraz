@@ -60,7 +60,7 @@ if($typeerror == '1'){
                 <h4 class="text-h4">Desculpa <?php echo $doc_nome ?>, mas <?php echo $typeerror ?> Veja abaixo datas/horarios proximos</h4>
                 
                 <style type="text/css">
-                                table {margin-left: 45px; border: 0px; border-spacing: 3px; border-collapse: separate;}
+                                table {margin-right: 10px; margin-left: 10px; border: 0px; border-spacing: 3px; border-collapse: separate;}
                                 table td{border: 2px solid orangered; text-align: center; padding: 5px; border-radius: 10px;}
                                 </style>
                                 <table border="1px"><tr>
@@ -131,7 +131,7 @@ $atendimento_horas = date('H:i:s', strtotime("$atendimento_hora_comeco") - $aten
 
 $atendimento_dias = date('Y-m-d', strtotime("$atendimento_dia") - (86400 * 3));
 if($atendimento_dias <= $hoje){
-$atendimento_dias = date('Y-m-d', strtotime("$atendimento_dia") + 86400);
+$atendimento_dias = date('Y-m-d', strtotime("$hoje") + 86400);
 }
 while($dias < $reserva_horas){
 
