@@ -55,8 +55,9 @@ if($tratamento_row > 0){
 <label><b>RG: </b><?php echo $rg ?></label><br>
 <label><b>CPF: </b><?php echo $cpf ?></label><br>
 <label><b>Data Nascimento: </b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></label><br><br>
-<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a><br><br>
-<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a>
+<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a><br>
+<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a><br>
+<a href="javascript:void(0)" onclick='window.open("arquivos.php?cpf=<?php echo $cpf ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
 </font>
 </fieldset>
 <br>

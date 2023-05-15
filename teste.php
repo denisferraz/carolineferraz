@@ -1,14 +1,12 @@
 <?php
 
+$cpf = '123456';
+$dirAtual = dirname(__DIR__).'\arquivos'.'/'.$cpf.'/';
 
-$diasemana_numero = date('w', time());
-
-$amanha = date('Y-m-d', strtotime('+1 days'));
-if($diasemana_numero == 6){
-$amanha = date('Y-m-d', strtotime('+3 days'));
-}
-if($diasemana_numero == 7){
-$amanha = date('Y-m-d', strtotime('+2 days'));
+if (!is_dir($dirAtual)) {
+    mkdir($dirAtual);
+}else{
+    echo "Existe: " . $dirAtual . "<br>";
 }
 
-echo "$amanha<br>$diasemana_numero";
+?>

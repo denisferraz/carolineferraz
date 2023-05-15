@@ -1115,4 +1115,34 @@ try {
     exit();
 
 
+}else if($id_job == 'arquivos'){
+
+    $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
+    $arquivo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo']).'.pdf';
+    $arquivos = $_FILES['arquivos'];
+    $dirAtual = dirname(__DIR__).'\arquivos'.'/'.$confirmacao.'/';
+
+    if($arquivos['type'] != 'application/pdf'){
+        echo "<script>
+        alert('Selecione apenas arquivos tipo PDF')
+        window.location.replace('reserva.php?confirmacao=$confirmacao')
+        </script>";
+        exit();
+    }
+
+    if (!is_dir($dirAtual)) {
+        mkdir($dirAtual);
+    }
+
+    move_uploaded_file($arquivos['tmp_name'], '../arquivos/'.$confirmacao.'/'.$arquivo);
+
+    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo Arquivo $arquivo na Confirmação $confirmacao"));
+
+    echo "<script>
+    alert('Arquivo Cadastrado com Sucesso')
+    window.location.replace('reserva.php?confirmacao=$confirmacao')
+    </script>";
+    exit();
+
 }

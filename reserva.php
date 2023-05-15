@@ -263,6 +263,33 @@ $sessao_hora = $select4['atendimento_hora'];
 ?><br>
 </fieldset>
         </section>
+<!-- ARQUIVOS !-->
+<section class="home-center"><br>
+<fieldset class="home-table">
+<legend><center><p>ARQUIVOS</b></p></center></legend>
+
+<?php
+$dir = 'arquivos/'.$confirmacao;
+$files = glob($dir . '/*.pdf');
+$numFiles = count($files);
+
+if($numFiles < 1){
+
+    echo "<center><b>$nome</b>, nenhum <b>Arquivo</b> foi localizado em seu nome! Fale com <b>$config_empresa</b> para lhe enviar.</center>";
+
+}else{
+
+    foreach ($files as $file) {
+        $fileName = basename($file);
+        echo '<br><center><div>';
+        echo '<a href="javascript:void(0)" onclick=\'window.open("' . $file . '","_blank")\'"><button>' . $fileName . '</button></a>';
+        echo '</div></center>';
+    }
+
+}
+?><br>
+</fieldset>
+        </section>
 <!-- CONTRATOS !-->
         <section class="home-center"><br>
         <center><p>Contratos</b></p></center><br>

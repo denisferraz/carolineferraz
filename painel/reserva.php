@@ -268,7 +268,35 @@ if($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada' && $status_
 </fieldset>
 <br>
 <fieldset>
-<center><legend><h2 class="title-cadastro">Consultas</h2></legend>
+<legend><h2 class="title-cadastro">Arquivos</h2></legend>
+<a href="javascript:void(0)" onclick='window.open("arquivos.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
+<br>
+<?php
+$dir = '../arquivos/'.$confirmacao;
+$files = glob($dir . '/*.pdf');
+$numFiles = count($files);
+
+if($numFiles < 1){
+
+    echo "<FONT COLOR=\"black\"><center>Nenhum <b>Arquivo</b> foi localizado neste Contrato</center></font>";
+
+}else{
+
+foreach ($files as $file) {
+    $fileName = basename($file);
+    echo '<div>';
+    echo '<a href="' . $file . '">' . $fileName . '</a> - ';
+    echo '<a href="arquivos_excluir.php?arquivo='.$dir.'/'.$fileName.'&confirmacao='.$confirmacao.'">';
+    echo '<button type="button">Excluir</button>';
+    echo '</a>';
+    echo '</div>';
+}}
+?>
+</fieldset>
+<br>
+<fieldset>
+<legend><h2 class="title-cadastro">Consultas</h2></legend>
+<center>
 <table widht="100%" border="1px" style="color:black">
     <tr>
         <td width="50%" align="center"><b>Confirmação</b></td>
