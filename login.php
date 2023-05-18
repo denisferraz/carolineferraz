@@ -116,7 +116,7 @@ if($id_job == 'registro'){
 //Incio Envio Whatsapp
 
 $doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem? Que bom ter você conosco! Para completar o seu cadastro, coloque este codigo: $codigo";
+$msg_wahstapp = "Ola $nome, tudo bem? Para completar o seu cadastro, coloque este codigo: $codigo em nosso site.";
 
 $curl = curl_init();
 
@@ -206,7 +206,7 @@ curl_close($curl);
  //Incio Envio Whatsapp
 
 $doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem? Que bom ter você conosco! Para completar o seu cadastro, coloque este codigo: $codigo";
+$msg_wahstapp = "Ola $nome, tudo bem? Para completar o seu cadastro, coloque este codigo: $codigo em nosso site.";
 
 $curl = curl_init();
 

@@ -133,7 +133,7 @@ while($select_proximos_dias = $query_proximos_dias->fetch(PDO::FETCH_ASSOC)){
 
 <!-- Futuras Totais -->
 <?php
-    $query_proximos_dias = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= '{$proximos_dias}' AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ORDER BY atendimento_dia, atendimento_hora ASC");
+    $query_proximos_dias = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia > '{$proximos_dias}' AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ORDER BY atendimento_dia, atendimento_hora ASC");
     $proximos_dias_qtd = $query_proximos_dias->rowCount();
     ?>
 <fieldset>

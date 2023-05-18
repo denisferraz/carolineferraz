@@ -20,6 +20,26 @@ if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
 
+$id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
+
+if($id_job == 'Cadastro'){
+
+$email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+
+$query_check2 = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$email}'");
+while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
+    $nome = $select_check2['nome'];
+    $telefone = $select_check2['telefone'];
+    $cpf = $select_check2['unico'];
+}
+
+}else{
+    $email = '';
+    $nome = '';
+    $telefone = '';
+    $cpf = '';
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -58,13 +78,13 @@ if($aut_acesso == 1){
             <label>Atendimento Hora</label>
             <input min="01:00" max="23:00" type="time" name="atendimento_hora" required>
             <label>Seu Nome</label>
-            <input minlength="5" maxlength="30" type="text" name="doc_nome" placeholder="Nome e Sobrenome" required>
+            <input minlength="5" maxlength="30" type="text" name="doc_nome" value="<?php echo $nome ?>" placeholder="Nome e Sobrenome" required>
             <label>Seu CPF</label>
-                            <input class="form-control" minlength="14" maxlength="14" type="text" name="doc_cpf" placeholder="000.000.000-00" OnKeyPress="formatar('###.###.###-##', this)" required>
+            <input class="form-control" minlength="11" maxlength="14" type="text" name="doc_cpf" value="<?php echo $cpf ?>" placeholder="000.000.000-00" OnKeyPress="formatar('###.###.###-##', this)" required>
             <label>Seu E-mail</label>
-            <input minlength="10" maxlength="35" type="email" name="doc_email" placeholder="exemplo@exemplo.com" required>
+            <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $email ?>" placeholder="exemplo@exemplo.com" required>
             <label>Telefone</label>
-            <input minlength="8" maxlength="18" type="text" name="doc_telefone" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
+            <input minlength="11" maxlength="18" type="text" name="doc_telefone" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
             <label><b>Tipo Consulta: 
                 <select name="id_job">
                 <option value="Avaliação Capilar">Avaliação Capilar</option>

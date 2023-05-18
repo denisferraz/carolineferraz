@@ -51,7 +51,10 @@ $status_reserva = 'Confirmada';
             <br><b>3.</b> Exame de Tricoscopia
             <br><b>4.</b> Parecer diagnóstico com orientações gerais
             <br><b>5.</b> Proposta de tratamento em consultório e indicação para uso de Cosmecêuticos de marcas parceiras para uso domiciliar
-            <br><br><b>Duração:</b> 45min<br><br>
+            <br><br><b>Duração:</b> 45min
+            <br><br>
+            <b>Ainda com Duvida se a <?php echo $id_job; ?> é para você?</b><br>
+            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $doc_nome ?>.%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chama no Whatsapp</button></a>
         </div>
         <?php }else if($id_job == 'Consulta Capilar'){ ?>
         <div class="home-text">
@@ -70,6 +73,8 @@ $status_reserva = 'Confirmada';
             <br><br>Este primeiro atendimento terá duração de <b>2hs</b> e te dá direito a um retorno (<i>se necessário</i>) em <b>até 90 dias</b>.
             <br><br>A avaliação de retorno terá duração e <b>40 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
             <br><br>
+            <b>Ainda com Duvida se a <?php echo $id_job; ?> é para você?</b><br>
+            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $doc_nome ?>.%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chama no Whatsapp</button></a>
         </div>
         <?php }else if($id_job == 'Consulta Online'){?>
         <div class="home-text">
@@ -85,6 +90,8 @@ $status_reserva = 'Confirmada';
             <br><br>Este primeiro atendimento terá duração de <b>1hs</b> e te dá direito a um retorno (<i>se necessário</i>) em até <b>90 dias</b>. 
             <br><br>A avaliação de retorno terá duração e <b>30 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
             <br><br>
+            <b>Ainda com Duvida se a <?php echo $id_job; ?> é para você?</b><br>
+            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $doc_nome ?>.%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chama no Whatsapp</button></a>
         </div>
         <?php }else if($id_job == 'Nova Sessão'){
         $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
@@ -102,7 +109,6 @@ $status_reserva = 'Confirmada';
             Segunda a Sexta: <b>14h as 18h</b><br>
             Sabado: <b>08h as 18h</b>
             </p>
-            <?php if($id_job == 'Nova Sessão'){ ?>
                 <form action="reservas_php.php" method="post">
                             <label><b>Dia do Atendimento</b></label>
                             <input min="<?php echo $min_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
@@ -137,13 +143,6 @@ $status_reserva = 'Confirmada';
                             <button class="home-btn" type="submit">Confirmar</button>
                             <br><br>
                             </form>
-
-                        <?php }else{ ?>
-
-                            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $doc_nome ?>.%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Agendar no Whatsapp</button></a>
-                            
-                        <?php } ?>
-
             </div>
         </section>
     </main>

@@ -295,7 +295,7 @@ if($numFiles < 1){
         <center><p>Contratos</b></p></center><br>
 
 <?php
-$check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao");
+$check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Nao'");
 $check_contratos->execute(array('email' => $email, 'confirmacao' => $confirmacao));
 
 $row_check_contratos = $check_contratos->rowCount();

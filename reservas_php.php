@@ -216,6 +216,44 @@ try {
 
 //Fim Envio de Email
 
+//Incio Envio Whatsapp
+if($envio_whatsapp == 'ativado' && $status_reserva == 'Confirmada'){
+
+    $doc_telefonewhats = "5571997417190";
+    $msg_wahstapp = "Olá $config_empresa, $doc_nome acabou de marcar uma $id_job para a Data: $atendimento_dia_str ás: $atendimento_hora_str. Entre em contato com ele por E-mail: $doc_email e/ou Whatsapp: $doc_telefone";
+    
+    $curl = curl_init();
+    
+    
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => "{
+        \"number\": \"$doc_telefonewhats\",
+        \"text\": \"$msg_wahstapp\"
+    }",
+      CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        "SecretKey: $whatsapp_secretkey",
+        "PublicToken: $whatsapp_publictoken",
+        "DeviceToken: $whatsapp_devicetoken",
+        "Authorization: $whatsapp_authorization"
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    
+    curl_close($curl);
+    
+    }
+//Fim Envio Whatsapp
+
  echo   "<script>
 window.location.replace('agendar_ok.php?token=$token')
         </script>";
@@ -527,7 +565,7 @@ window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
 //Incio Envio Whatsapp
 if($envio_whatsapp == 'ativado'){
 
-$doc_telefonewhats = "55$config_telefone";
+$doc_telefonewhats = "5571997417190";
 $msg_wahstapp = "Olá $config_empresa, $doc_nome solicitou uma alteração para Data: $atendimento_dia_str ás: $atendimento_hora_str. Caso queira Aceitar e/ou Recusar, acesso ao seu E-mail. | Atendimento Alterado em $data_email";
 
 $curl = curl_init();

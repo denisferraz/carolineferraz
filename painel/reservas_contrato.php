@@ -2,16 +2,9 @@
 
 session_start();
 ob_start();
-require('conexao.php');
-include_once 'validar_token.php';
+require('../conexao.php');
 
-if(!validarToken()){
-    header("Location: index.html");
-    exit();
-}
-
-$nome = recuperarNomeToken();
-$email = recuperarEmailToken();
+require('verifica_login.php');
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
@@ -19,6 +12,8 @@ $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token = :token");
 $query->execute(array('token' => $token));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $nome = $select['nome'];
+    $email = $select['email'];
     $telefone = $select['telefone'];
     $rg = $select['rg'];
     $nascimento = $select['nascimento'];
@@ -42,14 +37,17 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/contrato.css">
-    <link href="css/sweetalert2.css" rel="stylesheet">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/contrato.css">
+    <link href="../css/sweetalert2.css" rel="stylesheet">
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
-<script src="js/sweetalert2.js"></script>
+<script src="../js/sweetalert2.js"></script>
+<br><br>
+<center><a href="javascript:void(0)" onclick='window.open("reservas_aditivo.php?email=<?php echo $email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Cadastrar Aditivo Contratual</button></a></center>
+<br>
 
 <center><h1>Contrato de Prestação de Serviços para Realização de Procedimentos em Terapia Capilar,Barba e Sobrancelhas</h1></center>
 <br>
@@ -90,7 +88,7 @@ while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
 ______________________________________________________<br>
 <?php }else{ ?>
     ______________________________________________________<br>
@@ -154,7 +152,7 @@ Considerando que:
 <br><br><br><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
@@ -171,7 +169,7 @@ ______________________________________________________<br>
 <?php }else{ ?>
 <h3>(Não Assinado)</h3>
 <?php } ?>
-<img src="assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
+<img src="../assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
 ______________________________________________________<br>
 <b>Caroline Chagas Ferraz</b>
 <h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$procedimento_data")) ?>)</h3>
@@ -194,7 +192,7 @@ ______________________________________________________<br>
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
 ______________________________________________________<br>
 <?php }else{ ?>
     ______________________________________________________<br>
@@ -321,7 +319,7 @@ saveButton.addEventListener('click', () => {
   formData.append('assinatura', image);
 
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'assinatura.php', true);
+  xhr.open('POST', '../assinatura.php', true);
   xhr.onload = function() {
     if (this.status === 200) {
       console.log(this.responseText);
@@ -333,7 +331,7 @@ saveButton.addEventListener('click', () => {
   icon: 'success',
   title: 'Sua Assinatura foi Salva!'
   }).then(() => {
-    location.replace('reserva.php?confirmacao=<?php echo $confirmacao ?>&token=<?php echo $token ?>');
+    location.replace('../reserva.php?confirmacao=<?php echo $confirmacao ?>&token=<?php echo $token ?>');
   });
   
 }

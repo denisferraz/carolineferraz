@@ -116,7 +116,7 @@ $progress = $sessao_atual/$sessao_total*100;
 <td> | </td>
 <td><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Tratamento</button></div></a></td>
 <?php }else{  ?>
-<td><a href="javascript:void(0)" onclick='window.open("../contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-green btn"><button>Ver Contrato</button></div></a></td>
+<td><a href="javascript:void(0)" onclick='window.open("reservas_contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-green btn"><button>Ver Contrato</button></div></a></td>
 <td> | </td>
 <td><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Tratamento</button></div></a></td>
 <?php }  ?>

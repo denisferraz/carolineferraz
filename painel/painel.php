@@ -43,7 +43,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     </ul></li>
 
     <li><a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home")'>Consultas</a>
-    <ul><li><a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php","iframe-home")'>Cadastrar</a></li>
+    <ul><li><a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home")'>Cadastrar</a></li>
     <li><a href="javascript:void(0)" onclick='window.open("lembrete.php","iframe-home")'>Enviar Lembretes</a></li>
 
     </ul></li>

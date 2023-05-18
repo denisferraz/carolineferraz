@@ -57,7 +57,7 @@ if($tratamento_row > 0){
 <label><b>Data Nascimento: </b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></label><br><br>
 <a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a><br>
 <a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a><br>
-<a href="javascript:void(0)" onclick='window.open("arquivos.php?cpf=<?php echo $cpf ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
+<a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?php echo $email ?>","iframe-home")'><div class="card-group-green btn"><button>Cadastrar Consulta</button></div></a>
 </font>
 </fieldset>
 <br>

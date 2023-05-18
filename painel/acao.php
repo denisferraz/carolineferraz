@@ -940,7 +940,7 @@ $dompdf->stream(
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
 
-    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_valor, :confirmacao)");
+    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_valor, '-', '-', 'Não', :confirmacao)");
     $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'confirmacao' => $confirmacao));
 
     //Envio de Email	
@@ -975,6 +975,75 @@ try {
     Ola <b>$nome</b>, tudo bem?<br>
     $config_empresa lhe enviou o <b><u>Contrato $confirmacao</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
     <b>Contrato enviado em $data_email</b>
+    </fieldset><br><fieldset>
+    <legend><b><u>$config_empresa</u></legend>
+    <p>CNPJ: $config_cnpj</p>
+    <p>$config_telefone - $config_email</p>
+    <p>$config_endereco</p></b>
+    </fieldset>
+    
+    "; // FIM MENSAGEM
+
+        $mail->send();
+
+    } catch (Exception $e) {
+
+    }
+
+//Fim Envio de Email
+
+    echo "<script>
+    alert('Contrato Enviado com Sucesso')
+    window.location.replace('reserva.php?confirmacao=$confirmacao')
+    </script>";
+    exit();
+
+
+}else if($id_job == 'cadastro_aditivo'){
+
+    $procedimento_valor = mysqli_real_escape_string($conn_msqli, $_POST['procedimento_valor']);
+    $procedimentos = trim(mysqli_real_escape_string($conn_msqli, $_POST['procedimentos']));
+    $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
+    $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
+
+    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, '-', '-', :procedimento, :procedimento_valor, 'Sim', :confirmacao)");
+    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'confirmacao' => $confirmacao));
+
+    $query2 = $conexao->prepare("UPDATE contrato SET assinado = 'Não' WHERE email = :email AND confirmacao = :confirmacao");
+    $query2->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+
+    //Envio de Email	
+
+    $data_email = date('d/m/Y \-\ H:i:s');
+
+    $mail = new PHPMailer(true);
+
+try {
+    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    $mail->CharSet = 'UTF-8';
+    $mail->isSMTP();
+    $mail->Host = "$mail_Host";
+    $mail->SMTPAuth = true;
+    $mail->Username = "$mail_Username";
+    $mail->Password = "$mail_Password";
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = "$mail_Port";
+
+    $mail->setFrom("$config_email", "$config_empresa");
+    $mail->addAddress("$email", "$nome");
+    $mail->addBCC("$config_email");
+    
+    $mail->isHTML(true);                                 
+    $mail->Subject = "Aditivo Contrato $confirmacao - $config_empresa";
+  // INICIO MENSAGEM  
+    $mail->Body = "
+
+    <fieldset>
+    <legend><b>Aditivo $confirmacao</b></legend>
+    <br>
+    Ola <b>$nome</b>, tudo bem?<br>
+    $config_empresa lhe enviou o <b><u>Aditivo do Contrato $confirmacao</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
+    <b>Aditivo do Contrato enviado em $data_email</b>
     </fieldset><br><fieldset>
     <legend><b><u>$config_empresa</u></legend>
     <p>CNPJ: $config_cnpj</p>
