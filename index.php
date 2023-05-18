@@ -13,6 +13,8 @@ if(!validarToken()){
 $nome = recuperarNomeToken();
 $email = recuperarEmailToken();
 
+echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
+
 ?>
 
 <!DOCTYPE html>

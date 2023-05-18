@@ -17,7 +17,7 @@ $hoje = date('Y-m-d');
 $proximos_dias_amanha = date('Y-m-d', strtotime("$hoje") + (86400 * 1 ));
 $proximos_dias = date('Y-m-d', strtotime("$hoje") + (86400 * 7 ));
 
-echo "<meta HTTP-EQUIV='refresh' CONTENT='60'>";
+echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
 ?>
 
 <!DOCTYPE html>

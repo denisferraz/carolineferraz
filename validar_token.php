@@ -1,6 +1,10 @@
 <?php
 
+include_once('conexao.php');
+
 function validarToken(){
+
+    global $conexao;
 
     $token = $_COOKIE['token'];
 
@@ -19,7 +23,11 @@ function validarToken(){
         $dados_token = base64_decode($payload);
         $dados_token = json_decode($dados_token);
 
-        if($dados_token->exp > time()){
+        $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+        $query->execute(array('email' => $dados_token->email));
+        $row = $query->rowCount();
+
+        if($dados_token->exp > time() && $row == 1){
 
             return true;
         }else{
