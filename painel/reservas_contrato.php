@@ -40,11 +40,9 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/contrato.css">
-    <link href="../css/sweetalert2.css" rel="stylesheet">
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
-<script src="../js/sweetalert2.js"></script>
 <br><br>
 <center><a href="javascript:void(0)" onclick='window.open("reservas_aditivo.php?email=<?php echo $email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Cadastrar Aditivo Contratual</button></a></center>
 <br>
@@ -65,12 +63,16 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 </fieldset>
 <br>
+<?php
+$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Sim'");
+$query3->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+$row_check3 = $query3->rowCount();
+if($row_check3 < 1){}else{
+?>
 <fieldset>
 <center><p class="text-title">ADITIVO CONTRATUAL</p></center>
 <?php
 $aditivo_qtd = 0;
-$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Sim'");
-$query3->execute(array('email' => $email, 'confirmacao' => $confirmacao));
 while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
     $aditivo_assinado = $select3['assinado'];
     $assinado_data = $select3['assinado_data'];
@@ -88,7 +90,7 @@ while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 ______________________________________________________<br>
 <?php }else{ ?>
     ______________________________________________________<br>
@@ -105,6 +107,9 @@ ______________________________________________________<br>
 ?>
 </fieldset>
 <br>
+<?php
+}
+?>
 <fieldset>
 <p class="text-title">II. CONSIDERAÇÕES PRELIMINARES</p><br>
 Considerando que:
@@ -152,15 +157,10 @@ Considerando que:
 <br><br><br><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
-<div style="touch-action: none;">
-<button id="save">Salvar</button>
-<canvas id="canvas" width="400" height="200"></canvas>
-<button id="clear">Limpar</button>
-</div>
     ______________________________________________________<br>
 <?php } ?>
 <b><?php echo $nome ?></b>
@@ -192,7 +192,7 @@ ______________________________________________________<br>
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 ______________________________________________________<br>
 <?php }else{ ?>
     ______________________________________________________<br>
@@ -204,140 +204,6 @@ ______________________________________________________<br>
 <h3 class="contrato">(Não Assinado)</h3>
 <?php } ?>
 </center>
-
-<script>
-const canvas = document.querySelector('#canvas');
-const ctx = canvas.getContext('2d');
-
-let isDrawing = false;
-let lastX = 0;
-let lastY = 0;
-let hasDrawn = false;
-
-function draw(e) {
-
-  if (!lastX && !lastY) {
-    lastX = e.offsetX || e.touches[0].pageX;
-    lastY = e.offsetY || e.touches[0].pageY;
-  }
-
-  // Verifica se o mouse ou o toque estão pressionados
-  isDrawing = e.buttons === 1 || e.type === "touchmove";
-
-  if (!isDrawing) {
-    return;
-  }
-
-  // Obtém as coordenadas do evento
-  let clientX, clientY;
-  if (e.type === "mousedown" || e.type === "mouseup" || e.type === "mousemove") {
-    clientX = e.clientX;
-    clientY = e.clientY;
-  } else if (e.type === "touchstart" || e.type === "touchend" || e.type === "touchmove") {
-    clientX = e.touches[0].clientX;
-    clientY = e.touches[0].clientY;
-  }
-
-  // Calcula as coordenadas relativas ao Canvas
-  const canvasRect = canvas.getBoundingClientRect();
-  const x = clientX - canvasRect.left;
-  const y = clientY - canvasRect.top;
-
-  // Desenha na tela
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-
-  // Salva as últimas coordenadas
-  lastX = x;
-  lastY = y;
-
-  // Define a variável hasDrawn como true quando há algum desenho
-  hasDrawn = true;
-}
-
-canvas.addEventListener('mousedown', (e) => {
-  isDrawing = true;
-  lastX = e.offsetX;
-  lastY = e.offsetY;
-});
-
-canvas.addEventListener('mousemove', draw);
-
-canvas.addEventListener('mouseup', () => {
-  isDrawing = false;
-});
-
-canvas.addEventListener('touchstart', (e) => {
-  isDrawing = true;
-  lastX = e.touches[0].pageX - canvas.offsetLeft;
-  lastY = e.touches[0].pageY - canvas.offsetTop;
-});
-
-canvas.addEventListener('touchmove', draw);
-
-canvas.addEventListener('touchend', () => {
-  isDrawing = false;
-});
-
-const clearButton = document.querySelector('#clear');
-clearButton.addEventListener('click', () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-});
-
-const saveButton = document.querySelector('#save');
-saveButton.addEventListener('click', () => {
-
-  const Toast = Swal.mixin({
-  toast: true,
-  position: 'center',
-  showConfirmButton: false,
-  timer: 2000,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
-  }
-})
-
-  // Retorna se não houver desenho realizado
-  if (!hasDrawn) {
-
-  Toast.fire({
-  icon: 'error',
-  title: 'Assintura em branco!'
-  });
-
-    return;
-
-  }else{
-
-  const image = canvas.toDataURL('image/png');
-  
-  const formData = new FormData();
-  formData.append('assinatura', image);
-
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', '../assinatura.php', true);
-  xhr.onload = function() {
-    if (this.status === 200) {
-      console.log(this.responseText);
-    }
-  };
-  xhr.send(formData);
-
-  Toast.fire({
-  icon: 'success',
-  title: 'Sua Assinatura foi Salva!'
-  }).then(() => {
-    location.replace('../reserva.php?confirmacao=<?php echo $confirmacao ?>&token=<?php echo $token ?>');
-  });
-  
-}
-});
-    </script> 
-
 </body>
 </html>
 

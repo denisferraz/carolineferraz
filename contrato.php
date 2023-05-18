@@ -67,12 +67,16 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 </fieldset>
 <br>
+<?php
+$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Sim'");
+$query3->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+$row_check3 = $query3->rowCount();
+if($row_check3 < 1){}else{
+?>
 <fieldset>
 <center><p class="text-title">ADITIVO CONTRATUAL</p></center>
 <?php
 $aditivo_qtd = 0;
-$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Sim'");
-$query3->execute(array('email' => $email, 'confirmacao' => $confirmacao));
 while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
     $aditivo_assinado = $select3['assinado'];
     $assinado_data = $select3['assinado_data'];
@@ -90,7 +94,7 @@ while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 ______________________________________________________<br>
 <?php }else{ ?>
     ______________________________________________________<br>
@@ -107,6 +111,7 @@ ______________________________________________________<br>
 ?>
 </fieldset>
 <br>
+<?php } ?>
 <fieldset>
 <p class="text-title">II. CONSIDERAÇÕES PRELIMINARES</p><br>
 Considerando que:
@@ -154,14 +159,15 @@ Considerando que:
 <br><br><br><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
 <div style="touch-action: none;">
 <button id="save">Salvar</button>
 <canvas id="canvas" width="400" height="200"></canvas>
-<button id="clear">Limpar</button>
+<button id="clear">Limpar</button><br>
+<button id="namesign">Assinar com Nome</button>
 </div>
     ______________________________________________________<br>
 <?php } ?>
@@ -194,7 +200,7 @@ ______________________________________________________<br>
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 ______________________________________________________<br>
 <?php }else{ ?>
     ______________________________________________________<br>
@@ -288,6 +294,28 @@ clearButton.addEventListener('click', () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
+const nameSignButton = document.querySelector('#namesign');
+nameSignButton.addEventListener('click', () => {
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const nome = "<?php echo $nome ?>";
+
+  if (!nome) {
+    return;
+  }
+
+  const canvasRect = canvas.getBoundingClientRect();
+  const textWidth = ctx.measureText(nome).width;
+  const x = canvasRect.width / 2 - textWidth / 2;
+  const y = canvasRect.height - 20;
+
+  ctx.font = "24px Arial";
+  ctx.fillText(nome, x, y);
+
+  hasDrawn = true;
+});
+
 const saveButton = document.querySelector('#save');
 saveButton.addEventListener('click', () => {
 
@@ -321,7 +349,7 @@ saveButton.addEventListener('click', () => {
   formData.append('assinatura', image);
 
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'assinatura.php', true);
+  xhr.open('POST', 'assinatura.php?confirmacao=<?php echo $confirmacao ?>', true);
   xhr.onload = function() {
     if (this.status === 200) {
       console.log(this.responseText);
