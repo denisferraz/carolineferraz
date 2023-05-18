@@ -1,14 +1,17 @@
 <?php
 
-//ini_set('display_errors', 0 );
-//error_reporting(0);
-
 session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
-$email = $_SESSION['email'];
+while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
+    $aut_acesso = $select_check['aut_painel'];
+}
+
+if($aut_acesso == 1){
+    echo 'Você não tem permissão para acessar esta pagina';
+}else{
 
 ?>
 
@@ -80,3 +83,7 @@ $despesa_descricao = $select['despesa_descricao'];
 
 </body>
 </html>
+
+<?php
+}
+?>

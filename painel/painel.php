@@ -1,8 +1,5 @@
 <?php
 
-//ini_set('display_errors', 0 );
-//error_reporting(0);
-
 session_start();
 require('../conexao.php');
 require('verifica_login.php');
@@ -10,8 +7,7 @@ require('verifica_login.php');
 
 $query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_configuracoes'];
-    $unico_usuario = $select['unico'];
+    $aut_acesso = $select_check['aut_painel'];
     $nome = $select['nome'];
 }
 ?>

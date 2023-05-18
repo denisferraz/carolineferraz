@@ -10,6 +10,15 @@ require '../PHPMailer/src/Exception.php';
 require '../PHPMailer/src/PHPMailer.php';
 require '../PHPMailer/src/SMTP.php';
 
+$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
+    $aut_acesso = $select_check['aut_painel'];
+}
+
+if($aut_acesso == 1){
+    echo 'Você não tem permissão para acessar esta pagina';
+}else{
+
 $diasemana_numero = date('w', time());
 
 if($diasemana_numero = 0){
@@ -151,4 +160,8 @@ echo "<script>
         alert('Lembrete de consultas enviados com Sucesso')
         window.location.replace('home.php')
         </script>";
+?>
+
+<?php
+}
 ?>
