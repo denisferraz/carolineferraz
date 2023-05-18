@@ -96,7 +96,7 @@ while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
 <br><p class="text-title"><?php echo $aditivo_qtd ?>.2. VALOR TOTAL E FORMA DE PAGAMENTO:</p>
 <b><?php echo $aditivo_procedimento_valor ?></b><br>
 <br><p class="text-title"><?php echo $aditivo_qtd ?>.3. LOCAL E DATA DO ADITIVO:</p>
-<b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br><br>
+<b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br>
 <center>
 <?php if($assinado == 'Sim'){?>
 <img src="../assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
@@ -163,7 +163,6 @@ Considerando que:
 <br>
 <br><br>
 <b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
-<br><br><br><br>
 <center>
 <?php if($assinado == 'Sim'){?>
 <img src="../assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>

@@ -110,7 +110,7 @@ if($id_job == 'registro'){
 
         $codigo = rand(10000000, 99999999);
 
-        $query2 = $conexao->prepare("INSERT INTO $tabela_painel_users (email, tipo, senha, nome, telefone, unico, token, rg, nascimento, codigo, tentativas, aut_reservas, aut_disponibilidade, aut_configuracoes, aut_acessos) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :cpf, :token, :rg, :nascimento, :codigo, '0', '1', '1', '1', '1')");
+        $query2 = $conexao->prepare("INSERT INTO $tabela_painel_users (email, tipo, senha, nome, telefone, unico, token, rg, nascimento, codigo, tentativas, aut_painel) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :cpf, :token, :rg, :nascimento, :codigo, '0', '1')");
         $query2->execute(array('email' => $email, 'nome' => $nome, 'cpf' => $doc_cpf, 'token' => $token, 'rg' => $rg, 'nascimento' => $nascimento, 'codigo' => $codigo, 'telefone' => $telefone, 'senha' => $crip_senha));
         
 //Incio Envio Whatsapp

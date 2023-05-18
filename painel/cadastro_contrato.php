@@ -53,6 +53,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
             <label><b>Procedimento</b></label>
             <textarea name="procedimentos" rows="5" cols="44" minlength="10" maxlength="300" placeholder="Procedimentos... (utilize o <br> para pular linha)" required></textarea>
             <br><br>
+            <input type="hidden" name="nome" value="<?php echo $nome ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
             <input type="hidden" name="id_job" value="cadastro_contrato" />

@@ -939,6 +939,7 @@ $dompdf->stream(
     $procedimentos = trim(mysqli_real_escape_string($conn_msqli, $_POST['procedimentos']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
+    $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
 
     $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_valor, '-', '-', 'Não', :confirmacao)");
     $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'confirmacao' => $confirmacao));
@@ -973,8 +974,8 @@ try {
     <legend><b>Contrato $confirmacao</b></legend>
     <br>
     Ola <b>$nome</b>, tudo bem?<br>
-    $config_empresa lhe enviou o <b><u>Contrato $confirmacao</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
-    <b>Contrato enviado em $data_email</b>
+    <br>$config_empresa lhe enviou o <b><u>Contrato $confirmacao</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
+    <br><b>Contrato enviado em $data_email</b>
     </fieldset><br><fieldset>
     <legend><b><u>$config_empresa</u></legend>
     <p>CNPJ: $config_cnpj</p>
@@ -1005,6 +1006,7 @@ try {
     $procedimentos = trim(mysqli_real_escape_string($conn_msqli, $_POST['procedimentos']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
+    $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
 
     $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, '-', '-', :procedimento, :procedimento_valor, 'Sim', :confirmacao)");
     $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'confirmacao' => $confirmacao));
@@ -1042,8 +1044,8 @@ try {
     <legend><b>Aditivo $confirmacao</b></legend>
     <br>
     Ola <b>$nome</b>, tudo bem?<br>
-    $config_empresa lhe enviou o <b><u>Aditivo do Contrato $confirmacao</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
-    <b>Aditivo do Contrato enviado em $data_email</b>
+    <br>$config_empresa lhe enviou o <b><u>Aditivo do Contrato $confirmacao</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
+    <br><b>Aditivo do Contrato enviado em $data_email</b>
     </fieldset><br><fieldset>
     <legend><b><u>$config_empresa</u></legend>
     <p>CNPJ: $config_cnpj</p>

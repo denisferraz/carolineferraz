@@ -19,7 +19,7 @@ $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
 $senha = mysqli_real_escape_string($conn_msqli, $_POST['senha']);
 $crip_senha = md5($senha);
 
-$query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND senha = :senha AND tipo = 'Admin'");
+$query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND senha = :senha AND tipo = 'Admin' AND aut_painel = '0'");
 $query->execute(array('email' => $email, 'senha' => $crip_senha));
 $row = $query->rowCount();
 
