@@ -23,11 +23,17 @@ $query->execute(array('token' => $token));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $nome = $select['nome'];
     $email = $select['email'];
-    $telefone = $select['telefone'];
     $rg = $select['rg'];
     $nascimento = $select['nascimento'];
     $cpf = $select['unico'];
 }
+
+//Ajustar CPF
+$parte1 = substr($cpf, 0, 3);
+$parte2 = substr($cpf, 3, 3);
+$parte3 = substr($cpf, 6, 3);
+$parte4 = substr($cpf, 9);
+$cpf = "$parte1.$parte2.$parte3-$parte4";
 
 $query2 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Não'");
 $query2->execute(array('email' => $email, 'confirmacao' => $confirmacao));
