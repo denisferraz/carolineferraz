@@ -40,6 +40,19 @@ $nascimento = $select['nascimento'];
 $telefone = $select['telefone'];
 $token = $select['token'];
 }
+
+//Ajustar CPF
+$parte1 = substr($cpf, 0, 3);
+$parte2 = substr($cpf, 3, 3);
+$parte3 = substr($cpf, 6, 3);
+$parte4 = substr($cpf, 9);
+$cpf = "$parte1.$parte2.$parte3-$parte4";
+
+//Ajustar Telefone
+$ddd = substr($telefone, 0, 2);
+$prefixo = substr($telefone, 2, 5);
+$sufixo = substr($telefone, 7);
+$telefone = "($ddd)$prefixo-$sufixo";
 ?>
 <fieldset>
 <legend><h2 class="title-cadastro">Cadastro <u><?php echo $nome ?></u></h2></legend>

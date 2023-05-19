@@ -48,6 +48,19 @@ $id = $select['id'];
 $tipo_consulta = $select['tipo_consulta'];
 }
 
+//Ajustar CPF
+$parte1 = substr($doc_cpf, 0, 3);
+$parte2 = substr($doc_cpf, 3, 3);
+$parte3 = substr($doc_cpf, 6, 3);
+$parte4 = substr($doc_cpf, 9);
+$doc_cpf = "$parte1.$parte2.$parte3-$parte4";
+
+//Ajustar Telefone
+$ddd = substr($doc_telefone, 0, 2);
+$prefixo = substr($doc_telefone, 2, 5);
+$sufixo = substr($doc_telefone, 7);
+$doc_telefone = "($ddd)$prefixo-$sufixo";
+
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $query->execute(array('email' => $doc_email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
