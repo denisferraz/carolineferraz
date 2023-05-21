@@ -116,7 +116,7 @@ if($id_job == 'registro'){
 //Incio Envio Whatsapp
 
 $doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem? Para completar o seu cadastro, coloque este codigo: $codigo em nosso site.";
+$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id_job=Codigo&email=$email&codigo=$codigo&token=$token";
 
 $curl = curl_init();
 
@@ -151,7 +151,7 @@ curl_close($curl);
 
         echo "<script>
         alert('Um Codigo foi Enviado para o seu Celular!')
-        window.location.replace('registro.php?id_job=Codigo&token=$token&email=$email')
+        window.location.replace('registro.php?id_job=EnvCodigo&email=$email&token=$token&telefone=$telefone&nome=$nome')
         </script>";
         exit();
     }else if($id_registro == 'Codigo'){
@@ -206,7 +206,7 @@ curl_close($curl);
  //Incio Envio Whatsapp
 
 $doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem? Para completar o seu cadastro, coloque este codigo: $codigo em nosso site.";
+$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id_job=Codigo&email=$email&codigo=$codigo&token=$token";
 
 $curl = curl_init();
 

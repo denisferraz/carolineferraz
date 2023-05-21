@@ -30,7 +30,9 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
             <br><b>3.</b> Exame de Tricoscopia
             <br><b>4.</b> Parecer diagnóstico com orientações gerais
             <br><b>5.</b> Proposta de tratamento em consultório e indicação para uso de Cosmecêuticos de marcas parceiras para uso domiciliar
-            <br><br><b>Duração:</b> 45min<br><br>
+            <br><br><b>Duração:</b> 45min
+            <br><b>Investimento:</b> R$150,00
+            <br><br>
         </div>
         <?php }else if($id_job == 'Consulta Capilar'){ ?>
         <div class="home-text">
@@ -48,6 +50,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
             <br><b>10.</b> Trinta dias de suporte direto com a Tricologista via Whatsapp.
             <br><br>Este primeiro atendimento terá duração de <b>2hs</b> e te dá direito a um retorno (<i>se necessário</i>) em <b>até 90 dias</b>.
             <br><br>A avaliação de retorno terá duração e <b>40 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
+            <br><br><b>Investimento:</b> R$300,00
             <br><br>
         </div>
         <?php }else if($id_job == 'Consulta Online'){?>
@@ -63,15 +66,11 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
             <br><b>7.</b> Trinta dias de suporte direto com a Tricologista via Whatsapp.
             <br><br>Este primeiro atendimento terá duração de <b>1hs</b> e te dá direito a um retorno (<i>se necessário</i>) em até <b>90 dias</b>. 
             <br><br>A avaliação de retorno terá duração e <b>30 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
+            <br><br><b>Investimento:</b> R$200,00
             <br><br>
         </div>
-        <?php }else if($id_job == 'Nova Sessão'){?>
-        <div class="home-text">
-        <h4 class="text-h4"><center><?php echo $id_job ?></center></h4><br>
-            Vamos marcar sua proxima sessão?<br><br>
-        </div>
         <?php }?>
-
+        
             <div class="home-text">
             <h4 class="text-h4"><center>Agende sua <?php echo $id_job ?></center></h4>
             <p><b>Nossos Horários</b><br>

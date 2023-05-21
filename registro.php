@@ -87,19 +87,37 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                             <label for="conf_password">Confirmar Senha</label>
                         </div>
                         <?php
-                            }else if($id_registro == 'Codigo'){
-
+                            }else if($id_registro == 'EnvCodigo'){
                             $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
                             $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-
+                            $nome = mysqli_real_escape_string($conn_msqli, $_GET['nome']);
+                            $telefone = mysqli_real_escape_string($conn_msqli, $_GET['telefone']);
+                            
+                            //Ajustar Telefone
+                            $ddd = substr($telefone, 0, 2);
+                            $prefixo = substr($telefone, 2, 5);
+                            $sufixo = substr($telefone, 7);
+                            $telefone = "($ddd)$prefixo-$sufixo";
+                            ?>
+                        <center><p>Codigo enviado para o seu Celular!</p></center><br>
+                        <br><p>
+                            <b>Nome:</b> <?php echo $nome; ?><br>
+                            <b>Email:</b> <?php echo $email; ?><br>
+                            <b>Telefone:</b> <?php echo $telefone; ?>
+                        </p>
+                        <?php
+                            }else if($id_registro == 'Codigo'){
+                            $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+                            $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+                            $codigo = mysqli_real_escape_string($conn_msqli, $_GET['codigo']);
                         ?>
-                        <center><p>Digite o codigo enviado para o seu Celular!</p></center><br>
+                        <center><p>Confirme o Codigo Enviado abaixo</p></center><br>
                         <div class="input-field">
                             <input type="email" class="input" minlength="8" maxlength="50" name="email" value="<?php echo $email; ?>" required>
                             <label for="email">Email</label>
                         </div>
                         <div class="input-field">
-                            <input type="text" class="input" minlength="8" maxlength="8" name="codigo" required>
+                            <input type="text" class="input" minlength="8" maxlength="8" name="codigo" value="<?php echo $codigo; ?>" required>
                             <label for="codigo">Codigo</label>
                         </div>
                         <input type="hidden" name="token" value="<?php echo $token; ?>">
@@ -126,11 +144,27 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                         <div class="input-field">
                         <input type="hidden" name="id_registro" value="<?php echo $id_registro; ?>">
                         <input type="hidden" name="id_job" value="registro">
+                        <?php
+                            if($id_registro != 'EnvCodigo'){
+                        ?>
                             <input type="submit" class="submit" value="Confirmar"> 
+                        <?php
+                            }
+                        ?>
                         </div>
                         </form>
                         <div class="signin">
+                        <?php
+                            if($id_registro == 'EnvCodigo'){
+                        ?>
+                            <span>Caso não tenha recebido a mensagem no Whatsapp, altere seu telefone <a href="registro.php?id_job=RecCodigo&token=<?php echo $token; ?>&email=<?php echo $email; ?>">Clicando Aqui</a></span>
+                        <?php
+                            }else{
+                        ?>
                             <span><b>[X]</b> Aceito os <a href="lgpd.php" target="_blank">Termos e Condições</a></span>
+                        <?php
+                            }
+                        ?>
                         </div>
                      </div>
                 </div>

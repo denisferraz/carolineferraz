@@ -25,6 +25,9 @@ $confirmacao = gerarConfirmacao();
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 $status_reserva = 'Confirmada';
+
+$query2 = $conexao->query("SELECT * FROM reservas_atendimento WHERE doc_email = '{$email}' AND status_reserva != 'Finalizada' AND (status_reserva = 'Em Andamento' OR status_sessao = 'Em Andamento')");
+$novasessao = $query2->rowCount();
 ?>
 
 <!DOCTYPE html>
@@ -52,9 +55,11 @@ $status_reserva = 'Confirmada';
             <br><b>4.</b> Parecer diagnóstico com orientações gerais
             <br><b>5.</b> Proposta de tratamento em consultório e indicação para uso de Cosmecêuticos de marcas parceiras para uso domiciliar
             <br><br><b>Duração:</b> 45min
+            <br><b>Investimento:</b> R$150,00
             <br><br>
             <b>Ainda com Duvida se a <?php echo $id_job; ?> é para você?</b><br>
             <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $doc_nome ?>.%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chama no Whatsapp</button></a>
+            <br><br>
         </div>
         <?php }else if($id_job == 'Consulta Capilar'){ ?>
         <div class="home-text">
@@ -72,9 +77,11 @@ $status_reserva = 'Confirmada';
             <br><b>10.</b> Trinta dias de suporte direto com a Tricologista via Whatsapp.
             <br><br>Este primeiro atendimento terá duração de <b>2hs</b> e te dá direito a um retorno (<i>se necessário</i>) em <b>até 90 dias</b>.
             <br><br>A avaliação de retorno terá duração e <b>40 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
+            <br><br><b>Investimento:</b> R$300,00
             <br><br>
             <b>Ainda com Duvida se a <?php echo $id_job; ?> é para você?</b><br>
             <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $doc_nome ?>.%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chama no Whatsapp</button></a>
+            <br><br>
         </div>
         <?php }else if($id_job == 'Consulta Online'){?>
         <div class="home-text">
@@ -89,9 +96,11 @@ $status_reserva = 'Confirmada';
             <br><b>7.</b> Trinta dias de suporte direto com a Tricologista via Whatsapp.
             <br><br>Este primeiro atendimento terá duração de <b>1hs</b> e te dá direito a um retorno (<i>se necessário</i>) em até <b>90 dias</b>. 
             <br><br>A avaliação de retorno terá duração e <b>30 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
+            <br><br><b>Investimento:</b> R$200,00
             <br><br>
             <b>Ainda com Duvida se a <?php echo $id_job; ?> é para você?</b><br>
             <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $doc_nome ?>.%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chama no Whatsapp</button></a>
+            <br><br>
         </div>
         <?php }else if($id_job == 'Nova Sessão'){
         $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
@@ -109,6 +118,15 @@ $status_reserva = 'Confirmada';
             Segunda a Sexta: <b>14h as 18h</b><br>
             Sabado: <b>08h as 18h</b>
             </p>
+            <?php
+        if($novasessao == 1){
+        while($select_sessao = $query2->fetch(PDO::FETCH_ASSOC)){
+        $confirmacao = $select_sessao['confirmacao'];
+        } 
+        $status_reserva = 'Em Andamento';
+        $id_job = 'Nova Sessão';
+            }
+            ?>
                 <form action="reservas_php.php" method="post">
                             <label><b>Dia do Atendimento</b></label>
                             <input min="<?php echo $min_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>

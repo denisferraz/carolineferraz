@@ -145,6 +145,11 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Criou a consulta $confirmacao"));    
     }
+
+    echo   "<script>
+    window.location.replace('agendar_ok.php?token=$token')
+            </script>";
+
 //Envio de Email	
 
 $data_email = date('d/m/Y \-\ H:i:s');
@@ -253,10 +258,7 @@ if($envio_whatsapp == 'ativado' && $status_reserva == 'Confirmada'){
     
     }
 //Fim Envio Whatsapp
-
- echo   "<script>
-window.location.replace('agendar_ok.php?token=$token')
-        </script>";
+exit();
 
 }else if($status_reserva == 'Cancelada' || $status_reserva == 'Cancelado'){
 

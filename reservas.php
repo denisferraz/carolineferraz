@@ -34,7 +34,9 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <main>
         <section class="home-center">
             <br><br>
-        <center><p>Acompanhamentos de <b><?php echo $nome ?></b></p></center><br>
+        <center><p>Bem vindo(a) <b><?php echo $nome ?></b>!<br><br>
+        Acompanhe abaixo a sua evolução!
+        </p></center><br>
 
 <?php
 $check_history = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE doc_email = :email ORDER BY atendimento_dia DESC LIMIT 10");
@@ -44,7 +46,7 @@ $row_check = $check_history->rowCount();
 
 if($row_check < 1){
 
-    echo "<center><b>$nome</b>, nenhuma <b>Consulta</b> foi localizada em seu nome! Agende sua Consulta com <b>$config_empresa</b> agora mesmo</center>";
+    echo "<center>Nenhuma <b>Consulta</b> foi localizada em seu nome! Agende sua Consulta com <b>$config_empresa</b> agora mesmo</center>";
 
 }else{
 

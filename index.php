@@ -68,7 +68,7 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
     </header>
 
     <div class="iframe-container">
-        <iframe name="iframe-container" id="iframe-container" src="home.html"></iframe>
+        <iframe name="iframe-container" id="iframe-container" src="reservas.php"></iframe>
     </div> 
     <script>
         $(function(){ 
