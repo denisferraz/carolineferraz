@@ -104,7 +104,7 @@ try {
 
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, passando para lhe lembrar do seu Atendimento para a Data: $atendimento_dia_str ás: $atendimento_hora_str. Posso confirmar seu Atendimento?";
+    $msg_wahstapp = "Olá $doc_nome, passando para lhe lembrar do seu Atendimento!".'\n\n'. "Data: $atendimento_dia_str ás: $atendimento_hora_str.".'\n\n'."Posso confirmar seu Atendimento?";
     
     $curl = curl_init();
     
@@ -138,7 +138,7 @@ try {
     //Fim Envio Whatsapp
 
     //Faz a String pra envio de CAROL
-    $atendimentos_dia .= " || $doc_nome em $atendimento_dia_str as $atendimento_hora_str";
+    $atendimentos_dia .= '\n\n'."$doc_nome em $atendimento_dia_str as $atendimento_hora_str";
 
 }
 

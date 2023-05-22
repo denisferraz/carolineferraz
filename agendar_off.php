@@ -33,6 +33,8 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
             <br><br><b>Duração:</b> 45min
             <br><b>Investimento:</b> R$150,00
             <br><br>
+            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Agendar pelo Whatsapp</button></a>
+            <br><br>
         </div>
         <?php }else if($id_job == 'Consulta Capilar'){ ?>
         <div class="home-text">
@@ -52,6 +54,8 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
             <br><br>A avaliação de retorno terá duração e <b>40 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
             <br><br><b>Investimento:</b> R$300,00
             <br><br>
+            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chamar pelo Whatsapp</button></a>
+            <br><br>
         </div>
         <?php }else if($id_job == 'Consulta Online'){?>
         <div class="home-text">
@@ -68,6 +72,8 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
             <br><br>A avaliação de retorno terá duração e <b>30 minutos</b> e o seu objetivo é o de verificar se as estratégias domiciliares apresentaram resultados.
             <br><br><b>Investimento:</b> R$200,00
             <br><br>
+            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20agendar%20uma%20<?php echo $id_job ?>!" target="_blank"><button class="home-btn" type="submit">Chamar pelo Whatsapp</button></a>
+            <br><br>
         </div>
         <?php }?>
         
@@ -77,9 +83,8 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
             Segunda a Sexta: <b>14h as 18h</b><br>
             Sabado: <b>08h as 18h</b><br><br>
             </p>
-            <h4 class="text-h4">Para Agendar, <a href="painel.php">Acesse sua Conta</a></h4>
-                
-
+            <h4 class="text-h4">Para Agendar você mesmo<br>
+            <center><a href="painel.php">Acesse sua Conta</a></center></h4>
             </div>
         </section>
     </main>
