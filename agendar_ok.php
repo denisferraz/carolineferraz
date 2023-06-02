@@ -21,9 +21,8 @@ $doc_telefone = $select['doc_telefone'];
 $doc_nome = $select['doc_nome'];
 $tipo_consulta = $select['tipo_consulta'];
 $atendimento_dia = $select['atendimento_dia'];
-$atendimento_dia = strtotime("$atendimento_dia");
 $atendimento_hora = $select['atendimento_hora'];
-$atendimento_hora = strtotime("$atendimento_hora");
+$id_job = $select['tipo_consulta'];
 }
 
 ?>
@@ -48,12 +47,31 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <p>
             <b>Confirmação:</b> <?php echo $confirmacao ?><br><br>
             <b>Tipo Consulta:</b> <?php echo $tipo_consulta ?><br>
-            <b>Data:</b> <?php echo date('d/m/Y', $atendimento_dia) ?><br>
-            <b>Hora:</b> <?php echo date('H:i\h', $atendimento_hora) ?>
-            </p>
-            <p>Um E-mail foi enviado para <b><?php echo $doc_email ?></b>, com mais informações sobre o seu atendimento, assim como uma mensagem no Whatsapp <b><u><?php echo $doc_telefone ?></b></p> 
-
-</div>
+            <b>Data:</b> <?php echo date('d/m/Y', strtotime("$atendimento_dia")) ?><br>
+            <b>Hora:</b> <?php echo date('H:i\h', strtotime("$atendimento_hora")) ?>
+            </p> 
+            </div>
+            <div class="home-text">
+            <h4 class="text-h4">Deseja enviar este Confirmação para seu Whatsapp e/ou E-mail?</h4><br>
+            <form action="reservas_php.php" method="post">
+            <input id="whatsapp" type="checkbox" name="whatsapp" checked>
+            <label for="whatsapp"><b>Whatsapp</b> <?php echo $doc_telefone ?></label><br>
+            <input id="email" type="checkbox" name="email" checked>
+            <label for="email"><b>E-mail</b> <?php echo $doc_email ?></label><br>
+            <input type="hidden" name="atendimento_dia" value="<?php echo $atendimento_dia ?>">
+            <input type="hidden" name="atendimento_hora" value="<?php echo $atendimento_hora ?>">
+            <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
+            <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
+            <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone ?>">
+            <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <input type="hidden" name="status_reserva" value="EnvioMensagem">
+            <input type="hidden" name="feitapor" value="Site">
+            <input type="hidden" name="id_job" value="<?php echo $id_job ?>">
+            <button class="home-btn" type="submit">Enviar</button>
+            </form>
+            <br>
+            </div>
         </section>
     </main>
 </body>

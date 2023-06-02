@@ -26,6 +26,7 @@ $hoje = date('Y-m-d');
 </head>
 <body>
 <div class="card">
+<div class="visao-desktop">
 <?php
 $query = $conexao->query("SELECT * FROM painel_users WHERE id >= 1 AND tipo = 'Paciente' ORDER BY nome ASC");
 $query_row = $query->rowCount();
@@ -62,6 +63,38 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 }
 ?>
 </table>
+</div>
+</fieldset>
+
+<div class="visao-mobile">
+<?php
+$query = $conexao->query("SELECT * FROM painel_users WHERE id >= 1 AND tipo = 'Paciente' ORDER BY nome ASC");
+$query_row = $query->rowCount();
+?>
+<FONT COLOR="black">
+<fieldset>
+<?php
+if($query_row == 0){
+    ?>
+<legend><h2 class="title-cadastro">Sem Cadastros</u></h2></legend>
+    <?php
+}else{
+    ?>
+<legend><h2 class="title-cadastro">Cadastros [<?php echo $query_row ?>]</h2></legend>
+    <?php
+}
+while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $nome = $select['nome'];
+    $email = $select['email'];
+    $telefone = $select['telefone'];
+    ?>
+    <br><a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $email ?>","iframe-home")'><button><?php echo $email ?></button></a>
+    <br><b>Nome: </b><?php echo $nome ?>
+    <br><b>Telefone: </b><?php echo $telefone ?>
+    <br><br>
+<?php } ?>
+</font>
+</div>
 </fieldset>
 
 </div>

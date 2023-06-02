@@ -19,8 +19,20 @@ body{
     color: var(--cor-primaria);
 }
 
+button{
+    white-space: normal;
+}
+
+.visao-desktop{
+    display: block;
+}
+
+.visao-mobile{
+    display: none;
+}
+
 .form{
-    width: 400px;
+    max-width: 400px;
     margin: auto;
     padding-top: 40px;
 }
@@ -129,50 +141,6 @@ a{
     color: var(--cor-h1);
 }
 
-.dp-menu ul {
-    background-color: var(--cor-fundo);
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px;
-}
-
-.dp-menu ul li {
-    display: inline;
-    position: relative;
-    margin-left: 30px;
-}
-
-.dp-menu ul li a {
-    color: var(--cor-primaria);
-    text-decoration: none;
-    display: inline-block;
-    padding: 10px;
-    transition: background .3s;
-}
-
-.dp-menu ul li a:hover {
-    background-color: var(--cor-hover);
-}
-
-/*sub menu*/
-.dp-menu ul ul {
-    display: none;
-    left: 0;
-    position: absolute;
-    width: 150px;
-}
-
-.dp-menu ul li:hover ul {
-    display: block;
-}
-
-.dp-menu ul ul li a {
-    display: block;
-}
-
 iframe#iframe-home{
     width: 85%;
     height: 800px;
@@ -224,10 +192,11 @@ input[type=checkbox] {
     vertical-align: bottom;
   }
   
-  #progress-bar {
+ /* Barra de Progresso */
+#progress-bar {
     background-color: darkgrey;
     height: 20px;
-    width: 300px;
+    width: clamp(200px, 50px + 50vw, 350px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -239,6 +208,7 @@ input[type=checkbox] {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
   }
   #progress-bar .text {
     position: absolute;
@@ -247,4 +217,158 @@ input[type=checkbox] {
     transform: translate(-50%, -50%);
     color: white;
     font-weight: bold;
+    z-index: 1;
   }
+  
+/*menu*/
+
+.dp-menu{
+    margin: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dp-menu ul{
+    display: flex;
+    justify-content: space-evenly;
+    list-style-type: none;
+    background-color: var(--cor-fundo);
+    border-radius: 10px;
+}
+
+.dp-menu ul li{
+    display: inline;
+    position: relative;
+}
+
+.dp-menu ul li a{
+    color: var(--cor-primaria);
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
+    transition: background .4s;
+}
+
+.dp-menu ul li a:hover{
+    color: var(--cor-fundo);
+    text-decoration: underline;
+    background-color:rgb(250, 220, 220);
+    border-radius: 5px;
+}
+
+.dp-menu ul ul{
+    display: none;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+}
+
+.dp-menu ul li:hover ul{
+    display: block;
+}
+
+.dp-menu ul ul li a{
+    display: block;
+}
+
+nav.mobile{
+    display: none;
+}
+
+  @media (max-width: 600px) {
+
+    .visao-desktop{
+        display: none;
+    }
+
+    .visao-mobile{
+        display: block;
+    }
+
+    button{
+        width: 90%;
+        overflow: hidden;
+    }
+
+    .form {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .card{
+        padding: 10px;
+        border-radius: 3px;
+    }
+    
+    .card-group > input{
+        width: 95%;
+    }
+
+    .card-group > button{
+        border-radius: 5px;
+        padding: 5px;
+    }
+    
+    .card-group-red > button{
+        border-radius: 5px;
+        padding: 5px;
+    }
+    
+    .card-group-green > button{
+        border-radius: 5px;
+        padding: 5px;
+    }
+    
+    .card-group-black > button{
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+/* Ajuste Menu para Mobile */
+
+nav a{
+    padding: 1px;
+    }
+
+    nav.dp-menu{
+        display: none;
+    }
+
+    nav.mobile{
+        display: block;
+    }
+
+    .botao-menu-mobile{
+        background-color: var(--cor-background);
+        font-size: 45px;
+        cursor: pointer;
+        color: white;
+        text-align: center;
+    }
+
+    nav.mobile ul{
+        display: none;
+        margin-top: 5px;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+    }
+
+    nav.mobile li{
+        font-weight: 300;
+        width: 80%;
+        display: block;
+        background: var(--cor-background);
+        border-bottom: 1px solid #ccc;
+        font-size: 17px;
+        padding: 8px 0;
+    }
+
+    nav.mobile li a{
+        display: block;
+        color: white;
+        text-decoration: none;
+    }
+
+}

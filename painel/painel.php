@@ -19,6 +19,8 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <title>Painel de Controle</title>
 
     <link rel="stylesheet" href="css/style.css">
@@ -31,9 +33,8 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 <td width="50%" align="right"><button><a href="logout.php">Sair</a></button></td>
 </tr></table>
 
-
-<nav class="dp-menu"><ul>
-
+<nav class="dp-menu">
+            <ul>
     <li><a href="javascript:void(0)" onclick='window.open("home.php","iframe-home")'>Inicio</a>
     <ul><li><a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home")'>Cadastros</a></li>
     </ul></li>
@@ -62,11 +63,59 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <li><a href="javascript:void(0)" onclick='window.open("relatorios.php", "iframe-home")'>Relatorios Gerenciais</a></li>
 
     <li><a href="javascript:void(0)" onclick='window.open("../index.php")'>Site Principal</a></li>
+            </ul>
+        </nav>
 
-
-</ul></nav>
+        <nav class="mobile right">
+                    <div class="botao-menu-mobile">
+                    <i class="fas fa-bars"></i>
+                    </div>
+                    <ul>
+                        <li><a href="javascript:void(0)" onclick='window.open("home.php","iframe-home")'>Inicio</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home")'>Cadastros</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home")'>Consultas</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home")'>Cadastrar Consulta</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("lembrete.php","iframe-home")'>Enviar Lembretes</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("disponibilidade.php","iframe-home")'>Disponibilidade</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("disponibilidade_fechar.php","iframe-home")'>Fechar Datas</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("disponibilidade_abrir.php","iframe-home")'>Abrir Datas</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("historico.php","iframe-home")'>Historico Alterações</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home")'>Despesas</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home")'>Lançar Despesas</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("relatorios.php", "iframe-home")'>Relatorios Gerenciais</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home")'>Configurações</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("../index.php")'>Site Principal</a></li>
+                    </ul>
+                </nav>
 
 <center><iframe name="iframe-home" id="iframe-home" src="home.php"></iframe></center>
+
+<script>
+        $(function(){ 
+        $('nav.mobile ul li a').click(function(){
+            var listaMenu = $('nav.mobile ul');
+            var icone = $('.botao-menu-mobile').find('i');
+            icone.removeClass('far fa-times-circle');
+            icone.addClass('fas fa-bars');
+            listaMenu.slideToggle(); 
+        });
+    
+        $('i.fas').click(function(){
+        var listaMenu = $('nav.mobile ul');
+            if(listaMenu.is(':hidden') == true){
+                var icone = $('.botao-menu-mobile').find('i');
+                icone.removeClass('fas fa-bars');
+                icone.addClass('far fa-times-circle');
+                listaMenu.slideToggle();
+            }else{
+                var icone = $('.botao-menu-mobile').find('i');
+                icone.removeClass('far fa-times-circle');
+                icone.addClass('fas fa-bars');
+                listaMenu.slideToggle(); 
+            }
+        });
+        });
+    </script> 
 
 </body>
 </html>

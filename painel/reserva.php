@@ -145,6 +145,9 @@ $progress = $sessao_atual/$sessao_total*100;
 </font>
 </fieldset>
 <br>
+
+<!-- Plano de Tratamento -->
+<div class="visao-desktop">
 <fieldset>
 <legend><h2 class="title-cadastro">Plano de Tratamento</h2></legend>
 <center>
@@ -161,6 +164,7 @@ $progress = $sessao_atual/$sessao_total*100;
         <td align="center"><b>Status</b></td>
         <td align="center"><b>Cadastrar Sessão</b></td>
         <td align="center"><b>Finalizar</b></td>
+        <td align="center"><b>Excluir</b></td>
     </tr>
     <tr></tr>
     <tr></tr>
@@ -174,6 +178,7 @@ $check_tratamento_row->execute(array('email' => $doc_email, 'confirmacao' => $co
 if($check_tratamento_row->rowCount() < 1){
 ?>
     <tr>
+        <td align="center"><b>-</b></td>
         <td align="center"><b>-</b></td>
         <td align="center"><b>-</b></td>
         <td align="center"><b>-</b></td>
@@ -204,6 +209,7 @@ $progress = $sessao_atual/$sessao_total*100;
         <td align="center"><?php echo $sessao_status ?></td>
         <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=cadastrar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Cadastrar Sessão</button></a></td>
         <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=finalizar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Finalizar</button></a></td>
+        <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Excluir</button></a></td>
     </tr>
     <tr></tr>
     <tr></tr>
@@ -216,7 +222,46 @@ $progress = $sessao_atual/$sessao_total*100;
 ?>
 </table></center>
 </fieldset>
+</div>
+
+<div class="visao-mobile">
+<fieldset>
+<legend><h2 class="title-cadastro">Plano de Tratamento</h2></legend>
+<?php
+$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND confirmacao = :confirmacao ORDER BY id DESC");
+$check_tratamento_row->execute(array('email' => $doc_email, 'confirmacao' => $confirmacao));
+
+while($tratamento_row = $check_tratamento_row->fetch(PDO::FETCH_ASSOC)){
+$plano_descricao = $tratamento_row['plano_descricao'];
+$plano_data = $tratamento_row['plano_data'];
+$sessao_atual = $tratamento_row['sessao_atual'];
+$sessao_total = $tratamento_row['sessao_total'];
+$sessao_status = $tratamento_row['sessao_status'];
+$id = $tratamento_row['id'];
+
+$progress = $sessao_atual/$sessao_total*100;
+?>
+    <FONT COLOR="black">
+    <br><b>Plano:</b> <?php echo $plano_descricao ?>
+    <div id="progress-bar">
+            <div class="filled" style="width: <?php echo $progress; ?>%;"></div>
+            <div class="text"><b>Sessões:</b> <?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
+    </div>
+    <b>Inicio:</b> <?php echo date('d/m/Y', strtotime("$plano_data")) ?>
+    <br><b>Status:</b> <?php echo $sessao_status ?>
+    <br><br><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=cadastrar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Cadastrar Sessão</button></a>
+    <a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=finalizar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Finalizar</button></a>
+    <a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Excluir</button></a>
+    </font><br><br><br>
+<?php
+}
+?>
+</fieldset>
+</div>
+
 <br>
+<!-- Lançamentos -->
+<div class="visao-desktop">
 <fieldset>
 <?php
 $check = $conexao->prepare("SELECT sum(valor) FROM $tabela_lancamentos WHERE confirmacao = :confirmacao");
@@ -285,7 +330,62 @@ if($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada' && $status_
 <a href="javascript:void(0)" onclick='window.open("imprimir_rps.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Imprimir RPS</button></div></a>
 <?php }  ?>
 </fieldset>
+</div>
+
+<div class="visao-mobile">
+<fieldset>
+<?php
+$check = $conexao->prepare("SELECT sum(valor) FROM $tabela_lancamentos WHERE confirmacao = :confirmacao");
+$check->execute(array('confirmacao' => $confirmacao));
+while($total_lanc = $check->fetch(PDO::FETCH_ASSOC)){
+$valor = $total_lanc['sum(valor)'];
+}
+?>
+<legend><h2 class="title-cadastro">Lançamentos Totais [ R$<?php echo number_format($valor ,2,",",".") ?> ]</h2></legend>
+<?php 
+$query_lanc = $conexao->prepare("SELECT * FROM $tabela_lancamentos WHERE confirmacao = :confirmacao ORDER BY quando DESC");
+$query_lanc->execute(array('confirmacao' => $confirmacao));
+while($select_lancamento = $query_lanc->fetch(PDO::FETCH_ASSOC)){
+$quando = $select_lancamento['quando'];
+$quando = strtotime("$quando");
+$quantidade = $select_lancamento['quantidade'];
+$produto = $select_lancamento['produto'];
+$valor = $select_lancamento['valor'];
+$id = $select_lancamento['id'];
+?>
+    <FONT COLOR="black">
+    <br><?php echo date('d/m/Y', $quando) ?> - [<?php echo $quantidade ?>] <?php echo $produto ?>
+    <?php
+        if(similar_text($produto,'Pagamento em') >= 11){ ?>
+    <br><b>R$<?php echo number_format($valor ,2,",",".") ?></b>
+    <?php }else if($valor > 0){  ?>
+    <br>R$<?php echo number_format($valor ,2,",",".") ?>
+    </font>
+    <?php
+        if($status_reserva == 'Finalizada' || $status_reserva == 'Cancelada'){
+    ?>
+    <?php }else{  ?>
+    <br><a href="javascript:void(0)" onclick='window.open("lancamentos_ex.php?id=<?php echo $id ?>","iframe-home")'><button>Estornar</button></a></td>
+    <?php }}  ?>
+    <br><br>
+
+<?php }  ?>
 <br>
+<?php
+if($status_reserva == 'Confirmada' || $status_reserva == 'NoShow' || $status_reserva == 'Finalizada' || $status_reserva == 'Em Andamento'){  ?>
+<a href="javascript:void(0)" onclick='window.open("reservas_lancamentos.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group btn"><button>Fazer Lançamentos</button></div></a>
+<?php 
+} 
+if($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada' && $status_reserva != 'NoShow'){  ?>
+<a href="javascript:void(0)" onclick='window.open("lancamentos_pgto.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-green btn"><button>Lançar Pagamento</button></div></a>
+<?php }else if($status_reserva != 'Cancelada' && $status_reserva != 'NoShow'){  ?>
+<a href="javascript:void(0)" onclick='window.open("imprimir_rps.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Imprimir RPS</button></div></a>
+<?php }  ?>
+</fieldset>
+</div>
+
+<br>
+<!-- Arquivos -->
 <fieldset>
 <legend><h2 class="title-cadastro">Arquivos</h2></legend>
 <a href="javascript:void(0)" onclick='window.open("arquivos.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
@@ -312,7 +412,10 @@ foreach ($files as $file) {
 }}
 ?>
 </fieldset>
+
 <br>
+<!-- Lançamentos -->
+<div class="visao-desktop">
 <fieldset>
 <legend><h2 class="title-cadastro">Consultas</h2></legend>
 <center>
@@ -349,6 +452,28 @@ $history_hora = $history['atendimento_hora'];
 ?>
 </table></center>
 </fieldset>
+</div>
+
+<div class="visao-mobile">
+<fieldset>
+<legend><h2 class="title-cadastro">Consultas</h2></legend>
+<?php
+$check_history = $conexao->prepare("SELECT * FROM disponibilidade_atendimento WHERE confirmacao = :confirmacao ORDER BY atendimento_dia DESC");
+$check_history->execute(array('confirmacao' => $confirmacao));
+
+while($history = $check_history->fetch(PDO::FETCH_ASSOC)){
+$history_conf = $history['confirmacao'];
+$history_data = $history['atendimento_dia'];
+$history_hora = $history['atendimento_hora'];
+?>
+        <center><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $history_conf ?>","iframe-home")'><button><b><?php echo $history_conf ?></b> <?php echo date('d/m/Y', strtotime("$history_data")) ?> - <?php echo date('H:i\h', strtotime("$history_hora")) ?></button></a></center>
+        <br>
+<?php
+}
+?>
+</fieldset>
+</div>
+
 </div>
 </body>
 </html>

@@ -150,114 +150,6 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     window.location.replace('agendar_ok.php?token=$token')
             </script>";
 
-//Envio de Email	
-
-$data_email = date('d/m/Y \-\ H:i:s');
-$atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-$atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
-
-    $pdf_corpo_00 = 'Olá';
-    $pdf_corpo_01 = 'Confirmação Atendimento';
-    $pdf_corpo_03 = 'foi confirmado com sucesso';
-    $pdf_corpo_07 = 'Atendimento confirmado em'; 
-    $pdf_corpo_02 = 'o seu atendimento';
-    $pdf_corpo_04 = 'Atenção';
-
-    $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
-    $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
-    $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
-
-    $mail = new PHPMailer(true);
-
-try {
-    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->CharSet = 'UTF-8';
-    $mail->isSMTP();
-    $mail->Host = "$mail_Host";
-    $mail->SMTPAuth = true;
-    $mail->Username = "$mail_Username";
-    $mail->Password = "$mail_Password";
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = "$mail_Port";
-
-    $mail->setFrom("$config_email", "$config_empresa");
-    $mail->addAddress("$doc_email", "$doc_nome");
-    $mail->addBCC("$config_email");
-    
-    $mail->isHTML(true);                                 
-    $mail->Subject = "Confirmação $id_job - $config_empresa";
-  // INICIO MENSAGEM  
-    $mail->Body = "
-
-    <fieldset>
-    <legend>$pdf_corpo_01 $confirmacao</legend>
-    <br>
-    $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
-    <p>Tipo Consulta: <b>$id_job</b><br>
-    Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
-    <p>Preencha o formulario, $link_formulario</p>
-    <b>$pdf_corpo_07 $data_email</b>
-    </fieldset><br><fieldset>
-    <legend><b><u>$pdf_corpo_04</u></legend>
-    <p>$config_msg_confirmacao</p>
-    </fieldset><br><fieldset>
-    <legend><b><u>Gerenciar seus Atendimentos</u></legend>
-    <p>Para Alterar seu Atendimento, $link_alterar</p>
-    <p>Para Cancelar seu Atendimento, $link_cancelar</p>
-    </fieldset><br><fieldset>
-    <legend><b><u>$config_empresa</u></legend>
-    <p>CNPJ: $config_cnpj</p>
-    <p>$config_telefone - $config_email</p>
-    <p>$config_endereco</p></b>
-    </fieldset>
-    
-    "; // FIM MENSAGEM
-
-        $mail->send();
-
-    } catch (Exception $e) {
-
-    }
-
-//Fim Envio de Email
-
-//Incio Envio Whatsapp
-if($envio_whatsapp == 'ativado' && $status_reserva == 'Confirmada'){
-
-    $doc_telefonewhats = "5571997417190";
-    $msg_wahstapp = "Olá $config_empresa, $doc_nome acabou de marcar uma $id_job para a Data: $atendimento_dia_str ás: $atendimento_hora_str. Entre em contato com ele por E-mail: $doc_email e/ou Whatsapp: $doc_telefone";
-    
-    $curl = curl_init();
-    
-    
-    curl_setopt_array($curl, array(
-      CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => '',
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => 'POST',
-      CURLOPT_POSTFIELDS => "{
-        \"number\": \"$doc_telefonewhats\",
-        \"text\": \"$msg_wahstapp\"
-    }",
-      CURLOPT_HTTPHEADER => array(
-        'Content-Type: application/json',
-        "SecretKey: $whatsapp_secretkey",
-        "PublicToken: $whatsapp_publictoken",
-        "DeviceToken: $whatsapp_devicetoken",
-        "Authorization: $whatsapp_authorization"
-      ),
-    ));
-    
-    $response = curl_exec($curl);
-    
-    curl_close($curl);
-    
-    }
-//Fim Envio Whatsapp
 exit();
 
 }else if($status_reserva == 'Cancelada' || $status_reserva == 'Cancelado'){
@@ -958,5 +850,131 @@ if($envio_whatsapp == 'ativado'){
         }
 
 
+
+}else if($status_reserva == 'EnvioMensagem'){
+
+$doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+$token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
+$id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
+
+//Envio de Email	
+
+$data_email = date('d/m/Y \-\ H:i:s');
+$atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
+$atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
+
+
+if(isset($_POST['email'])){
+
+    $pdf_corpo_00 = 'Olá';
+    $pdf_corpo_01 = 'Confirmação Atendimento';
+    $pdf_corpo_03 = 'foi confirmado com sucesso';
+    $pdf_corpo_07 = 'Atendimento confirmado em'; 
+    $pdf_corpo_02 = 'o seu atendimento';
+    $pdf_corpo_04 = 'Atenção';
+
+    $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
+    $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
+    $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
+
+    $mail = new PHPMailer(true);
+
+try {
+    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    $mail->CharSet = 'UTF-8';
+    $mail->isSMTP();
+    $mail->Host = "$mail_Host";
+    $mail->SMTPAuth = true;
+    $mail->Username = "$mail_Username";
+    $mail->Password = "$mail_Password";
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = "$mail_Port";
+
+    $mail->setFrom("$config_email", "$config_empresa");
+    $mail->addAddress("$doc_email", "$doc_nome");
+    $mail->addBCC("$config_email");
+    
+    $mail->isHTML(true);                                 
+    $mail->Subject = "Confirmação $id_job - $config_empresa";
+  // INICIO MENSAGEM  
+    $mail->Body = "
+
+    <fieldset>
+    <legend>$pdf_corpo_01 $confirmacao</legend>
+    <br>
+    $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
+    <p>Tipo Consulta: <b>$id_job</b><br>
+    Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
+    <p>Preencha o formulario, $link_formulario</p>
+    <b>$pdf_corpo_07 $data_email</b>
+    </fieldset><br><fieldset>
+    <legend><b><u>$pdf_corpo_04</u></legend>
+    <p>$config_msg_confirmacao</p>
+    </fieldset><br><fieldset>
+    <legend><b><u>Gerenciar seus Atendimentos</u></legend>
+    <p>Para Alterar seu Atendimento, $link_alterar</p>
+    <p>Para Cancelar seu Atendimento, $link_cancelar</p>
+    </fieldset><br><fieldset>
+    <legend><b><u>$config_empresa</u></legend>
+    <p>CNPJ: $config_cnpj</p>
+    <p>$config_telefone - $config_email</p>
+    <p>$config_endereco</p></b>
+    </fieldset>
+    
+    "; // FIM MENSAGEM
+
+        $mail->send();
+
+    } catch (Exception $e) {
+
+    }
+
+}
+//Fim Envio de Email
+
+if(isset($_POST['whatsapp'])){
+//Incio Envio Whatsapp
+if($envio_whatsapp == 'ativado'){
+
+    $doc_telefonewhats = "55$doc_telefone";
+    $msg_wahstapp = "Olá $doc_nome, tudo bem?".'\n\n'."Aqui vai a confirmação da sua Consulta para a Data: $atendimento_dia_str ás $atendimento_hora_str.";
+    
+    $curl = curl_init();
+    
+    
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => "{
+        \"number\": \"$doc_telefonewhats\",
+        \"text\": \"$msg_wahstapp\"
+    }",
+      CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        "SecretKey: $whatsapp_secretkey",
+        "PublicToken: $whatsapp_publictoken",
+        "DeviceToken: $whatsapp_devicetoken",
+        "Authorization: $whatsapp_authorization"
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    
+    curl_close($curl);
+    
+    }
+
+}
+//Fim Envio Whatsapp
+
+echo   "<script>
+        window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
+        </script>";
 
 }
