@@ -40,6 +40,7 @@ $typeerror= 'Esta Sessão não foi encontrada ou não existe!';
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style_home.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
@@ -50,7 +51,7 @@ $typeerror= 'Esta Sessão não foi encontrada ou não existe!';
             <?php
                 if($typeerror == 0){
             ?>
-            <form action="reservas_php.php" method="post">
+            <form action="reservas_php.php" method="post" onsubmit="exibirPopup()">
                 <input type="hidden" name="atendimento_dia" value="<?php echo $atendimento_dia ?>">
                 <input type="hidden" name="atendimento_hora" value="<?php echo $atendimento_hora ?>">
                 <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
@@ -70,5 +71,20 @@ $typeerror= 'Esta Sessão não foi encontrada ou não existe!';
 </div>
         </section>
     </main>
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto cancelamos a sua Consulta!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

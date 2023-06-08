@@ -36,6 +36,7 @@ $id_job = $select['tipo_consulta'];
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style_home.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
@@ -53,7 +54,7 @@ $id_job = $select['tipo_consulta'];
             </div>
             <div class="home-text">
             <h4 class="text-h4">Deseja enviar este Confirmação para seu Whatsapp e/ou E-mail?</h4><br>
-            <form action="reservas_php.php" method="post">
+            <form action="reservas_php.php" method="post" onsubmit="exibirPopup()">
             <input id="whatsapp" type="checkbox" name="whatsapp" checked>
             <label for="whatsapp"><b>Whatsapp</b> <?php echo $doc_telefone ?></label><br>
             <input id="email" type="checkbox" name="email" checked>
@@ -74,5 +75,20 @@ $id_job = $select['tipo_consulta'];
             </div>
         </section>
     </main>
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto enviamos a sua confirmação!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

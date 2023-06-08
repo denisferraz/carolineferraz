@@ -57,10 +57,18 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     //Exclusao de Dias
 
     if(!isset($_POST['overbook_data']) && (( (date('w', strtotime("$atendimento_dia")) == 1) && $config_dia_segunda == -1) || ( (date('w', strtotime("$atendimento_dia")) == 2) && $config_dia_terca == -1) || ( (date('w', strtotime("$atendimento_dia")) == 3) && $config_dia_quarta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 4) && $config_dia_quinta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 5) && $config_dia_sexta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 6) && $config_dia_sabado == -1) || ( (date('w', strtotime("$atendimento_dia")) == 0) && $config_dia_domingo == -1))){
+        if($feitapor == 'Site'){
         echo   "<script>
         window.location.replace('agendar_no.php?id_job=$id_job&typeerror=1&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
                 </script>";
          exit();
+        }else{
+            echo   "<script>
+            alert('Não funcionamos nesta data')
+            window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
+                </script>";
+                exit();
+        }
         }
 
     //Verificar horarios de atendimento
@@ -70,11 +78,19 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     $atendimento_hora_intervalo = $config_atendimento_hora_intervalo * 60;
     $rodadas = 0;
 
-    if($atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
+    if(!isset($_POST['overbook_data']) && $atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
+        if($feitapor == 'Site'){
         echo   "<script>
         window.location.replace('agendar_no.php?id_job=$id_job&typeerror=2&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
                 </script>";
-        exit();   
+        exit();
+        }else{
+        echo   "<script>
+        alert('Não é possivel agendar para este dia/horario')
+        window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
+            </script>";
+            exit();
+    } 
     }
     while( $rodadas <= ($atendimento_hora_fim - $atendimento_hora_comeco + $atendimento_hora_intervalo)){
 
@@ -87,10 +103,18 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         }
 
     if($horario == '' && !isset($_POST['overbook_data'])){
+        if($feitapor == 'Site'){
         echo   "<script>
         window.location.replace('agendar_no.php')
                 </script>";
         exit();
+        }else{
+        echo   "<script>
+        alert('Sem Disponibilidade para esta data!')
+        window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
+            </script>";
+            exit();
+    }
     }
     //Verificar horarios de atendimento
 
@@ -101,10 +125,18 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
 
     if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
+        if($feitapor == 'Site'){
         echo   "<script>
         window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
                 </script>";
          exit();
+        }else{
+            echo   "<script>
+            alert('Sem Disponibilidade para esta data/horario!')
+            window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
+                </script>";
+                exit();
+        }
     }
     }
 
@@ -119,10 +151,18 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
         
         if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
+            if($feitopor == 'Site'){
             echo   "<script>
             window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
                     </script>";
                 exit();
+            }else{
+                echo   "<script>
+                alert('Sem Disponibilidade para esta data/horario!')
+                window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
+                    </script>";
+                    exit();
+            }
         }
         }
         }
@@ -146,11 +186,18 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Criou a consulta $confirmacao"));    
     }
 
+    if($feitapor == 'Site'){
     echo   "<script>
     window.location.replace('agendar_ok.php?token=$token')
             </script>";
-
-exit();
+    exit();
+    }else{
+    echo   "<script>
+    alert('Consulta Confirmada com Sucesso!')
+    window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
+        </script>";
+        exit();
+}
 
 }else if($status_reserva == 'Cancelada' || $status_reserva == 'Cancelado'){
 
@@ -301,7 +348,7 @@ window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
     $atendimento_hora_intervalo = $config_atendimento_hora_intervalo * 60;
     $rodadas = 0;
 
-    if($atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
+    if(!isset($_POST['overbook_data']) && $atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
         echo "<script>
         window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
                 </script>";
@@ -402,65 +449,15 @@ window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
             $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
             $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao));
 
-            //Envio de Email	
-        
-        $data_email = date('d/m/Y \-\ H:i:s');
-        $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-        $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
-
-            $link_aceitar = "<a href=\"$site_atual/solicitacao.php?alt_status=Aceita&token=$token\"'>Clique Aqui</a>";
-            $link_recusar = "<a href=\"$site_atual/solicitacao.php?alt_status=Recusada&token=$token\"'>Clique Aqui</a>";
-        
-        $mail = new PHPMailer(true);
-        
-        try {
-            //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-            $mail->CharSet = 'UTF-8';
-            $mail->isSMTP();
-            $mail->Host = "$mail_Host";
-            $mail->SMTPAuth = true;
-            $mail->Username = "$mail_Username";
-            $mail->Password = "$mail_Password";
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = "$mail_Port";
-
-            $mail->setFrom("$config_email", "$config_empresa");
-            $mail->addAddress("$config_email", "$config_empresa");
-            
-            $mail->isHTML(true);                                 
-            $mail->Subject = "Solicitação de Alteração - $confirmacao";
-          // INICIO MENSAGEM  
-            $mail->Body = "
-        
-            <fieldset>
-            <legend>Alteração $confirmacao</legend>
-            <br>
-            Ola <b>$config_empresa</b>, tudo bem?<br>
-            O atendimento em nome de <b>$doc_nome</b>, de confirmação <b><u>$confirmacao</u></b> teve uma solicitação de Alteração.<br>
-            <p>Tipo de Consulta: <b>$id_job</b><br>
-            Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
-            <b>Solicitação enviada em $data_email</b>
-            </fieldset><br><fieldset>
-            <legend><b><u>Gerencia a Solicitação</u></legend>
-            <p>Para Aceitar a Alteração, $link_aceitar</p>
-            <p>Para Recusar a Alteração, $link_recusar</p>
-            </fieldset>
-            
-            "; // FIM MENSAGEM
-        
-                $mail->send();
-        
-            } catch (Exception $e) {
-        
-            }
-        
-        //Fim Envio de Email
 
 //Incio Envio Whatsapp
 if($envio_whatsapp == 'ativado'){
 
+$atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
+$atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
+
 $doc_telefonewhats = "5571997417190";
-$msg_wahstapp = "Olá $config_empresa, $doc_nome solicitou uma alteração para Data: $atendimento_dia_str ás: $atendimento_hora_str. Caso queira Aceitar e/ou Recusar, acesso ao seu E-mail. | Atendimento Alterado em $data_email";
+$msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome solicitou uma alteração para Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n\n'."Para Aceitar clique abaixo:".'\n'."$site_atual/solicitacao.php?alt_status=Aceita&token=$token".'\n\n'."Para Recuste clique abaixo:".'\n'."$site_atual/solicitacao.php?alt_status=Recusada&token=$token";
 
 $curl = curl_init();
 
@@ -536,7 +533,6 @@ curl_close($curl);
 
             $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
             $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
-            $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
         
         $mail = new PHPMailer(true);
         
@@ -565,7 +561,6 @@ curl_close($curl);
             <br>
             $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
             <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
-            <p>Preencha o formulario, $link_formulario</p>
             <b>$pdf_corpo_07 $data_email</b>
             </fieldset><br><fieldset>
             <legend><b><u>$pdf_corpo_04</u></legend>
@@ -861,7 +856,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
 $data_email = date('d/m/Y \-\ H:i:s');
 $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-$atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
+$atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
 
 if(isset($_POST['email'])){
@@ -873,9 +868,8 @@ if(isset($_POST['email'])){
     $pdf_corpo_02 = 'o seu atendimento';
     $pdf_corpo_04 = 'Atenção';
 
-    $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
+    $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token&typeerror=0\"'>Clique Aqui</a>";
     $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
-    $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
 
     $mail = new PHPMailer(true);
 
@@ -904,8 +898,7 @@ try {
     <br>
     $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
     <p>Tipo Consulta: <b>$id_job</b><br>
-    Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
-    <p>Preencha o formulario, $link_formulario</p>
+    Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b></p>
     <b>$pdf_corpo_07 $data_email</b>
     </fieldset><br><fieldset>
     <legend><b><u>$pdf_corpo_04</u></legend>
@@ -937,7 +930,7 @@ if(isset($_POST['whatsapp'])){
 if($envio_whatsapp == 'ativado'){
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, tudo bem?".'\n\n'."Aqui vai a confirmação da sua Consulta para a Data: $atendimento_dia_str ás $atendimento_hora_str.";
+    $msg_wahstapp = "Olá $doc_nome, tudo bem?".'\n\n'."Aqui vai a confirmação da sua $id_job para a Data: $atendimento_dia_str ás $atendimento_hora_str.".'\n\n\n'."Para Alterar seu Atendimento acesse: $site_atual/alterar.php?token=$token".'\n\n\n'."Para Cancelar seu Atendimento acesse: $site_atual/cancelar.php?token=$token&typeerror=0";
     
     $curl = curl_init();
     

@@ -51,6 +51,7 @@ if($typeerror == '1'){
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style_home.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
@@ -238,7 +239,7 @@ if(is_numeric($total) || $total == 'Closed'){
                 Segunda a Sexta: <b>14h as 18h</b><br>
                 Sabado: <b>08h as 18h</b>
                 </p>
-                <form action="reservas_php.php" method="post">
+                <form action="reservas_php.php" method="post" onsubmit="exibirPopup()">
                             <label>Dia do Atendimento</label>
                             <input min="<?php echo $min_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
                             <br><br>
@@ -275,5 +276,20 @@ if(is_numeric($total) || $total == 'Closed'){
             </div>
         </section>
     </main>
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto confirmamos a sua Consulta!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

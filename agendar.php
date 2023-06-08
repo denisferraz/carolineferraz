@@ -39,6 +39,7 @@ $novasessao = $query2->rowCount();
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style_home.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
@@ -127,7 +128,7 @@ $novasessao = $query2->rowCount();
         $id_job = 'Nova Sessão';
             }
             ?>
-                <form action="reservas_php.php" method="post">
+                <form action="reservas_php.php" method="post" onsubmit="exibirPopup()">
                             <label><b>Dia do Atendimento</b></label>
                             <input min="<?php echo $min_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
                             <br><br>
@@ -164,5 +165,20 @@ $novasessao = $query2->rowCount();
             </div>
         </section>
     </main>
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto confirmamos a sua Consulta!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

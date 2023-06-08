@@ -118,7 +118,7 @@ $progress = $sessao_atual/$sessao_total*100;
     <tr>
     <?php if($atendimento_dia <= $hoje){ ?>
         <tr>
-<td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=Em20%Andamento","iframe-home")'><div class="card-group-black btn"><button>Finalizar Sessão</button></div></a></td>
+<td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")'><div class="card-group-black btn"><button>Finalizar Sessão</button></div></a></td>
 <td> | </td>
 <td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=Finalizada","iframe-home")'><div class="card-group-red btn"><button>Finalizar Contrato</button></div></a></td>
     </tr>
