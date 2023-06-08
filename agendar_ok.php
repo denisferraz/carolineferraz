@@ -25,6 +25,11 @@ $atendimento_hora = $select['atendimento_hora'];
 $id_job = $select['tipo_consulta'];
 }
 
+//Ajustar Telefone
+$ddd = substr($doc_telefone, 0, 2);
+$prefixo = substr($doc_telefone, 2, 5);
+$sufixo = substr($doc_telefone, 7);
+$doc_telefone = "($ddd)$prefixo-$sufixo";
 ?>
 
 <!DOCTYPE html>

@@ -186,6 +186,47 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Criou a consulta $confirmacao"));    
     }
 
+    //Incio Envio Whatsapp
+if($envio_whatsapp == 'ativado'){
+
+    $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
+    $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
+    
+    $doc_telefonewhats = "5571997417190";
+    $msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome agendou uma $id_job para Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n'."Telefone: $doc_telefone".'\n'."E-mail: $doc_email";
+    
+    $curl = curl_init();
+    
+    
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => "{
+        \"number\": \"$doc_telefonewhats\",
+        \"text\": \"$msg_wahstapp\"
+    }",
+      CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        "SecretKey: $whatsapp_secretkey",
+        "PublicToken: $whatsapp_publictoken",
+        "DeviceToken: $whatsapp_devicetoken",
+        "Authorization: $whatsapp_authorization"
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    
+    curl_close($curl);
+    
+    }
+    //Fim Envio Whatsapp
+
     if($feitapor == 'Site'){
     echo   "<script>
     window.location.replace('agendar_ok.php?token=$token')
