@@ -5,8 +5,10 @@
 
 require('conexao.php');
 
-$id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
-$typeerror = mysqli_real_escape_string($conn_msqli, $_GET['typeerror']);
+$id = explode('*', base64_decode(mysqli_real_escape_string($conn_msqli, $_GET['id'])));
+
+$id_job = $id[0];
+$typeerror = $id[1];
 
 if($typeerror == '1'){
     $typeerror = 'E-mail e/ou Senha Invalidos Incorreto! Tente novamente abaixo ou Recupere sua conta.';   
@@ -25,15 +27,9 @@ if($typeerror == '1'){
 }else if($typeerror == '8'){
     $typeerror = 'Seu e-mail foi Bloqueado por questões de Segurança. Recupere a sua senha com o botão abaixo';   
 }else if($typeerror == '9'){
-    $typeerror = 'Sua nova senha foi alterada. Favor tentar acessar com seus novos dados';   
+    $typeerror = 'Sua nova senha foi alterada. Favor tentar acessar com seus novos dados'; 
 }else if($typeerror == '10'){
     $typeerror = 'Codigo Invalido!';   
-}else if($typeerror == '11'){
-
-    $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
-    $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-
-    $typeerror = "Seu Celular não foi Verificado! Favor verifique o mesmo <a href=\"registro.php?id_job=Codigo&token=$token&email=$email\">Clicando Aqui</a>";   
 }
 ?>
 
@@ -45,6 +41,7 @@ if($typeerror == '1'){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         function formatar(mascara, documento){
         var i = documento.value.length;
@@ -76,36 +73,12 @@ if($typeerror == '1'){
 
                     <?php
                         if($id_job == 'login'){
-
-                            $tentativas = mysqli_real_escape_string($conn_msqli, $_GET['amount']);
-                            if($tentativas >= 1){
-                            $tentativas = '! Ja foram 0';
-                            $tentativas .= mysqli_real_escape_string($conn_msqli, $_GET['amount']);
-                            $tentativas .= ' tentativas';
-                            }
-                            if($tentativas == 0 ){
-                                $tentativas = '';
-                            }
                     ?>
 
-                    <header><font color="red"><?php echo $typeerror ?><?php echo $tentativas ?></font></header>
-                        <form action="login.php" method="post">
-                        <div class="input-field">
-                            <input type="email" class="input" name="email" required>
-                            <label for="email">Email</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="password" class="input" name="password" required>
-                            <label for="password">Senha</label>
-                        </div>
-                        <div class="input-field">
-                        <input type="hidden" name="id_job" value="login">
-                            <input type="submit" class="submit" value="Acessar">
-                            
-                        </div>
-                        </form>
+                    <header><font color="red"><?php echo $typeerror ?></font></header>
+                        <br>
                         <div class="signin">
-                            <span>Esqueceu sua Senha? <a href="recuperar.php">Recupere Aqui</a></span>
+                            <span><a href="painel.php">Clique Aqui</a> para Acessar</span>
                         </div>
 
                     <?php
@@ -117,7 +90,7 @@ if($typeerror == '1'){
                     ?>
 
                     <header><font color="red"><?php echo $typeerror ?></font></header>
-                        <form action="login.php" method="post">
+                        <form action="login.php" method="post" onsubmit="exibirPopup()">
                         <div class="input-field">
                             <input type="txt" class="input" minlength="8" maxlength="45" name="nome" required>
                             <label for="nome">Nome Completo</label>
@@ -164,11 +137,12 @@ if($typeerror == '1'){
                     <?php
                         }else if($id_job == 'recuperar'){
 
-                        $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+                        $email = $id[2];
+                        echo $email
                     ?>
 
                     <header><font color="red"><?php echo $typeerror ?></font></header>
-                        <form action="login.php" method="post">
+                        <form action="login.php" method="post" onsubmit="exibirPopup()">
                         <div class="input-field">
                             <input type="text" class="input" minlength="8" maxlength="8" name="codigo" required>
                             <label for="text">Codigo</label>
@@ -200,5 +174,20 @@ if($typeerror == '1'){
             </div>
         </div>
     </div>
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto enviamos seus dados!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

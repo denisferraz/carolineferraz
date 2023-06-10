@@ -12,6 +12,7 @@ require('conexao.php');
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <title>Accesar <?php echo $config_empresa ?></title>
 </head>
@@ -28,7 +29,7 @@ require('conexao.php');
                 <div class="col-md-6 right">
                      <div class="input-box">
                         <header>Recupere seu Acesso abaixo</header>
-                        <form action="login.php" method="post">
+                        <form action="login.php" method="post" onsubmit="exibirPopup()">
                         <div class="input-field">
                             <input type="email" class="input" name="email" required>
                             <label for="email">Email</label>
@@ -48,5 +49,20 @@ require('conexao.php');
             </div>
         </div>
     </div>
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto enviamos seus dados!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

@@ -58,8 +58,10 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
     if(!isset($_POST['overbook_data']) && (( (date('w', strtotime("$atendimento_dia")) == 1) && $config_dia_segunda == -1) || ( (date('w', strtotime("$atendimento_dia")) == 2) && $config_dia_terca == -1) || ( (date('w', strtotime("$atendimento_dia")) == 3) && $config_dia_quarta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 4) && $config_dia_quinta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 5) && $config_dia_sexta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 6) && $config_dia_sabado == -1) || ( (date('w', strtotime("$atendimento_dia")) == 0) && $config_dia_domingo == -1))){
         if($feitapor == 'Site'){
+        
+        $id = base64_encode("$id_job.1.$atendimento_dia.$confirmacao");
         echo   "<script>
-        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=1&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
+        window.location.replace('agendar_no.php?id=$id')
                 </script>";
          exit();
         }else{
@@ -80,8 +82,10 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
     if(!isset($_POST['overbook_data']) && $atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
         if($feitapor == 'Site'){
+
+        $id = base64_encode("$id_job.2.$atendimento_dia.$confirmacao");
         echo   "<script>
-        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=2&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
+        window.location.replace('agendar_no.php?id=$id')
                 </script>";
         exit();
         }else{
@@ -126,8 +130,10 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
     if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
         if($feitapor == 'Site'){
+
+        $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao");
         echo   "<script>
-        window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
+        window.location.replace('agendar_no.php?id=$id')
                 </script>";
          exit();
         }else{
@@ -152,8 +158,10 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         
         if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
             if($feitopor == 'Site'){
+
+            $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao");
             echo   "<script>
-            window.location.replace('agendar_no.php?id_job=$id_job&typeerror=3&atendimento_dia=$atendimento_dia&confirmacao=$confirmacao')
+            window.location.replace('agendar_no.php?id=$id')
                     </script>";
                 exit();
             }else{
@@ -229,7 +237,7 @@ if($envio_whatsapp == 'ativado'){
 
     if($feitapor == 'Site'){
     echo   "<script>
-    window.location.replace('agendar_ok.php?token=$token')
+    window.location.replace('agendar_ok.php?id=$token')
             </script>";
     exit();
     }else{
@@ -354,9 +362,10 @@ if($envio_whatsapp == 'ativado'){
          exit();
         }
 
-echo   "<script>
-window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
-        </script>";
+        $id = base64_encode("$confirmacao.$token");
+        echo   "<script>
+                window.location.replace('reserva.php?id=$id')
+                </script>";
 
 }else if($status_reserva == 'Alterada' || $status_reserva == 'Alterado'){
 
@@ -627,9 +636,10 @@ curl_close($curl);
         
         //Fim Envio de Email
 
-echo   "<script>
-window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
-        </script>";
+    $id = base64_encode("$confirmacao.$token");
+    echo   "<script>
+            window.location.replace('reserva.php?id=$id')
+            </script>";
 
 }else if($status_reserva == 'NoShow'){
 
@@ -743,38 +753,7 @@ window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
 if($envio_whatsapp == 'ativado'){
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, o seu Atendimento foi Finalizado com sucesso em $data_email! Não esqueça de nos avaliar em https://g.page/r/CY8KhBQj3vtrEB0/review!";
-    
-    $curl = curl_init();
-    
-    
-    curl_setopt_array($curl, array(
-      CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => '',
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => 'POST',
-      CURLOPT_POSTFIELDS => "{
-        \"number\": \"$doc_telefonewhats\",
-        \"text\": \"$msg_wahstapp\"
-    }",
-      CURLOPT_HTTPHEADER => array(
-        'Content-Type: application/json',
-        "SecretKey: $whatsapp_secretkey",
-        "PublicToken: $whatsapp_publictoken",
-        "DeviceToken: $whatsapp_devicetoken",
-        "Authorization: $whatsapp_authorization"
-      ),
-    ));
-    
-    $response = curl_exec($curl);
-    
-    curl_close($curl);
-
-    $msg_wahstapp = 'https://g.page/r/CY8KhBQj3vtrEB0/review!';
+    $msg_wahstapp = "Olá $doc_nome, o seu Atendimento foi Finalizado com sucesso em $data_email!".'\n\n'."Não esqueça de nos avaliar em https://g.page/r/CY8KhBQj3vtrEB0/review!";
     
     $curl = curl_init();
     
@@ -1007,8 +986,9 @@ if($envio_whatsapp == 'ativado'){
 }
 //Fim Envio Whatsapp
 
-echo   "<script>
-        window.location.replace('reserva.php?confirmacao=$confirmacao&token=$token')
-        </script>";
+$id = base64_encode("$confirmacao.$token");
+    echo   "<script>
+            window.location.replace('reserva.php?id=$id')
+            </script>";
 
 }

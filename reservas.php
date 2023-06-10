@@ -71,10 +71,12 @@ if($sessao_atual == '' && $sessao_total == ''){
     $sessao_atual = 0;
     $sessao_total = 1;
 }
+
+$id = base64_encode("$history_conf.$token");
 ?>
 <div class="visao-desktop">
 <fieldset class="home-table">
-<legend><a href="reserva.php?confirmacao=<?php echo $history_conf ?>&token=<?php echo $token ?>"><button class="home-btn"><?php echo $history_conf ?></button></a></legend>
+<legend><a href="reserva.php?id=<?php echo $id ?>"><button class="home-btn"><?php echo $history_conf ?></button></a></legend>
 <table class="home-table"><br>
     <tr>
         <td align="center"><b>Inicio</b></td>
@@ -104,7 +106,7 @@ if($sessao_atual == '' && $sessao_total == ''){
 </div>
 <div class="visao-mobile">
     <br><fieldset class="home-table">
-        <legend><a href="reserva.php?confirmacao=<?php echo $history_conf ?>&token=<?php echo $token ?>"><button class="home-btn"><?php echo $history_conf ?></button></a></legend><br>
+        <legend><a href="reserva.php?id=<?php echo $id ?>"><button class="home-btn"><?php echo $history_conf ?></button></a></legend><br>
         <b>Inicio: </b><?php echo date('d/m/Y', strtotime("$history_inicio")) ?><br>
         <?php if($status_reserva == 'Finalizada'){ ?>
         <b>Status: </b>Contrato Finalizado<br><br>

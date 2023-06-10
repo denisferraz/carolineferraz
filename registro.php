@@ -2,7 +2,9 @@
 require('conexao.php');
 
 
-$id_registro = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
+$id = explode('*', base64_decode(mysqli_real_escape_string($conn_msqli, $_GET['id'])));
+
+$id_registro = $id[0];
 
 $min_nasc = date('Y-m-d', strtotime("-110 years",strtotime($hoje))); 
 $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje))); 
@@ -16,6 +18,7 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         function formatar(mascara, documento){
         var i = documento.value.length;
@@ -50,7 +53,7 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                 <div class="col-md-6 right">
                      <div class="input-box">
                         <header>Registre-se</header>
-                        <form action="login.php" method="post">
+                        <form action="login.php" method="post" onsubmit="exibirPopup()">
                         <?php
                             if($id_registro == 'Registrar'){
                         ?>
@@ -88,10 +91,10 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                         </div>
                         <?php
                             }else if($id_registro == 'EnvCodigo'){
-                            $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
-                            $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-                            $nome = mysqli_real_escape_string($conn_msqli, $_GET['nome']);
-                            $telefone = mysqli_real_escape_string($conn_msqli, $_GET['telefone']);
+                            $email = $id[1];
+                            $token = $id[2];
+                            $telefone = $id[3];
+                            $nome = $id[4];
                             
                             //Ajustar Telefone
                             $ddd = substr($telefone, 0, 2);
@@ -107,9 +110,9 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                         </p>
                         <?php
                             }else if($id_registro == 'Codigo'){
-                            $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
-                            $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-                            $codigo = mysqli_real_escape_string($conn_msqli, $_GET['codigo']);
+                            $email = $id[1];
+                            $codigo = $id[2];
+                            $token = $id[3];
                         ?>
                         <center><p>Confirme o Codigo Enviado abaixo</p></center><br>
                         <div class="input-field">
@@ -124,8 +127,8 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                         <?php
                             }else if($id_registro == 'RecCodigo'){
 
-                                $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
-                                $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+                                $token = $id[2];
+                                $email = $id[1];
     
                             ?>
                             <center><p>Confirme o seu Celular!</p></center><br>
@@ -157,7 +160,9 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                         <?php
                             if($id_registro == 'EnvCodigo'){
                         ?>
-                            <span>Caso não tenha recebido a mensagem no Whatsapp, altere seu telefone <a href="registro.php?id_job=RecCodigo&token=<?php echo $token; ?>&email=<?php echo $email; ?>">Clicando Aqui</a></span>
+                        <span>Caso ja tenha confirmado o codigo, <a href="painel.php">Clicando Aqui</a></span>
+                        <br><br>
+                        <span>Caso não tenha recebido a mensagem no Whatsapp, altere seu telefone <a href="registro.php?id=<?php echo base64_encode("RecCodigo*$email*$token"); ?>">Clicando Aqui</a></span>
                         <?php
                             }else{
                         ?>
@@ -171,5 +176,20 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
             </div>
         </div>
     </div>
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto enviamos seus dados!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

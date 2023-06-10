@@ -44,8 +44,9 @@ if($id_job == 'registro'){
     $token = md5(date("YmdHismm"));
 
     if($senha != $conf_senha){
+        $id = base64_encode('registro*3');
         echo "<script>
-        window.location.replace('login_error.php?id_job=registro&typeerror=3')
+        window.location.replace('login_error.php?id=$id')
         </script>";
         exit();
     }
@@ -80,8 +81,9 @@ if($id_job == 'registro'){
     }
 
     if(validaCPF($doc_cpf) == false){
+        $id = base64_encode('registro*6');
         echo "<script>
-        window.location.replace('login_error.php?id_job=registro&typeerror=6')
+        window.location.replace('login_error.php?id=$id')
         </script>";
         exit();
     }
@@ -91,8 +93,9 @@ if($id_job == 'registro'){
     $row = $query->rowCount();
     
     if($row == 1){
+        $id = base64_encode('registro*4');
         echo "<script>
-        window.location.replace('login_error.php?id_job=registro&typeerror=4')
+        window.location.replace('login_error.php?id=$id')
         </script>";
         exit();
     }
@@ -102,8 +105,9 @@ if($id_job == 'registro'){
     $row = $query->rowCount();
     
     if($row == 1){
+        $id = base64_encode('registro*5');
         echo "<script>
-        window.location.replace('login_error.php?id_job=registro&typeerror=5')
+        window.location.replace('login_error.php?id=$id')
         </script>";
         exit();
     }
@@ -115,8 +119,9 @@ if($id_job == 'registro'){
         
 //Incio Envio Whatsapp
 
+$id = base64_encode("Codigo*$email*$codigo*$token");
 $doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id_job=Codigo&email=$email&codigo=$codigo&token=$token";
+$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id=$id";
 
 $curl = curl_init();
 
@@ -149,12 +154,13 @@ curl_close($curl);
 
 //Fim Envio Whatsapp
 
+        $id = base64_encode("EnvCodigo*$email*$token*$telefone*$nome");
         echo "<script>
         alert('Um Codigo foi Enviado para o seu Celular!')
-        window.location.replace('registro.php?id_job=EnvCodigo&email=$email&token=$token&telefone=$telefone&nome=$nome')
+        window.location.replace('registro.php?id=$id')
         </script>";
         exit();
-    }else if($id_registro == 'Codigo'){
+}else if($id_registro == 'Codigo'){
 
     $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
     $codigo = mysqli_real_escape_string($conn_msqli, $_POST['codigo']);
@@ -176,15 +182,16 @@ curl_close($curl);
 
     }else{
 
+        $id = base64_encode("RecCodigo*$email*$token");
         echo "<script>
         alert('Codigo Invalido!')
-        window.location.replace('registro.php?id_job=RecCodigo&token=$token&email=$email')
+        window.location.replace('registro.php?id=$id')
         </script>";
         exit(); 
 
     }
 
-    }else if($id_registro == 'RecCodigo'){
+}else if($id_registro == 'RecCodigo'){
 
         $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
         $telefone = preg_replace('/[^\d]/', '', mysqli_real_escape_string($conn_msqli, $_POST['telefone']));
@@ -205,8 +212,9 @@ curl_close($curl);
 
  //Incio Envio Whatsapp
 
+$id = base64_encode("Codigo*$email*$codigo*$token");
 $doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id_job=Codigo&email=$email&codigo=$codigo&token=$token";
+$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id=$id";
 
 $curl = curl_init();
 
@@ -238,24 +246,25 @@ $response = curl_exec($curl);
 curl_close($curl);
 
 //Fim Envio Whatsapp
-    
+
+            $id = base64_encode("EnvCodigo*$email*$token*$telefone*$nome");
             echo "<script>
-            alert('Novo condigo enviado!')
-            window.location.replace('registro.php?id_job=Codigo&token=$token&email=$email')
+            window.location.replace('registro.php?id=$id')
             </script>";
             exit();
     
         }else{
     
+            $id = base64_encode("Registrar");
             echo "<script>
             alert('E-mail não existe. Cadastre!')
-            window.location.replace('registro.php?id_job=Registrar')
+            window.location.replace('registro.php?id=$id')
             </script>";
             exit(); 
+
     
-        }
-    
-        }
+        }}
+
 
 }else if($id_job == 'recuperar'){
 
@@ -321,13 +330,15 @@ try {
 
 //Fim Envio de Email
 
+        $id = base64_encode("recuperar*7*$email");
         echo "<script>
-        window.location.replace('login_error.php?id_job=recuperar&typeerror=7&email=$email')
+        window.location.replace('login_error.php?id=$id')
         </script>";
         exit();
     }else{
+        $id = base64_encode("recuperar*7*$email");
         echo "<script>
-        window.location.replace('login_error.php?id_job=recuperar&typeerror=7&email=$email')
+        window.location.replace('login_error.php?id$id')
         </script>";
         exit();
     }
@@ -339,8 +350,9 @@ try {
     $crip_senha = md5($senha);
 
     if($senha != $conf_senha){
+        $id = base64_encode("recuperar*3*$email");
         echo "<script>
-        window.location.replace('login_error.php?id_job=recuperar&typeerror=3&email=$email')
+        window.location.replace('login_error.php?id=$id')
         </script>";
         exit();
     }
@@ -361,13 +373,15 @@ try {
         $query = $conexao->prepare("UPDATE $tabela_painel_users SET senha = :senha, tentativas = '0', codigo = '0' WHERE email = :email");
         $query->execute(array('senha' => $crip_senha, 'email' => $email));
     
+            $id = base64_encode("login*9");
             echo "<script>
-            window.location.replace('login_error.php?id_job=login&typeerror=9')
+            window.location.replace('login_error.php?id=$id')
             </script>";
             exit();
         }else{
+            $id = base64_encode("recuperar*10*$email");
             echo "<script>
-            window.location.replace('login_error.php?id_job=recuperar&typeerror=10&email=$email')
+            window.location.replace('login_error.php?id=$id')
             </script>";
             exit();
         }

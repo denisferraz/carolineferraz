@@ -10,9 +10,13 @@ if(!validarToken()){
     exit();
 }
 
-$token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+
+
+$token = mysqli_real_escape_string($conn_msqli, $_GET['id']);
+
 $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE token = :token AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
 $result_check->execute(array('token' => $token));
+
 
 while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
 $confirmacao = $select['confirmacao'];

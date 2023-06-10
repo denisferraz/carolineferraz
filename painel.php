@@ -9,7 +9,7 @@ $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
 if (!empty($dados['SendLogin'])) {
 
-    $query_usuario = "SELECT id, nome, email, senha 
+    $query_usuario = "SELECT id, nome, email, senha, tentativas 
                 FROM painel_users
                 WHERE email =:email
                 LIMIT 1";
@@ -21,7 +21,12 @@ if (!empty($dados['SendLogin'])) {
     if (($result_usuario) and ($result_usuario->rowCount() != 0)) {
         $row_usuario = $result_usuario->fetch(PDO::FETCH_ASSOC);
 
+        $tentativas = $row_usuario['tentativas'];
+
         if (md5($dados['senha']) == $row_usuario['senha']) {
+
+        $query = $conexao->prepare("UPDATE $tabela_painel_users SET tentativas = :tentativas WHERE email = :email");
+        $query->execute(array('tentativas' => '0', 'email' => $row_usuario['email']));
 
         // Chave secreta e única
         $chave = "CGBU85S4623M5W4X6ODF";
@@ -49,10 +54,31 @@ if (!empty($dados['SendLogin'])) {
             header("Location: index.php");
 
         } else {
+
+            $tentativas++;
+
+            $query = $conexao->prepare("UPDATE $tabela_painel_users SET tentativas = :tentativas WHERE email = :email");
+            $query->execute(array('tentativas' => $tentativas, 'email' => $row_usuario['email']));
+
+            if($tentativas > 1 && $tentativas < 6){
+            $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Email ou senha inválida!<br>Tente recuperar sua senha clicando abaixo!</p>";   
+            }else if($tentativas > 5){
+            $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Usuario bloqueado por segurança!<br>Recupere sua senha clicando abaixo!</p>";   
+            }else{
             $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Email ou senha inválida!</p>";
+            }
+
         }
     } else {
-        $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Email ou senha inválida!</p>";
+
+        if (!isset($tentativas)) {
+            $tentativas = 0;
+        }
+        if($tentativas > 1){
+            $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Email ou senha inválida!<br>Tente recuperar sua senha clicando abaixo!</p>";   
+            }else{
+            $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Email ou senha inválida!</p>";
+            }
     }
 }
 ?>
@@ -119,7 +145,18 @@ $senha = $dados['senha'];
                         </div>
                         </form>
                         <div class="signin">
-                            <span>Ainda não tem sua Conta? <a href="registro.php?id_job=Registrar">Registre-se Aqui</a></span>
+                            <?php
+                            if (!isset($tentativas)) {
+                                $tentativas = 0;
+                            }
+                                if($tentativas > 1){
+                            ?>
+                            <span>Esqueceu sua Senha? <a href="recuperar.php">Recupere Aqui</a></span>
+                            <br><br>
+                            <?php
+                                }
+                            ?>
+                            <span>Ainda não tem sua Conta? <a href="registro.php?id=<?php echo base64_encode("Registrar"); ?>">Registre-se Aqui</a></span>
                         </div>
                      </div>
                 </div>

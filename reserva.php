@@ -13,8 +13,10 @@ if(!validarToken()){
 $email = recuperarEmailToken();
 $nome = recuperarNomeToken();
 
-$token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+$id = explode('.', base64_decode(mysqli_real_escape_string($conn_msqli, $_GET['id'])));
+
+$confirmacao = $id[0];
+$token = $id[1];
 
 $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao");
 $result_check->execute(array('confirmacao' => $confirmacao));

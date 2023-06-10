@@ -22,10 +22,12 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 
 $token = md5(date("YmdHismm"));
 
+$id = explode('.', base64_decode(mysqli_real_escape_string($conn_msqli, $_GET['id'])));
 
-$id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
-$typeerror = mysqli_real_escape_string($conn_msqli, $_GET['typeerror']);
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+$id_job = $id[0];
+$typeerror = $id[1];
+$atendimento_dia =  $id[2];
+$confirmacao = $id[3];
 
 if($id_job == 'Nova Sessão'){
 $status_reserva = 'Em Andamento';
@@ -68,7 +70,6 @@ if($typeerror == '1'){
                                 <?php
 
 $limite_dia = $config_limitedia;
-$atendimento_dia =  mysqli_real_escape_string($conn_msqli, $_GET['atendimento_dia']);
 $atendimento_hora_comeco =  $config_atendimento_hora_comeco;
 $atendimento_hora_fim =  $config_atendimento_hora_fim;
 $atendimento_hora_intervalo = $config_atendimento_hora_intervalo * 60;
