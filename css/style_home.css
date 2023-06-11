@@ -94,16 +94,15 @@ form{
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;
-    }
-    
+    margin-left: 10px;
+}
+
 form input, form select{
         outline:unset ;
-        padding: 15px;
-        width: 200px;
+        padding: 10px;
+        width: clamp(200px, 75px + 50vw, 350px);
         border: 1px solid;
-        border-radius: 15px;
-        margin-left: auto;
-        margin-right: auto;
+        border-radius: 10px;
 }
 
 input[type=checkbox] {
@@ -227,9 +226,7 @@ footer{
     z-index: 1;
   }
 
-/*
-Carrossel
-*/
+/* Carrossel */
 .carrossel-mobile, .carrossel2-mobile{
     display: none;
 }
@@ -252,6 +249,7 @@ Carrossel
     
 }
 
+/* Menu */
 .dp-menu{
     margin: 10px;
     align-items: center;

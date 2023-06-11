@@ -79,7 +79,7 @@ $atendimento_hora = strtotime("$atendimento_hora");
         Swal.fire({
             icon: 'warning',
             title: 'Carregando...',
-            text: 'Aguarde enquanto finalizamos sua solicitação!',
+            text: 'Aguarde enquanto cancelamos a Consulta!',
             showCancelButton: false,
             showConfirmButton: false,
             allowOutsideClick: false,

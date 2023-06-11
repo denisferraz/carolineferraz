@@ -131,10 +131,11 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     Swal.fire({
       icon: 'warning',
       title: 'Carregando...',
-      text: 'Aguarde enquanto finalizamos sua solicitação!',
+      text: 'Aguarde enquanto enviamos os Lembretes!',
+      timer: 10000,
       showCancelButton: false,
       showConfirmButton: false,
-      allowOutsideClick: true,
+      allowOutsideClick: false,
       willOpen: () => {
         Swal.showLoading();
       }

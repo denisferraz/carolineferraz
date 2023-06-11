@@ -44,7 +44,7 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
                         <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Capilar", "iframe-container")'>Consulta Capilar</a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Online", "iframe-container")'>Consulta Online</a></li>
                     </ul></li>
-                        <li><a class="logo">Prof<span>ile</span></a>
+                        <li><a class="logo" href="javascript:void(0)" onclick='window.open("profile.php?id=<?php echo base64_encode("ver") ?>", "iframe-container")'>Prof<span>ile</span></a>
                     <ul>
                         <li><a href="javascript:void(0)" onclick='window.open("reservas.php", "iframe-container")'>Acompanhamentos</a></li>
                     </ul></li>
@@ -59,6 +59,7 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
                     </div>
                     <ul>
                         <li><a href="javascript:void(0)" onclick='window.open("home.html", "iframe-container")'><b><i>Inicio</i></b></a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("profile.php?id=<?php echo base64_encode("ver") ?>", "iframe-container")'>Profile</a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Avaliação%20Capilar", "iframe-container")'>Avaliação Capilar</a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Capilar", "iframe-container")'>Consulta Capilar</a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("agendar.php?id_job=Consulta%20Online", "iframe-container")'>Consulta Online</a></li>

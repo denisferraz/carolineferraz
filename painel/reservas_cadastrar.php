@@ -112,7 +112,7 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
         Swal.fire({
             icon: 'warning',
             title: 'Carregando...',
-            text: 'Aguarde enquanto finalizamos sua solicitação!',
+            text: 'Aguarde enquanto confirmamos a Consulta!',
             showCancelButton: false,
             showConfirmButton: false,
             allowOutsideClick: false,

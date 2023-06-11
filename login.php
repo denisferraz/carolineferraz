@@ -386,4 +386,108 @@ try {
             exit();
         }
         
+}else if($id_job == 'profile_editar'){
+
+    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
+    $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
+    $telefone = preg_replace('/[^\d]/', '', mysqli_real_escape_string($conn_msqli, $_POST['telefone']));
+    $doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['cpf']));
+    $rg = mysqli_real_escape_string($conn_msqli, $_POST['rg']);
+    $nascimento = mysqli_real_escape_string($conn_msqli, $_POST['nascimento']);
+
+    //Valida CPF
+    function validaCPF($doc_cpf) {
+     
+        // Extrai somente os números
+        $doc_cpf = preg_replace( '/[^0-9]/is', '', $doc_cpf );
+         
+        // Verifica se foi informado todos os digitos corretamente
+        if (strlen($doc_cpf) != 11) {
+            return false;
+        }
+    
+        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+        if (preg_match('/(\d)\1{10}/', $doc_cpf)) {
+            return false;
+        }
+    
+        // Faz o calculo para validar o CPF
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $doc_cpf[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($doc_cpf[$c] != $d) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
+    if(validaCPF($doc_cpf) == false){
+        $id = base64_encode('editar*1');
+        echo "<script>
+        window.location.replace('profile.php?id=$id')
+        </script>";
+        exit();
+    }
+
+    //Valida se CPF Existe
+    $query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE unico = :cpf AND email != :email");
+    $query->execute(array('cpf' => $doc_cpf, 'email' => $email));
+    $row = $query->rowCount();
+    
+    if($row == 1){
+        $id = base64_encode('editar*1');
+        echo "<script>
+        window.location.replace('profile.php?id=$id')
+        </script>";
+        exit();
+    }
+
+//Incio Envio Whatsapp
+
+$id = base64_encode("Codigo*$nome*$telefone*$nascimento*$rg*$doc_cpf*$token");
+$doc_telefonewhats = "55$telefone";
+$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Você solicitou alteração no seu Perfil. Para confirmar, clique abaixo:".'\n\n'."https://carolineferraz.com.br/profile.php?id=$id";
+
+$curl = curl_init();
+
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'POST',
+  CURLOPT_POSTFIELDS => "{
+    \"number\": \"$doc_telefonewhats\",
+    \"text\": \"$msg_wahstapp\"
+}",
+  CURLOPT_HTTPHEADER => array(
+    'Content-Type: application/json',
+    "SecretKey: $whatsapp_secretkey",
+    "PublicToken: $whatsapp_publictoken",
+    "DeviceToken: $whatsapp_devicetoken",
+    "Authorization: $whatsapp_authorization"
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+
+//Fim Envio Whatsapp
+
+$id = base64_encode('ver*2');
+        echo "<script>
+        alert('Veja seu Whatsapp para confirmar a alteração')
+        window.location.replace('profile.php?id=$id')
+        </script>";
+        exit();
+        
 }
