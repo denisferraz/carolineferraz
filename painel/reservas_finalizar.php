@@ -21,13 +21,14 @@ if($aut_acesso == 1){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Cadastrar Finalização</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <form class="form" action="../reservas_php.php" method="POST">
+    <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
         <div class="card">
             <div class="card-top">
                 <h2 class="title-cadastro">Confirmar a Finalização</h2>
@@ -69,7 +70,21 @@ $atendimento_hora = strtotime("$atendimento_hora");
 ?>
         </div>
     </form>
-
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto finalizamos sua solicitação!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>
 <?php } ?>

@@ -18,6 +18,7 @@ $amanha = date('Y-m-d', strtotime('+1 days'));
 
 
 $atendimentos_dia = '';
+
 //Envia E-mail
 $result_check = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia = '{$amanha}' AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ");
 if ($result_check->rowCount() > 0) {

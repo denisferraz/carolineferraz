@@ -21,6 +21,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Painel de Controle</title>
 
     <link rel="stylesheet" href="css/style.css">
@@ -41,7 +42,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 
     <li><a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home")'>Consultas</a>
     <ul><li><a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home")'>Cadastrar</a></li>
-    <li><a href="javascript:void(0)" onclick='window.open("lembrete.php","iframe-home")'>Enviar Lembretes</a></li>
+    <li><a href="javascript:void(0)" onclick="abrirLembrete()">Enviar Lembretes</a></li>
 
     </ul></li>
     
@@ -117,5 +118,28 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
         });
     </script> 
 
+<script>
+  function abrirLembrete() {
+    // Exibe o popup de carregamento
+    exibirPopup();
+
+    // Abre a página lembrete.php em uma nova janela ou iframe
+    window.open("lembrete.php", "iframe-home");
+  }
+
+  function exibirPopup() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Carregando...',
+      text: 'Aguarde enquanto finalizamos sua solicitação!',
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: true,
+      willOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  }
+</script>
 </body>
 </html>

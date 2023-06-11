@@ -47,6 +47,7 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Cadastrar Consulta</title>
 
     <link rel="stylesheet" href="css/style.css">
@@ -63,7 +64,7 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
 </head>
 <body>
 
-    <form class="form" action="../reservas_php.php" method="POST">
+    <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
         <div class="card">
             <div class="card-top">
                 <h2 class="title-cadastro">Cadastre abaixo uma nova Consulta</h2>
@@ -106,7 +107,21 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
             </div>
         </div>
     </form>
-
+    <script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto finalizamos sua solicitação!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>
 

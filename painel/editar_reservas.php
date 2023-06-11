@@ -23,6 +23,7 @@ $token = md5(date("YmdHismm"));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Editar Informações</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -37,7 +38,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $atendimento_hora = $select['atendimento_hora'];
 ?>
 
-<form class="form" action="../reservas_php.php" method="POST">
+<form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
 <div class="card">
 <div class="card-top">
                 <h2 class="title-cadastro">Reserva <u><?php echo $select['confirmacao'] ?></u></h2>
@@ -78,6 +79,20 @@ $atendimento_hora = $select['atendimento_hora'];
 <?php
 }}
 ?>
-
+<script>
+    function exibirPopup() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto finalizamos sua solicitação!',
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+</script>
 </body>
 </html>

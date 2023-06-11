@@ -22,16 +22,16 @@ if($aut_acesso == 1){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <title>Cancelar Reserva</title>
+    <title>Enviar Lembrete</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
+    <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Confirmar o Cancelamento</h2>
+                <h2 class="title-cadastro">Enviar Lembrete</h2>
             </div>
 <?php
 $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
@@ -39,9 +39,10 @@ $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
 $query = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao");
 $query->execute(array('confirmacao' => $confirmacao));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select['confirmacao'];
+$token = $select['token'];
 $doc_nome = $select['doc_nome'];
 $doc_email = $select['doc_email'];
+$doc_telefone = $select['doc_telefone'];
 $atendimento_dia = $select['atendimento_dia'];
 $atendimento_hora = $select['atendimento_hora'];
 $atendimento_hora = strtotime("$atendimento_hora");
@@ -51,22 +52,24 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <input type="text" minlength="10" maxlength="10" name="confirmacao" value="<?php echo $confirmacao ?>" required>
             <label>Nome</label>
             <input type="text" minlength="8" maxlength="30" name="doc_nome" value="<?php echo $doc_nome ?>" required>
-            <label>Atendimento Dia</label>
+            <label>Data Atendimento</label>
             <input value="<?php echo $atendimento_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
-            <br>
             <label>Atendimento Hora</label>
             <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="time" name="atendimento_hora" required>
             <label>E-mail</label>
             <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $doc_email ?>" required>
-            <input type="hidden" name="status_reserva" value="Cancelado">
-            <input type="hidden" name="doc_telefone" value="<?php echo $select['doc_telefone'] ?>">
-            <input type="hidden" name="token" value="<?php echo $select['token'] ?>">
-            <input type="hidden" name="id_job" value="<?php echo $select['tipo_consulta'] ?>">
-            <input type="hidden" name="feitapor" value="Painel">
+            <label>Telefone</label>
+            <input minlength="11" maxlength="18" type="text" name="doc_telefone" value="<?php echo $doc_telefone ?>" required>
+            <br><br>
+            <input id="whatsapp" type="checkbox" name="whatsapp" checked>
+            <label for="whatsapp">Enviar para Whatsapp</label>
             <br>
-            <div class="title"><b>[Ler para o Cliente]</b> Afirmo que o cancelamento é irreversivel e com isso irei perder a garantia de vaga</div><br>
-            <br>
-            <div class="card-group-red btn"><button type="submit">Cancelar</button></div>
+            <input id="email" type="checkbox" name="email" checked>
+            <label for="email">Enviar para E-mail</label>
+            <br><br>
+            <input type="hidden" name="id_job" value="EnvioLembrete">
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <div class="card-group-green btn"><button type="submit">Enviar</button></div>
 
             </div>
 <?php
@@ -79,7 +82,7 @@ $atendimento_hora = strtotime("$atendimento_hora");
         Swal.fire({
             icon: 'warning',
             title: 'Carregando...',
-            text: 'Aguarde enquanto finalizamos sua solicitação!',
+            text: 'Aguarde enquanto enviamos o Lembrete!',
             showCancelButton: false,
             showConfirmButton: false,
             allowOutsideClick: false,

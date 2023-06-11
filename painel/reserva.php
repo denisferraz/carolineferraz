@@ -116,6 +116,18 @@ $progress = $sessao_atual/$sessao_total*100;
     <tr></tr>
     <tr></tr>
     <tr>
+    <tr>
+<td><a href="javascript:void(0)" onclick='window.open("reservas_confirmacao.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Confirmação</button></div></a></td>
+<td> | </td>
+<td><a href="javascript:void(0)" onclick='window.open("reservas_lembrete.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Lembrete</button></div></a></td>
+    </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr>
     <?php if($atendimento_dia <= $hoje){ ?>
         <tr>
 <td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")'><div class="card-group-black btn"><button>Finalizar Sessão</button></div></a></td>
