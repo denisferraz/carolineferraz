@@ -54,9 +54,6 @@ $doc_telefone = preg_replace('/[^\d]/', '', $doc_telefone);
     <title><?php echo $config_empresa ?></title>
 </head>
 <body>
-    <header>
-    <?php echo $menu_site_logado ?>
-    </header>
     <main>
         <section class="home">
             <div class="home-text">

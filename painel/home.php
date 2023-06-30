@@ -28,13 +28,63 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
     <title>Inicio</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='css/style.css'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
 </head>
 <body>
 <div id="atendimentos">
 
-<!-- Check-In -->
+<!-- Solicitações Pendentes -->
+<div class="visao-desktop">
+<fieldset>
+<?php
+    $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE alt_status = 'Pendente'");
+    $alteracao_qtd = $query_alteracao->rowCount();
+
+if($alteracao_qtd > 0){
+    ?>
+<legend>Solicitações Pendentes [ <?php echo $alteracao_qtd ?> ]</legend>
+<table widht="1200" border="1px">
+<tr>
+    <td width="15%" align="center">Reserva</td>
+    <td width="60%" align="center">Nome [ E-mail ]</td>
+    <td width="20%" align="center">Data e Horario<br>[Antes]</td>
+    <td width="20%" align="center">Data e Horario<br>[Novo]</td>
+    <td width="15%" align="center">Aceitar</td>
+    <td width="15%" align="center">Recusar</td>
+</tr>
+<?php
+while($select_alteracao = $query_alteracao->fetch(PDO::FETCH_ASSOC)){
+    $token = $select_alteracao['token'];
+    $atendimento_dia = $select_alteracao['atendimento_dia'];
+    $atendimento_hora = $select_alteracao['atendimento_hora'];
+    $atendimento_dia_anterior = $select_alteracao['atendimento_dia_anterior'];
+    $atendimento_hora_anterior = $select_alteracao['atendimento_hora_anterior'];
+
+    $query_alteracao_reserva = $conexao->query("SELECT * FROM reservas_atendimento WHERE token = '{$token}'");
+    while($select_alteracao_reserva = $query_alteracao_reserva->fetch(PDO::FETCH_ASSOC)){
+    $confirmacao = $select_alteracao_reserva['confirmacao'];
+    $doc_nome = $select_alteracao_reserva['doc_nome'];
+    $doc_email = $select_alteracao_reserva['doc_email'];
+    }
+    ?>
+<tr>
+    <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button><?php echo $confirmacao ?></button></a></td>
+    <td><?php echo $doc_nome ?> [ <?php echo $doc_email ?> ]</td>
+    <td align="center"><?php echo date('d/m/Y', strtotime("$atendimento_dia_anterior")) ?><br><?php echo date('H:i\h', strtotime("$atendimento_hora_anterior")) ?></td>
+    <td align="center"><?php echo date('d/m/Y', strtotime("$atendimento_dia")) ?><br><?php echo date('H:i\h', strtotime("$atendimento_hora")) ?></td>
+    <td align="center"><a href="javascript:void(0)" onclick="AlteracaoAceitar()"><button>Aceitar</button></a></td>
+    <td><a href="javascript:void(0)" onclick="AlteracaoRecusar()"><button>Recusar</button></a></td>
+</tr>
+<?php } ?>
+</table>
+<?php } ?>
+</fieldset>
+</div>
+
+<br>
+<!-- Dia Hoje -->
 <div class="visao-desktop">
 <?php
     $query_checkin = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia <= '{$hoje}' AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento') AND status_sessao = 'Confirmada' ORDER BY atendimento_dia, atendimento_hora ASC");
@@ -304,6 +354,39 @@ while($select_proximos_dias = $query_proximos_dias->fetch(PDO::FETCH_ASSOC)){
 
 <!-- Fim -->
 </div>
+
+<script>
+  function AlteracaoRecusar() {
+    // Exibe o popup de carregamento
+    exibirPopup();
+
+    // Abre a página lembrete.php em uma nova janela ou iframe
+    window.open("reservas_solicitacao.php?alt_status=Recusada&token=<?php echo $token ?>", "iframe-home");
+  }
+
+  function AlteracaoAceitar() {
+    // Exibe o popup de carregamento
+    exibirPopup();
+
+    // Abre a página lembrete.php em uma nova janela ou iframe
+    window.open("reservas_solicitacao.php?alt_status=Aceita&token=<?php echo $token ?>", "iframe-home");
+  }
+
+  function exibirPopup() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Carregando...',
+      text: 'Aguarde enquanto enviamos sua resposta!',
+      timer: 10000,
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      willOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  }
+</script>
 </body>
 </html>
 

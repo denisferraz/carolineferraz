@@ -493,7 +493,7 @@ if($envio_whatsapp == 'ativado'){
 
             }
 
-            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, :id_job, 'Pendente')");
+            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, 'Pendente', :id_job)");
             $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job));
 
             $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
@@ -507,7 +507,7 @@ $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
 $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
 $doc_telefonewhats = "5571997417190";
-$msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome solicitou uma alteração para Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n\n'."Para Aceitar clique abaixo:".'\n'."$site_atual/solicitacao.php?alt_status=Aceita&token=$token".'\n\n'."Para Recuste clique abaixo:".'\n'."$site_atual/solicitacao.php?alt_status=Recusada&token=$token";
+$msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome solicitou uma alteração para Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n\n'."Para Aceitar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Aceita&token=$token".'\n\n'."Para Recusar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Recusada&token=$token";
 
 $curl = curl_init();
 
