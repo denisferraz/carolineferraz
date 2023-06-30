@@ -49,7 +49,7 @@ if($status_reserva == 'Confirmada' || $status_reserva == 'Confirmado'){
 $status_reserva = 'Confirmada';
 }
 $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-$doc_cpf = mysqli_real_escape_string($conn_msqli, $_POST['doc_cpf']);
+$doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_cpf']));
 $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 $horario = '';
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
@@ -869,6 +869,7 @@ if($envio_whatsapp == 'ativado'){
 }else if($status_reserva == 'EnvioMensagem'){
 
 $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+$doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
 $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
@@ -946,6 +947,7 @@ try {
 //Fim Envio de Email
 
 if(isset($_POST['whatsapp'])){
+
 //Incio Envio Whatsapp
 if($envio_whatsapp == 'ativado'){
 

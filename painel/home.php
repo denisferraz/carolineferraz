@@ -83,6 +83,40 @@ while($select_alteracao = $query_alteracao->fetch(PDO::FETCH_ASSOC)){
 </fieldset>
 </div>
 
+<div class="visao-mobile">
+<fieldset>
+<?php
+    $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE alt_status = 'Pendente'");
+    $alteracao_qtd = $query_alteracao->rowCount();
+
+if($alteracao_qtd > 0){
+    ?>
+<legend>Solicitações Pendentes [ <?php echo $alteracao_qtd ?> ]</legend>
+<?php
+while($select_alteracao = $query_alteracao->fetch(PDO::FETCH_ASSOC)){
+    $token = $select_alteracao['token'];
+    $atendimento_dia = $select_alteracao['atendimento_dia'];
+    $atendimento_hora = $select_alteracao['atendimento_hora'];
+    $atendimento_dia_anterior = $select_alteracao['atendimento_dia_anterior'];
+    $atendimento_hora_anterior = $select_alteracao['atendimento_hora_anterior'];
+
+    $query_alteracao_reserva = $conexao->query("SELECT * FROM reservas_atendimento WHERE token = '{$token}'");
+    while($select_alteracao_reserva = $query_alteracao_reserva->fetch(PDO::FETCH_ASSOC)){
+    $confirmacao = $select_alteracao_reserva['confirmacao'];
+    $doc_nome = $select_alteracao_reserva['doc_nome'];
+    $doc_email = $select_alteracao_reserva['doc_email'];
+    }
+    ?>
+    <a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button><?php echo $doc_nome ?></button></a>
+    <br><br><b>De: </b><?php echo date('d/m/Y', strtotime("$atendimento_dia_anterior")) ?> as <?php echo date('H:i\h', strtotime("$atendimento_hora_anterior")) ?>
+    <br><b>Para: </b><?php echo date('d/m/Y', strtotime("$atendimento_dia")) ?> as <?php echo date('H:i\h', strtotime("$atendimento_hora")) ?><br><br>
+    <a href="javascript:void(0)" onclick="AlteracaoAceitar()"><button>Aceitar</button></a>
+    <a href="javascript:void(0)" onclick="AlteracaoRecusar()"><button>Recusar</button></a>
+
+<?php }} ?>
+</fieldset>
+</div>
+
 <br>
 <!-- Dia Hoje -->
 <div class="visao-desktop">

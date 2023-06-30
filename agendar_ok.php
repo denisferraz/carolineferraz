@@ -22,6 +22,7 @@ while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
 $confirmacao = $select['confirmacao'];
 $doc_email = $select['doc_email'];
 $doc_telefone = $select['doc_telefone'];
+$doc_telefone2 = $select['doc_telefone'];
 $doc_nome = $select['doc_nome'];
 $tipo_consulta = $select['tipo_consulta'];
 $atendimento_dia = $select['atendimento_dia'];
@@ -72,7 +73,7 @@ $doc_telefone = "($ddd)$prefixo-$sufixo";
             <input type="hidden" name="atendimento_hora" value="<?php echo $atendimento_hora ?>">
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
             <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
-            <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone ?>">
+            <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone2 ?>">
             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="status_reserva" value="EnvioMensagem">

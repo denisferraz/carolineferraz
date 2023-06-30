@@ -5,7 +5,7 @@ require('conexao.php');
  //Incio Envio Whatsapp
 
     
-    $doc_telefonewhats = "5571997417190";
+    $doc_telefonewhats = "5571992604877";
     $msg_wahstapp = "Testando Sistema de Whatsapp!";
     
     $curl = curl_init();

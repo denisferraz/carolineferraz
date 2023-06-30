@@ -74,6 +74,21 @@ $atendimento_hora_intervalo = $select['atendimento_hora_intervalo'];
     <input type="number" min="1" max="999" name="atendimento_hora_intervalo" value="<?php echo $atendimento_hora_intervalo ?>" required>
     <label>Data Maxima de Agendamento</label>
     <input type="date" name="atendimento_dia_max" value="<?php echo $select['atendimento_dia_max'] ?>" required>
+    <br><br><label><b>Formas de Envio:</b></label>
+    <label>Whatsapp <b>(<?php echo $select['envio_whatsapp'] ?>)</b>
+        <select name="envio_whatsapp">
+    <?php foreach (['ativado', 'desativado'] as $option) {
+        $selected = ($option == $select['envio_whatsapp']) ? 'selected' : '';
+        echo "<option value='$option' $selected>$option</option>";
+    } ?>
+        </select></label>
+    <label>E-mail <b>(<?php echo $select['envio_email'] ?>)</b>
+        <select name="envio_email">
+    <?php foreach (['ativado', 'desativado'] as $option) {
+        $selected = ($option == $select['envio_email']) ? 'selected' : '';
+        echo "<option value='$option' $selected>$option</option>";
+    } ?>
+        </select></label><br>
     <br><label>Dias da Semana</label><br>
     <input id="dia_segunda" type="checkbox" name=dia_segunda <?php if($dia_segunda == 1){?>checked<?php } ?>>
     <label for="dia_segunda">Segunda-Feira</label>
