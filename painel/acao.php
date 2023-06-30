@@ -950,6 +950,8 @@ $dompdf->stream(
 
     $data_email = date('d/m/Y \-\ H:i:s');
 
+if($envio_email == 'ativado'){
+
     $mail = new PHPMailer(true);
 
 try {
@@ -993,6 +995,7 @@ try {
 
     }
 
+}
 //Fim Envio de Email
 
     echo "<script>
@@ -1020,6 +1023,7 @@ try {
 
     $data_email = date('d/m/Y \-\ H:i:s');
 
+    if($envio_email == 'ativado'){
     $mail = new PHPMailer(true);
 
 try {
@@ -1063,10 +1067,11 @@ try {
 
     }
 
+}
 //Fim Envio de Email
 
     echo "<script>
-    alert('Contrato Enviado com Sucesso')
+    alert('Aditivo Contrato Enviado com Sucesso')
     window.location.replace('reserva.php?confirmacao=$confirmacao')
     </script>";
     exit();
@@ -1133,6 +1138,8 @@ try {
 
     $data_email = date('d/m/Y \-\ H:i:s');
 
+    if($envio_email == 'ativado'){
+
     $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
 
     $mail = new PHPMailer(true);
@@ -1179,6 +1186,7 @@ try {
 
     }
 
+}
 //Fim Envio de Email
 
     echo "<script>
@@ -1236,6 +1244,7 @@ try {
     
     
     if(isset($_POST['email'])){
+        if($envio_email == 'ativado'){
     
         $pdf_corpo_00 = 'Olá';
         $pdf_corpo_01 = 'Confirmação Atendimento';
@@ -1299,6 +1308,7 @@ try {
         }
     
     }
+}
     //Fim Envio de Email
     
     if(isset($_POST['whatsapp'])){
@@ -1366,6 +1376,7 @@ try {
     
     
     if(isset($_POST['email'])){
+        if($envio_email == 'ativado'){
     
     $pdf_corpo_00 = 'Olá';
     $pdf_corpo_01 = 'Lembrete de Consulta';
@@ -1427,6 +1438,7 @@ try {
   
       }
     
+    }
     }
     //Fim Envio de Email
     

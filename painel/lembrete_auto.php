@@ -33,6 +33,7 @@ $doc_telefone = $select_check['doc_telefone'];
 
 
 //Envio de Email	
+if($envio_email == 'ativado'){
 
 $data_email = date('d/m/Y \-\ H:i:s');
 $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
@@ -98,11 +99,12 @@ try {
 
     }
 
+  }
 //Fim Envio de Email
 
 
 //Incio Envio Whatsapp
-
+if($envio_whatsapp == 'ativado'){
 
     $doc_telefonewhats = "55$doc_telefone";
     $msg_wahstapp = "Olá $doc_nome, passando para lhe lembrar do seu Atendimento!".'\n\n'. "Data: $atendimento_dia_str ás: $atendimento_hora_str.".'\n\n'."Posso confirmar seu Atendimento?";
@@ -136,6 +138,7 @@ try {
     
     curl_close($curl);
 
+  }
     //Fim Envio Whatsapp
 
     //Faz a String pra envio de CAROL
@@ -147,8 +150,9 @@ $msg_wahstapp = "Bom dia Carol. Seguem seus proximos atendimento:$atendimentos_d
 }else{
 $msg_wahstapp = "Bom dia Carol. Você não tem nenhum atendimento para amanhã"; 
 }
-//Incio Envio Whatsapp
 
+//Incio Envio Whatsapp
+if($envio_whatsapp == 'ativado'){
 
 $doc_telefonewhats = "5571997417190";
 
@@ -182,6 +186,7 @@ $response = curl_exec($curl);
 
 curl_close($curl);
 
+}
 //Fim Envio Whatsapp
 
 ?>

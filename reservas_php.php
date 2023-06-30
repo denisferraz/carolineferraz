@@ -294,6 +294,8 @@ if($envio_whatsapp == 'ativado'){
         $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
         $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
         
+        if($envio_email == 'ativado'){
+
         $pdf_corpo_00 = 'Olá';
         $pdf_corpo_01 = 'Atendimento Cancelado';
         $pdf_corpo_02 = 'o seu atendimento';
@@ -352,6 +354,7 @@ if($envio_whatsapp == 'ativado'){
 
         }
 
+    }
 //Fim Envio de Email
 
 
@@ -574,6 +577,8 @@ curl_close($curl);
         $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
         $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
         
+        if($envio_email == 'ativado'){
+
             $pdf_corpo_00 = 'Olá';
             $pdf_corpo_01 = 'Alteração Atendimento';
             $pdf_corpo_03 = 'foi alterado com sucesso';
@@ -634,6 +639,7 @@ curl_close($curl);
         
             }
         
+        }
         //Fim Envio de Email
 
     $id = base64_encode("$confirmacao.$token");
@@ -684,6 +690,8 @@ curl_close($curl);
         $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
         $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
         
+        if($envio_email == 'ativado'){
+
         $pdf_corpo_00 = 'Olá';
         $pdf_corpo_01 = 'Atendimento Finalizado';
         $pdf_corpo_02 = 'o seu atendimento';
@@ -747,6 +755,7 @@ curl_close($curl);
 
         }
 
+    }
 //Fim Envio de Email
 
 //Incio Envio Whatsapp
@@ -881,6 +890,7 @@ $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
 
 if(isset($_POST['email'])){
+    if($envio_email == 'ativado'){
 
     $pdf_corpo_00 = 'Olá';
     $pdf_corpo_01 = 'Confirmação Atendimento';
@@ -943,6 +953,7 @@ try {
 
     }
 
+}
 }
 //Fim Envio de Email
 

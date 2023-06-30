@@ -2,12 +2,6 @@
 
 require('../conexao.php');
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
-
 $aniversariante = 'Hoje é aniversario de:';
 
 $result_check = $conexao->query("SELECT * FROM painel_users WHERE nascimento = '{$hoje}' AND tipo != 'Paciente'");
@@ -31,7 +25,7 @@ $doc_telefone = "($ddd)$prefixo-$sufixo";
 
 //Incio Envio Whatsapp
 
-
+if($envio_whatsapp == 'ativado'){
 $doc_telefonewhats = "5571997417190";
 $msg_wahstapp = "$aniversariante".'\n\n'.'Que tal mandar uma mensagem?';
 
@@ -64,6 +58,7 @@ $response = curl_exec($curl);
 
 curl_close($curl);
 
+}
 //Fim Envio Whatsapp
 
 }

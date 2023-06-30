@@ -59,6 +59,7 @@ use PHPMailer\PHPMailer\PHPMailer;
         }
     
         //Envio de Email	
+        if($envio_email == 'ativado'){
         
             $pdf_corpo_00 = 'Olá';
             $pdf_corpo_01 = 'Alteração Atendimento';
@@ -122,6 +123,7 @@ use PHPMailer\PHPMailer\PHPMailer;
         
             }
         
+        }
         //Fim Envio de Email
         }else{
     

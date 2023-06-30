@@ -119,6 +119,8 @@ if($id_job == 'registro'){
         
 //Incio Envio Whatsapp
 
+if($envio_whatsapp == 'ativado'){
+
 $id = base64_encode("Codigo*$email*$codigo*$token");
 $doc_telefonewhats = "55$telefone";
 $msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id=$id";
@@ -152,6 +154,7 @@ $response = curl_exec($curl);
 
 curl_close($curl);
 
+}
 //Fim Envio Whatsapp
 
         $id = base64_encode("EnvCodigo*$email*$token*$telefone*$nome");
@@ -211,6 +214,7 @@ curl_close($curl);
             $query2->execute(array('telefone' => $telefone, 'email' => $email, 'token' => $token));
 
  //Incio Envio Whatsapp
+ if($envio_whatsapp == 'ativado'){
 
 $id = base64_encode("Codigo*$email*$codigo*$token");
 $doc_telefonewhats = "55$telefone";
@@ -245,6 +249,7 @@ $response = curl_exec($curl);
 
 curl_close($curl);
 
+ }
 //Fim Envio Whatsapp
 
             $id = base64_encode("EnvCodigo*$email*$token*$telefone*$nome");
@@ -285,6 +290,8 @@ curl_close($curl);
         //Envio de Email	
 
 $data_email = date('d/m/Y \-\ H:i:s');
+
+if($envio_email == 'ativado'){
 
     $mail = new PHPMailer(true);
 
@@ -328,6 +335,7 @@ try {
 
     }
 
+}
 //Fim Envio de Email
 
         $id = base64_encode("recuperar*7*$email");
@@ -448,6 +456,8 @@ try {
 
 //Incio Envio Whatsapp
 
+if($envio_whatsapp == 'ativado'){
+
 $id = base64_encode("Codigo*$nome*$telefone*$nascimento*$rg*$doc_cpf*$token");
 $doc_telefonewhats = "55$telefone";
 $msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Você solicitou alteração no seu Perfil. Para confirmar, clique abaixo:".'\n\n'."https://carolineferraz.com.br/profile.php?id=$id";
@@ -481,6 +491,7 @@ $response = curl_exec($curl);
 
 curl_close($curl);
 
+}
 //Fim Envio Whatsapp
 
 $id = base64_encode('ver*2');
