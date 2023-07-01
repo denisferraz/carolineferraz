@@ -19,7 +19,6 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Painel de Controle</title>
@@ -31,66 +30,66 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 <table width="100%">
 <tr>
 <td width="50%" align="left">Ola, <?php echo $nome ?> Tudo bem?</td>
-<td width="50%" align="right"><button><a href="logout.php">Sair</a></button></td>
+<td width="50%" align="right"><a href="logout.php"><button>Sair</button></a></td>
 </tr></table>
 
-<nav class="dp-menu">
-            <ul>
-    <li><a href="javascript:void(0)" onclick='window.open("home.php","iframe-home")'>Inicio</a>
-    <ul><li><a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home")'>Cadastros</a></li>
-    </ul></li>
+<br>
+<center>
+<div id="menuIcon">Ver Menu &#9776;</div>
+</center>
 
-    <li><a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home")'>Consultas</a>
-    <ul><li><a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home")'>Cadastrar</a></li>
-    <li><a href="javascript:void(0)" onclick="abrirLembrete()">Enviar Lembretes</a></li>
+<div class="container">
+<div id="menu">
+            
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">[ &times; ]</a>
 
-    </ul></li>
+    <a>Inicio<span class="submenu-parent"></span></a>
+<div class="submenu">
+    <a href="javascript:void(0)" onclick='window.open("home.php","iframe-home"); closeNav();'>Inicio</a>
+    <a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home"); closeNav();'>Cadastros</a>
+</div>
     
-    <li><a href="javascript:void(0)" onclick='window.open("disponibilidade.php","iframe-home")'>Disponibilidade</a>
-    <ul><li><a href="javascript:void(0)" onclick='window.open("disponibilidade_fechar.php","iframe-home")'>Fechar Datas</a></li>
-    <li><a href="javascript:void(0)" onclick='window.open("disponibilidade_abrir.php","iframe-home")'>Abrir Datas</a></li>
 
-    </ul></li>
+    <a>Consultas<span class="submenu-parent"></span></a>
+<div class="submenu">
+    <a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home"); closeNav();'>Consultas</a>
+    <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home"); closeNav();'>Cadastrar</a>
+    <a href="javascript:void(0)" onclick="abrirLembrete(); closeNav();">Enviar Lembretes</a>
+</div>
 
-    <li><a href="javascript:void(0)" onclick='window.open("historico.php","iframe-home")'>Historico Alterações</a></li>
+    
+    
+    <a>Disponibilidade<span class="submenu-parent"></span></a>
+<div class="submenu">
+    <a href="javascript:void(0)" onclick='window.open("disponibilidade.php","iframe-home"); closeNav();'>Disponibilidade</a>
+    <a href="javascript:void(0)" onclick='window.open("disponibilidade_fechar.php","iframe-home"); closeNav();'>Fechar Datas</a>
+    <a href="javascript:void(0)" onclick='window.open("disponibilidade_abrir.php","iframe-home"); closeNav();'>Abrir Datas</a>
+</div>
 
-    <li><a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home")'>Configurações</a></li>
+    
 
-    <li><a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home")'>Despesas</a>
-    <ul><li><a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home")'>Lançar</a></li>
+    <a href="javascript:void(0)" onclick='window.open("historico.php","iframe-home"); closeNav();'>Historico Alterações</a>
 
-    </ul></li>
+    <a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home"); closeNav();'>Configurações</a>
 
-    <li><a href="javascript:void(0)" onclick='window.open("relatorios.php", "iframe-home")'>Relatorios Gerenciais</a></li>
+    <a>Despesas<span class="submenu-parent"></span></a>
+<div class="submenu">
+    <a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home"); closeNav();'>Despesas</a>
+    <a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home"); closeNav();'>Lançar</a>
+</div>
 
-    <li><a href="javascript:void(0)" onclick='window.open("../index.php")'>Site Principal</a></li>
-            </ul>
-        </nav>
+    
 
-        <nav class="mobile right">
-                    <div class="botao-menu-mobile">
-                    <i class="fas fa-bars"></i>
-                    </div>
-                    <ul>
-                        <li><a href="javascript:void(0)" onclick='window.open("home.php","iframe-home")'>Inicio</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home")'>Cadastros</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home")'>Consultas</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home")'>Cadastrar Consulta</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("lembrete.php","iframe-home")'>Enviar Lembretes</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("disponibilidade.php","iframe-home")'>Disponibilidade</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("disponibilidade_fechar.php","iframe-home")'>Fechar Datas</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("disponibilidade_abrir.php","iframe-home")'>Abrir Datas</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("historico.php","iframe-home")'>Historico Alterações</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home")'>Despesas</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home")'>Lançar Despesas</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("relatorios.php", "iframe-home")'>Relatorios Gerenciais</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home")'>Configurações</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("../index.php")'>Site Principal</a></li>
-                    </ul>
-                </nav>
+    <a href="javascript:void(0)" onclick='window.open("relatorios.php", "iframe-home"); closeNav();'>Relatorios Gerenciais</a>
+
+    <a href="javascript:void(0)" onclick='window.open("../index.php"); closeNav();'>Site Principal</a>
+    
+
+</div>
 
 <center><iframe name="iframe-home" id="iframe-home" src="home.php"></iframe></center>
 
+</div>
 <script>
         $(function(){ 
         $('nav.mobile ul li a').click(function(){
@@ -142,5 +141,54 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     });
   }
 </script>
+
+<script>
+  // Função para abrir o menu
+  function openNav() {
+    document.getElementById("menu").style.width = "200px";
+  }
+
+  // Função para fechar o menu
+  function closeNav() {
+    document.getElementById("menu").style.width = "0";
+  }
+
+  // Evento de clique no ícone de menu
+  document.getElementById("menuIcon").addEventListener("click", function() {
+    if (document.getElementById("menu").style.width === "0px") {
+      openNav();
+    } else {
+      closeNav();
+    }
+  });
+
+  // Evento de clique em toda a frase (elemento pai)
+  var submenuParents = document.getElementsByClassName("submenu-parent");
+  for (var i = 0; i < submenuParents.length; i++) {
+    submenuParents[i].parentNode.addEventListener("click", function() {
+      var submenu = this.nextElementSibling;
+      var icon = this.querySelector(".submenu-parent");
+      icon.classList.toggle("open");
+
+      // Fechar submenus que estão abertos
+      var openSubmenus = document.getElementsByClassName("submenu");
+      for (var j = 0; j < openSubmenus.length; j++) {
+        if (openSubmenus[j].style.display === "block") {
+          openSubmenus[j].style.display = "none";
+          openSubmenus[j].style.color = ""; // Resetar a cor do texto do submenu fechado
+        }
+      }
+
+      if (submenu.style.display === "block") {
+        submenu.style.display = "none";
+      } else {
+        submenu.style.display = "block";
+      }
+    });
+  }
+</script>
+
+
+
 </body>
 </html>

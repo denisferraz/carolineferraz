@@ -9,6 +9,7 @@
 
 body {
     overflow: hidden;
+    background-color: var(--cor-marsala);
 }
 
 :root{
@@ -17,10 +18,15 @@ body {
     --white:#fff;
     --dark:#1e1c2a;
     --grey:rgb(230, 230, 230);
+    --cor-marsala: #4A1010;
+    --cor-vermelha: #9D3241;
+    --cor-marrom: #8E604E;
+    --cor-rosa: #EEC2AE;
+    --cor-branca: #EEE9E3;
 }
 
 .logo span{
-    color: var(--dark);
+    color: var(--cor-rosa);
 }
 
 .iframe-container {
@@ -47,7 +53,7 @@ body {
     display: flex;
     justify-content: space-evenly;
     list-style-type: none;
-    background-color: var(--red);
+    background-color: var(--cor-marsala);
     border-radius: 10px;
 }
 
@@ -57,7 +63,7 @@ body {
 }
 
 .dp-menu ul li a{
-    color: var(--white);
+    color: var(--cor-branca);
     text-decoration: none;
     display: inline-block;
     padding: 10px;
@@ -65,9 +71,9 @@ body {
 }
 
 .dp-menu ul li a:hover{
-    color: var(--red);
+    color: var(--cor-branca);
     text-decoration: underline;
-    background-color:rgb(250, 220, 220);
+    background-color:var(--cor-vermelha);
     border-radius: 5px;
 }
 
@@ -108,15 +114,15 @@ nav.mobile{
 }
 
 .botao-menu-mobile{
-    background-color: var(--grey);
+    background-color: var(--cor-marsala);
     font-size: 45px;
     cursor: pointer;
-    color: var(--red);
+    color: var(--cor-branca);
     text-align: center;
 }
 
 .botao-menu-mobile .logo{
-    color: var(--red);
+    color: var(--cor-branca);
     font-size: 1.7rem;
     font-weight: 600;
 }
@@ -134,7 +140,7 @@ nav.mobile li{
     font-weight: 300;
     width: 100%;
     display: block;
-    background: var(--grey);
+    background: var(--cor-marsala);
     border-bottom: 1px solid #ccc;
     font-size: 17px;
     padding: 8px 0;
@@ -142,7 +148,7 @@ nav.mobile li{
 
 nav.mobile li a{
     display: block;
-    color: var(--red);
+    color: var(--cor-branca);
     text-decoration: none;
 }
 

@@ -1,5 +1,5 @@
 :root {
-    --cor-background: hsl(200, 50%, 20%);
+    --cor-background: #581d22;
     --cor-fundo: hsl(200, 50%, 30%);
     --cor-hover: hsl(200, 50%, 60%);
     --cor-primaria: hsl(0, 0%, 100%);
@@ -12,16 +12,78 @@
     --button-right-green: hsl(120, 100%, 50%);
     --button-left-red: hsl(0, 100%, 20%);
     --button-right-red: hsl(0, 100%, 50%);
+    --cor-marsala: #4A1010;
+    --cor-vermelha: #9D3241;
+    --cor-marrom: #8E604E;
+    --cor-rosa: #EEC2AE;
+    --cor-branca: #EEE9E3;
 }
 
 body{
-    background-color: var(--cor-background);
+    background-color: var(--cor-vermelha);
     color: var(--cor-primaria);
 }
 
 button{
-    white-space: normal;
+    border-radius: 3.5px;
+    background-color: var(--cor-marsala);
+    color: white;
+    text-decoration: none;
+    padding: 3px;
 }
+
+button:hover{
+    background-color: var(--cor-marrom);
+    color: white;
+}
+
+.container {
+    width: 97%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: var(--cor-branca);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
+  }
+  
+  .container fieldset{
+    border-radius: 5px;
+    border-width: 3px;
+    border-style: dotted;
+    border-color: var(--cor-marsala);
+  }
+
+  .container legend{
+    font-weight: bold;
+    color: var(--cor-marsala);
+  }
+
+  h1 {
+    text-align: center;
+    color: #333333;
+  }
+  
+  .appointment-list {
+    margin-top: 30px;
+  }
+  
+  .appointment {
+    background-color: var(--cor-rosa);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .appointment .time {
+    font-weight: bold;
+  }
+  
+  .appointment .name {
+    font-weight: bold;
+    color: #2f2f2f;
+  }
 
 .visao-desktop{
     display: block;
@@ -142,10 +204,10 @@ a{
 }
 
 iframe#iframe-home{
-    width: 85%;
-    height: 800px;
+    border-radius: 5px;
+    width: 100%;
+    height: 90%;
     border: none;
-    overflow: hidden;
 }
 
 iframe#iframe-home::-webkit-scrollbar{
@@ -221,60 +283,58 @@ input[type=checkbox] {
   }
   
 /*menu*/
-
-.dp-menu{
-    margin: 5px;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dp-menu ul{
-    display: flex;
-    justify-content: space-evenly;
-    list-style-type: none;
-    background-color: var(--cor-fundo);
-    border-radius: 10px;
-}
-
-.dp-menu ul li{
-    display: inline;
-    position: relative;
-}
-
-.dp-menu ul li a{
-    color: var(--cor-primaria);
-    text-decoration: none;
-    display: inline-block;
-    padding: 10px;
-    transition: background .4s;
-}
-
-.dp-menu ul li a:hover{
-    color: var(--cor-fundo);
-    text-decoration: underline;
-    background-color:rgb(250, 220, 220);
-    border-radius: 5px;
-}
-
-.dp-menu ul ul {
-    display: none;
-    position: absolute;
+#menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
     left: 0;
-    z-index: 2;
-}
+    background-color: #333;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
 
-.dp-menu ul li:hover ul{
+
+#menu a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #818181;
     display: block;
+    transition: 0.3s;
+}
+  
+#menu a:hover {
+    color: #f1f1f1;
+}
+  
+#menuIcon {
+    cursor: pointer;
 }
 
-
-.dp-menu ul ul li a{
-    display: block;
+#menuIcon:hover{
+  color: var(--cor-marsala);
+  font-weight: bold;
 }
 
-nav.mobile{
+  #menu .closebtn {
+    font-size: 28px;
+  }
+  
+  /* Estilos para os submenus */
+  .submenu {
     display: none;
-}
+    padding-left: 40px;
+  }
+  
+  /* Estilos para a seta de indicação de submenu */
+  .submenu-parent::after {
+    content: "\25B8";
+    margin-top: 5px;
+    transition: transform 0.3s;
+  }
 
   @media (max-width: 600px) {
 
@@ -326,50 +386,13 @@ nav.mobile{
     }
 
 /* Ajuste Menu para Mobile */
+    #menu {padding-top: 15px;}
+    #menu a {font-size: 18px;}
 
-nav a{
-    padding: 1px;
+    .appointment {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
-
-    nav.dp-menu{
-        display: none;
-    }
-
-    nav.mobile{
-        display: block;
-    }
-
-    .botao-menu-mobile{
-        background-color: var(--cor-background);
-        font-size: 45px;
-        cursor: pointer;
-        color: white;
-        text-align: center;
-    }
-
-    nav.mobile ul{
-        display: none;
-        margin-top: 5px;
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        z-index: 2;
-    }
-
-    nav.mobile li{
-        font-weight: 300;
-        width: 80%;
-        display: block;
-        background: var(--cor-background);
-        border-bottom: 1px solid #ccc;
-        font-size: 17px;
-        padding: 8px 0;
-    }
-
-    nav.mobile li a{
-        display: block;
-        color: white;
-        text-decoration: none;
-    }
-
+    
 }

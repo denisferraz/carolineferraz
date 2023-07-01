@@ -15,6 +15,11 @@
     --white:#fff;
     --dark:#1e1c2a;
     --grey:rgb(230, 230, 230);
+    --cor-marsala: #4A1010;
+    --cor-vermelha: #9D3241;
+    --cor-marrom: #8E604E;
+    --cor-rosa: #EEC2AE;
+    --cor-branca: #EEE9E3;
 }
 
 .visao-desktop{
@@ -34,6 +39,14 @@ body{
     color: var(--dark);
 }
 
+.home-parte-01{
+    background: linear-gradient(to top, var(--cor-branca), var(--white));
+}
+
+.home-parte-02{
+    background: linear-gradient(to top, var(--cor-rosa), var(--cor-branca));
+}
+
 .home{
     width: 100%;
     min-height: 100vh;
@@ -48,7 +61,7 @@ body{
 
 .home-text .text-h4{
     font-size: 1.5rem;
-    color: var(--red);
+    color: var(--cor-vermelha);
     margin-bottom: 1rem;
 }
 .text-h4 a{
@@ -59,7 +72,7 @@ body{
 }
 .home-text .text-h1{
     font-size: 4rem;
-    color: var(--green);
+    color: var(--cor-marsala);
     margin-bottom: 1rem;
     line-height: 4rem;
 }
@@ -75,20 +88,8 @@ body{
     font-size: 15px;
 }
 .home-center p{
-    color: var(--red);
+    color: var(--cor-vermelha);
     font-size: 1.7rem;
-}
-.home-center-left{
-    max-width: 34rem;
-    font-size: 20px;
-    float: left;
-    margin-left: 20px;
-}
-.home-center-right{
-    max-width: 34rem;
-    font-size: 20px;
-    float: right;
-    margin-right: 20px;
 }
 form{
     display: flex;
@@ -158,8 +159,8 @@ input[type=checkbox] {
 }
 .home-btn{
     padding: 15px 45px;
-    background: var(--red);
-    color: var(--white);
+    background: var(--cor-marsala);
+    color: var(--cor-branca);
     border-radius: 10px;
     font-weight: 700;
     transition: all 0.5s;
@@ -167,7 +168,7 @@ input[type=checkbox] {
 .home-btn-cancelar{
     padding: 15px 45px;
     background: black;
-    color: var(--white);
+    color: var(--cor-branca);
     border-radius: 10px;
     font-weight: 700;
     transition: all 0.5s;
@@ -175,21 +176,21 @@ input[type=checkbox] {
 .home-btn-alterar{
     padding: 15px 45px;
     background: blue;
-    color: var(--white);
+    color: var(--cor-branca);
     border-radius: 10px;
     font-weight: 700;
     transition: all 0.5s;
 }
 .home-btn:hover, .home-btn-alterar:hover, .home-btn-cancelar:hover{
-    background: var(--green);
+    background: var(--cor-marrom);
 }
 .home-img img{
     width: 80%;
 }
 
 footer{
-    background-color:rgb(13, 51, 0);
-    color: var(--white);
+    background: linear-gradient(to top, var(--cor-marsala), var(--cor-vermelha));
+    color: var(--cor-branca);
     width: 100%;
     font-size: 1.5rem;
     align-items: center;
@@ -249,60 +250,6 @@ footer{
     
 }
 
-/* Menu */
-.dp-menu{
-    margin: 10px;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dp-menu ul{
-    display: flex;
-    justify-content: space-evenly;
-    list-style-type: none;
-    background-color: var(--red);
-    border-radius: 10px;
-}
-
-.dp-menu ul li{
-    display: inline;
-    position: relative;
-}
-
-.dp-menu ul li a{
-    color: var(--white);
-    text-decoration: none;
-    display: inline-block;
-    padding: 10px;
-    transition: background .4s;
-}
-
-.dp-menu ul li a:hover{
-    color: var(--red);
-    text-decoration: underline;
-    background-color:rgb(250, 220, 220);
-    border-radius: 5px;
-}
-
-.dp-menu ul ul{
-    display: none;
-    position: absolute;
-    left: 0;
-    z-index: 2;
-}
-
-.dp-menu ul li:hover ul{
-    display: block;
-}
-
-.dp-menu ul ul li a{
-    display: block;
-}
-
-nav.mobile{
-    display: none;
-}
-
 @media screen and (max-width:750px) {
 
     .visao-desktop{
@@ -346,6 +293,10 @@ nav.mobile{
         padding: 5px;
     }
 
+    .home-center{
+        padding: 0px;
+    }
+
 /*
 Carrossel
 */
@@ -377,58 +328,5 @@ Carrossel
 .home-table{
     display: block;
 }
-/*
-Ajuste Menu para Mobile
-*/
-nav a{
-    padding: 1px;
-    }
-
-    nav.dp-menu{
-        display: none;
-    }
-
-    nav.mobile{
-        display: block;
-    }
-
-    .botao-menu-mobile{
-        background-color: var(--grey);
-        font-size: 45px;
-        cursor: pointer;
-        color: var(--red);
-        text-align: center;
-    }
-
-    .botao-menu-mobile .logo{
-        color: var(--red);
-        font-size: 1.7rem;
-        font-weight: 600;
-    }
-
-    nav.mobile ul{
-        display: none;
-        margin-top: 5px;
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        z-index: 2;
-    }
-
-    nav.mobile li{
-        font-weight: 300;
-        width: 100%;
-        display: block;
-        background: var(--grey);
-        border-bottom: 1px solid #ccc;
-        font-size: 17px;
-        padding: 8px 0;
-    }
-
-    nav.mobile li a{
-        display: block;
-        color: var(--red);
-        text-decoration: none;
-    }
 
 }
