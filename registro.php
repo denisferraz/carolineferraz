@@ -82,11 +82,11 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
                             <label for="telefone">Telefone</label>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="input" minlength="8" maxlength="20" name="password" required>
+                            <input type="password" class="input" minlength="4" maxlength="20" name="password" required>
                             <label for="password">Senha</label>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="input" minlength="8" maxlength="20" name="conf_password" required>
+                            <input type="password" class="input" minlength="4" maxlength="20" name="conf_password" required>
                             <label for="conf_password">Confirmar Senha</label>
                         </div>
                         <?php

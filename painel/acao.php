@@ -1084,9 +1084,11 @@ try {
     $tratamento_data = mysqli_real_escape_string($conn_msqli, $_POST['tratamento_data']);
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
+    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
+    $comentario = mysqli_real_escape_string($conn_msqli, $_POST['comentario']);
 
-    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, confirmacao) VALUES (:email, :plano_descricao, :plano_data, 0, :sessao_total, 'Em Andamento', :confirmacao)");
-    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => $tratamento_sessao, 'confirmacao' => $confirmacao));
+    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, confirmacao, token, comentario) VALUES (:email, :plano_descricao, :plano_data, 0, :sessao_total, 'Em Andamento', :confirmacao, :token, :comentario)");
+    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => $tratamento_sessao, 'confirmacao' => $confirmacao, 'token' => $token, 'comentario' => $comentario));
 
     echo "<script>
     alert('Tratamento Enviado com Sucesso')
@@ -1101,9 +1103,16 @@ try {
     $id = trim(mysqli_real_escape_string($conn_msqli, $_POST['id']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
+    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
+    $comentario = mysqli_real_escape_string($conn_msqli, $_POST['comentario']);
+    $tratamento_data = mysqli_real_escape_string($conn_msqli, $_POST['tratamento_data']);
+    $tratamento = mysqli_real_escape_string($conn_msqli, $_POST['tratamento']);
 
     $query = $conexao->prepare("UPDATE tratamento SET sessao_atual = :tratamento_sessao WHERE id = :id AND email = :email AND confirmacao = :confirmacao");
     $query->execute(array('email' => $email, 'id' => $id, 'tratamento_sessao' => $tratamento_sessao, 'confirmacao' => $confirmacao));
+
+    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, confirmacao, token, comentario) VALUES (:email, :plano_descricao, :plano_data, :sessao_total, :sessao_total, 'Em Andamento', :confirmacao, :token, :comentario)");
+    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => $tratamento_sessao, 'confirmacao' => $confirmacao, 'token' => $token, 'comentario' => $comentario));
 
     echo "<script>
     alert('Sessao $tratamento_sessao Cadastrada com Sucesso')

@@ -24,6 +24,8 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $nome = $select['nome'];
 }
 
+$token = md5(date("YmdHismm"));
+
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +54,9 @@ if($id_job == 'enviar'){
             <label><b>Tratamento</b></label>
             <input type="text" name="tratamento" minlength="5" maxlength="155" placeholder="Descrição do Tratamento" required>
             <br>
+            <label><b>Descrição</b></label><br>
+            <textarea name="comentario" cols="45" rows="5" required></textarea>
+            <br><br>
             <label><b>Total de Sessões</b></label>
             <input type="number" name="tratamento_sessao" min="1" max="99" required>
             <br>
@@ -61,6 +66,7 @@ if($id_job == 'enviar'){
             <br><br>
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
+            <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_enviar" />
             <div class="card-group btn"><button type="submit">Enviar Tratamento</button></div>
 
@@ -75,6 +81,7 @@ while($select_cadastrar = $query_cadastrar->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select_cadastrar['sessao_atual'];
     $sessao_total = $select_cadastrar['sessao_total'];
     $sessao_status = $select_cadastrar['sessao_status'];
+    $token = $select_cadastrar['token'];
 }
 
 $progress = $sessao_atual/$sessao_total*100;
@@ -97,12 +104,20 @@ $progress = $sessao_atual/$sessao_total*100;
             <?php
             }else if($sessao_atual != $sessao_total){
             ?>
+            <label><b>Data Sessão</b></label><br>
+            <input type="date" min="<?php echo $plano_data; ?>" max="<?php echo date('Y-m-d'); ?>" name="tratamento_data" required>
+            <br>
             <label><b>Cadastrar Sessão</b></label>
             <input type="number" name="tratamento_sessao" min="<?php echo ($sessao_atual + 1) ?>" max="<?php echo $sessao_total ?>" value="<?php echo ($sessao_atual + 1) ?>" required>
+            <br>
+            <label><b>Descrição</b></label><br>
+            <textarea name="comentario" cols="45" rows="5" required></textarea>
             <br><br>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
+            <input type="hidden" name="tratamento" value="<?php echo $plano_descricao ?>">
             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
+            <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_cadastrar" />
             <div class="card-group btn"><button type="submit">Cadastrar Sessão</button></div>
             <?php

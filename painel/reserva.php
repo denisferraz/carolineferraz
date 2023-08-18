@@ -185,7 +185,7 @@ $progress = $sessao_atual/$sessao_total*100;
     <tr></tr>
     <tr></tr>
 <?php
-$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND confirmacao = :confirmacao ORDER BY id DESC");
+$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND confirmacao = :confirmacao GROUP BY token ORDER BY id DESC");
 $check_tratamento_row->execute(array('email' => $doc_email, 'confirmacao' => $confirmacao));
 if($check_tratamento_row->rowCount() < 1){
 ?>
@@ -207,10 +207,12 @@ $sessao_atual = $tratamento_row['sessao_atual'];
 $sessao_total = $tratamento_row['sessao_total'];
 $sessao_status = $tratamento_row['sessao_status'];
 $id = $tratamento_row['id'];
+$token = $tratamento_row['token'];
 
 $progress = $sessao_atual/$sessao_total*100;
+
 ?>
-    <tr>
+    <tr>    
         <td align="left"><?php echo $plano_descricao ?></td>
         <td align="center"><?php echo date('d/m/Y', strtotime("$plano_data")) ?></td>
         <td align="center"><div id="progress-bar">
@@ -221,7 +223,28 @@ $progress = $sessao_atual/$sessao_total*100;
         <td align="center"><?php echo $sessao_status ?></td>
         <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=cadastrar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Cadastrar Sessão</button></a></td>
         <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=finalizar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Finalizar</button></a></td>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Excluir</button></a></td>
+        <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id ?>&confirmacao=<?php echo $confirmacao ?>&sessao=0&id2=0","iframe-home")'><button>Excluir</button></a></td>
+        <?php
+$check_tratamento_row2 = $conexao->prepare("SELECT * FROM tratamento WHERE token = :token AND id != :id ORDER BY id ASC");
+$check_tratamento_row2->execute(array('token' => $token, 'id' => $id));
+while($tratamento_row2 = $check_tratamento_row2->fetch(PDO::FETCH_ASSOC)){
+$plano_data2 = $tratamento_row2['plano_data'];
+$sessao_atual2 = $tratamento_row2['sessao_atual'];
+$comentario = $tratamento_row2['comentario'];
+$id2 = $tratamento_row2['id'];
+
+$plano_data2 = date('d/m/Y', strtotime("$plano_data2"));
+$sessao_excluir = $sessao_atual - 1;
+?> 
+<tr>
+    <td colspan="6">[<?php echo $sessao_atual2 ?>] <?php echo $plano_data2 ?> - [<?php echo $comentario ?>]</td>
+    <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id2 ?>&confirmacao=<?php echo $confirmacao ?>&sessao=<?php echo $sessao_excluir ?>&id2=<?php echo $id ?>","iframe-home")'><button>Excluir</button></a></td>
+</tr>
+
+<?php
+}
+?>    
+    
     </tr>
     <tr></tr>
     <tr></tr>
