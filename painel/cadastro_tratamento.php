@@ -55,7 +55,7 @@ if($id_job == 'enviar'){
             <input type="text" name="tratamento" minlength="5" maxlength="155" placeholder="Descrição do Tratamento" required>
             <br>
             <label><b>Descrição</b></label><br>
-            <textarea name="comentario" cols="45" rows="5" required></textarea>
+            <textarea name="comentario" cols="45" rows="5"></textarea>
             <br><br>
             <label><b>Total de Sessões</b></label>
             <input type="number" name="tratamento_sessao" min="1" max="99" required>
@@ -111,7 +111,7 @@ $progress = $sessao_atual/$sessao_total*100;
             <input type="number" name="tratamento_sessao" min="<?php echo ($sessao_atual + 1) ?>" max="<?php echo $sessao_total ?>" value="<?php echo ($sessao_atual + 1) ?>" required>
             <br>
             <label><b>Descrição</b></label><br>
-            <textarea name="comentario" cols="45" rows="5" required></textarea>
+            <textarea name="comentario" cols="45" rows="5"></textarea>
             <br><br>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">

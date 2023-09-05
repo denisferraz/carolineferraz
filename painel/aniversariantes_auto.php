@@ -2,9 +2,9 @@
 
 require('../conexao.php');
 
-$aniversariante = 'Hoje é aniversario de:';
+$aniversario_hoje = date('d/m', strtotime("$hoje"));
 
-$result_check = $conexao->query("SELECT * FROM painel_users WHERE nascimento = '{$hoje}' AND tipo != 'Paciente'");
+$result_check = $conexao->query("SELECT * FROM painel_users WHERE DATE_FORMAT(nascimento, '%d/%m') = '{$aniversario_hoje}' AND tipo = 'Paciente'");
 if ($result_check->rowCount() > 0) {
 while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
 $doc_nome = $select_check['nome'];
