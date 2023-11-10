@@ -112,6 +112,7 @@ if($id_job == 'editar_configuracoes'){
     $fechar_fim = mysqli_real_escape_string($conn_msqli, $_POST['fechar_fim']);
     $hora_inicio = mysqli_real_escape_string($conn_msqli, $_POST['hora_inicio']);
     $hora_fim = mysqli_real_escape_string($conn_msqli, $_POST['hora_fim']);
+    $local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
 
     $close = 0;
     $close_dias = $fechar_inicio;
@@ -132,7 +133,7 @@ while($close <= $reserva_close){
     //Hora Inicio
     while($close_hora <= $hora_close){
 
-    $query = $conexao->query("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, quantidade, confirmacao) VALUES ('{$close_dias}', '{$close_horas}', '1', 'Closed')");
+    $query = $conexao->query("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, quantidade, confirmacao, local_reserva) VALUES ('{$close_dias}', '{$close_horas}', '1', 'Closed', '{$local_reserva}')");
 
     $close_hora++;
     $close_horas = date('H:i:s', strtotime("$close_horas") + ($config_atendimento_hora_intervalo * 60));
@@ -163,6 +164,7 @@ echo "<script>
     $fechar_fim = mysqli_real_escape_string($conn_msqli, $_POST['fechar_fim']);
     $hora_inicio = mysqli_real_escape_string($conn_msqli, $_POST['hora_inicio']);
     $hora_fim = mysqli_real_escape_string($conn_msqli, $_POST['hora_fim']);
+    $local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
 
     $close = 0;
     $close_dias = $fechar_inicio;
@@ -183,7 +185,7 @@ while($close <= $reserva_close){
     //Hora Inicio
     while($close_hora <= $hora_close){
 
-    $query = $conexao->query("DELETE FROM $tabela_disponibilidade WHERE confirmacao = 'Closed' AND atendimento_dia = '{$close_dias}' AND atendimento_hora = '{$close_horas}'");
+    $query = $conexao->query("DELETE FROM $tabela_disponibilidade WHERE confirmacao = 'Closed' AND atendimento_dia = '{$close_dias}' AND atendimento_hora = '{$close_horas}' AND local_reserva = '{$local_reserva}'");
 
     $close_hora++;
     $close_horas = date('H:i:s', strtotime("$close_horas") + ($config_atendimento_hora_intervalo * 60));

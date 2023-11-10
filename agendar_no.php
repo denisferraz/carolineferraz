@@ -28,6 +28,7 @@ $id_job = $id[0];
 $typeerror = $id[1];
 $atendimento_dia =  $id[2];
 $confirmacao = $id[3];
+$local_reserva = $id[4];
 
 if($id_job == 'Nova Sessão'){
 $status_reserva = 'Em Andamento';
@@ -164,8 +165,11 @@ while($dias < $reserva_horas){
         $atendimento_horas = date('H:i:s', strtotime("$atendimento_horas") + $atendimento_hora_intervalo);
             ?> <tr> <?php 
         }
-
+if($local_reserva == 'Salvador'){
     $check_disponibilidade = $conexao->query("SELECT * FROM $tabela_disponibilidade WHERE atendimento_dia = '{$atendimento_dia}' AND atendimento_hora = '{$atendimento_horas}'");
+}else{
+    $check_disponibilidade = $conexao->query("SELECT * FROM $tabela_disponibilidade WHERE atendimento_dia = '{$atendimento_dia}' AND atendimento_hora = '{$atendimento_horas}' AND local_reserva != 'Salvador'");
+}
     while($select = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
     }
     $total_reservas = $check_disponibilidade->rowCount();
@@ -243,7 +247,7 @@ if(is_numeric($total) || $total == 'Closed'){
                 <form action="reservas_php.php" method="post" onsubmit="exibirPopup()">
                             <label>Dia do Atendimento</label>
                             <input min="<?php echo $min_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
-                            <br><br>
+                            <br>
                             <label>Hora do Atendimento</label>
                             <select name="atendimento_hora">
                         <?php
@@ -260,6 +264,12 @@ if(is_numeric($total) || $total == 'Closed'){
                             }
 
                         ?>
+                            </select>
+                            <br>
+                            <label><b>Local do Atendimento</b></label>
+                            <select name="atendimento_local">
+                            <option value="Lauro de Freitas">Lauro de Freitas</option>
+                            <option value="Salvador">Salvador</option>
                             </select>
                             <br><br>
                             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">

@@ -74,6 +74,13 @@ if($aut_acesso == 1){
 
                         ?>
                             </select><br>
+                            <br>
+                            <label><b>Local Atendimento</b></label>
+                            <select name="atendimento_local">
+                            <option value="Lauro de Freitas">Lauro de Freitas</option>
+                            <option value="Salvador">Salvador</option>
+                            </select>
+                    <br>
                 <br><label>Dias da Semana</label><br>
             <input id="dia_segunda" type="checkbox" name=dia_segunda checked>
             <label for="dia_segunda">Segunda-Feira</label>

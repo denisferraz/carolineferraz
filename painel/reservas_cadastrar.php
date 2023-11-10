@@ -85,12 +85,17 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
             <label>Telefone</label>
             <input minlength="11" maxlength="18" type="text" name="doc_telefone" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
             <label><b>Tipo Consulta: 
-                <select name="id_job">
+            <select name="id_job">
                 <option value="Avaliação Capilar">Avaliação Capilar</option>
                 <option value="Consulta Capilar">Consulta Capilar</option>
                 <option value="Consulta Online">Consulta Online</option>
                 <option value="Nova Sessão">Nova Sessão</option>
-                </select></b></label><br>
+            </select></b></label><br>
+            <label><b>Local Consulta: 
+            <select name="atendimento_local">
+                <option value="Lauro de Freitas">Lauro de Freitas</option>
+                <option value="Salvador">Salvador</option>
+            </select></b></label><br>
             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="status_reserva" value="Confirmado">

@@ -37,6 +37,7 @@ $cancelamento_quando = strtotime("$cancelamento_quando");
 $status_reserva = $select['status_reserva'];
 $status_sessao = $select['status_sessao'];
 $token_reserva = $select['token'];
+$local_reserva = $select['local_reserva'];
 }
 
 $check = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email AND confirmacao = :confirmacao");
@@ -95,6 +96,13 @@ $sessao_total = 1;
             ?>
             <b>Data:</b> <?php echo date('d/m/Y', $atendimento_dia) ?><br>
             <b>Hora:</b> <?php echo date('H:i\h', $atendimento_hora) ?><br>
+            <?php
+            if($local_reserva != ''){
+            ?>
+            <b>Local:</b> <?php echo $local_reserva ?><br>
+            <?php
+            }
+            ?>
             <b>Status:</b> <?php echo $status_sessao ?>
             <?php
             }

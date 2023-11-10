@@ -46,6 +46,7 @@ $data_cancelamento = $select['data_cancelamento'];
 $data_cancelamento = strtotime("$data_cancelamento");
 $id = $select['id'];
 $tipo_consulta = $select['tipo_consulta'];
+$local_reserva = $select['local_reserva'];
 }
 
 //Ajustar CPF
@@ -95,7 +96,8 @@ $progress = $sessao_atual/$sessao_total*100;
 <label><b>CPF: </b><?php echo $doc_cpf ?></label><br><br>
 <label><b>Consulta: </b><?php echo $tipo_consulta ?></label><br>
 <label><b>Data: </b><?php echo date('d/m/Y', strtotime("$atendimento_dia")) ?></label><br>
-<label><b>Hora: </b><?php echo date('H:i\h', strtotime("$atendimento_hora")) ?></label><br><br>
+<label><b>Hora: </b><?php echo date('H:i\h', strtotime("$atendimento_hora")) ?></label><br>
+<label><b>Local: </b><?php echo $local_reserva ?></label><br><br>
 <label><b>Telefone: </b><?php echo $doc_telefone ?></label><br>
 <label><b>E-mail: </b><a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>","iframe-home")'><button><?php echo $doc_email ?></button></a></label><br><br>
 <?php if($status_reserva == 'Cancelada'){  ?>

@@ -131,7 +131,7 @@ $novasessao = $query2->rowCount();
                 <form action="reservas_php.php" method="post" onsubmit="exibirPopup()">
                             <label><b>Dia do Atendimento</b></label>
                             <input min="<?php echo $min_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
-                            <br><br>
+                            <br>
                             <label><b>Hora do Atendimento</b></label>
                             <select name="atendimento_hora">
                         <?php
@@ -148,6 +148,12 @@ $novasessao = $query2->rowCount();
                             }
 
                         ?>
+                            </select>
+                            <br>
+                            <label><b>Local do Atendimento</b></label>
+                            <select name="atendimento_local">
+                            <option value="Lauro de Freitas">Lauro de Freitas</option>
+                            <option value="Salvador">Salvador</option>
                             </select>
                             <br><br>
                             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">

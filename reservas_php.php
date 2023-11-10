@@ -53,13 +53,14 @@ $doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_P
 $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 $horario = '';
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
+$local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
 
     //Exclusao de Dias
 
     if(!isset($_POST['overbook_data']) && (( (date('w', strtotime("$atendimento_dia")) == 1) && $config_dia_segunda == -1) || ( (date('w', strtotime("$atendimento_dia")) == 2) && $config_dia_terca == -1) || ( (date('w', strtotime("$atendimento_dia")) == 3) && $config_dia_quarta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 4) && $config_dia_quinta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 5) && $config_dia_sexta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 6) && $config_dia_sabado == -1) || ( (date('w', strtotime("$atendimento_dia")) == 0) && $config_dia_domingo == -1))){
         if($feitapor == 'Site'){
         
-        $id = base64_encode("$id_job.1.$atendimento_dia.$confirmacao");
+        $id = base64_encode("$id_job.1.$atendimento_dia.$confirmacao.$local_reserva");
         echo   "<script>
         window.location.replace('agendar_no.php?id=$id')
                 </script>";
@@ -83,7 +84,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     if(!isset($_POST['overbook_data']) && $atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
         if($feitapor == 'Site'){
 
-        $id = base64_encode("$id_job.2.$atendimento_dia.$confirmacao");
+        $id = base64_encode("$id_job.2.$atendimento_dia.$confirmacao.$local_reserva");
         echo   "<script>
         window.location.replace('agendar_no.php?id=$id')
                 </script>";
@@ -123,15 +124,19 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     //Verificar horarios de atendimento
 
 //Exclusao de dias
-    $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");   
-    $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
+if($local_reserva == 'Salvador'){
+    $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+}else{
+    $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND local_reserva != 'Salvador'");   
+}
 
+    $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
     while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
 
     if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
         if($feitapor == 'Site'){
 
-        $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao");
+        $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao.$local_reserva");
         echo   "<script>
         window.location.replace('agendar_no.php?id=$id')
                 </script>";
@@ -151,7 +156,11 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     
         $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-        $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");   
+        if($local_reserva == 'Salvador'){
+            $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
+        }else{
+            $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND local_reserva != 'Salvador'"); 
+        }   
         $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
         
         while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
@@ -159,7 +168,7 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
             if($feitopor == 'Site'){
 
-            $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao");
+            $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao.$local_reserva");
             echo   "<script>
             window.location.replace('agendar_no.php?id=$id')
                     </script>";
@@ -176,18 +185,18 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         }
 
     if($id_job == 'Consulta Capilar'){
-    $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, 1)");
-    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'confirmacao' => $confirmacao));
+    $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, 1)");
+    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
     }
-    $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, 1)");
-    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao));
+    $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, 1)");
+    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
     
     if($status_reserva == 'Confirmada'){
-    $query_2 = $conexao->prepare("INSERT INTO $tabela_reservas (atendimento_inicio, atendimento_dia, atendimento_hora, confirmacao, tipo_consulta, status_sessao, doc_email, doc_nome, doc_cpf, doc_telefone, status_reserva, data_cancelamento, confirmacao_cancelamento, feitapor, token) VALUES (:atendimento_inicio, :atendimento_dia, :atendimento_hora, :confirmacao, :tipo_consulta, 'Confirmada', :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :status_reserva, :data_cancelamento, 'Ativa', :feitapor, :token)");
-    $query_2->execute(array('atendimento_inicio' => $atendimento_dia, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_reserva' => $status_reserva, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token));
+    $query_2 = $conexao->prepare("INSERT INTO $tabela_reservas (atendimento_inicio, atendimento_dia, atendimento_hora, confirmacao, tipo_consulta, status_sessao, doc_email, doc_nome, doc_cpf, doc_telefone, status_reserva, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_reserva) VALUES (:atendimento_inicio, :atendimento_dia, :atendimento_hora, :confirmacao, :tipo_consulta, 'Confirmada', :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :status_reserva, :data_cancelamento, 'Ativa', :feitapor, :token, :local_reserva)");
+    $query_2->execute(array('atendimento_inicio' => $atendimento_dia, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_reserva' => $status_reserva, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_reserva' => $local_reserva));
     }else{
-    $query_2 = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_reserva = :status_reserva, token = :token, tipo_consulta = 'Nova Sessão', status_sessao = 'Confirmada' WHERE doc_email = :doc_email AND confirmacao = :confirmacao");
-    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'doc_email' => $doc_email, 'status_reserva' => $status_reserva, 'token' => $token));
+    $query_2 = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_reserva = :status_reserva, token = :token, tipo_consulta = 'Nova Sessão', status_sessao = 'Confirmada', local_reserva = :local_reserva WHERE doc_email = :doc_email AND confirmacao = :confirmacao");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'doc_email' => $doc_email, 'status_reserva' => $status_reserva, 'token' => $token, 'local_reserva' => $local_reserva));
     }
     if($feitapor != 'Site'){
     $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
@@ -201,7 +210,7 @@ if($envio_whatsapp == 'ativado'){
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
     
     $doc_telefonewhats = "5571997417190";
-    $msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome agendou uma $id_job para Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n'."Telefone: $doc_telefone".'\n'."E-mail: $doc_email";
+    $msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome agendou uma $id_job para $local_reserva - Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n'."Telefone: $doc_telefone".'\n'."E-mail: $doc_email";
     
     $curl = curl_init();
     
@@ -377,6 +386,7 @@ if($envio_whatsapp == 'ativado'){
         $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         $atendimento_dia_anterior = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia_anterior']);
         $atendimento_hora_anterior = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_anterior']);
+        $local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
 
         if($atendimento_dia < $hoje){
             echo "<script>
@@ -445,7 +455,6 @@ if($envio_whatsapp == 'ativado'){
                         </script>";
                 exit();
             }
-            
             $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao != :confirmacao");   
             $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao));
             
@@ -491,16 +500,16 @@ if($envio_whatsapp == 'ativado'){
 
             $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao));
+            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
 
             }
 
             $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, 'Pendente', :id_job)");
             $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job));
 
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao));
+            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
 
 
 //Incio Envio Whatsapp
@@ -510,7 +519,7 @@ $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
 $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
 $doc_telefonewhats = "5571997417190";
-$msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome solicitou uma alteração para Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n\n'."Para Aceitar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Aceita&token=$token".'\n\n'."Para Recusar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Recusada&token=$token";
+$msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome solicitou uma alteração para $local_reserva - Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n\n'."Para Aceitar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Aceita&token=$token".'\n\n'."Para Recusar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Recusada&token=$token";
 
 $curl = curl_init();
 
@@ -558,13 +567,13 @@ curl_close($curl);
             $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
             $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
             $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao));
+            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao, 'local_reserva' => $local_reserva));
             }
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao));
-            $query_2 = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_reserva = 'Confirmada' WHERE confirmacao = :confirmacao AND doc_email = :doc_email");
-            $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'feitapor' => $feitapor, 'token' => $token, 'doc_email' => $doc_email));
+            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'local_reserva' => $local_reserva));
+            $query_2 = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_reserva = 'Confirmada', local_reserva = :local_reserva WHERE confirmacao = :confirmacao AND doc_email = :doc_email");
+            $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'feitapor' => $feitapor, 'token' => $token, 'doc_email' => $doc_email, 'local_reserva' => $local_reserva));
             if($feitapor != 'Site'){
             $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
             $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Alterou a consulta $confirmacao"));  

@@ -59,6 +59,11 @@ $atendimento_hora = $select['atendimento_hora'];
     <input type="hidden" name="status_reserva" value="Alterado">
     <input type="hidden" name="feitapor" value="Painel">
     <br>
+    <label><b>Local Consulta: 
+        <select name="atendimento_local">
+        <option value="Lauro de Freitas" <?php echo ($select['local_reserva'] == 'Lauro de Freitas') ? 'selected' : ''; ?>>Lauro de Freitas</option>
+        <option value="Salvador" <?php echo ($select['local_reserva'] == 'Salvador') ? 'selected' : ''; ?>>Salvador</option>
+    </select></b></label><br>
     <input id="overbook" type="checkbox" name="overbook">
     <label for="overbook">Forçar Overbook</label>
     <br>
