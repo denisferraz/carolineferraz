@@ -139,8 +139,6 @@ if($aut_acesso == 1){
       }",
         CURLOPT_HTTPHEADER => array(
           'Content-Type: application/json',
-          "SecretKey: $whatsapp_secretkey",
-          "PublicToken: $whatsapp_publictoken",
           "DeviceToken: $whatsapp_devicetoken",
           "Authorization: $whatsapp_authorization"
         ),
@@ -187,8 +185,6 @@ if($aut_acesso == 1){
   }",
     CURLOPT_HTTPHEADER => array(
       'Content-Type: application/json',
-      "SecretKey: $whatsapp_secretkey",
-      "PublicToken: $whatsapp_publictoken",
       "DeviceToken: $whatsapp_devicetoken",
       "Authorization: $whatsapp_authorization"
     ),

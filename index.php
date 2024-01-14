@@ -36,7 +36,7 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
             <ul>
                     <li><a class="logo" href="logout.php">Log<span>Out</span></a></li>
                         <li><a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Me%20chamo%20<?php echo $nome ?>.%20Gostaria%20de%20tirar%20algumas%20duvidas!" target="_blank"><img src="images/whatsapp.jpg" alt="WhatsApp"></a></li>
-                        <li><a href="https://www.instagram.com/carolferraztricologia/" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a></li>
+                        <li><a href="https://www.instagram.com/carolferraz.tricologia/" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("home.html", "iframe-container")'><b><i>Inicio</i></b></a></li>
                         <li><a>Como Começar</a>
                     <ul>
@@ -54,7 +54,7 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
                     <div class="botao-menu-mobile">
                     <a class="logo" href="logout.php">Log<span>Out</span></a>
                     <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20tirar%20algumas%20duvidas!" target="_blank"><img src="images/whatsapp.jpg" alt="WhatsApp"></a>
-                    <a href="https://www.instagram.com/carolferraztricologia/" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a>
+                    <a href="https://www.instagram.com/carolferraz.tricologia/" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a>
                     <i class="fas fa-bars"></i>
                     </div>
                     <ul>

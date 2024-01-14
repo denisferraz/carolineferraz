@@ -47,6 +47,7 @@ $data_cancelamento = strtotime("$data_cancelamento");
 $id = $select['id'];
 $tipo_consulta = $select['tipo_consulta'];
 $local_reserva = $select['local_reserva'];
+$status_sessao = $select['status_sessao'];
 }
 
 //Ajustar CPF
@@ -106,42 +107,39 @@ $progress = $sessao_atual/$sessao_total*100;
 <?php } ?>
 
 <center><table>
-    <tr>
-<td><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")'><div class="card-group btn"><button>Alterar Sessão</button></div></a></td>
-<td> | </td>
+<?php
+if(($status_sessao == 'Finalizada' || $status_sessao == 'Cancelada' || $status_sessao == 'Em Andamento') && ($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada')){
+?>
+<tr>
+<td colspan="2"><a href="javascript:void(0)" onclick='window.open("reserva_novasessao.php?id=<?php echo $id ?>","iframe-home")'><div class="card-group btn"><button>Nova Sessão</button></div></a></td>
+<?php }else{ ?>
+<td colspan="2"><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")'><div class="card-group btn"><button>Alterar Sessão</button></div></a></td>
+<?php } ?>
 <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-red btn"><button>Cancelar Sessão</button></div></a></td>
     </tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
     <tr>
 <td><a href="javascript:void(0)" onclick='window.open("reservas_confirmacao.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Confirmação</button></div></a></td>
 <td> | </td>
 <td><a href="javascript:void(0)" onclick='window.open("reservas_lembrete.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Lembrete</button></div></a></td>
     </tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
     <?php if($atendimento_dia <= $hoje){ ?>
         <tr>
 <td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")'><div class="card-group-black btn"><button>Finalizar Sessão</button></div></a></td>
 <td> | </td>
 <td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=Finalizada","iframe-home")'><div class="card-group-red btn"><button>Finalizar Contrato</button></div></a></td>
     </tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
-    <tr></tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
+    <tr><td colspan="2"></td></tr>
     <?php } ?>
     <tr>
 <?php if($contrato_row == 0){  ?>
