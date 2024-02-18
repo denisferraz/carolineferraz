@@ -122,7 +122,15 @@ if($typeerror == '1'){
                         <div class="input-field">
                             <input type="password" class="input" minlength="4" maxlength="20" name="conf_password" required>
                             <label for="conf_password">Confirmar Senha</label>
+                        </div><label for="origem">Onde nos Conheceu?</label>
+                        <div class="input-field">
+                        <select name="origem">
+                        <option value="Instagram">Instagram</option>
+                        <option value="Google">Google</option>
+                        <option value="Indicação">Indicação</option>
+                        </select>
                         </div>
+                        <br>
                         <div class="input-field">
                         <input type="hidden" name="id_registro" value="Registrar">
                         <input type="hidden" name="id_job" value="registro">
@@ -133,42 +141,7 @@ if($typeerror == '1'){
                         <div class="signin">
                             <span>Ja tem Conta? <a href="painel.php">Acesse Aqui</a></span>
                         </div>
-
-                    <?php
-                        }else if($id_job == 'recuperar'){
-
-                        $email = $id[2];
-                        echo $email
-                    ?>
-
-                    <header><font color="red"><?php echo $typeerror ?></font></header>
-                        <form action="login.php" method="post" onsubmit="exibirPopup()">
-                        <div class="input-field">
-                            <input type="text" class="input" minlength="8" maxlength="8" name="codigo" required>
-                            <label for="text">Codigo</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="password" class="input" minlength="4" maxlength="20" name="password" required>
-                            <label for="password">Senha</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="password" class="input" minlength="4" maxlength="20" name="conf_password" required>
-                            <label for="conf_password">Confirmar Senha</label>
-                        </div>
-                        <div class="input-field">
-                        <input type="hidden" name="email" value="<?php echo $email ?>">
-                        <input type="hidden" name="id_job" value="recuperar_codigo">
-                            <input type="submit" class="submit" value="Alterar Senha">
-                        </div>
-                        </form>
-                        <div class="signin">
-                            <span>Ja tem Conta? <a href="painel.php">Acesse Aqui</a></span>
-                        </div>
-
-                    <?php
-                        }
-                    ?>
-
+                    <?php } ?>
                      </div>
                 </div>
             </div>

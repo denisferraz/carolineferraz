@@ -1323,38 +1323,14 @@ try {
     //Fim Envio de Email
     
     if(isset($_POST['whatsapp'])){
+
     //Incio Envio Whatsapp
     if($envio_whatsapp == 'ativado'){
     
         $doc_telefonewhats = "55$doc_telefone";
         $msg_wahstapp = "Olá $doc_nome, tudo bem?".'\n\n'."Aqui vai a confirmação da sua $id_job para a Data: $atendimento_dia_str ás $atendimento_hora_str.".'\n\n\n'."Para Alterar seu Atendimento acesse: $site_atual/alterar.php?token=$token".'\n\n\n'."Para Cancelar seu Atendimento acesse: $site_atual/cancelar.php?token=$token&typeerror=0";
         
-        $curl = curl_init();
-        
-        
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => "{
-            \"number\": \"$doc_telefonewhats\",
-            \"text\": \"$msg_wahstapp\"
-        }",
-          CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            "DeviceToken: $whatsapp_devicetoken",
-            "Authorization: $whatsapp_authorization"
-          ),
-        ));
-        
-        $response = curl_exec($curl);
-        
-        curl_close($curl);
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
         
         }
     
@@ -1458,32 +1434,7 @@ try {
         $doc_telefonewhats = "55$doc_telefone";
         $msg_wahstapp = "Olá $doc_nome, passando para lhe lembrar do seu Atendimento!".'\n\n'. "Data: $atendimento_dia_str ás: $atendimento_hora_str.".'\n\n'."Posso confirmar seu Atendimento?";
         
-        $curl = curl_init();
-        
-        
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => "{
-            \"number\": \"$doc_telefonewhats\",
-            \"text\": \"$msg_wahstapp\"
-        }",
-          CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            "DeviceToken: $whatsapp_devicetoken",
-            "Authorization: $whatsapp_authorization"
-          ),
-        ));
-        
-        $response = curl_exec($curl);
-        
-        curl_close($curl);
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
         
         }
     

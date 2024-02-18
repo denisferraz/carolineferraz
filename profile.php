@@ -23,8 +23,6 @@ if (array_key_exists(1, $id)) {
     if($typeerror == '1'){
         $error_msg = 'CPF Invalido e/ou ja Existe';
     }else if($typeerror == '2'){
-        $error_msg = 'Veja seu Whatsapp para confirmar a alteração<br>Caso não tenha recebido, peça para alterar novamente!';
-    }else if($typeerror == '3'){
         $error_msg = 'Dados atualizados com Sucesso! Caso divergente, tente Deslogar e Logar novamente';
     }
 }
@@ -125,21 +123,6 @@ $max_nasc = date('Y-m-d', strtotime("-18 years",strtotime($hoje)));
         </fieldset>
         </section>
         <br><br>
-<!-- EDITAR !-->
-<?php
-if($id[0] == 'Codigo'){
-
-    $query = $conexao->prepare("UPDATE painel_users SET nome = :nome, telefone = :telefone, nascimento = :nascimento, rg = :rg, unico = :cpf WHERE token = :token");
-    $query->execute(array('nome' => $id[1], 'telefone' => $id[2], 'nascimento' => $id[3], 'rg' => $id[4], 'cpf' => $id[5], 'token' => $id[6]));
-    
-    $id = base64_encode('ver*3');
-        echo "<script>
-        window.location.replace('profile.php?id=$id')
-        </script>";
-        exit();
-
-} 
-?>
     </main>
     <script>
     function exibirPopup() {

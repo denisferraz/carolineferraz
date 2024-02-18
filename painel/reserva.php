@@ -68,6 +68,7 @@ $query->execute(array('email' => $doc_email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $nome = $select['nome'];
 $token = $select['token'];
+$origem = $select['origem'];
 }
 
 //Contratos
@@ -93,6 +94,7 @@ $progress = $sessao_atual/$sessao_total*100;
 <fieldset>
 <legend><h2 class="title-cadastro">Consulta <u><?php echo $confirmacao ?> [ <?php echo $status_reserva ?> ]</u></h2></legend>
 <FONT COLOR="black">
+<label><b>Origem: </b><?php echo $origem ?></label><br>
 <label><b>Nome: </b><?php echo $doc_nome ?></label><br>
 <label><b>CPF: </b><?php echo $doc_cpf ?></label><br><br>
 <label><b>Consulta: </b><?php echo $tipo_consulta ?></label><br>

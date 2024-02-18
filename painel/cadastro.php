@@ -39,6 +39,7 @@ $cpf = $select['unico'];
 $nascimento = $select['nascimento'];
 $telefone = $select['telefone'];
 $token = $select['token'];
+$origem = $select['origem'];
 }
 
 //Ajustar CPF
@@ -64,7 +65,8 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <label><b>Telefone: </b><?php echo $telefone ?></label><br><br>
 <label><b>RG: </b><?php echo $rg ?></label><br>
 <label><b>CPF: </b><?php echo $cpf ?></label><br>
-<label><b>Data Nascimento: </b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></label><br><br>
+<label><b>Data Nascimento: </b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></label><br>
+<label><b>Origem: </b><?php echo $origem ?></label><br><br>
 <a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a><br>
 <a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a><br>
 <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?php echo $email ?>","iframe-home")'><div class="card-group-green btn"><button>Cadastrar Consulta</button></div></a>

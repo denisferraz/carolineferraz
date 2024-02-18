@@ -40,6 +40,7 @@ if($id_job == 'registro'){
     $nascimento = mysqli_real_escape_string($conn_msqli, $_POST['nascimento']);
     $doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['cpf']));
     $conf_senha = mysqli_real_escape_string($conn_msqli, $_POST['conf_password']);
+    $origem = mysqli_real_escape_string($conn_msqli, $_POST['origem']);
     $crip_senha = md5($senha);
     $token = md5(date("YmdHismm"));
 
@@ -112,159 +113,15 @@ if($id_job == 'registro'){
         exit();
     }
 
-        $codigo = rand(10000000, 99999999);
-
-        $query2 = $conexao->prepare("INSERT INTO $tabela_painel_users (email, tipo, senha, nome, telefone, unico, token, rg, nascimento, codigo, tentativas, aut_painel) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :cpf, :token, :rg, :nascimento, :codigo, '0', '1')");
-        $query2->execute(array('email' => $email, 'nome' => $nome, 'cpf' => $doc_cpf, 'token' => $token, 'rg' => $rg, 'nascimento' => $nascimento, 'codigo' => $codigo, 'telefone' => $telefone, 'senha' => $crip_senha));
+        $query2 = $conexao->prepare("INSERT INTO $tabela_painel_users (email, tipo, senha, nome, telefone, unico, token, rg, nascimento, codigo, tentativas, aut_painel, origem) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :cpf, :token, :rg, :nascimento, '0', '0', '1', :origem)");
+        $query2->execute(array('email' => $email, 'nome' => $nome, 'cpf' => $doc_cpf, 'token' => $token, 'rg' => $rg, 'nascimento' => $nascimento, 'telefone' => $telefone, 'senha' => $crip_senha, 'origem' => $origem));
         
-//Incio Envio Whatsapp
-
-if($envio_whatsapp == 'ativado'){
-
-$id = base64_encode("Codigo*$email*$codigo*$token");
-$doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id=$id";
-
-$curl = curl_init();
-
-
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => "{
-    \"number\": \"$doc_telefonewhats\",
-    \"text\": \"$msg_wahstapp\"
-}",
-  CURLOPT_HTTPHEADER => array(
-    'Content-Type: application/json',
-    "DeviceToken: $whatsapp_devicetoken",
-    "Authorization: $whatsapp_authorization"
-  ),
-));
-
-$response = curl_exec($curl);
-
-curl_close($curl);
-
-}
-//Fim Envio Whatsapp
-
-        $id = base64_encode("EnvCodigo*$email*$token*$telefone*$nome");
-        echo "<script>
-        alert('Um Codigo foi Enviado para o seu Celular!')
-        window.location.replace('registro.php?id=$id')
-        </script>";
-        exit();
-}else if($id_registro == 'Codigo'){
-
-    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
-    $codigo = mysqli_real_escape_string($conn_msqli, $_POST['codigo']);
-
-    $query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND token = :token AND codigo = :codigo");
-    $query->execute(array('email' => $email, 'token' => $token, 'codigo' => $codigo));
-    $row = $query->rowCount();
-    
-    if($row == 1){
-
-        $query2 = $conexao->prepare("UPDATE $tabela_painel_users SET codigo = 0 WHERE email = :email AND token = :token");
-        $query2->execute(array('email' => $email, 'token' => $token));
-
         echo "<script>
         alert('E-mail cadastrado com sucesso! Acesse abaixo')
         window.location.replace('painel.php')
         </script>";
         exit();
-
-    }else{
-
-        $id = base64_encode("RecCodigo*$email*$token");
-        echo "<script>
-        alert('Codigo Invalido!')
-        window.location.replace('registro.php?id=$id')
-        </script>";
-        exit(); 
-
-    }
-
-}else if($id_registro == 'RecCodigo'){
-
-        $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
-        $telefone = preg_replace('/[^\d]/', '', mysqli_real_escape_string($conn_msqli, $_POST['telefone']));
-    
-        $query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND token = :token");
-        $query->execute(array('email' => $email, 'token' => $token));
-        $row = $query->rowCount();
-        
-        if($row == 1){
-
-        while($select = $query->fetch(PDO::FETCH_ASSOC)){
-            $nome = $select['nome'];
-            $codigo = $select['codigo'];
-        }
-    
-            $query2 = $conexao->prepare("UPDATE $tabela_painel_users SET telefone = :telefone WHERE email = :email AND token = :token");
-            $query2->execute(array('telefone' => $telefone, 'email' => $email, 'token' => $token));
-
- //Incio Envio Whatsapp
- if($envio_whatsapp == 'ativado'){
-
-$id = base64_encode("Codigo*$email*$codigo*$token");
-$doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Para completar o seu cadastro, clique no Link abaixo:".'\n\n'."https://carolineferraz.com.br/registro.php?id=$id";
-
-$curl = curl_init();
-
-
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => "{
-    \"number\": \"$doc_telefonewhats\",
-    \"text\": \"$msg_wahstapp\"
-}",
-  CURLOPT_HTTPHEADER => array(
-    'Content-Type: application/json',
-    "DeviceToken: $whatsapp_devicetoken",
-    "Authorization: $whatsapp_authorization"
-  ),
-));
-
-$response = curl_exec($curl);
-
-curl_close($curl);
-
- }
-//Fim Envio Whatsapp
-
-            $id = base64_encode("EnvCodigo*$email*$token*$telefone*$nome");
-            echo "<script>
-            window.location.replace('registro.php?id=$id')
-            </script>";
-            exit();
-    
-        }else{
-    
-            $id = base64_encode("Registrar");
-            echo "<script>
-            alert('E-mail não existe. Cadastre!')
-            window.location.replace('registro.php?id=$id')
-            </script>";
-            exit(); 
-
-    
-        }}
+}
 
 
 }else if($id_job == 'recuperar'){
@@ -450,47 +307,11 @@ try {
         exit();
     }
 
-//Incio Envio Whatsapp
-
-if($envio_whatsapp == 'ativado'){
-
-$id = base64_encode("Codigo*$nome*$telefone*$nascimento*$rg*$doc_cpf*$token");
-$doc_telefonewhats = "55$telefone";
-$msg_wahstapp = "Ola $nome, tudo bem?".'\n\n'."Você solicitou alteração no seu Perfil. Para confirmar, clique abaixo:".'\n\n'."https://carolineferraz.com.br/profile.php?id=$id";
-
-$curl = curl_init();
-
-
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'https://cluster.apigratis.com/api/v1/whatsapp/sendText',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'POST',
-  CURLOPT_POSTFIELDS => "{
-    \"number\": \"$doc_telefonewhats\",
-    \"text\": \"$msg_wahstapp\"
-}",
-  CURLOPT_HTTPHEADER => array(
-    'Content-Type: application/json',
-    "DeviceToken: $whatsapp_devicetoken",
-    "Authorization: $whatsapp_authorization"
-  ),
-));
-
-$response = curl_exec($curl);
-
-curl_close($curl);
-
-}
-//Fim Envio Whatsapp
-
-$id = base64_encode('ver*2');
+    $query = $conexao->prepare("UPDATE painel_users SET nome = :nome, telefone = :telefone, nascimento = :nascimento, rg = :rg, unico = :cpf WHERE token = :token");
+    $query->execute(array('nome' => $nome, 'telefone' => $telefone, 'nascimento' => $nascimento, 'rg' => $rg, 'cpf' => $doc_cpf, 'token' => $token));
+    
+    $id = base64_encode('ver*2');
         echo "<script>
-        alert('Veja seu Whatsapp para confirmar a alteração')
         window.location.replace('profile.php?id=$id')
         </script>";
         exit();
