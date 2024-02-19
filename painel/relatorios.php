@@ -59,6 +59,11 @@ if($aut_acesso == 1){
                 <option value="No-Shows Mes">No-Shows Mês</option>
                 <option value="No-Shows Ano">No-Shows Ano</option>
                 </select></b></label><br>
+                <label><b>Tipo Relatório: 
+                <select name="relatorio_tipo">
+                <option value="pdf">PDF</option>
+                <option value="excel">Excel</option>
+                </select></b></label><br>
                 <label>Data Relatorio</label>
                 <input type="date" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" name="relatorio_inicio" required>
                 <br>
