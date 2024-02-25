@@ -46,10 +46,10 @@ if($aut_acesso == 1){
 
             <div class="card-group">
             <label>Dia do Pagamento</label>
-            <input max="<?php echo $min_dia ?>" type="date" name="despesa_dia" required>
+            <input type="date" name="despesa_dia" required>
             <br>
             <label>Valor do Pagamento</label>
-            <input minlength="1.0" maxlength="9999.9" type="number" name="despesa_valor" placeholder="000.00" required>
+            <input minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="despesa_valor" placeholder="000.00" required>
             <label><b>Tipo de Despesa: 
                 <select name="despesa_tipo">
                 <option value="Aluguel">Aluguel</option>
