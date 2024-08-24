@@ -53,7 +53,7 @@ $doc_nome = $select['doc_nome'];
             <label>Quantidade</label>
             <input min="1" max="9999" type="number" name="lanc_quantidade" placeholder="000" required>
             <label>Valor</label>
-            <input minlength="1.0" maxlength="9999.9" type="number" name="lanc_valor" placeholder="000.00" required>
+            <input minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
             <br>
             <input type="hidden" name="lanc_data" value="<?php echo $hoje ?>" />
             <input type="hidden" name="id_job" value="reservas_lancamentos" />
@@ -66,3 +66,15 @@ $doc_nome = $select['doc_nome'];
 </body>
 </html>
 <?php } ?>
+
+<script>
+document.getElementById("lanc_valor").addEventListener("input", function() {
+    // Remove espaços em branco e formata o valor para ter apenas números e até duas casas decimais
+    this.value = this.value.replace(/\s/g, "").replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
+    
+    // Verifica se o valor possui mais de duas casas decimais e, se sim, limita-o a duas casas decimais
+    if (this.value.split(".")[1] && this.value.split(".")[1].length > 2) {
+        this.value = parseFloat(this.value).toFixed(2);
+    }
+});
+</script>

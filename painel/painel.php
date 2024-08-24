@@ -72,10 +72,13 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 
     <a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home"); closeNav();'>Configurações</a>
 
-    <a>Despesas<span class="submenu-parent"></span></a>
+    <a>Financeiro<span class="submenu-parent"></span></a>
 <div class="submenu">
     <a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home"); closeNav();'>Despesas</a>
-    <a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home"); closeNav();'>Lançar</a>
+    <a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home"); closeNav();'>Lançar Despesas</a>
+    <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home"); closeNav();'>Cadastrar Custos</a>
+    <a href="javascript:void(0)" onclick='window.open("tratamentos.php","iframe-home"); closeNav();'>Cadastrar Tratamentos</a>
+    <a href="javascript:void(0)" onclick='window.open("ver_valores.php","iframe-home"); closeNav();'>Ver Valores</a>
 </div>
 
     

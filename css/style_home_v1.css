@@ -44,12 +44,12 @@ body{
 }
 
 .home-parte-02{
-    background: linear-gradient(to top, var(--cor-rosa), var(--cor-branca));
+    background: #FFFF;
+    margin-left: 20px;
 }
 
 .home{
     width: 100%;
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -79,6 +79,7 @@ body{
 .home-text p{
     margin-bottom: 4rem;
 }
+
 .home-center{
     width: 100%;
     font-size: 1.5rem;
@@ -91,6 +92,7 @@ body{
     color: var(--cor-vermelha);
     font-size: 1.7rem;
 }
+
 form{
     display: flex;
     flex-direction: column;
@@ -165,6 +167,34 @@ input[type=checkbox] {
     font-weight: 700;
     transition: all 0.5s;
 }
+
+.comecar-table{
+    margin: 0 auto;
+}
+
+.comecar-table td{
+    border: 3px solid var(--cor-rosa);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: var(--cor-branca);
+    color: var(--cor-marsala);
+}
+
+.home-btn-whatsapp{
+    padding: 10px 20px !important;
+    background-color: #058f37 !important; /* Cor de fundo do WhatsApp */
+    color: white !important; /* Cor do texto */
+    text-align: center !important;
+    text-decoration: none !important; /* Remove sublinhado */
+    font-size: 20px !important; /* Tamanho da fonte */
+    border-radius: 10px !important; /* Bordas arredondadas */
+    transition: background-color 0.3s ease !important; /* Transição suave */
+}
+
+.home-btn-whatsapp:hover {
+    background-color: #09e443 !important; /* Cor mais clara ao passar o mouse */
+}
+
 .home-btn-cancelar{
     padding: 15px 45px;
     background: black;
@@ -185,7 +215,7 @@ input[type=checkbox] {
     background: var(--cor-marrom);
 }
 .home-img img{
-    width: 80%;
+    width: 150%;
 }
 
 footer{
@@ -286,6 +316,21 @@ footer{
         border-radius: 7px;
     }
 
+    .home-btn-whatsapp{
+        padding: 7px 17px !important;
+        background-color: #058f37 !important; /* Cor de fundo do WhatsApp */
+        color: white !important; /* Cor do texto */
+        text-align: center !important;
+        text-decoration: none !important; /* Remove sublinhado */
+        font-size: 15px !important; /* Tamanho da fonte */
+        border-radius: 5px !important; /* Bordas arredondadas */
+        transition: background-color 0.3s ease !important; /* Transição suave */
+    }
+    
+    .home-btn-whatsapp:hover {
+        background-color: #09e443 !important; /* Cor mais clara ao passar o mouse */
+    }
+
     .home-table{
         display:flex;
         border: 1px solid;
@@ -294,7 +339,7 @@ footer{
     }
 
     .home-center{
-        padding: 0px;
+        padding: 0 15px;
     }
 
 /*

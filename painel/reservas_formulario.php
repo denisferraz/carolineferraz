@@ -12,6 +12,12 @@ while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
 if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
+
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
+
 ?>
 
 <!DOCTYPE html>
@@ -20,13 +26,9 @@ if($aut_acesso == 1){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Cancelar Reserva</title>
 
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
     <script>
 
         $(document).ready(function() {
@@ -103,14 +105,15 @@ while($select_2 = $query_2->fetch(PDO::FETCH_ASSOC)){
 $doc_nome = $select_2['nome'];
 $doc_telefone = $select_2['telefone'];
 $token = $select_2['token'];
+$nascimento = $select_2['nascimento'];
 }
 
 if($id_job == 'Ver'){
-$query = $conexao->prepare("SELECT * FROM $tabela_formulario WHERE confirmacao = :confirmacao");
-$query->execute(array('confirmacao' => $confirmacao));
+$query = $conexao->prepare("SELECT * FROM $tabela_formulario WHERE email = :email");
+$query->execute(array('email' => $email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
+$confirmacao = $select['confirmacao'];
 $feitopor = $select['feitopor'];
-$nascimento = $select['nascimento'];
 $endereco = $select['endereco'];
 $cep = $select['cep'];
 $bairro = $select['bairro'];
@@ -148,10 +151,9 @@ $exm_fisico_comprimento_cabelo = $select['exm_fisico_comprimento_cabelo'];
 $exm_fisico_quimica = $select['exm_fisico_quimica'];
 $exm_fisico_cabelo = $select['exm_fisico_cabelo'];
 $exm_fisico_pontas = $select['exm_fisico_pontas'];
-$exm_fisico_danos = $select['exm_fisico_danos'];
 $exm_fisico_couro_cabeludo = $select['exm_fisico_couro_cabeludo'];
 $exm_fisico_presenca = $select['exm_fisico_presenca'];
-$exm_fisico_presenca_regiao = $select['exm_fisico_presenca_regiao'];
+$alopecia = $select['alopecia'];
 $alopecia_localizacao = $select['alopecia_localizacao'];
 $alopecia_lesoes = $select['alopecia_lesoes'];
 $alopecia_formato = $select['alopecia_formato'];
@@ -161,7 +163,7 @@ $alopecia_reposicao = $select['alopecia_reposicao'];
 $alopecia_couro = $select['alopecia_couro'];
 $alopecia_obs = $select['alopecia_obs'];
 $alteracao_encontrada = $select['alteracao_encontrada'];
-$protocolo_sugerio = $select['protocolo_sugerio'];
+$protocolo_sugerido = $select['protocolo_sugerido'];
 $protocolo_realizado_01 = $select['protocolo_realizado_01'];
 $protocolo_realizado_01_data = $select['protocolo_realizado_01_data'];
 $protocolo_realizado_02 = $select['protocolo_realizado_02'];
@@ -189,39 +191,39 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
             <input minlength="10" maxlength="35" type="email" name="email" value="<?php echo $email ?>" required></td>
             </tr><tr>
             <td><label>CEP </label>
-            <input type="text" minlength="8" maxlength="10" id="cep" name="cep" value="<?php echo $cep ?>" required></td>
+            <input type="text" minlength="8" maxlength="10" id="cep" name="cep" value="<?php echo $cep ?>"></td>
             <td><label>Bairro </label>
-            <input type="text" minlength="5" maxlength="30" id="bairro" name="bairro" value="<?php echo $bairro ?>" required></td>
+            <input type="text" minlength="5" maxlength="30" id="bairro" name="bairro" value="<?php echo $bairro ?>"></td>
             <td><label>Endereço </label>
-            <input minlength="5" maxlength="50" type="text" id="rua" name="rua" value="<?php echo $endereco ?>" required></td>
+            <input minlength="5" maxlength="50" type="text" id="rua" name="rua" value="<?php echo $endereco ?>"></td>
             </tr><tr>
             <td><label>Municio </label>
-            <input type="text" minlength="5" maxlength="30" id="cidade" name="cidade" value="<?php echo $municipio ?>" required></td>
+            <input type="text" minlength="5" maxlength="30" id="cidade" name="cidade" value="<?php echo $municipio ?>"></td>
             <td><label>Estado </label>
-            <input type="text" minlength="5" maxlength="30" id="uf" name="uf" value="<?php echo $uf ?>" required></td>
+            <input type="text" minlength="5" maxlength="30" id="uf" name="uf" value="<?php echo $uf ?>"></td>
             <td><label>Celular </label>
-            <input minlength="8" maxlength="13" type="text" name="celular" value="<?php echo $doc_telefone ?>" required></td>
+            <input minlength="8" maxlength="13" type="text" name="celular" value="<?php echo $doc_telefone ?>"></td>
             </tr><tr>
             <td><label>Profissão </label>
-            <input type="text" minlength="5" maxlength="30" name="profissao" value="<?php echo $profissao ?>" required></td>
+            <input type="text" minlength="5" maxlength="30" name="profissao" value="<?php echo $profissao ?>"></td>
             <td><label>Estado Civil </label>
-            <input type="text" minlength="5" maxlength="15" name="estado_civil" value="<?php echo $estado_civil ?>" required></td>
+            <input type="text" minlength="5" maxlength="15" name="estado_civil" value="<?php echo $estado_civil ?>"></td>
             <td><label>Nascimento </label>
-            <input type="date" name="nascimento" value="<?php echo $nascimento ?>" required></td>
+            <input type="date" name="nascimento" value="<?php echo $nascimento ?>"></td>
             </tr>
             </table></fieldset><br>
             <fieldset><legend><u><b>Terapeuta Capilar</b></u></legend>
             <table width="100%" border="2px">
             <tr><td>
             <label>Terapeuta </label>
-            <input minlength="5" maxlength="30" type="text" name="feitopor" value="<?php echo $feitopor ?>" required>
+            <input minlength="5" maxlength="30" type="text" name="feitopor" value="<?php echo $feitopor ?>">
             </td></tr>
             </table></fieldset><br>
             <fieldset><legend><u><b>Avaliação do Problema do Cliente</b></u></legend>
             <table width="100%" border="2px">
             <tr>
             <td><label>Qual a Queixa Principal</label><br>
-            <textarea name="queixa_principal" maxlength="155" rows="5" cols="35" required><?php echo $queixa_principal ?></textarea></td>
+            <textarea name="queixa_principal" maxlength="155" rows="5" cols="35"><?php echo $queixa_principal ?></textarea></td>
             <td><label>A doença acomete outras areas do corpo? </label><br><br>
             <input id="doenca_outras_areas" type="radio" name="doenca_outras_areas" value="0" <?php if($doenca_outras_areas[0] == 0){?>checked<?php } ?>><label for="doenca_outras_areas">[ Sim ]</label>
             <input id="doenca_outras_areas" type="radio" name="doenca_outras_areas" value="1" <?php if($doenca_outras_areas[0] == 1){?>checked<?php } ?>><label for="doenca_outras_areas">[ Não ]</label>
@@ -267,7 +269,7 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
             <table width="100%" border="2px">
             <tr>
             <td><label>Descrever últimas doenças (6 meses), operações ou internações (2 anos)</label><br>
-            <textarea name="doencas_ultimas" maxlength="155" rows="5" cols="35" required><?php echo $doencas_ultimas ?></textarea></td>
+            <textarea name="doencas_ultimas" maxlength="155" rows="5" cols="35"><?php echo $doencas_ultimas ?></textarea></td>
             <td><label>Você tem algum doença atual? </label><br><br>
             <input id="doenca_atual" type="radio" name="doenca_atual" value="0" <?php if($doencas_atual[0] == 0){?>checked<?php } ?>><label for="doenca_atual">[ Sim ]</label>
             <input id="doenca_atual" type="radio" name="doenca_atual" value="1" <?php if($doencas_atual[0] == 1){?>checked<?php } ?>><label for="doenca_atual">[ Não ]</label><br><br>
@@ -319,7 +321,7 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
             <input id="familiares" type="radio" name="familiares" value="0" <?php if($familiares[0] == 0){?>checked<?php } ?>><label for="familiares">[ Sim ]</label>
             <input id="familiares" type="radio" name="familiares" value="1" <?php if($familiares[0] == 1){?>checked<?php } ?>><label for="familiares">[ Não ]</label></td>
             <td><label>Alguem da familia tem algum dos tipos de calvice demonstrados no quadro abaixo? </label>
-            <input minlength="1" maxlength="25" type="text" name="familiares_qual" value="<?php echo substr("$familiares", 2) ?>" required></td>
+            <input minlength="1" maxlength="25" type="text" name="familiares_qual" value="<?php echo substr("$familiares", 2) ?>"></td>
             </tr>
             </table></fieldset><br>
 
@@ -344,9 +346,9 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
             <input id="usa6" type="checkbox" name="usa6" value="X" <?php if($cuidado_cabelo_usa[6] == 0){?>checked<?php } ?>><label for="usa6">Capacetes</label></td>
             </tr><tr>
             <td><label>De quanto em quanto tempo lava os cabelos? </label>
-            <input minlength="1" maxlength="30" type="text" name="cuidado_cabelo_lavagem" value="<?php echo $cuidado_cabelo_lavagem ?>" required></td>
+            <input minlength="1" maxlength="30" type="text" name="cuidado_cabelo_lavagem" value="<?php echo $cuidado_cabelo_lavagem ?>"></td>
             <td><label>Quais produtos utiliza? </label>
-            <input minlength="1" maxlength="50" type="text" name="cuidado_cabelo_produtos" value="<?php echo $cuidado_cabelo_produtos ?>" required></td>
+            <input minlength="1" maxlength="50" type="text" name="cuidado_cabelo_produtos" value="<?php echo $cuidado_cabelo_produtos ?>"></td>
             </tr>
             </table></fieldset><br>
             <fieldset><legend><u><b>Exame Físico</b></u></legend>
@@ -417,11 +419,11 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
             </table></fieldset><br>
             <fieldset><legend><u><b>Alteração encontrada</b></u></legend>
             <table width="100%" border="2px">
-            <textarea name="alteracao_encontrada" maxlength="300" rows="10" cols="50" required><?php echo $alteracao_encontrada ?></textarea><br>
+            <textarea name="alteracao_encontrada" maxlength="300" rows="10" cols="50"><?php echo $alteracao_encontrada ?></textarea><br>
             </table></fieldset><br>
             <fieldset><legend><u><b>Protocolo Sugerido</b></u></legend>
             <table width="100%" border="2px">
-            <textarea name="protocolo_sugerido" maxlength="300" rows="10" cols="50" required><?php echo $protocolo_sugerio ?></textarea><br>
+            <textarea name="protocolo_sugerido" maxlength="300" rows="10" cols="50"><?php echo $protocolo_sugerido ?></textarea><br>
             </table></fieldset><br>
             <fieldset><legend><u><b>Protocolo Realizado</b></u></legend>
             <table width="100%" border="2px">

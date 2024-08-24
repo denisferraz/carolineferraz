@@ -1,4 +1,4 @@
-if (window.location.href.endsWith("home.html")) {
+if (window.location.href.endsWith("comecar.html")) {
 
   const imgsdesk = document.getElementById("img-desktop");
 const imgdesk = document.querySelectorAll("#img-desktop img");

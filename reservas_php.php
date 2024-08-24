@@ -184,6 +184,28 @@ if($local_reserva == 'Salvador'){
         }
         }
 
+        //Verificar se existe Email cadastro, caso contrario, cria um cadastro novo
+        $query_cadastro = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email");
+        $query_cadastro->execute(array('email' => $doc_email));
+        $row_cadastro = $query_cadastro->rowCount();
+    
+        if($row_cadastro != 1){
+
+        $token = md5(date("YmdHismm"));
+        $doc_senha = md5(substr($doc_cpf, 0, 6));
+
+        $query_cadastro2 = $conexao->prepare("INSERT INTO $tabela_painel_users (email, tipo, senha, nome, telefone, unico, token, rg, nascimento, codigo, tentativas, aut_painel, origem) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :cpf, :token, :rg, :nascimento, '0', '0', '1', :origem)");
+        $query_cadastro2->execute(array('email' => $doc_email, 'nome' => $doc_nome, 'cpf' => $doc_cpf, 'token' => $token, 'rg' => '000', 'nascimento' => '2000-01-01', 'telefone' => $doc_telefone, 'senha' => $doc_senha, 'origem' => 'Indicação'));
+
+        }
+
+    $query_consulta = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE doc_email = :doc_email AND status_sessao = :status_sessao");
+    $query_consulta->execute(array('doc_email' => $doc_email, 'status_sessao' => 'Em Andamento'));
+    $row_query_consulta = $query_consulta->rowCount();
+    while($consulta_query = $query_consulta->fetch(PDO::FETCH_ASSOC)){
+        $confirmacao = $consulta_query['confirmacao'];
+    }
+
     if($id_job == 'Consulta Capilar'){
     $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, 1)");
     $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
@@ -191,7 +213,7 @@ if($local_reserva == 'Salvador'){
     $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, 1)");
     $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
     
-    if($status_reserva == 'Confirmada'){
+    if($status_reserva == 'Confirmada' && ($row_query_consulta == 0 || $row_query_consulta == '')){
     $query_2 = $conexao->prepare("INSERT INTO $tabela_reservas (atendimento_inicio, atendimento_dia, atendimento_hora, confirmacao, tipo_consulta, status_sessao, doc_email, doc_nome, doc_cpf, doc_telefone, status_reserva, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_reserva) VALUES (:atendimento_inicio, :atendimento_dia, :atendimento_hora, :confirmacao, :tipo_consulta, 'Confirmada', :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :status_reserva, :data_cancelamento, 'Ativa', :feitapor, :token, :local_reserva)");
     $query_2->execute(array('atendimento_inicio' => $atendimento_dia, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_reserva' => $status_reserva, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_reserva' => $local_reserva));
     }else{
@@ -698,14 +720,14 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
             $mail->send();
             
             echo "<script>
-            window.location.replace('painel/home.php')
+            window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
                     </script>";
              exit();
 
         } catch (Exception $e) {
 
             echo "<script>
-            window.location.replace('painel/home.php')
+            window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
                     </script>";
 
         }
@@ -726,7 +748,7 @@ if($envio_whatsapp == 'ativado'){
 
         }else{
             echo "<script>
-            window.location.replace('painel/home.php')
+            window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
                     </script>";
             exit();
         }
@@ -762,14 +784,14 @@ if($envio_whatsapp == 'ativado'){
 
     echo "<script>
             alert('Sessão Finalizada com Sucesso')
-            window.location.replace('painel/home.php')
+            window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
                     </script>";
             exit();
 
         }else{
             echo "<script>
             alert('Erro ao Finalizar Sessao')
-            window.location.replace('painel/home.php')
+            window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
                     </script>";
             exit();
         }

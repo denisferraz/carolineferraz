@@ -39,7 +39,7 @@ $typeerror= 'Esta Sessão não foi encontrada ou não existe!';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/style_home.css">
+    <link rel="stylesheet" href="css/style_home_v1.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title><?php echo $config_empresa ?></title>
 </head>
