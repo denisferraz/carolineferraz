@@ -170,6 +170,7 @@ input[type=checkbox] {
 
 .comecar-table{
     margin: 0 auto;
+    width: 100%;
 }
 
 .comecar-table td{
@@ -280,7 +281,7 @@ footer{
     
 }
 
-@media screen and (max-width:750px) {
+@media screen and (max-width:850px) {
 
     .visao-desktop{
         display: none;

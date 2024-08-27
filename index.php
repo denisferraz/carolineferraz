@@ -39,7 +39,7 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
                         <li><a href="https://www.instagram.com/carolferraz.tricologia/" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("home.html", "iframe-container")'><b><i>Home</i></b></a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("sobre.html", "iframe-container")'><b><i>Sobre</i></b></a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("comecar.html", "iframe-container")'>Como Funciona</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("comecar.html", "iframe-container")'>Programa de Tratamento</a></li>
                         <li><a class="logo" href="javascript:void(0)" onclick='window.open("profile.php?id=<?php echo base64_encode("ver") ?>", "iframe-container")'>Prof<span>ile</span></a>
                     <ul>
                         <li><a href="javascript:void(0)" onclick='window.open("reservas.php", "iframe-container")'>Acompanhamentos</a></li>
@@ -58,8 +58,8 @@ echo "<meta HTTP-EQUIV='refresh' CONTENT='1800'>";
                         <li><a href="javascript:void(0)" onclick='window.open("home.html", "iframe-container")'><b><i>Home</i></b></a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("sobre.html", "iframe-container")'><b><i>Sobre</i></b></a></li>
                         <li><a href="javascript:void(0)" onclick='window.open("profile.php?id=<?php echo base64_encode("ver") ?>", "iframe-container")'>Profile</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("comecar.html", "iframe-container")'>Como Funciona</a></li>
-                        <li><a href="javascript:void(0)" onclick='window.open("reservas.php", "iframe-container")'>Acompanhamentos</a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("comecar.html", "iframe-container")'><b><i>Programa de Tratamento</i></b></a></li>
+                        <li><a href="javascript:void(0)" onclick='window.open("reservas.php", "iframe-container")'><b><i>Acompanhamentos</i></b></a></li>
                         <li><a class="logo" href="logout.php">Log<span>Out</span></a></li>
                     </ul>
                 </nav>
