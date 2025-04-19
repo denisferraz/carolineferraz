@@ -24,7 +24,7 @@ if($aut_acesso == 1){
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Inicio</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='css/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/style_v2.css'>
 
 
 </head>

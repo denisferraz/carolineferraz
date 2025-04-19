@@ -22,7 +22,20 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $rg = $select['rg'];
     $nascimento = $select['nascimento'];
     $cpf = $select['unico'];
+    $cpf_ass = $select['unico'];
+    $profissao = $select['profissao'];
+    $telefone = $select['telefone'];
+    $cep = $select['cep'];
+    $rua = $select['rua'];
+    $numero = $select['numero'];
+    $complemento = $select['complemento'];
+    $cidade = $select['cidade'];
+    $bairro = $select['bairro'];
+    $estado = $select['estado'];
 }
+
+$endereco_cep = preg_replace('/^(\d{2})(\d{3})(\d{3})$/', '$1.$2-$3', $cep);
+$endereco = "$rua, $numero - $complemento, $bairro – $cidade/$estado, CEP: $endereco_cep";
 
 //Ajustar CPF
 $parte1 = substr($cpf, 0, 3);
@@ -38,7 +51,13 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $assinado_data = $select2['assinado_data'];
     $procedimento = $select2['procedimento'];
     $procedimento_valor = $select2['procedimento_valor'];
+    $procedimento_dias = $select2['procedimento_dias'];
     $procedimento_data = $select2['assinado_empresa_data'];
+}
+
+$query_checkin = $conexao->query("SELECT * FROM $tabela_reservas WHERE confirmacao = '{$confirmacao}'");
+while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
+    $procedimento_local = $select_checkins['local_reserva'];
 }
 ?>
 
@@ -57,114 +76,70 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
 <body>
 <script src="js/sweetalert2.js"></script>
 
-<center><h1>Contrato de Prestação de Serviços para Realização de Procedimentos em Terapia Capilar,Barba e Sobrancelhas</h1></center>
+<center><h1>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h1></center>
 <br>
+<p>Pelo presente instrumento particular, as partes abaixo identificadas:</p>
 <fieldset>
-<p class="text-title">I. QUADRO RESUMO</p><br>
 <p class="text-title">1. CONTRATANTE:</p>
-<b><?php echo $nome ?></b>, portador do Documento de Identidade RG nº <b><?php echo $rg ?></b>, inscrito no CPF sob o nº <b><?php echo $cpf ?></b>, nascido(a) em <b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></b>.<br>
+<b><?php echo $nome ?></b>, portador do Documento de Identidade RG nº <b><?php echo $rg ?></b>, inscrito no CPF sob o nº <b><?php echo $cpf ?></b>, nascido(a) em <b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></b>, <b><?php echo $profissao ?></b>, residente e domiciliado na <b><?php echo $endereco ?></b>.<br>
 <br><p class="text-title">2. CONTRATADA:</p>
-<b>Caroline Chagas Ferraz</b>, portadora do Documento de Identidade RG nº. <b>0969045425</b>, inscrito no CPF sob o nº <b>033.266.355.83</b>, nascida em <b>15/09/1988</b>.<br>
-<br><p class="text-title">3.PROCEDIMENTO TÉCNICO A SER REALIZADO:</p>
-<b><?php echo $procedimento ?></b><br>
-<br><p class="text-title">4. VALOR TOTAL E FORMA DE PAGAMENTO:</p>
-<b><?php echo $procedimento_valor ?></b><br>
-<br><p class="text-title">5. LOCAL E DATA DO CONTRATO:</p>
-<b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
-</fieldset>
+<b>Caroline Chagas Ferraz</b>, portadora do Documento de Identidade RG nº. <b>0969045425</b>, inscrito no CPF sob o nº <b>033.266.355.83</b>, nascida em <b>15/09/1988</b>, <b>Farmaceutica</b>, residene e domiciliado na <b>Colonia da Boa União, s/ nº - Cond Porto Sol Residencal Clube, Casa D13, Abrantes - Camaçari/BA, CEP: 42.821-798</b>.<br>
+
+<br><p>As partes resolvem firmar o presente CONTRATO DE PRESTAÇÃO DE SERVIÇOS, nos seguintes termos:</p>
+
+<br><p class="text-title">CLÁUSULA 1-OBJETO DO CONTRATO</p>
+1.1. O presente contrato tem como objeto a prestação do serviço de<b> <?php echo $procedimento ?></b>, estabelecido conforme avaliação técnica realizada pelo profissional responsável.<br>
+<p>1.2. O intervalo sugerido entre cada sessão será de aproximadamente <b><?php echo $procedimento_dias ?> dias</b>. </p>
+<p>1.3. O <b>CONTRATADO</b> reserva-se o direito de alterar o intervalo ou método aplicado durante o tratamento, mediante prévia comunicação ao <b>CONTRATANTE</b>.</p>
+
+<br><p class="text-title">CLÁUSULA 2- VALOR E FORMA DE PAGAMENTO:</p>
+<p>2.1 O valor total dos serviços contratados a ser pago conforme acordado entre as partes é de <b><?php echo $procedimento_valor ?></b> </p>
+<p>2.2. Caso o <b>CONTRATANTE</b> não realize todas as sessões contratadas no prazo de 12 meses, perderá o direito às sessões restantes, sem direito a reembolso. Em situações de impossibilidade por motivos de saúde, devidamente comprovados, o prazo poderá ser prorrogado mediante acordo entre as partes.</p>
+<p>2.3 O <b>CONTRATANTE</b> poderá solicitar a remarcação de sessões, desde que haja comunicação com antecedência mínima de 24 horas.</p>
+<p>Parágrafo único: Caso a remarcação não seja realizada dentro do prazo estabelecido, a sessão será considerada como realizada, sem possibilidade de reagendamento ou reembolso.</p>
+
+<br><p class="text-title">CLÁUSULA 3- DESISTÊNCIA E CANCELAMENTO </p>
+<p>3.1. O <b>CONTRATANTE</b> poderá desistir ou cancelar o contrato a qualquer momento mediante comunicação prévia ao <b>CONTRATADO</b>.</p>
+<p>3.2. Em caso de desistência, será realizada a devolução parcial referente às sessões não realizadas, descontando-se uma taxa administrativa de 20% sobre o valor residual.</p>
+
+<br><p class="text-title">CLÁUSULA 4- CONTRA INDICAÇÕES, RISCOS E RESPONSABILIDADES:</p>
+<p>4.1. O <b>CONTRATANTE</b> declara ter sido informado sobre todas as contraindicações, riscos e possíveis complicações associadas aos procedimentos, comprometendo-se a informar imediatamente quaisquer alterações no seu estado de saúd</p>
+<p>4.2. O <b>CONTRATADO</b> será responsável somente por danos diretamente relacionados a falhas técnicas comprovadas em sua atuação, não respondendo por complicações oriundas da resposta biológica individual do <b>CONTRATANTE</b>.</p>
+<p>4.3 Responsabilidades do <b>CONTRATADO</b>:</p>
+<p><ul>
+    <li>Executar os serviços contratados com zelo, ética e técnica adequada, seguindo protocolos científicos e de segurança.</li>
+    <li>Fornecer todas as orientações pré e pós-procedimento ao <b>CONTRATANTE</b>.</li>
+</ul></p>
+<p>4.4 Responsabilidades do <b>CONTRATANTE</b>: </p>
+<p><ul>
+    <li>Cumprir rigorosamente as orientações pré e pós-procedimentos fornecidas pelo profissional responsável.</li>
+    <li>Seguir corretamente os prazos estabelecidos para realização das sessões contratadas.</li>
+    <li>Informar qualquer condição de saúde relevante que possa interferir no tratamento.</li>
+</ul></p>
+
+<br><p class="text-title">CLÁUSULA 5-RESULTADOS E INFORMAÇÕES PRÉVIAS</p>
+<p>5.1. O <b>CONTRATANTE</b> declara que recebeu todas as informações necessárias sobre as características, riscos, benefícios e limitações dos procedimentos contratados, esclarecendo todas as dúvidas antes da assinatura deste contrato.</p>
+<p>5.2 O <b>CONTRATANTE</b> declara estar ciente de que os resultados dos procedimentos podem variar conforme a resposta individual de cada paciente, não havendo garantia absoluta quanto aos resultados obtidos.</p>
+
+<br><p class="text-title">CLÁUSULA 6 – TRATAMENTO DE DADOS (LGPD)</p>
+<p>6.1. O <b>CONTRATANTE</b> autoriza expressamente o tratamento de dados pessoais sensíveis, inclusive imagens para acompanhamento clínico e eventual divulgação profissional, preservando sua identidade, conforme estabelece a Lei Geral de Proteção de Dados nº 13.709/2018.</p>
+
+<br><p class="text-title">CLÁUSULA 7 – DISPOSIÇÕES GERAIS</p>
+<p>7.1. As sessões serão previamente agendadas conforme disponibilidade das partes</p>
+<p>7.2. Qualquer alteração deverá ser comunicada com antecedência através do WhatsApp <b>(71) 99129-3370</b>.</p>
+
+<br><p class="text-title">CLÁUSULA 8 – FORO</p>
+<p>8.1. Para dirimir quaisquer questões decorrentes deste contrato, fica eleito o foro da comarca de <b>Lauro de Freitas-BA</b>, com renúncia a qualquer outro, por mais privilegiado que seja.</p>
+
+<br><p class="text-title">CLÁUSULA 9 – FORMALIZAÇÃO DO CONTRATO</p>
+<p>9.1 . O presente contrato poderá ser assinado digitalmente, por meio de plataformas de assinatura eletrônica, com a mesma validade jurídica.</p>
+<p>9.2. Ao assinar este contrato, ambas as partes concordam com os termos aqui estabelecidos, comprometendo-se a cumpri-los integralmente.</p>
+
+<b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 <br>
-<?php
-$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Sim'");
-$query3->execute(array('email' => $email, 'confirmacao' => $confirmacao));
-$row_check3 = $query3->rowCount();
-if($row_check3 < 1){}else{
-?>
-<fieldset>
-<center><p class="text-title">ADITIVO CONTRATUAL</p></center>
-<?php
-$aditivo_qtd = 0;
-while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
-    $aditivo_assinado = $select3['assinado'];
-    $assinado_data = $select3['assinado_data'];
-    $aditivo_procedimento = $select3['aditivo_procedimento'];
-    $aditivo_procedimento_valor = $select3['aditivo_valor'];
-    $aditivo_procedimento_data = $select3['assinado_empresa_data'];
-    $aditivo_qtd++;
-?>
-<p class="text-title">Aditivo <?php echo $aditivo_qtd ?></p>
-<p class="text-title"><?php echo $aditivo_qtd ?>.1.PROCEDIMENTO TÉCNICO A SER REALIZADO:</p>
-<b><?php echo $aditivo_procedimento ?></b><br>
-<br><p class="text-title"><?php echo $aditivo_qtd ?>.2. VALOR TOTAL E FORMA DE PAGAMENTO:</p>
-<b><?php echo $aditivo_procedimento_valor ?></b><br>
-<br><p class="text-title"><?php echo $aditivo_qtd ?>.3. LOCAL E DATA DO ADITIVO:</p>
-<b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
-______________________________________________________<br>
-<?php }else{ ?>
-    ______________________________________________________<br>
-<?php } ?>
-<b><?php echo $nome ?></b>
-<?php if($assinado == 'Sim'){?>
-<h3 class="contrato">(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$assinado_data")) ?>)</h3>
-<?php }else{ ?>
-<h3 class="contrato">(Não Assinado)</h3>
-<?php } ?>
-</center>
-<?php
-}
-?>
-</fieldset>
-<br>
-<?php } ?>
-<fieldset>
-<p class="text-title">II. CONSIDERAÇÕES PRELIMINARES</p><br>
-Considerando que:
-<br><b>1.</b> O (a) CONTRATANTE (a) deseja realizar o procedimento estético direcionado a Crescimento Capilar que consta no item 3 do Quadro Resumo deste contrato e foi avaliado e teve prescrição feita por profissional técnico;
-<br><b>2.</b> A execução do procedimento estético será realizada nos aparelhos designados ou equivalentes dependendo da disponibilidade;
-<br><b>3.</b> Os procedimentos serão sempre realizados por profissional técnico qualificado;
-<br><b>4.</b> O (a) CONTRATANTE (a) declara ter sido esclarecido (a) pelo profissional técnico acerca de todos os aspectos, sendo eles clínicos estéticos ou de qualquer outra ordem, relacionados ao procedimento em questão, não tendo absolutamente nenhuma dúvida ao seu respeito;
-<br><b>5.</b> A CONTRATADA se reserva ao direito de não garantir nenhum tipo de resultado, seja ele qual for tendo em vista que cada organismo reage de forma diferente aos estímulos dos procedimentos estéticos ou médicos;
-<br><b>6.</b> As partes de comum acordo celebram o presente instrumento que se regerá de acordo com as cláusulas e condições seguintes.
-<br><br>
-<p class="text-title">DO OBJETO/CONDIÇÕES/OBRIGAÇÕES</p><br>
-<b>Cláusula Primeira:</b> O presente contrato tem por objeto a prestação de serviços voltados a realização dos procedimentos técnicos estético especificado no item “3” do quadro acima por parte da CONTRATADA de acordo com os termos e condições detalhados neste contrato.
-<br>
-<br><b>Cláusula Segunda:</b> A realização do procedimento estético prescrito deverá ser realizada pelo CONTRATANTE em sessões de tratamento, na data e horários pré-agendados, com tolerância máxima de atrasos de 20 (vinte) minutos para os dois lados, contratante e contratada, sob pena de não realização da sessão na data agendada (sem ônus nenhum ao tratamento) dentro no período máximo de 12 (doze) meses.
-<br>
-<br><b>Parágrafo Primeiro:</b>  A CONTRATANTE é obrigada a pré-agendar o procedimento e caso não possa comparecer a sessão no dia e hora marcados, deverá comunicar a impossibilidade com antecedência de 8 (oito) horas, sob pena de ser cobrada como realizada, exceto em motivos de força maior. 
-<br>
-<br><b>Parágrafo Segundo:</b> Os prazos para o tratamento deverão ser seguidos, assim como as recomendações e determinações técnicas inerentes ao tratamento, sendo que o não cumprimento poderá comprometer o resultado desejado.
-<br>
-<br><b>2.3</b> O agendamento/ cancelamento/ alteração de horários será realizado através do WhatsApp 71 991293370.
-<br>
-<br><b>Cláusula Terceira:</b> O CONTRATANTE deverá comunicar a CONTRATADA qualquer alteração ou reação do tratamento, imediatamente, sob pena de irresponsabilidade desta.
-<br>
-<br><b>Cláusula Quarta:</b> Na hipótese de contatação de qualquer anomalia não prevista ou omitida nas avalições prévias, o (a) profissional responsável poderá suspender ou cancelar os procedimentos, especificando fundamentalmente as razões que o levaram a fazê-lo.
-<br>
-<br><b>Cláusula Quinta:</b>  São obrigações do CONTRATANTE:
-<br><b>1.</b>	Pagar pontualmente os valores descritos neste contrato;
-<br><b>2.</b>	Providenciar os documentos solicitados pelo profissional técnico, inclusive exames, atestados ou recomendações complementares que forem necessários para a execução do objeto do presente contrato;
-<br><b>3.</b>	Cumprir as determinações e/ou recomendações inerentes ao tratamento, principalmente quanto aos períodos mínimos e máximos de intervalos de sessões que forme necessárias e prescritas sob pena de comprometimento do resultado final do procedimento;
-<br><b>4.</b>	Permitir que a CONTRATADA tire fotos para comprovação da evolução do tratamento;
-<br><b>5.</b>	Comunicar imediatamente a CONTRATADA, qualquer reação inesperada ao tratamento;
-<br>
-<br><b>Cláusula Sexta:</b> Em caso de rescisão do presente contrato no prazo de 7 dias a contar da data de contratação os valores eventualmente pagos serão devolvidos integralmente. Em se tratando de solicitação de rescisão após os 7 dias, fica estabelecido o CUSTO ADMINISTRATIVO, NO PERCENTUAL de 30% (trinta por cento) proporcional ao tempo restante do contrato, em virtude dos custos operacionais, bloqueio de agenda e aquisição de produtos  necessário para a realização do tratamento prescrito.
-<br>
-<br><b>Cláusula Sétima:</b> O CONTRATANTE declara-se ciente do comprometimento necessário com o tratamento, concorda com as obrigações contidas neste contrato sendo que caso descumpra com qualquer das obrigações, a CONTRATADA não se responsabilizará civil ou penalmente por resultados insatisfatórios ou inadequados.
-<br>
-<br><b>Parágrafo Primeiro:</b> Caso o (a) CONTRATANTE descumpra as obrigações contidas neste instrumento que repercutem no comprometimento de todo o tratamento, a CONTRATADA deverá suspender as demais sessões rescindir o presente contrato, cabendo a CONTRATANTE o pagamento do custo administrativo estipulado na cláusula sexta.
-<br>
-<br><b>Cláusula Oitava:</b> Para dirimir eventuais dúvidas originárias do presente contrato nomeiam as partes ao foro da comarca de Lauro de Freitas-BA.
-<br>
-<br>Por pactuarem e aceitarem livremente as condições dispostas, as partes assinam o presente instrumento em vias de igual teor.
-<br>
-<br><br>
-<b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
-<center>
-<?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="assinaturas/<?php echo $cpf_ass ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
@@ -188,35 +163,147 @@ ______________________________________________________<br>
 <h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$procedimento_data")) ?>)</h3>
 </center>
 </fieldset>
-<br><br>
-<center><h1>ANEXO I</h1><br>
-<br><h2>Termo de Consentimento para Realização de Terapia Capilar ,Barba e Sobrancelhas e uso de imagem</h2><br></center>
-<br><br>
-<br>Este termo refere-se ao programa de tratamento capilar oferecido por este estabelecimento.
-<br>O programa foi oferecido após o cliente passar por consulta prévia onde foi identificada a patologia capilar e esclarecido sobre as condições do tratamento.
-<br>Todos os procedimentos a serem realizados serão feitos de forma terapêutica.
-<br>Utilizamos em nossos tratamentos aparelhos de <b>Fototerapia (laser e led) de baixa potência</b> e visam o estimulo capilar. Estes equipamentos são registrados, seguros e não geram riscos ao usuário.
-<br>São contraindicados em caso de gestantes e pacientes com algum tipo de câncer de pele ou infecção ativa que deve ser comunicado durante a avaliação.
-<br>Outra técnica que poderá ser utilizada é o <b>Microagulhamento</b>, um procedimento minimamente invasivo. Garantimos que os aparelhos são descartáveis e os cuidados com a assepsia são redobrados.
-<br>O <b>Microagulhamento</b> é contraindicado em: pacientes com qualquer infecção na pele, pacientes em uso de anticoagulantes e com distúrbio de coagulação sem acompanhamento médico, em casos de pacientes em tratamento para neoplasias e pacientes com histórico de queloide grave.
-<br>Compreendo todos os riscos do tratamento e tive a oportunidade de esclarecer minhas dúvidas relativas ao procedimento que irei me submeter. Assim, não restando dúvidas, eu autorizo a realização dos procedimentos propostos neste termo.
 <br>
-<br><br>
-<b>Lauro de Freitas, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
+<?php
+$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Sim'");
+$query3->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+$row_check3 = $query3->rowCount();
+if($row_check3 < 1){}else{
+?>
+<br>
+<fieldset>
+<center><p class="text-title">ADITIVO CONTRATUAL</p></center>
+<?php
+$aditivo_qtd = 0;
+while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
+    $aditivo_assinado = $select3['assinado'];
+    $assinado_data = $select3['assinado_data'];
+    $aditivo_procedimento = $select3['aditivo_procedimento'];
+    $aditivo_procedimento_valor = $select3['aditivo_valor'];
+    $aditivo_procedimento_data = $select3['assinado_empresa_data'];
+    $aditivo_qtd++;
+?>
+<p class="text-title">Aditivo <?php echo $aditivo_qtd ?></p>
+<p class="text-title"><?php echo $aditivo_qtd ?>.1.PROCEDIMENTO TÉCNICO A SER REALIZADO:</p>
+<b><?php echo $aditivo_procedimento ?></b><br>
+<br><p class="text-title"><?php echo $aditivo_qtd ?>.2. VALOR TOTAL E FORMA DE PAGAMENTO:</p>
+<b><?php echo $aditivo_procedimento_valor ?></b><br>
+<br><p class="text-title"><?php echo $aditivo_qtd ?>.3. LOCAL E DATA DO ADITIVO:</p>
+<b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br>
+<center>
+<?php if($aditivo_assinado == 'Sim'){?>
+<img src="assinaturas/<?php echo $cpf_ass ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+
+______________________________________________________<br>
+<?php }else{ ?>
+    ______________________________________________________<br>
+<?php } ?>
+<b><?php echo $nome ?></b>
+<?php if($aditivo_assinado == 'Sim'){?>
+<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$assinado_data")) ?>)</h3>
+<?php }else{ ?>
+<h3>(Não Assinado)</h3>
+<?php } ?>
+<img src="assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
+______________________________________________________<br>
+<b>Caroline Chagas Ferraz</b>
+<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$aditivo_procedimento_data")) ?>)</h3>
+</center>
+<?php
+}
+?>
+</fieldset>
+<br>
+<?php
+}
+?>
+<fieldset>
+<center>
+<p class="text-title">TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO</p>
+<p class="text-title">MICROAGULHAMENTO E/OU INTRADERMOTERAPIA CAPILAR</p><br>
+</center>
+
+<p class="text-title">DA TÉCNICA:</p>
+<p><ul>
+    <li><b>APRESENTAÇÃO</b>
+     <p>As terapias capilares não se firmam em um único tipo de procedimento para todos os pacientes, bem como as substâncias ativas a serem prescritas para uso home care e usadas em consultório também variam de indivíduo para indivíduo, a fim de atender as necessidades de cuidado de cada um. Sendo assim, cada paciente tem seu protocolo exclusivo de tratamento, que é definido, apresentado e explicado em detalhes pelo profissional que o assiste, na primeira Consulta. O mesmo pode vir a mudar durante o andamento do tratamento, e o paciente será avisado caso as mudanças ocorram.</p>
+     <p>Os procedimentos minimamente invasivos realizados para tratamento capilar são o Microagulhamento e a Mesoterapia.</p>
+     <p> O Microagulhamento consiste na aplicação de um aparelho chamado dermógrafo sobre área a ser tratada , com o objetivo de drug delivery, ou seja, que as substâncias ativas ali aplicadas, penetrem diretamente até o local de ação desejado, o folículo piloso, localizado na derme.</p>
+     <p>A Mesoterapia ou Intradermoterapia consiste em microinjeções pontuais, realizadas com seringa e agulha, diretamente na área a ser tratada. O objetivo da técnica é que as substâncias ativas sejam depositadas na derme e estabeleçam ação local. Quanto às substâncias injetadas, eis as que são geralmente usadas em tais procedimentos: fatores de crescimento, minoxidil, finasterida, dutasterida, aminoácidos, vitaminas e lidocaína. A escolha de uso de cada uma delas cabe ao profissional que acompanha o caso.</p>
+     </li>
+     <li><b>REALIZAÇÃO DOPROCEDIMENTO</b>
+         <p>O procedimento é realizado em um intervalo de 30 a 60 dias, em geral.
+ No caso do microagulhamento, um cartucho de agulhas estéril é acoplado ao dermógrafo para promover a entrega das substâncias na pele. 
+No caso da intradermoterapia, a aplicação das substâncias se dá pela injeção intradérmica feita com seringa e agulha. 
+</p>
+     </li>
+     <li><b>RESULTADOS</b>
+         <p>É imprescindível que o paciente compreenda que não há garantia de resultado, uma vez que se trata de um organismo vivo, influenciado por diversas variáveis, externas e internas, passível de respostas que independem do tratamento proposto e executado. A garantia é de que o profissional em questão dispõe dos melhores meios, sempre pautados em evidências científicas, para buscar o melhor resultado ao paciente. É importante que o tratamento seja seguido da forma proposta e pelo tempo proposto, que foi explicitado durante a consulta, bem como o intervalo sugerido entre as sessões seja respeitado, a fim de obter o melhor resultado possível.</p>
+     </li>
+     <li><b>CONTRAINDICAÇÕES AO PROCEDIMENTO</b> 
+         <p>Gestantes (salvo consentimento médico);<br>
+Diabéticos descompensados; <br>
+Antecedentes de AVC;<br>
+ Histórico de eventos tromboembólicos;<br>
+Sensibilidade a uma substância ativa utilizada;<br>
+ HIV+;<br>
+Cardiopatas;<br>
+Doenças sistêmicas autoimunes;<br>
+</p>
+     </li>
+     <li><b>POSSÍVEIS COMPLICAÇÕES E EFEITOS COLATERAIS DO PROCEDIMENTO</b>
+         <p>Fibroses; <br>
+Infecções;<br>
+ Reação vasovagal; <br>
+Anafilaxia (reação alérgica aguda); <br>
+Dor aguda;<br>
+ Edema; <br>
+Sensibilidade exacerbada;<br>
+ Eritema passageiro;<br>
+</p>
+     </li>
+</ul></p>
+<p class="text-title">DAS DECLARAÇÕES DO PACIENTE:</p>
+<p><ul>
+    <li>
+        Declaro ser verdadeiro tudo que informei ao profissional durante a avaliação e que não omiti nenhuma informação relacionada à minha saúde que possa vir a comprometer o resultado do tratamento ou ocasionar complicações. Estou ciente que preciso estar saudável para realizar este procedimento e que qualquer alteração em meu estado de saúde será relatada ao profissional imediatamente.
+    </li>
+    <li>
+        Declaro que li este Termo de Consentimento e compreendi tudo que aqui está redigido, bem como tudo que foi explicado pela profissional durante a consulta, sobre minha condição e o tratamento proposto. Todas minhas dúvidas também foram esclarecidas.
+    </li>
+    <li>
+        Autorizo ser fotografado(a) a fim de acompanhamento do tratamento e também para possível divulgação de marketing nas redes sociais do profissional, sem que minha identidade seja exposta e revelada. 
+    </li>
+    <li>
+        Tenho ciência e compreensão dos riscos e possíveis complicações que podem surgir devido ao procedimento. 
+    </li>
+    <li>
+        É de meu conhecimento que é impossível prever e garantir resultados a partir do tratamento proposto, mas que o profissional se dispõe a usar os meios científicos possíveis para buscar atingir o fim desejado, assim como eu me proponho a seguir o protocolo de tratamento proposto.
+    </li>
+</ul></p>
+
+
+<b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="assinaturas/<?php echo $cpf ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="assinaturas/<?php echo $cpf_ass ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+
 ______________________________________________________<br>
 <?php }else{ ?>
     ______________________________________________________<br>
 <?php } ?>
 <b><?php echo $nome ?></b>
 <?php if($assinado == 'Sim'){?>
-<h3 class="contrato">(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$assinado_data")) ?>)</h3>
+<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$assinado_data")) ?>)</h3>
 <?php }else{ ?>
-<h3 class="contrato">(Não Assinado)</h3>
+<h3>(Não Assinado)</h3>
 <?php } ?>
+<img src="assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
+______________________________________________________<br>
+<b>Caroline Chagas Ferraz</b>
+<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$procedimento_data")) ?>)</h3>
 </center>
+</fieldset>
 
 <script>
 const canvas = document.querySelector('#canvas');

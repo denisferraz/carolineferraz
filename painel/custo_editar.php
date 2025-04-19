@@ -34,7 +34,7 @@ $custo_descricao = $select['custo_descricao'];
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Editar Custo</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
 </head>
 <body>
 

@@ -32,8 +32,13 @@ $doc_nome = $select['doc_nome'];
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Lançamentos de Consumos</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
+    <style>
+        .card {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
 <form class="form" action="acao.php" method="POST">

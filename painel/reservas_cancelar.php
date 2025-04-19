@@ -23,8 +23,13 @@ if($aut_acesso == 1){
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Cancelar Reserva</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
+    <style>
+        .card {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
 

@@ -23,8 +23,13 @@ if($aut_acesso == 1){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Cadastrar Despesa</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
+    <style>
+        .card {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
     <script>
     function formatar(mascara, documento){
     var i = documento.value.length;
@@ -60,9 +65,9 @@ if($aut_acesso == 1){
                 <option value="Aluguel Equipamentos">Equipamentos [Aluguel]</option>
                 <option value="Compra Equipamentos">Equipamentos [Compra]</option>
                 <option value="Outros">Outros</option>
-                </select></b></label><br>
+                </select></b></label>
                 <label>Descrição Despesa</label>
-                <textarea name="despesa_descricao" rows="5" cols="43" required></textarea><br><br>
+                <textarea name="despesa_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
                 <input type="hidden" name="id_job" value="lancar_despesas" />
             <div class="card-group btn"><button type="submit">Lançar Despesa</button></div>
 

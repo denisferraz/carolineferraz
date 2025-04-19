@@ -1050,13 +1050,14 @@ $dompdf->stream(
 }else if($id_job == 'cadastro_contrato'){
 
     $procedimento_valor = mysqli_real_escape_string($conn_msqli, $_POST['procedimento_valor']);
+    $procedimento_dias = mysqli_real_escape_string($conn_msqli, $_POST['procedimento_dias']);
     $procedimentos = trim(mysqli_real_escape_string($conn_msqli, $_POST['procedimentos']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
     $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
 
-    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_valor, '-', '-', 'Não', :confirmacao)");
-    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'confirmacao' => $confirmacao));
+    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_dias, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, confirmacao) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_dias, :procedimento_valor, '-', '-', 'Não', :confirmacao)");
+    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'procedimento_dias' => $procedimento_dias, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'confirmacao' => $confirmacao));
 
     //Envio de Email	
 
@@ -1557,4 +1558,97 @@ try {
                 window.location.replace('reserva.php?confirmacao=$confirmacao')
                 </script>";
     
+}else if($id_job == 'cadastro_novo'){
+
+    $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+    $doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_cpf']));
+    $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
+    $doc_telefone = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_telefone']));
+    $origem = mysqli_real_escape_string($conn_msqli, $_POST['origem']);
+
+    $senha = '123456';
+    $crip_senha = md5($senha);
+    $token = md5(date("YmdHismm"));
+
+    function validaCPF($doc_cpf) {
+     
+        // Extrai somente os números
+        $doc_cpf = preg_replace( '/[^0-9]/is', '', $doc_cpf );
+         
+        // Verifica se foi informado todos os digitos corretamente
+        if (strlen($doc_cpf) != 11) {
+            return false;
+        }
+    
+        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+        if (preg_match('/(\d)\1{10}/', $doc_cpf)) {
+            return false;
+        }
+    
+        // Faz o calculo para validar o CPF
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $doc_cpf[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($doc_cpf[$c] != $d) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
+    if(validaCPF($doc_cpf) == false){
+        echo "<script>
+        alert('CPF Invalido')
+        window.location.replace('cadastro_registro.php')
+        </script>";
+        exit();
+    }
+
+    $query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email OR unico = :cpf");
+    $query->execute(array('email' => $doc_email, 'cpf' => $doc_cpf));
+    $row_check = $query->rowCount();
+    
+    if($row_check == 1){
+        echo "<script>
+        alert('Email e/ou CPF ja Cadastrado!')
+        window.location.replace('cadastro_registro.php')
+        </script>";
+        exit();
+    }
+
+    $query = $conexao->prepare("INSERT INTO $tabela_painel_users (email, tipo, senha, nome, telefone, unico, token, codigo, tentativas, aut_painel, origem) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :cpf, :token, '0', '0', '1', :origem)");
+    $query->execute(array('email' => $doc_email, 'nome' => $doc_nome, 'cpf' => $doc_cpf, 'token' => $token, 'telefone' => $doc_telefone, 'senha' => $crip_senha, 'origem' => $origem));
+
+    echo "<script>
+    alert('Cliente Cadastrado Sucesso!')
+    window.location.replace('cadastro.php?email=$doc_email')
+    </script>";
+
+}else if($id_job == 'cadastro_editar'){
+
+    $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+    $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
+    $doc_telefone = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_telefone']));
+    $doc_rg = mysqli_real_escape_string($conn_msqli, $_POST['doc_rg']);
+    $nascimento = mysqli_real_escape_string($conn_msqli, $_POST['nascimento']);
+    $profissao = mysqli_real_escape_string($conn_msqli, $_POST['profissao']);
+    $endereco_cep = mysqli_real_escape_string($conn_msqli, $_POST['endereco_cep']);
+    $endereco_rua = mysqli_real_escape_string($conn_msqli, $_POST['endereco_rua']);
+    $endereco_n = mysqli_real_escape_string($conn_msqli, $_POST['endereco_n']);
+    $endereco_comp = mysqli_real_escape_string($conn_msqli, $_POST['endereco_comp']);
+    $endereco_bairro = mysqli_real_escape_string($conn_msqli, $_POST['endereco_bairro']);
+    $endereco_cidade = mysqli_real_escape_string($conn_msqli, $_POST['endereco_cidade']);
+    $endereco_uf = mysqli_real_escape_string($conn_msqli, $_POST['endereco_uf']);
+
+    $query = $conexao->prepare("UPDATE $tabela_painel_users SET nome = :doc_nome, telefone = :doc_telefone, rg = :doc_rg, nascimento = :nascimento, profissao = :profissao, cep = :cep, rua = :rua, numero = :numero, complemento = :complemento, cidade = :cidade, bairro = :bairro, estado = :estado WHERE email = :email");
+    $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone, 'doc_rg' => $doc_rg, 'nascimento' => $nascimento, 'profissao' => $profissao, 'cep' => $endereco_cep, 'rua' => $endereco_rua, 'numero' => $endereco_n, 'complemento' => $endereco_comp, 'cidade' => $endereco_cidade, 'bairro' => $endereco_bairro, 'estado' => $endereco_uf));
+
+    echo "<script>
+    alert('Cadastro Alterado com Sucesso')
+    window.location.replace('cadastro.php?email=$doc_email')
+    </script>";
+
 }

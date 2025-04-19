@@ -32,7 +32,7 @@ $tratamento = $select['tratamento'];
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Editar Tratamentos</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
     <script>
     function formatar(mascara, documento){
     var i = documento.value.length;
@@ -82,7 +82,7 @@ $tratamento = $select['tratamento'];
     <div class="card">
     <div class="card-group">
 
-    <FONT COLOR="black">
+    <FONT COLOR="white">
                 <fieldset>
                     <legend align="center"><b>Custos do Tratamento: <?php echo $tratamento; ?></b></legend>
                     <br>

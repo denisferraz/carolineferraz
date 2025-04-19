@@ -12,23 +12,19 @@ while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
 if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
-
 ?>
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Consultas no Sistema</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style_v2.css">
 </head>
 <body>
-
 <fieldset>
 <?php
     $palavra = mysqli_real_escape_string($conn_msqli, $_POST['busca']);
@@ -56,67 +52,66 @@ if($aut_acesso == 1){
     $busca_fim = date('Y-m-d', strtotime("$busca_fim") + 86400);
 
     if($palavra == ''){
-    $palavra = 'Todos';
-    $query_select = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim ORDER BY atendimento_dia ASC");
-    $query_select->execute(array('busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
+        $palavra = 'Todos';
+        $query_select = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim ORDER BY atendimento_dia ASC");
+        $query_select->execute(array('busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }else{
-    $query_select = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_nome LIKE :palavra OR doc_email LIKE :palavra OR confirmacao LIKE :palavra) ORDER BY atendimento_dia ASC");
-    $query_select->execute(array('palavra' => "%$palavra%", 'busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
+        $query_select = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_nome LIKE :palavra OR doc_email LIKE :palavra OR confirmacao LIKE :palavra) ORDER BY atendimento_dia ASC");
+        $query_select->execute(array('palavra' => "%$palavra%", 'busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }
     $select_qtd = $query_select->rowCount();
 
     if($select_qtd == 0){
-?> <legend>Nenhuma consulta encontrada com o filtro [ <?php echo $palavra ?> ]</legend> <?php
+?>
+    <legend>Nenhuma consulta encontrada com o filtro [ <?php echo $palavra ?> ]</legend>
+<?php
     }else{
-?>  
+?>
 <legend><h2 class="title-cadastro">Veja abaixo todas as consultas com o filtro [ <?php echo $palavra ?> ]</h2></legend>
-<table widht="1200" border="1px">
+<table>
 <tr>
-    <td width="17%" align="center">Confirmação</td>
-    <td width="35%" align="center">Nome [ E-mail ]</td>
-    <td width="15%" align="center">Entrada</td>
-    <td width="15%" align="center">Horário</td>
-    <td width="15%" align="center">Status</td>
-    <td width="20%" align="center">Editar</td>
-    <td width="20%" align="center">Cancelar</td>
+    <th>Confirmação</th>
+    <th>Nome [ E-mail ]</th>
+    <th>Entrada</th>
+    <th>Horário</th>
+    <th>Status</th>
+    <th>Editar</th>
+    <th>Cancelar</th>
 </tr>
 <?php
     while($select = $query_select->fetch(PDO::FETCH_ASSOC)){
-    $status_reserva = $select['status_reserva'];
-    $confirmacao = $select['confirmacao'];
-    $doc_nome = $select['doc_nome'];
-    $doc_email = $select['doc_email'];
-    $atendimento_dia = $select['atendimento_dia'];
-    $atendimento_dia = strtotime("$atendimento_dia");
-    $atendimento_hora = $select['atendimento_hora'];
-    $atendimento_hora = strtotime("$atendimento_hora");
-    $id = $select['id'];
-    ?>    
-    <tr>
-    <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button><?php echo $confirmacao ?></button></a></td>
+        $status_reserva = $select['status_reserva'];
+        $confirmacao = $select['confirmacao'];
+        $doc_nome = $select['doc_nome'];
+        $doc_email = $select['doc_email'];
+        $atendimento_dia = strtotime($select['atendimento_dia']);
+        $atendimento_hora = strtotime($select['atendimento_hora']);
+        $id = $select['id'];
+?>
+<tr>
+    <td><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button><?php echo $confirmacao ?></button></a></td>
     <td><?php echo $doc_nome ?><br><?php echo $doc_email ?></td>
-    <td align="center"><?php echo date('d/m/Y', $atendimento_dia) ?></td>
-    <td align="center"><?php echo date('H:i\h', $atendimento_hora) ?></td>
+    <td><?php echo date('d/m/Y', $atendimento_dia) ?></td>
+    <td><?php echo date('H:i\h', $atendimento_hora) ?></td>
     <td><?php echo $status_reserva ?></td>
     <?php if($status_reserva == 'Cancelada' || $status_reserva == 'Finalizada'){  ?>
-    <td align="center">-</td>
-    <td align="center">-</td>
+    <td>-</td>
+    <td>-</td>
     <?php }else{  ?>
     <td><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")'><button>Editar</button></td>
     <?php if($status_reserva == 'Checkedin' || $status_reserva == 'NoShow'){  ?>
-    <td align="center">-</td>
+    <td>-</td>
     <?php }else{ ?>
     <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Cancelar</button></a></td>
     <?php }}  ?>
-    </tr>
-    <?php
+</tr>
+<?php
     }}
-    ?>
+?>
 </table>
 </fieldset>
 </body>
 </html>
-
 <?php
 }
 ?>

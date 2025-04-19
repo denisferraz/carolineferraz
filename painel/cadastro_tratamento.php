@@ -35,7 +35,13 @@ $token = md5(date("YmdHismm"));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
+    <style>
+        .card {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
 
@@ -53,17 +59,16 @@ if($id_job == 'enviar'){
             <br>
             <label><b>Tratamento</b></label>
             <input type="text" name="tratamento" minlength="5" maxlength="155" placeholder="Descrição do Tratamento" required>
-            <br>
-            <label><b>Descrição</b></label><br>
-            <textarea name="comentario" cols="45" rows="5"></textarea>
             <br><br>
             <label><b>Total de Sessões</b></label>
             <input type="number" name="tratamento_sessao" min="1" max="99" required>
-            <br>
+            <br><br>
             <label><b>Data Inicio</b></label>
             <input type="date" name="tratamento_data" required>
-            <br>
             <br><br>
+            <label><b>Descrição</b></label>
+            <textarea class="textarea-custom" name="comentario" cols="45" rows="5"></textarea>
+            <br>
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
@@ -96,7 +101,7 @@ $progress = $sessao_atual/$sessao_total*100;
                 <div class="text"><b>Sessões:</b> <?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
                 </div></label>
             <label><b>Inicio</b>: <?php echo date('d/m/Y', strtotime("$plano_data")) ?></label>
-            <br><br>
+            <br>
             <?php
             if($sessao_atual == $sessao_total){
             ?>
@@ -104,15 +109,15 @@ $progress = $sessao_atual/$sessao_total*100;
             <?php
             }else if($sessao_atual != $sessao_total){
             ?>
-            <label><b>Data Sessão</b></label><br>
+            <label><b>Data Sessão</b></label>
             <input type="date" min="<?php echo $plano_data; ?>" max="<?php echo date('Y-m-d'); ?>" name="tratamento_data" required>
-            <br>
+            <br><br>
             <label><b>Cadastrar Sessão</b></label>
             <input type="number" name="tratamento_sessao" min="<?php echo ($sessao_atual + 1) ?>" max="<?php echo $sessao_total ?>" value="<?php echo ($sessao_atual + 1) ?>" required>
-            <br>
-            <label><b>Descrição</b></label><br>
-            <textarea name="comentario" cols="45" rows="5"></textarea>
             <br><br>
+            <label><b>Descrição</b></label>
+            <textarea class="textarea-custom" name="comentario" cols="45" rows="5"></textarea>
+            <br>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="tratamento" value="<?php echo $plano_descricao ?>">

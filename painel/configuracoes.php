@@ -30,7 +30,13 @@ $dia_domingo = $config_dia_domingo; //0
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Editar Configurações</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
+    <style>
+        .card {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
 <?php
@@ -61,20 +67,12 @@ $atendimento_hora_intervalo = $select['atendimento_hora_intervalo'];
     <label>Limite Diario</label>
     <input type="number" min="1" max="99999" name="config_limitedia" value="<?php echo $select['config_limitedia'] ?>" required>
     <label>Mensagem Confirmação</label>
-    <textarea name="config_msg_confirmacao" rows="5" cols="43" required><?php echo $select['config_msg_confirmacao'] ?></textarea><br><br>
+    <textarea class="textarea-custom" name="config_msg_confirmacao" rows="5" cols="43" required><?php echo $select['config_msg_confirmacao'] ?></textarea><br><br>
     <label>Mensagem Cancelamento</label>
-    <textarea name="config_msg_cancelamento" rows="5" cols="43" required><?php echo $select['config_msg_cancelamento'] ?></textarea><br><br>
+    <textarea class="textarea-custom" name="config_msg_cancelamento" rows="5" cols="43" required><?php echo $select['config_msg_cancelamento'] ?></textarea><br><br>
     <label>Mensagem Finalização</label>
-    <textarea name="config_msg_finalizar" rows="5" cols="43" required><?php echo $select['config_msg_finalizar'] ?></textarea><br><br>
-    <label>Hora Inicial de Atendimento</label>
-    <input type="time" name="atendimento_hora_comeco" value="<?php echo date('H:i', strtotime("$atendimento_hora_comeco")) ?>" required>
-    <label>Hora Final de Atendimento</label>
-    <input type="time" name="atendimento_hora_fim" value="<?php echo date('H:i', strtotime("$atendimento_hora_fim")) ?>" required>
-    <label>Intervalo entre Atendimentos (em minutos)</label>
-    <input type="number" min="1" max="999" name="atendimento_hora_intervalo" value="<?php echo $atendimento_hora_intervalo ?>" required>
-    <label>Data Maxima de Agendamento</label>
-    <input type="date" name="atendimento_dia_max" value="<?php echo $select['atendimento_dia_max'] ?>" required>
-    <br><br><label><b>Formas de Envio:</b></label>
+    <textarea class="textarea-custom" name="config_msg_finalizar" rows="5" cols="43" required><?php echo $select['config_msg_finalizar'] ?></textarea><br><br>
+    <br><label><b>Formas de Comunicação:</b></label>
     <label>Whatsapp <b>(<?php echo $select['envio_whatsapp'] ?>)</b>
         <select name="envio_whatsapp">
     <?php foreach (['ativado', 'desativado'] as $option) {
@@ -88,7 +86,16 @@ $atendimento_hora_intervalo = $select['atendimento_hora_intervalo'];
         $selected = ($option == $select['envio_email']) ? 'selected' : '';
         echo "<option value='$option' $selected>$option</option>";
     } ?>
-        </select></label><br>
+        </select></label><br><br>
+    <label>Hora Inicial de Atendimento</label>
+    <input type="time" name="atendimento_hora_comeco" value="<?php echo date('H:i', strtotime("$atendimento_hora_comeco")) ?>" required>
+    <label>Hora Final de Atendimento</label>
+    <input type="time" name="atendimento_hora_fim" value="<?php echo date('H:i', strtotime("$atendimento_hora_fim")) ?>" required>
+    <label>Intervalo entre Atendimentos (em minutos)</label>
+    <input type="number" min="1" max="999" name="atendimento_hora_intervalo" value="<?php echo $atendimento_hora_intervalo ?>" required>
+    <label>Data Maxima de Agendamento</label>
+    <input type="date" name="atendimento_dia_max" value="<?php echo $select['atendimento_dia_max'] ?>" required>
+    <br><br>
     <br><label>Dias da Semana</label><br>
     <input id="dia_segunda" type="checkbox" name=dia_segunda <?php if($dia_segunda == 1){?>checked<?php } ?>>
     <label for="dia_segunda">Segunda-Feira</label>

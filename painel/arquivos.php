@@ -26,8 +26,13 @@ if($aut_acesso == 1){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Cadastrar Arquivos</title>
+    <link rel="stylesheet" href="css/style_v2.css">
 
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .card {
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
 
@@ -39,7 +44,7 @@ if($aut_acesso == 1){
 
             <div class="card-group">
                 <label>Selecionar um Arquivo PDF</label>
-                <FONT COLOR="black"><input type="file" name="arquivos" id="arquivo" onchange="updateFileName()" required></font><br><br>
+                <FONT COLOR="white"><input type="file" name="arquivos" id="arquivo" onchange="updateFileName()" required></font><br><br>
                 <label>Nome do Arquivo</label>
                 <input type="text" name="arquivo" minlength="5" maxlength="20" required><br>
                 <input type="hidden" name="id_job" value="arquivos" />

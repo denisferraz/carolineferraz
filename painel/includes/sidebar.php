@@ -1,0 +1,185 @@
+<div class="sidebar bg-dark text-white p-3">
+    <h4 class="text-center">Painel</h4>
+    <ul class="nav flex-column small">
+
+        <!-- INÍCIO -->
+        <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuInicio" role="button" aria-expanded="false" aria-controls="menuInicio">
+                <span><i class="bi bi-grid me-2"></i> Início</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuInicio">
+                <a href="javascript:void(0)" onclick='window.open("agenda.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-calendar-check me-2"></i> Agenda
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("autorizacao.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-calendar2-minus me-2"></i> Solicitações Pendentes
+                </a>
+            </div>
+        </li>
+
+        <!-- CADASTROS -->
+        <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuCadastros" role="button" aria-expanded="false" aria-controls="menuCadastros">
+                <span><i class="bi bi-people-fill me-2"></i> Cadastros</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuCadastros">
+                <a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-person-badge me-2"></i> Clientes
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("cadastro_registro.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-person-add me-2"></i> Novo Cliente
+                </a>
+            </div>
+        </li>
+
+        <!-- CONSULTAS -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuConsultas" role="button" aria-expanded="false" aria-controls="menuConsultas">
+                <span><i class="bi bi-calendar3 me-2"></i> Consultas</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuConsultas">
+                <a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-eye-fill me-2"></i> Consultas
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-calendar-plus me-2"></i> Cadastrar Consultas
+                </a>
+                <a href="javascript:void(0)" onclick="abrirLembrete();" class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-send-plus-fill me-2"></i> Enviar Lembretes
+                </a>
+            </div>
+        </li>
+
+        <!-- DISPONIBILIDADE -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuDisponibilidade" role="button" aria-expanded="false" aria-controls="menuDisponibilidade">
+                <span><i class="bi bi-calendar-event-fill me-2"></i> Disponibilidade</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuDisponibilidade">
+                <a href="javascript:void(0)" onclick='window.open("disponibilidade.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-eye me-2"></i> Disponibilidade
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("disponibilidade_fechar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-door-closed-fill me-2"></i> Fechar Agenda
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("disponibilidade_abrir.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-door-open-fill me-2"></i> Abrir Agenda
+                </a>
+            </div>
+        </li>
+
+        <!-- HISTÓRICO -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuHistorico" role="button" aria-expanded="false" aria-controls="menuHistorico">
+                <span><i class="bi bi-clock-history me-2"></i> Histórico</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuHistorico">
+                <a href="javascript:void(0)" onclick='window.open("historico.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-clock-history me-2"></i> Histórico
+                </a>
+            </div>
+        </li>
+
+        <!-- FINANCEIRO -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuFinanceiro" role="button" aria-expanded="false" aria-controls="menuFinanceiro">
+                <span><i class="bi bi-cash-stack me-2"></i> Financeiro</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuFinanceiro">
+                <a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-bank me-2"></i> Ver Despesas
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-cash-coin me-2"></i> Lançar Despesas
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-coin me-2"></i> Cadastrar Custos
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("tratamentos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-file-earmark-medical me-2"></i> Cadastrar Tratamentos
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("ver_valores.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-currency-dollar me-2"></i> Valores
+                </a>
+            </div>
+        </li>
+
+        <!-- RELATÓRIOS -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuRelatorios" role="button" aria-expanded="false" aria-controls="menuRelatorios">
+                <span><i class="bi bi-bar-chart-fill me-2"></i> Relatórios</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuRelatorios">
+                <a href="javascript:void(0)" onclick='window.open("relatorios.php", "iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-bar-chart-fill me-2"></i> Relatórios
+                </a>
+            </div>
+        </li>
+
+        <!-- CONFIGURAÇÕES -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuConfiguracoes" role="button" aria-expanded="false" aria-controls="menuConfiguracoes">
+                <span><i class="bi bi-gear-fill me-2"></i> Configurações</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuConfiguracoes">
+                <a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-gear-fill me-2"></i> Configurações
+                </a>
+            </div>
+        </li>
+
+    </ul>
+</div>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<body>
+
+<script>
+  function abrirLembrete() {
+    // Exibe o popup de carregamento
+    exibirPopup();
+
+    // Abre a página lembrete.php em uma nova janela ou iframe
+    window.open("lembrete.php", "iframe-home");
+  }
+
+  function exibirPopup() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Carregando...',
+      text: 'Aguarde enquanto enviamos os Lembretes!',
+      timer: 10000,
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      willOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

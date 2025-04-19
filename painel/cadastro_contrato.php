@@ -23,6 +23,27 @@ $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $query->execute(array('email' => $email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $nome = $select['nome'];
+    $email = $select['email'];
+    $rg = $select['rg'];
+    $nascimento = $select['nascimento'];
+    $cpf = $select['unico'];
+    $cpf_ass = $select['unico'];
+    $profissao = $select['profissao'];
+    $telefone = $select['telefone'];
+    $cep = $select['cep'];
+    $rua = $select['rua'];
+    $numero = $select['numero'];
+    $complemento = $select['complemento'];
+    $cidade = $select['cidade'];
+    $bairro = $select['bairro'];
+    $estado = $select['estado'];
+}
+
+if($nascimento == '' || $profissao == '' || $cep == '' || $rua == '' || $numero == '' || $complemento == '' || $cidade == '' || $bairro == '' || $estado == ''){
+    echo "<script>
+    alert('Complete o Cadastro antes de fazer um Contrato')
+    window.location.replace('cadastro.php?email=$email')
+    </script>";
 }
 
 ?>
@@ -35,8 +56,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
 </head>
 <body>
 
@@ -51,8 +71,11 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
             <label><b>Valor</b></label>
             <input type="text" name="procedimento_valor" minlength="10" maxlength="155" placeholder="R$ parcelado em x de R$ sem juros" required>
             <br>
+            <label><b>Intervalo entre Sessões</b></label>
+            <input type="number" name="procedimento_dias" min="1" max="365" placeholder="15" required>
+            <br>
             <label><b>Procedimento</b></label>
-            <textarea name="procedimentos" rows="5" cols="44" minlength="10" maxlength="300" placeholder="Procedimentos... (utilize o <br> para pular linha)" required></textarea>
+            <textarea class="textarea-custom" name="procedimentos" rows="5" cols="44" minlength="10" maxlength="300" placeholder="Procedimentos... (utilize o <br> para pular linha)" required></textarea>
             <br><br>
             <input type="hidden" name="nome" value="<?php echo $nome ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">

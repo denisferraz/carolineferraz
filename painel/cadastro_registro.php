@@ -13,31 +13,13 @@ if($aut_acesso == 1){
     exit;
 }
 
-$hoje = date('Y-m-d');
-$token = md5(date("YmdHismm"));
-$confirmacao = gerarConfirmacao();
-
-$id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
-
-$email = $nome = $telefone = $cpf = '';
-
-if($id_job == 'Cadastro'){
-    $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-
-    $query_check2 = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$email}'");
-    while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
-        $nome = $select_check2['nome'];
-        $telefone = $select_check2['telefone'];
-        $cpf = $select_check2['unico'];
-    }
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Consulta</title>
+    <title>Cadastrar Cliente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link rel="stylesheet" href="css/style_v2.css">
@@ -61,7 +43,7 @@ if($id_job == 'Cadastro'){
             Swal.fire({
                 icon: 'info',
                 title: 'Aguarde...',
-                text: 'Confirmando a consulta...',
+                text: 'Cadastrando...',
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 didOpen: () => {
@@ -72,20 +54,10 @@ if($id_job == 'Cadastro'){
     </script>
 </head>
 <body>
-    <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
+    <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Cadastrar Nova Consulta</h2>
-            </div>
-
-            <div class="card-group">
-                <label>Dia do Atendimento</label>
-                <input type="date" name="atendimento_dia" min="<?php echo $hoje ?>" max="<?php echo $config_atendimento_dia_max ?>" required>
-            </div>
-
-            <div class="card-group">
-                <label>Horário</label>
-                <input type="time" name="atendimento_hora" min="01:00" max="23:00" required>
+                <h2 class="title-cadastro">Cadastrar Novo Cliente</h2>
             </div>
 
             <div class="card-group">
@@ -109,42 +81,20 @@ if($id_job == 'Cadastro'){
             </div>
 
             <div class="card-group">
-                <label>Tipo de Consulta</label>
-                <select name="id_job">
-                    <option value="Avaliação Capilar">Avaliação Capilar</option>
-                    <option value="Consulta Capilar">Consulta Capilar</option>
-                    <option value="Consulta Online">Consulta Online</option>
-                    <option value="Nova Sessão">Nova Sessão</option>
-                </select>
+                <label>Onde nos Conheceu?</label>
+                <select name="origem">
+                        <option value="Instagram">Instagram</option>
+                        <option value="Google">Google</option>
+                        <option value="Indicação">Indicação</option>
+                        </select>
             </div>
-
+<br>
             <div class="card-group">
-                <label>Local da Consulta</label>
-                <select name="atendimento_local">
-                    <option value="Lauro de Freitas">Lauro de Freitas</option>
-                    <option value="Salvador">Salvador</option>
-                </select>
-            </div>
-
-            <div class="card-group">
-                <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
-                <input type="hidden" name="token" value="<?php echo $token ?>">
-                <input type="hidden" name="status_reserva" value="Confirmado">
-                <input type="hidden" name="feitapor" value="Painel">
-            </div>
-
-            <div class="card-group">
-                <input id="overbook" type="checkbox" name="overbook">
-                <label for="overbook">Forçar Overbook</label>
-            </div>
-
-            <div class="card-group">
-                <input id="overbook_data" type="checkbox" name="overbook_data">
-                <label for="overbook_data">Forçar Data/Horário</label>
+                <input type="hidden" name="id_job" value="cadastro_novo">
             </div>
 
             <div class="card-group btn">
-                <button type="submit">Confirmar Consulta</button>
+                <button type="submit">Cadastrar</button>
             </div>
         </div>
     </form>

@@ -28,7 +28,7 @@ error_reporting(0);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cancelar Reserva</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
     <script>
 
         $(document).ready(function() {

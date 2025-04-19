@@ -54,15 +54,20 @@ $hoje = date('Y-m-d');
             });
         </script>
     <title>Historico</title>
-
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_v2.css">
+    <style>
+        .card {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
 
     <form class="form" action="buscar.php" method="POST">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Sistema de Busca</h2>
+                <h2 class="title-cadastro">Buscar Historico de Alterações</h2>
             </div>
 
             <div class="card-group">

@@ -43,13 +43,12 @@ if($aut_acesso == 1){
   $doc_email = $select_check['doc_email'];
   $doc_telefone = $select_check['doc_telefone'];
   
-  
-  //Envio de Email	
-  if($envio_email == 'ativado'){
-
   $data_email = date('d/m/Y \-\ H:i:s');
   $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-  $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
+  $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
+
+  //Envio de Email	
+  if($envio_email == 'ativado'){
   
       $pdf_corpo_00 = 'Olá';
       $pdf_corpo_01 = 'Lembrete de Consulta';
@@ -87,7 +86,7 @@ if($aut_acesso == 1){
       <legend>$pdf_corpo_01 $confirmacao</legend>
       <br>
       $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
-      <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
+      <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b></p>
       <b>$pdf_corpo_07 $data_email</b>
       </fieldset><br><fieldset>
       <legend><b><u>$pdf_corpo_04</u></legend>
@@ -119,7 +118,9 @@ if($aut_acesso == 1){
   if($envio_whatsapp == 'ativado'){
   
       $doc_telefonewhats = "55$doc_telefone";
-      $msg_wahstapp = "Olá $doc_nome, passando para lhe lembrar do seu Atendimento!".'\n\n'. "Data: $atendimento_dia_str ás: $atendimento_hora_str.".'\n\n'."Posso confirmar seu Atendimento?";
+      $msg_wahstapp = "Oi $doc_nome, tudo bem? 😊 \n\n" .
+                "Passando para confirmar seu atendimento dia $atendimento_dia_str às $atendimento_hora_str e para garantir que tudo esteja pronto para te receber com todo o cuidado preciso que me der um retorno confirmando até as 17h, combinado?" .
+                "\n\n Caso não haja confirmação até esse horário, precisaremos liberar o horário para outro paciente. Qualquer dúvida, estou à disposição! 🤍🤍";
       
       $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
   
@@ -127,7 +128,7 @@ if($aut_acesso == 1){
       //Fim Envio Whatsapp
   
       //Faz a String pra envio de CAROL
-      $atendimentos_dia .= '\n\n'."$doc_nome em $atendimento_dia_str as $atendimento_hora_str";
+      $atendimentos_dia .= "\n\n" . "$doc_nome em $atendimento_dia_str às $atendimento_hora_str";
   
   }
   

@@ -22,34 +22,28 @@ if($aut_acesso == 1){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <title>Cadastrar Custos</title>
-
-    <link rel="stylesheet" href="css/style.css">
-    <script>
-    function formatar(mascara, documento){
-    var i = documento.value.length;
-    var saida = mascara.substring(0,1);
-    var texto = mascara.substring(i)
-    if (texto.substring(0,1) != saida){
-            documento.value += texto.substring(0,1);
-    }
-    }   
-    </script>
+    <title>Cadastrar Custo</title>
+<link rel="stylesheet" href="css/style_v2.css">
+    <style>
+        .card {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
 </head>
 <body>
 
     <form class="form" action="acao.php" method="POST">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Cadastre abaixo seus Custos</h2>
+                <h2 class="title-cadastro">Cadastrar Custos</h2>
             </div>
 
             <div class="card-group">
-            <br>
             <label>Valor</label>
             <input minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
-            <label><b>Tipo do Custo: 
-                <select name="custo_tipo">
+            <label>Tipo do Custo</label>
+            <select name="custo_tipo" required>
                 <option value="Aluguel">Aluguel</option>
                 <option value="Luz">Luz</option>
                 <option value="Internet">Internet</option>
@@ -59,58 +53,48 @@ if($aut_acesso == 1){
                 <option value="Compra Equipamentos">Equipamentos [Compra]</option>
                 <option value="Hora">Valor Hora</option>
                 <option value="Outros">Outros</option>
-                </select></b></label><br>
+                </select>
+
+
                 <label>Descrição Custo</label>
-                <textarea name="custo_descricao" rows="5" cols="43" required></textarea><br><br>
+                <textarea name="custo_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
                 <input type="hidden" name="id_job" value="lancar_custos" />
             <div class="card-group btn"><button type="submit">Cadastrar Custo</button></div>
 
             </div>
-        </div>
     </form>
+    <br><br>
+    <table>
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Valor</th>
+                    <th>Descrição</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $query = $conexao->prepare("SELECT * FROM custos WHERE id >= :id ORDER BY custo_tipo DESC");
+                $query->execute(['id' => 1]);
 
-    <br>
-    <div class="card">
-    <div class="card-group">
-
-    <FONT COLOR="black">
-                <fieldset>
-                    <legend align="center"><b>Custos</b></legend>
-                    <br>
-                    <table border="1px" align="center">
-                        <tr>
-                            <td align="center"><b>Tipo</b></td>
-                            <td align="center"><b>Valor</b></td>
-                            <td align="center"><b>Descrição</b></td>
-                            <td align="center"><b>Editar</b></td>
-                            <td align="center"><b>Excluir</b></td>
-                        </tr>
-<?php
-$query = $conexao->prepare("SELECT * FROM custos WHERE id >= :id ORDER BY custo_tipo DESC");
-$query->execute(array('id' => '1'));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$id = $select['id'];
-$custo_valor = $select['custo_valor'];
-$custo_tipo = $select['custo_tipo'];
-$custo_descricao = $select['custo_descricao'];
-?>
-                        <tr>
-                            <td align="left"><?php echo $custo_tipo ?></td>
-                            <td align="left">R$<?php echo number_format($custo_valor ,2,",",".") ?></td>
-                            <td align="center"><?php echo $custo_descricao ?></td>
-                            <td align="center"><a href="javascript:void(0)" onclick='window.open("custo_editar.php?id=<?php echo $id ?>","iframe-home")'><button>Editar</button></a></td>
-                            <td align="center"><a href="javascript:void(0)" onclick='window.open("custo_excluir.php?id=<?php echo $id ?>","iframe-home")'><button>Excluir</button></a></td>
-                        </tr>
-                        <?php
-}
-?>
-                    </table>
-                </fieldset>
-            </FONT>
-
-            </div>
-            </div>
-
+                while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $id = $select['id'];
+                    $tipo = $select['custo_tipo'];
+                    $valor = 'R$' . number_format($select['custo_valor'], 2, ',', '.');
+                    $descricao = $select['custo_descricao'];
+                ?>
+                <tr>
+                    <td data-label="Tipo"><?php echo $tipo; ?></td>
+                    <td data-label="Valor"><?php echo $valor; ?></td>
+                    <td data-label="Descrição"><?php echo $descricao; ?></td>
+                    <td data-label="Editar"><a href="javascript:void(0)" onclick='window.open("custo_editar.php?id=<?php echo $id ?>","iframe-home")'><button>Editar</button></a></td>
+                    <td data-label="Excluir"><a href="javascript:void(0)" onclick='window.open("custo_excluir.php?id=<?php echo $id ?>","iframe-home")'><button>Excluir</button></a></td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
 </body>
 </html>
 
