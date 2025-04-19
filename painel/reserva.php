@@ -118,40 +118,25 @@ $progress = $sessao_atual/$sessao_total*100;
         <p><strong>Confirmação Cancelamento:</strong> <?php echo $confirmacao_cancelamento ?></p>
       <?php } ?>
     </div>
-
-    <div class="acoes-reserva">
-      <table>
-        <tr>
+        <center>
+        <a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")' class="btn-black">Alterar Sessão</a>
           <?php if (($status_sessao == 'Finalizada' || $status_sessao == 'Cancelada' || $status_sessao == 'Em Andamento') && ($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada')) { ?>
-            <td><a href="javascript:void(0)" onclick='window.open("reserva_novasessao.php?id=<?php echo $id ?>","iframe-home")' class="btn-black">Nova Sessão</a></td>
+            <a href="javascript:void(0)" onclick='window.open("reserva_novasessao.php?id=<?php echo $id ?>","iframe-home")' class="btn-black">Nova Sessão</a>
           <?php } else { ?>
-            <td><a href="javascript:void(0)" onclick='window.open("reservas_confirmacao.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Confirmação</a></td>
+            <a href="javascript:void(0)" onclick='window.open("reservas_confirmacao.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Confirmação</a>
           <?php } ?>
-          <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-red">Cancelar Sessão</a></td>
-        </tr>
-
-        <tr>
-        <td><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Tratamento</a></td>
-          <td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")' class="btn-red">Finalizar Sessão</a></td>
-        </tr>
-
-        <?php if ($atendimento_dia <= $hoje) { ?>
-          <tr>
-          <td><a href="javascript:void(0)" onclick='window.open("reservas_lembrete.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Lembrete</a></td>
-            <td><a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=Finalizada","iframe-home")' class="btn-red">Finalizar Contrato</a></td>
-          </tr>
-        <?php } ?>
-
-        <tr>
+          <a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Tratamento</a>
+          <a href="javascript:void(0)" onclick='window.open("reservas_lembrete.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Lembrete</a>
           <?php if ($contrato_row == 0) { ?>
-            <td><a href="javascript:void(0)" onclick='window.open("cadastro_contrato.php?email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Contrato</a></td>
+            <a href="javascript:void(0)" onclick='window.open("cadastro_contrato.php?email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Contrato</a>
             <?php } else { ?>
-            <td><a href="javascript:void(0)" onclick='window.open("reservas_contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Ver Contrato</a></td>
+            <a href="javascript:void(0)" onclick='window.open("reservas_contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Ver Contrato</a>
             <?php } ?>
-            <td><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")' class="btn-black">Alterar Sessão</a></td>
-        </tr>
-      </table>
-    </div>
+            <br><br>
+            <a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-red">Cancelar Sessão</a>
+          <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")' class="btn-red">Finalizar Sessão</a>
+          <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=Finalizada","iframe-home")' class="btn-red">Finalizar Contrato</a>
+            </center>
   </fieldset>
   <br>
 <!-- Dados da Consulta -->
