@@ -2,6 +2,15 @@
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $mes = isset($_GET['mes']) ? (int)$_GET['mes'] : date('m');
 $ano = isset($_GET['ano']) ? (int)$_GET['ano'] : date('Y');
 $diaSelecionado = isset($_GET['dia']) ? (int)$_GET['dia'] : null;
@@ -65,14 +74,14 @@ $feriados = array_merge(
 $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE alt_status = 'Pendente'");
 $alteracao_qtd = $query_alteracao->rowCount();
 $temSolicitacaoPendente = $alteracao_qtd > 0;
-
+ 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Agenda Mensal</title>
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
 body {
@@ -80,7 +89,7 @@ body {
   margin-bottom: 200px;
 }
 
-.dia, .cabecalho {
+.dia{
   padding: 10px;
   min-height: 90px;
   border-radius: 12px;

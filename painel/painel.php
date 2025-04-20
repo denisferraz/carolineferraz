@@ -4,6 +4,14 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
 
 $query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
@@ -22,7 +30,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
 <body>
     <?php include 'includes/sidebar.php'; ?>

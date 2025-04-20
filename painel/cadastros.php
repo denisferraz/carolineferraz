@@ -4,6 +4,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -21,9 +30,8 @@ $hoje = date('Y-m-d');
 <head>
     <meta charset="UTF-8">
     <title>Cadastros</title>
-    <link rel="stylesheet" href="css/style_v2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
 <body>
 
@@ -33,7 +41,7 @@ $query_row = $query->rowCount();
 ?>
 
 <fieldset>
-    <legend><h2 class="title-cadastro">
+    <legend><h2>
         <?= $query_row == 0 ? 'Sem Cadastros' : "Cadastros [$query_row]" ?>
     </h2></legend>
     <?php if ($query_row > 0): ?>

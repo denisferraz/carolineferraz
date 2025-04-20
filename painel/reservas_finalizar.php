@@ -4,6 +4,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -23,7 +32,7 @@ if($aut_acesso == 1){
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Cadastrar Finalização</title>
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
     <style>
         .card {
             width: 100%;
@@ -36,7 +45,7 @@ if($aut_acesso == 1){
     <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Confirmar a Finalização</h2>
+                <h2>Confirmar a Finalização</h2>
             </div>
 <?php
 $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);

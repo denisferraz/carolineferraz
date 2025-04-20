@@ -4,6 +4,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -20,9 +29,8 @@ if($aut_acesso == 1){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Consultas no Sistema</title>
-    <link rel="stylesheet" href="css/style_v2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
 <body>
 <fieldset>
@@ -67,7 +75,7 @@ if($aut_acesso == 1){
 <?php
     }else{
 ?>
-<legend><h2 class="title-cadastro">Veja abaixo todas as consultas com o filtro [ <?php echo $palavra ?> ]</h2></legend>
+<legend><h2>Veja abaixo todas as consultas com o filtro [ <?php echo $palavra ?> ]</h2></legend>
 <table>
 <tr>
     <th>Confirmação</th>

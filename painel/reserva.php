@@ -4,6 +4,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -23,7 +32,8 @@ $hoje = date('Y-m-d');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
     <title>Informações Consulta</title>
 </head>
 <body>
@@ -105,7 +115,8 @@ $progress = $sessao_atual/$sessao_total*100;
       <p><strong>Data:</strong> <?php echo date('d/m/Y', strtotime($atendimento_dia)) ?></p>
       <p><strong>Hora:</strong> <?php echo date('H:i\h', strtotime($atendimento_hora)) ?></p>
       <p><strong>Local:</strong> <?php echo $local_reserva ?></p>
-      <p><strong>Telefone:</strong> <?php echo $doc_telefone ?></p>
+      <strong>Telefone:</strong> <a class="whatsapp-link" href="https://wa.me/55<?= preg_replace('/[^0-9]/', '', $doc_telefone) ?>" target="_blank">
+                            <i class="fab fa-whatsapp"></i><?= $doc_telefone ?></a>
       <p>
         <strong>E-mail:</strong>
         <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>","iframe-home")' class="btn-small">
@@ -139,16 +150,16 @@ $progress = $sessao_atual/$sessao_total*100;
             </center>
   </fieldset>
   <br>
-<!-- Dados da Consulta -->
+<!-- Plano de Tratamento -->
 <fieldset>
-<legend><h2 class="title-cadastro">Plano de Tratamento</h2></legend>
+<legend><h2>Plano de Tratamento</h2></legend>
 <center>
 <div id="progress-bar">
 <div class="filled" style="width: <?php echo $progress; ?>%;"></div>
 <div class="text"><b>Sessões:</b> <?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
 </div>
 <br><br>
-<table widht="100%" border="1px" style="color:white">
+<table>
     <tr>
         <td align="center"><b>Descrição</b></td>
         <td align="center"><b>Inicio</b></td>
@@ -189,10 +200,9 @@ $progress = $sessao_atual/$sessao_total*100;
     <tr>    
         <td align="left"><?php echo $plano_descricao ?></td>
         <td align="center"><?php echo date('d/m/Y', strtotime("$plano_data")) ?></td>
-        <td align="center"><div id="progress-bar">
+        <td align="center"><div id="progress-bar-mini">
             <div class="filled" style="width: <?php echo $progress; ?>%;"></div>
-            <div class="text"><b>Sessões:</b> <?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
-            </div>
+            </div><div class="text"><?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
         </td>
         <td align="center"><?php echo $sessao_status ?></td>
         <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=cadastrar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Cadastrar Sessão</button></a></td>
@@ -209,9 +219,12 @@ $id2 = $tratamento_row2['id'];
 
 $plano_data2 = date('d/m/Y', strtotime("$plano_data2"));
 $sessao_excluir = $sessao_atual - 1;
+if($comentario == ''){
+    $comentario = 'Sessao Registrada';   
+}
 ?> 
 <tr>
-    <td colspan="6">[<?php echo $sessao_atual2 ?>] <?php echo $plano_data2 ?> - [<?php echo $comentario ?>]</td>
+    <td colspan="6"><?php echo $plano_data2 ?> | <?php echo $comentario ?></td>
     <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id2 ?>&confirmacao=<?php echo $confirmacao ?>&sessao=<?php echo $sessao_excluir ?>&id2=<?php echo $id ?>","iframe-home")'><button>Excluir</button></a></td>
 </tr>
 
@@ -230,7 +243,7 @@ while($total_lanc = $check->fetch(PDO::FETCH_ASSOC)){
 $valor = $total_lanc['sum(valor)'];
 }
 ?>
-<legend><h2 class="title-cadastro">Lançamentos Totais [ R$<?php echo number_format($valor ,2,",",".") ?> ]</h2></legend>
+<legend><h2>Lançamentos Totais [ R$<?php echo number_format($valor ,2,",",".") ?> ]</h2></legend>
 
 <table widht="100%" border="1px" style="color:white">
     <tr>
@@ -293,7 +306,7 @@ if($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada' && $status_
 <br>
 <!-- Arquivos -->
 <fieldset>
-<legend><h2 class="title-cadastro">Arquivos</h2></legend>
+<legend><h2>Arquivos</h2></legend>
 <a href="javascript:void(0)" onclick='window.open("arquivos.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
 <br>
 <?php
@@ -321,13 +334,13 @@ foreach ($files as $file) {
 <br>
 <!-- Lançamentos -->
 <fieldset>
-<legend><h2 class="title-cadastro">Consultas</h2></legend>
+<legend><h2>Historico de Consultas</h2></legend>
 <center>
 <table widht="100%" border="1px" style="color:white">
     <tr>
-        <td width="50%" align="center"><b>Confirmação</b></td>
         <td width="40%" align="center"><b>Data</b></td>
         <td width="30%" align="center"><b>Hora</b></td>
+        <td width="50%" align="center"><b>Local</b></td>
     </tr>
 <?php
 $check_history = $conexao->prepare("SELECT * FROM disponibilidade_atendimento WHERE confirmacao = :confirmacao ORDER BY atendimento_dia DESC");
@@ -342,14 +355,14 @@ if($check_history->rowCount() < 1){
 <?php
 }else{
 while($history = $check_history->fetch(PDO::FETCH_ASSOC)){
-$history_conf = $history['confirmacao'];
+$history_local = $history['local_reserva'];
 $history_data = $history['atendimento_dia'];
 $history_hora = $history['atendimento_hora'];
 ?>
     <tr>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $history_conf ?>","iframe-home")'><button><b><?php echo $history_conf ?></b></button></a></td>
         <td align="center"><?php echo date('d/m/Y', strtotime("$history_data")) ?></td>
         <td align="center"><?php echo date('H:i\h', strtotime("$history_hora")) ?></td>
+        <td width="50%" align="center"><?php echo $local_reserva; ?></td>
     </tr>
 <?php
 }}

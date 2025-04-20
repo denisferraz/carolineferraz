@@ -4,6 +4,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -34,21 +43,21 @@ $custo_descricao = $select['custo_descricao'];
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Editar Custo</title>
 
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
 <body>
 
 <form class="form" action="acao.php" method="POST">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Edite abaixo seu Custo</h2>
+                <h2>Edite abaixo seu Custo</h2>
             </div>
 
             <div class="card-group">
             <br>
             <label>Valor</label>
             <input value="<?php echo $custo_valor ?>" minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
-            <label>Tipo do Custo: 
+            <br><br><label>Tipo do Custo: 
             <select name="custo_tipo">
                 <option value="Aluguel" <?= $custo_tipo == 'Aluguel' ? 'selected' : '' ?>>Aluguel</option>
                 <option value="Luz" <?= $custo_tipo == 'Luz' ? 'selected' : '' ?>>Luz</option>
@@ -60,8 +69,8 @@ $custo_descricao = $select['custo_descricao'];
                 <option value="Hora" <?= $custo_tipo == 'Hora' ? 'selected' : '' ?>>Valor Hora</option>
                 <option value="Outros" <?= $custo_tipo == 'Outros' ? 'selected' : '' ?>>Outros</option>
             </select></label><br>
-                <label>Descrição Custo</label>
-                <textarea name="custo_descricao" rows="5" cols="43" required><?php echo $custo_descricao ?></textarea><br><br>
+            <label>Descrição Custo</label>
+                <textarea class="textarea-custom" name="custo_descricao" rows="5" cols="43" required><?php echo $custo_descricao ?></textarea><br>
                 <input type="hidden" name="custo_id" value="<?php echo $custo_id; ?>" />
                 <input type="hidden" name="id_job" value="editar_custos" />
             <div class="card-group btn"><button type="submit">Editar Custo</button></div>

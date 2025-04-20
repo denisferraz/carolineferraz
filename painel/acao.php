@@ -1225,7 +1225,7 @@ try {
     $query->execute(array('email' => $email, 'id' => $id, 'tratamento_sessao' => $tratamento_sessao, 'confirmacao' => $confirmacao));
 
     $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, confirmacao, token, comentario) VALUES (:email, :plano_descricao, :plano_data, :sessao_total, :sessao_total, 'Em Andamento', :confirmacao, :token, :comentario)");
-    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => $tratamento_sessao, 'confirmacao' => $confirmacao, 'token' => $token, 'comentario' => $comentario));
+    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => 0, 'confirmacao' => $confirmacao, 'token' => $token, 'comentario' => $comentario));
 
     echo "<script>
     alert('Sessao $tratamento_sessao Cadastrada com Sucesso')

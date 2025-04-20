@@ -105,13 +105,35 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
     }
 }
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+if($tema == 'escuro'){
+$bg_body = '#121212';
+$bg_cabecalho = '#1f1f1f';
+$bg_cabecalho_hover = '#2c2c3e';
+$bg_horario = 'green';
+}else if($tema == 'claro'){
+$bg_body = '#cecece';
+$bg_cabecalho = '#6c6b6b';
+$bg_cabecalho_hover = '#4b4b4b';
+$bg_horario = 'black';
+}else{
+$bg_body = '#cae4fa';
+$bg_cabecalho = '#6a8caf';
+$bg_cabecalho_hover = '#274567';
+$bg_horario = 'darkblue';
+}
 ?>
 
 <style>
   body {
     padding: 10px;
     margin-top: 20px;
-    background: #121212;
+    background: <?php echo $bg_body; ?>;
     color: #ccc;
   }
   .calendario {
@@ -127,20 +149,20 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
   }
   .cabecalho {
     font-weight: bold;
-    background: #1f1f1f;
+    background: <?php echo $bg_cabecalho; ?>;
   }
   .dia {
-    background: #1e1e1e;
+    background: <?php echo $bg_cabecalho; ?>;
     cursor: pointer;
   }
   .dia:hover {
-    background: #333;
+    background: <?php echo $bg_cabecalho_hover; ?>;
   }
   .com-horarios {
-    border: 2px solid #4caf50;
+    border: 2px solid <?php echo $bg_horario; ?>;
   }
   .sem-horarios {
-    opacity: 0.4;
+    opacity: 0.6;
   }
   .selecionado {
     background: #4caf50 !important;
@@ -151,7 +173,7 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
   }
   .horarios-do-dia {
     margin-top: 1rem;
-    background: #1a1a1a;
+    background: <?php echo $bg_cabecalho; ?>;
     padding: 1rem;
     border-radius: 8px;
   }

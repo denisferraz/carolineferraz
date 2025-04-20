@@ -4,6 +4,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -23,7 +32,7 @@ $hoje = date('Y-m-d');
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Informações Consulta</title>
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
 <body>
 <div class="card">
@@ -67,9 +76,8 @@ $sufixo = substr($telefone, 7);
 $telefone = "($ddd)$prefixo-$sufixo";
 ?>
 <fieldset>
-<legend><h2 class="title-cadastro">Cadastro <u><?php echo $nome ?></u></h2></legend>
+<legend><h2>Cadastro <u><?php echo $nome ?></u></h2></legend>
 
-<FONT COLOR="white">
 <label><b>Nome: </b><?php echo $nome ?></label> <a href="javascript:void(0)" onclick='window.open("cadastro_editar.php?email=<?php echo $email ?>","iframe-home")'><button>Editar</button></a><br>
 <label><b>Email: </b><?php echo $email ?></label><br>
 <label><b>Telefone: </b><?php echo $telefone ?></label><br><br>
@@ -79,15 +87,14 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <label><b>Endereço: </b><?php echo $endereco ?></label><br><br>
 <label><b>Profissão: </b><?php echo $profissao ?></label><br><br>
 <label><b>Origem: </b><?php echo $origem ?></label><br><br>
-<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a><br>
-<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a><br>
+<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a>
+<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a>
 <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?php echo $email ?>","iframe-home")'><div class="card-group-green btn"><button>Cadastrar Consulta</button></div></a>
-</font>
 </fieldset>
 <br>
 
 <fieldset>
-<legend><h2 class="title-cadastro">Historico de Consultas</h2></legend>
+<legend><h2>Historico de Consultas</h2></legend>
 <table widht="100%" border="1px" style="color:white">
     <tr>
         <td align="center"><b>Confirmação</b></td>

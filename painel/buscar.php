@@ -7,6 +7,16 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -24,9 +34,13 @@ if($aut_acesso == 1){
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Inicio</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='css/style_v2.css'>
-
-
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
+    <style>
+body {
+  margin-top: 30px;
+  margin-bottom: 200px;
+}
+    </style>
 </head>
 <body>
 <?php
@@ -68,11 +82,11 @@ if($aut_acesso == 1){
 <?php
 if($historico_qtd == 0){
     ?>
-<legend>Não existe nenhum historico em nome de <?php echo $palavra ?></legend>
+<legend><h2>Não existe nenhum historico em nome de <?php echo $palavra ?></h2></legend>
     <?php
 }else{
     ?>
-<legend>Historico de [ <?php echo $palavra ?> ]</legend>
+<legend><h2>Historico de [ <?php echo $palavra ?> ]</h2></legend>
 <?php
 }
 while($select_historico = $query_historico->fetch(PDO::FETCH_ASSOC)){

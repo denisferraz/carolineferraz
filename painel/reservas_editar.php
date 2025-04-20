@@ -3,6 +3,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 $aut_acesso = $query_check->fetch(PDO::FETCH_ASSOC)['aut_painel'];
 
@@ -23,43 +32,13 @@ $hoje = date('Y-m-d');
     
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="ajax/jquery.2.1.3.min.js"></script>
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
     <style>
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
+        .card {
+            width: 100%;
+            max-width: 500px;
         }
-
-        form .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-        }
-
-        label {
-            color: #ccc;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        input[type="date"] {
-            padding: 10px;
-            border: 1px solid #444;
-            background-color: #2a2a2a;
-            color: #fff;
-            border-radius: 8px;
-            outline: none;
-        }
-
-        input[type="text"]:focus,
-        input[type="date"]:focus {
-            border-color: #00ffcc;
-        }
-
     </style>
-
     <script>
         function buscar(palavra) {
             $.ajax({
@@ -84,29 +63,22 @@ $hoje = date('Y-m-d');
     </script>
 </head>
 <body>
-
-    <div class="container">
+<form class="form" action="reservas_buscar.php" method="POST">
+<div class="card">
+<div class="card-top">
         <h2>Buscar uma Consulta</h2>
-
-        <form action="reservas_buscar.php" method="POST">
-            <div class="form-group">
+        </div>
+        <div class="card-group">
                 <label>Nome, Confirmação ou E-mail</label>
                 <input type="text" minlength="5" maxlength="35" name="busca" placeholder="Para total, deixe em branco">
-            </div>
-            <div class="form-group">
                 <label>Atendimento Dia - Início</label>
                 <input type="date" name="busca_inicio" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" required>
-            </div>
-            <div class="form-group">
                 <label>Atendimento Dia - Fim</label>
                 <input type="date" name="busca_fim" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Buscar</button>
-            </div>
-        </form>
-
+                <div class="card-group btn"><button type="submit">Buscar</button></div>
+        </div>
     </div>
+    </form>
 
 </body>
 </html>

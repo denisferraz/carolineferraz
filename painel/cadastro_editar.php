@@ -3,6 +3,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
@@ -61,7 +70,7 @@ if($data_nascimento == ''){
     <title>Cadastrar Cliente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <link rel="stylesheet" href="css/style_v2.css">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
     <style>
         .card {
             width: 100%;
@@ -96,7 +105,7 @@ if($data_nascimento == ''){
     <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
         <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Editar Cadastro</h2>
+                <h2>Editar Cadastro</h2>
             </div>
 
             <div class="card-group">

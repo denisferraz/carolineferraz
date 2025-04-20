@@ -177,7 +177,7 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
 <form action="acao.php" method="POST">
         <div>
             <div class="card-top">
-                <h2 class="title-cadastro">Formulario</h2>
+                <h2>Formulario</h2>
             </div>
             <div class="card-group">
             <fieldset><legend><u><b>Dados do Cliente</b></u></legend>
@@ -461,7 +461,7 @@ $protocolo_realizado_04_data = $select['protocolo_realizado_04_data'];
     <form class="form" action="acao.php" method="POST">
     <div class="card">
             <div class="card-top">
-                <h2 class="title-cadastro">Enviar Fomulario</h2>
+                <h2>Enviar Fomulario</h2>
             </div>
     <div class="card-group">
             <label>Nome</label>

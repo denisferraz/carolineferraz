@@ -1,43 +1,17 @@
-:root {
-  --cor-background: #581d22;
-  --cor-fundo: hsl(200, 50%, 30%);
-  --cor-hover: hsl(200, 50%, 60%);
-  --cor-primaria: hsl(0, 0%, 100%);
-  --cor-h1: hsl(0, 100%, 50%);
-  --button-left: hsl(200, 50%, 20%);
-  --button-right: hsl(200, 50%, 50%);
-  --button-left-black: hsl(0, 0%, 20%);
-  --button-right-black: hsl(0, 0%, 50%);
-  --button-left-green: hsl(120, 100%, 20%);
-  --button-right-green: hsl(120, 100%, 50%);
-  --button-left-red: hsl(0, 100%, 20%);
-  --button-right-red: hsl(0, 100%, 50%);
-  --cor-marsala: #fff;
-  --cor-vermelha: #9D3241;
-  --cor-marrom: #8E604E;
-  --cor-rosa: #EEC2AE;
-  --cor-branca: #EEE9E3;
-  --cor-fundo: #cccc;
-  --cor-primaria: black;
-  --cor-secundaria: darkgrey;
-  --cor-terciaria: #56c596;
-  --cor-destaque: grey;
-  --cor-hover: #2e4e3f;
-  --cor-titulo: #fff;
-  --cor-texto: #fff;
-  --cor-borda: #444;
-  --cor-borda-clara: #fff;
-  --cor-evento: lightgrey;
-  --cor-tabela-fundo: #1f2f29;
-  --cor-btn: black;
-  --cor-btn-hover: #444;
-  --cor-sabado: grey;
-  --cor-domingo: #2c2c2c;
-  --cor-feriado: #555;
+:root{
+  --cor-fundo: #cecece;
+  --cor-subfundo: #e2e2e2;
+  --cor-fundo2: white;
+  --cor-texto: rgb(59, 59, 59);
+  --cor-texto-inverso: rgb(215, 215, 215);
+  --cor-borda-legend: black;
+  --cor-botao: #b3b3b3;
+  --cor-botao-hover: #4b4b4b;
+  --cor-fundo-focus: #6c6b6b;;
 }
 
 body{
-  background-color: #1e1e2f;
+  background-color: #eaeaea;
   height: 100vh; /* Adiciona altura total */
   font-family: 'Segoe UI', sans-serif;
 }
@@ -84,7 +58,7 @@ body{
 }
 
 .sidebar .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(251, 248, 248, 0.1);
   padding-left: 10px;
   border-left: 4px solid #0d6efd;
   color: #fff;
@@ -117,7 +91,7 @@ body{
 }
 
 .calendario-header select {
-  background: #2c2c2c;
+  background: #b3b3b3;
   color: var(--cor-titulo);
   border: 1px solid var(--cor-borda);
   padding: 5px;
@@ -128,21 +102,22 @@ body{
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
-  background: var(--cor-secundaria);
+  background: #fff;
   padding: 15px;
   border-radius: 10px;
 }
 
 .dia, .cabecalho {
-  background: var(--cor-destaque);
+  background: var(--cor-fundo);
   border: 1px solid var(--cor-borda-clara);
 }
 
 .cabecalho {
-  min-height: 10px;
+  padding: 10px;
   font-weight: bold;
-  background: var(--cor-destaque);
+  background: var(--cor-fundo);
   text-align: center;
+  border-radius: 12px;
 }
 
 .dia .numero {
@@ -152,8 +127,8 @@ body{
 }
 
 .evento {
-  background: var(--cor-evento);
-  color: var(--cor-primaria);
+  background: #fff;
+  color: black;
   font-size: 0.75rem;
   padding: 2px 4px;
   margin-top: 4px;
@@ -162,7 +137,7 @@ body{
 }
 
 .tabela-eventos {
-  background-color: var(--cor-tabela-fundo);
+  background-color: var(--cor-fundo);
   width: 100%;
   border-collapse: collapse;
 }
@@ -179,7 +154,7 @@ body{
   margin-top: 20px;
   display: inline-block;
   padding: 8px 12px;
-  background-color: var(--cor-btn);
+  background-color: var(--cor-fundo);
   color: var(--cor-titulo);
   text-decoration: none;
   border-radius: 8px;
@@ -190,49 +165,44 @@ body{
 }
 
 .dia.sabado {
-  background-color: var(--cor-sabado);
+  background-color: var(--cor-fundo);
 }
 
 .dia.domingo {
-  background-color: var(--cor-domingo);
+  background-color: #b3b3b3;
 }
 
 .dia.feriado {
-  background-color: var(--cor-feriado);
+  background-color: #b3b3b3;
 }
 
 .dia.hoje {
-  background-color: darkred;
+  background-color: rgb(244, 242, 148);
 }
 
 .cabecalho.domingo {
-  background-color: var(--cor-domingo);
+  background-color: #b3b3b3;
   color: var(--cor-titulo);
 }
 
-.cabecalho.sabado {
-  background-color: var(--cor-sabado);
-  color: var(--cor-titulo);
-}
-
-.cabecalho.diautil {
-  background-color: var(--cor-destaque);
+.cabecalho.sabado, .cabecalho.diautil {
+  background-color: var(--cor-fundo);
   color: var(--cor-titulo);
 }
 
 fieldset {
-  border: 1px solid #fff;
+  border: 1px solid var(--cor-texto);
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  background-color: #1e1e2f;
-  color: #fff;
+  background-color: var(--cor-subfundo);
+  color: var(--cor-texto);
 }
 
 legend {
   font-size: 1rem;
   font-weight: bold;
-  color: #fff;
+  color: var(--cor-texto);;
   padding: 0 0.5rem;
 }
 
@@ -241,7 +211,7 @@ legend {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  background-color: #2c2c3c;
+  background-color: #bbbbbb;
   padding: 0.75rem 1rem;
   border-radius: 6px;
   margin-bottom: 0.5rem;
@@ -249,14 +219,14 @@ legend {
 }
 
 .appointment span {
-  color: #ccc;
+  color: #fff;
   margin: 0 0.5rem;
   font-size: 0.9rem;
 }
 
 .appointment .time {
   font-weight: bold;
-  color: #fff;
+  color: var(--cor-texto);
 }
 
 .appointment .actions {
@@ -265,9 +235,9 @@ legend {
 }
 
 .appointment button {
-  background-color: #545454;
+  background-color: #fff;
   border: none;
-  color: #fff;
+  color: var(--cor-texto);
   padding: 6px 12px;
   margin: 2px;
   border-radius: 4px;
@@ -278,27 +248,26 @@ legend {
 }
 
 .appointment button:hover {
-  background-color: #b3b3b3;
+  background-color: #e6e6e6e8;
 }
 
 .container {
   padding: 2rem;
-  background-color: #1e1e1e;
+  background-color: #fff;
   min-height: 100vh;
   border-radius: 5px;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 12px rgba(215, 212, 212, 0.05);
 }
 
  .container fieldset{
     border-radius: 5px;
     border-width: 3px;
-    border-style: dotted;
-    border-color: var(--cor-marsala);
+    border-color: var(--cor-borda-legend);
  }
 
   .container legend{
     font-weight: bold;
-    color: var(--cor-marsala);
+    color: var(--cor-texto);
  }
 
 .form{
@@ -310,11 +279,27 @@ legend {
 
 .card{
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
-  background: #2c2c3e;
+  background: var(--cor-fundo2);
   padding: 30px;
   border-radius: 10px;
-  color: #fff;
+  color: var(--cor-texto);
   
+}
+
+input[type="text"],
+input[type="date"] {
+  padding: 10px;
+  border: 1px solid #444;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  border-radius: 8px;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+  background-color: var(--cor-fundo-focus);
+  color: var(--cor-texto-inverso);
 }
 
 .card-top{
@@ -324,7 +309,6 @@ legend {
 .card-top h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #00ffd5;
 }
 
 .card-group{
@@ -333,7 +317,7 @@ legend {
 
 .card-group label{
   width: 100%;
-  color: #fff;
+  color: var(--cor-texto);
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
@@ -345,13 +329,14 @@ legend {
   width: 100%;
   padding: 10px;
   border: none;
-  background-color: #3c3c50;
-  color: #fff;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
 }
 
 .card-group input:focus, .card-group select:focus {
   outline: none;
-  background-color: #44445a;
+  background-color: var(--cor-fundo-focus);
+  color: var(--cor-texto-inverso);
 }
 
 .btn {
@@ -363,7 +348,7 @@ legend {
   padding: 12px;
   border: none;
   border-radius: 15px;
-  background-color: #00ffd5;
+  background-color: var(--cor-botao);
   color: #000;
   font-weight: bold;
   cursor: pointer;
@@ -371,12 +356,12 @@ legend {
 }
 
 .btn button:hover {
-  background-color: #00c9a7;
+  background-color: var(--cor-botao-hover);
 }
 
 button {
-  background-color: #6666;
-  color: white;
+  background-color: var(--cor-botao);
+  color: var(--cor-texto);
   border: none;
   padding: 10px;
   border-radius: 5px;
@@ -386,7 +371,8 @@ button {
   }
 
   button:hover {
-  background-color: #9999;
+  background-color: var(--cor-botao-hover);
+  color: var(--cor-texto-inverso);
   }
   
 .image-login{
@@ -408,8 +394,8 @@ a{
 }
 
 .textarea-custom {
-  background-color: #44445a;
-  color: #fff;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
   border: 1px solid var(--cor-hover);
   border-radius: 12px;
   padding: 10px;
@@ -422,8 +408,9 @@ a{
 
   .textarea-custom:focus {
   outline: none;
-  border-color: var(--cor-secundaria);
+  color: var(--cor-texto-inverso);
   box-shadow: 0 0 0 2px var(--cor-secundaria);
+  background-color: var(--cor-fundo-focus);
   }
 
 input[type=checkbox] {
@@ -453,7 +440,7 @@ input[type=checkbox] + label::before {
 }
 
 input[type=checkbox]:checked + label::after {
-  background-color: hsl(200, 100%, 50%);
+  background-color: var(--cor-texto);
   content: '';
   position: absolute;
   width: 20px;
@@ -467,8 +454,9 @@ input[type=checkbox]:checked + label::after {
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #00ffcc;
+  margin-bottom: 10px;
+  color: var(--cor-texto);
+  font-size: 1.2rem; /* ou 18px, ou clamp() para responsivo */
 }
 
 table {
@@ -479,30 +467,33 @@ table {
 }
 
 thead {
-  background-color: #333;
+  background-color: var(--cor-fundo2);
 }
 
 th, td {
-  border: 1px solid #fff;
+  border: 1px solid var(--cor-fundo2);
   padding: 10px;
   text-align: center;
 }
 
 th {
-  background-color: #2c2c2c;
-  color: #fff;
+  background-color: var(--cor-fundo2);
+  color: var(--cor-texto);
 }
 
 tr:nth-child(even) {
-  background-color: #999999;
+  background-color: var(--cor-botao);
+  color: var(--cor-texto);
 }
 
 tr:nth-child(odd) {
-  background-color: #444444;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
 }
 
 tr:hover {
-  background-color: #333;
+  background-color: var(--cor-botao-hover);
+  color: var(--cor-texto-inverso);
 }
 
 a.whatsapp-link {
@@ -530,25 +521,28 @@ border-radius: 5px;
 text-decoration: none;
 font-weight: bold;
 transition: 0.3s ease;
-color: white;
+color: var(--cor-texto);
 }
 
 .btn-red {
 background-color: #e74c3c;
+color: var(--cor-texto-inverso);
 width: 150px;
 }
 
 .btn-black {
 background-color: #2c3e50;
+color: var(--cor-texto-inverso);
 width: 150px;
 }
 
 .btn-small {
-background-color: #5555;
+background-color: var(--cor-botao);
 }
 
 .btn-small:hover, .btn-red:hover, .btn-black:hover {
-background-color: #9999;
+background-color: var(--cor-botao-hover);
+color: var(--cor-texto-inverso);
 }
 
 .com-horarios {
@@ -575,6 +569,10 @@ background-color: #9999;
   table, thead, tbody, th, td, tr {
       display: block;
   }
+
+  table{
+    width: 85%;
+}
 
   thead {
       display: none;
@@ -603,8 +601,8 @@ background-color: #9999;
 
 /* Estilo para o botão Voltar */
 button.voltar {
-    background-color: #2c2c3c;
-    color: #ccc;
+    background-color: #ccc;
+    color: var(--cor-texto);
     font-size: 1rem;
     padding: 10px 20px;
     border: none;
@@ -615,9 +613,8 @@ button.voltar {
 }
 
 button.voltar:hover {
-    background-color: #ccc;
-    transform: scale(1.05);
-    color: #fff;
+    background-color: var(--cor-botao);
+    color: var(--cor-botao-hover);
 }
 
 button.voltar:focus {
@@ -626,34 +623,51 @@ button.voltar:focus {
 
 
 /* Barra de Progresso */
-#progress-bar {
+#progress-bar, #progress-bar-mini {
   background-color: darkgrey;
   height: 20px;
-  width: clamp(100px, 70px + 50vw, 300px);
+  width: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  }
-  #progress-bar .filled {
+  border-radius: 5px; /* Estética mais suave */
+  overflow: hidden;
+}
+
+#progress-bar-mini {
+  background-color: darkgrey;
+  height: 20px;
+  width: clamp(50px, 5vw, 500px);
+  margin: 0 auto;
+}
+
+#progress-bar .filled, #progress-bar-mini .filled {
   background-color: darkgreen;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
-  }
-  #progress-bar .text {
+  transition: width 0.3s ease-in-out; /* Animação suave */
+}
+
+#progress-bar .text{
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
   font-weight: bold;
-  z-index: 1;
-  }
+  font-size: 0.9rem; /* Reduz um pouco para caber melhor em telas pequenas */
+  z-index: 2;
+}
 
 @media (max-width: 600px) {
+
+  #progress-bar {
+    display: none;
+  }
 
   button{
       width: 90%;
@@ -699,10 +713,6 @@ button.voltar:focus {
     align-items: center;
     text-align: center;
   }
-
-  table, thead, tbody, th, td, tr {
-    display: block;
-}
 
 thead {
     display: none;

@@ -3,6 +3,15 @@ session_start();
 require('../conexao.php');
 require('verifica_login.php');
 
+// Pega o tema atual do usuário
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $_SESSION['email']));
+$result = $query->fetch(PDO::FETCH_ASSOC);
+$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+
+// Define o caminho do CSS
+$css_path = "css/style_$tema.css";
+
 $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega a data passada via GET
 
 $query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
@@ -23,7 +32,7 @@ if ($aut_acesso == 1) {
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Inicio</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='css/style_v2.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href="<?php echo $css_path ?>">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
