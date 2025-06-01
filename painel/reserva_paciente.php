@@ -140,7 +140,7 @@ foreach ($pastas as $pasta) {
     $numFiles = count($files);
 
     if ($numFiles < 1) {
-        echo "<center>Nenhum <b>Arquivo</b> foi localizado na pasta <b>$pasta</b></center>";
+        //echo "<center>Nenhum <b>Arquivo</b> foi localizado na pasta <b>$pasta</b></center>";
     } else {
         if($pasta == 'Tratamento'){
             $nome_pasta = 'Plano de Tratamento';

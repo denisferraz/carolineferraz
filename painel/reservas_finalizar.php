@@ -40,7 +40,7 @@ if($aut_acesso == 1){
             </div>
 <?php
 $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
-$id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
+$id_job = 'Finalizada';
 
 $query = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta");
 $query->execute(array('id_consulta' => $id_consulta));

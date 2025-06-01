@@ -31,14 +31,13 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $cep = $select['cep'];
     $rua = $select['rua'];
     $numero = $select['numero'];
-    $complemento = $select['complemento'];
     $cidade = $select['cidade'];
     $bairro = $select['bairro'];
     $estado = $select['estado'];
 }
 
 $endereco_cep = preg_replace('/^(\d{2})(\d{3})(\d{3})$/', '$1.$2-$3', $cep);
-$endereco = "$rua, $numero - $complemento, $bairro – $cidade/$estado, CEP: $endereco_cep";
+$endereco = "$rua, $numero, $bairro – $cidade/$estado, CEP: $endereco_cep";
 
 //Ajustar CPF
 $parte1 = substr($cpf, 0, 3);

@@ -139,6 +139,11 @@ $cpf = "$parte1.$parte2.$parte3-$parte4";
             </div>
 
             <div class="card-group">
+                <label>Nascimento</label>
+                <input type="date" name="doc_nascimento" minlength="11" max="<?php echo $hoje ?>" required>
+            </div>
+
+            <div class="card-group">
                 <label>Onde nos Conheceu?</label>
                 <select name="origem">
                         <option value="Instagram">Instagram</option>

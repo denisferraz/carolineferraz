@@ -176,7 +176,7 @@ unset($_SESSION['error_reserva']);
             <?php if($tipo == 'Painel'){ ?>
             <div class="card-group">
                 <label>CPF</label>
-                <input type="text" id="doc_cpf" name="doc_cpf" class="form-control" minlength="11" maxlength="14"
+                <input type="text" id="doc_cpf" name="doc_cpf" value="<?php echo $cpf ?>" class="form-control" minlength="11" maxlength="14"
                     placeholder="000.000.000-00"
                     onkeypress="formatar('###.###.###-##', this)"
                     onchange="buscarCadastroCPF()" required>
@@ -207,10 +207,10 @@ unset($_SESSION['error_reserva']);
             <div class="card-group">
                 <label>Tipo de Consulta</label>
                 <select name="id_job">
+                    <option value="Nova Sessão">Nova Sessão</option>
                     <option value="Avaliação Capilar">Avaliação Capilar</option>
                     <option value="Consulta Capilar">Consulta Capilar</option>
                     <option value="Consulta Online">Consulta Online</option>
-                    <option value="Nova Sessão">Nova Sessão</option>
                 </select>
             </div>
 

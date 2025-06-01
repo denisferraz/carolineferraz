@@ -13,13 +13,13 @@ if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
 
-$token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 $arquivo = mysqli_real_escape_string($conn_msqli, $_GET['arquivo']);
 unlink($arquivo);
 
     echo "<script>
     alert('Arquivo excluido com sucesso')
-    window.location.replace('reserva.php?token=$token')
+    window.location.replace('reserva.php?id_consulta=$id_consulta')
     </script>";
 
 }

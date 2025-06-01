@@ -120,7 +120,7 @@ $progress = $sessao_atual/$sessao_total*100;
         <center>
         <a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Alterar Sessão</a>
           <?php if ($status_consulta == 'Finalizada' || $status_consulta == 'Cancelada' || $status_consulta == 'Em Andamento') { ?>
-            <a href="javascript:void(0)" onclick='window.open("reserva_novasessao.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Nova Sessão</a>
+            <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Nova Sessão</a>
           <?php } else { ?>
             <a href="javascript:void(0)" onclick='window.open("reservas_confirmacao.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Enviar Confirmação</a>
           <?php } ?>
@@ -305,13 +305,13 @@ if($status_consulta != 'Finalizada' && $status_consulta != 'Cancelada' && $statu
 <!-- Arquivos -->
 <fieldset>
 <legend><h2>Arquivos</h2></legend>
-<a href="javascript:void(0)" onclick='window.open("arquivos.php?token=<?php echo $token ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
+<a href="javascript:void(0)" onclick='window.open("arquivos.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
 <br>
 <?php
 $pastas = ['Tratamento', 'Evolucao', 'Orientacao', 'Laudos', 'Contratos', 'Outros'];
 
 foreach ($pastas as $pasta) {
-    $dir = '../arquivos/' . $token . '/' . $pasta;
+    $dir = '../arquivos/' . $token_profile . '/' . $pasta;
     $files = glob($dir . '/*.pdf');
     $numFiles = count($files);
 
@@ -332,11 +332,11 @@ foreach ($pastas as $pasta) {
         echo "<h2 style='margin-top: 15px;'><b>$nome_pasta</b></h2>";
         foreach ($files as $file) {
             $fileName = basename($file);
-            echo "<div class=\"card-group-black btn\" onclick=\"window.open('$file', '_blank')\">
-            <button>$fileName</button>
-            </div>";
+            echo '<a href="'.$file.'">';
+            echo '<button type="button">'.$fileName.'</button>';
+            echo '</a> - ';
         }
-        echo '<a href="arquivos_excluir.php?arquivo='.$dir.'/'.$fileName.'&token='.$token.'">';
+        echo '<a href="arquivos_excluir.php?arquivo='.$dir.'/'.$fileName.'&id_consulta='.$id_consulta.'">';
         echo '<button type="button">Excluir</button>';
         echo '</a>';
     }echo "<br>";

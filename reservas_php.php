@@ -15,10 +15,10 @@ use Dompdf\Dompdf;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-//error_reporting(0);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
 
 $limite_dia = 1;
 $atendimento_dia = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia']);

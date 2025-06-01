@@ -108,7 +108,7 @@ $atendimento_hora = $select['atendimento_hora'];
     <input type="hidden" name="atendimento_hora_anterior" value="<?php echo $atendimento_hora ?>">
     <input type="hidden" name="id_job" value="<?php echo $select['tipo_consulta'] ?>">
     <input type="hidden" name="new_token" value="<?php echo $token ?>">
-    <div class="card-group btn"><button type="submit">Alterar Reserva</button></div>
+    <div class="card-group btn"><button type="submit">Alterar Consulta</button></div>
 </div>
 </div>
 </form>

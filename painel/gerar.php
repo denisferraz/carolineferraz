@@ -17,10 +17,10 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 
 $worksheet_password = 'h8185@Accor';
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-error_reporting(0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+//error_reporting(0);
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
@@ -408,10 +408,9 @@ $inicio_fim_mes = (strtotime("$relatorio_inicio") - strtotime("$relatorio_inicio
 $inicio_fim_ano = (strtotime("$relatorio_inicio") - strtotime("$relatorio_inicio_ano") + 86400) / 86400;
 
 
-$gera_footer = "<center><b><u>
-$config_empresa - CNPJ: $config_cnpj<br>
-$config_telefone - $config_email<br>
-$config_endereco<br>
+$gera_footer = "<center><b><u><br>
+$config_empresa<br><br>
+$config_endereco
 </u></b></center>";
 
 if($relatorio == 'Gerencial'){
@@ -467,18 +466,21 @@ $dias_trabalho++;
     $receita_outros_dia = number_format(($total_outros['sum(valor)'] * (-1)) ,2,",",".");
     }
 
-    $row_dispnibilidade_dia = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :relatorio_inicio AND confirmacao = 'Closed'");
+    $row_dispnibilidade_dia = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :relatorio_inicio");
     $row_dispnibilidade_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $row_dispnibilidade_dia = $row_dispnibilidade_dia->rowCount();
     $row_cancelamentos_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND status_consulta = 'Cancelada'");
     $row_cancelamentos_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $row_cancelamentos_dia = $row_cancelamentos_dia->rowCount();
-    $row_reservas_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio");
+    $row_reservas_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
     $row_reservas_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $row_reservas_dia = $row_reservas_dia->rowCount();
-    $arrivals_dia = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :relatorio_inicio AND confirmacao != 'Closed'");
+    $arrivals_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND status_consulta = 'Finalizada'");
     $arrivals_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $arrivals_dia = $arrivals_dia->rowCount();
+    $arrivals_dia_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
+    $arrivals_dia_consultas->execute(array('relatorio_inicio' => $relatorio_inicio));
+    $arrivals_dia_consultas = $arrivals_dia_consultas->rowCount();
     $noshows_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND status_consulta = 'NoShow'");
     $noshows_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $noshows_dia = $noshows_dia->rowCount();
@@ -570,18 +572,21 @@ $dias_trabalho++;
     $receita_outros_mes = number_format(($total_outros_mes['sum(valor)'] * (-1)) ,2,",",".");
     }
 
-    $row_dispnibilidade_mes = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND confirmacao = 'Closed'");
+    $row_dispnibilidade_mes = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio");
     $row_dispnibilidade_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $row_dispnibilidade_mes = $row_dispnibilidade_mes->rowCount();
     $row_cancelamentos_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Cancelada'");
     $row_cancelamentos_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $row_cancelamentos_mes = $row_cancelamentos_mes->rowCount();
-    $row_reservas_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio");
+    $row_reservas_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
     $row_reservas_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $row_reservas_mes = $row_reservas_mes->rowCount();
-    $arrivals_mes = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND confirmacao != 'Closed'");
+    $arrivals_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Finalizada'");
     $arrivals_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $arrivals_mes = $arrivals_mes->rowCount();
+    $arrivals_mes_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
+    $arrivals_mes_consultas->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
+    $arrivals_mes_consultas = $arrivals_mes_consultas->rowCount();
     $noshows_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'NoShow'");
     $noshows_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $noshows_mes = $noshows_mes->rowCount();
@@ -673,18 +678,21 @@ $dias_trabalho++;
     $receita_outros_ano = number_format(($total_outros_ano['sum(valor)'] * (-1)) ,2,",",".");
     }
 
-    $row_dispnibilidade_ano = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND confirmacao = 'Closed'");
+    $row_dispnibilidade_ano = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio");
     $row_dispnibilidade_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $row_dispnibilidade_ano = $row_dispnibilidade_ano->rowCount();
     $row_cancelamentos_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Cancelada'");
     $row_cancelamentos_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $row_cancelamentos_ano = $row_cancelamentos_ano->rowCount();
-    $row_reservas_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio");
+    $row_reservas_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
     $row_reservas_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $row_reservas_ano = $row_reservas_ano->rowCount();
-    $arrivals_ano = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND confirmacao != 'Closed'");
+    $arrivals_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Finalizada'");
     $arrivals_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $arrivals_ano = $arrivals_ano->rowCount();
+    $arrivals_ano_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
+    $arrivals_ano_consultas->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
+    $arrivals_ano_consultas = $arrivals_ano_consultas->rowCount();
     $noshows_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'NoShow'");
     $noshows_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $noshows_ano = $noshows_ano->rowCount();
@@ -764,9 +772,8 @@ $dias_trabalho++;
     <center><b>Receitas</b><br></center>
     <table width=100% border=2px>
     <tr><td align=center width=34%><b>Topico</td><td align=center width=34%><b>Dia</td><td align=center width=34%><b>Mês</td><td align=center width=34%><b>Ano</td></tr>
-    <tr><td><b>Capacidade</td><td align=center>$inventario_dia</td><td align=center>$inventario_mes</td><td align=center>$inventario_ano</td></tr>
-    <tr><td><b>Bloqueados</td><td align=center>$row_dispnibilidade_dia</td><td align=center>$row_dispnibilidade_mes</td><td align=center>$row_dispnibilidade_ano</td></tr>
-    <tr><td><b>Consultas</td><td align=center>$row_reservas_dia</td><td align=center>$row_reservas_mes</td><td align=center>$row_reservas_ano</td></tr>
+    <tr><td><b>Consultas</td><td align=center>$arrivals_dia_consultas</td><td align=center>$arrivals_mes_consultas</td><td align=center>$arrivals_ano_consultas</td></tr>
+    <tr><td><b>Atendimentos</td><td align=center>$row_reservas_dia</td><td align=center>$row_reservas_mes</td><td align=center>$row_reservas_ano</td></tr>
     <tr><td><b>Finalizadas</td><td align=center>$arrivals_dia</td><td align=center>$arrivals_mes</td><td align=center>$arrivals_ano</td></tr>
     <tr><td><b>Canceladas</td><td align=center>$row_cancelamentos_dia</td><td align=center>$row_cancelamentos_mes</td><td align=center>$row_cancelamentos_ano</td></tr>
     <tr><td><b>No-Shows</td><td align=center>$noshows_dia</td><td align=center>$noshows_mes</td><td align=center>$noshows_ano</td></tr>
@@ -793,8 +800,7 @@ $dias_trabalho++;
     <tr><td><b>Despesas Total</td><td align=center>R$$despesa_total_dia</td><td align=center>R$$despesa_total_mes</td><td align=center>R$$despesa_total_ano</td></tr>
     <tr><td><b>Lucro Liquido</td><td align=center>R$$lucro_liquido_dia</td><td align=center>R$$lucro_liquido_mes</td><td align=center>R$$lucro_liquido_ano</td></tr>
     </table>
-    </fieldset><br>
-                ";
+    </fieldset>";
 
     }else{ //Relatorio em Excel
 
@@ -1027,7 +1033,6 @@ $query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE qu
 $estorno_total = $query_estorno->rowCount();
 if($estorno_total > 0){
 while($select_estorno = $query_estorno->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select_estorno['confirmacao'];
 $nome = $select_estorno['doc_nome'];
 $produto = $select_estorno['produto'];
 $feitopor = $select_estorno['feitopor'];
@@ -1036,12 +1041,11 @@ $quando = date('d/m/Y - H:i\h', strtotime("$quando"));
 
     if($relatorio_tipo == 'pdf'){
 
-$resultado_estorno = "$resultado_estorno<tr><td align=center>[$confirmacao] $nome</td><td>$produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
+$resultado_estorno = "$resultado_estorno<tr><td align=center>$nome</td><td>$produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
     
 }else{
 
     $dados_relatorio[] = [
-        'confirmacao' => $select_estorno['confirmacao'],
         'doc_nome' => $select_estorno['doc_nome'],
         'produto' => $select_estorno['produto'],
         'feitopor' => $select_estorno['feitopor'],
@@ -1065,7 +1069,7 @@ $gera_body = "
 <b>Quantidade de Estornos</b>: $estorno_total<br>
 <table width=100% border=1px>
 <tr>
-<td align=center width=15%><b>[Confirmacao] Nome</b></td>
+<td align=center width=15%><b>Nome</b></td>
 <td align=center width=55%><b>Descrição Produto</b></td>
 <td align=center width=20%><b>Responsavel/<b></td>
 <td align=center width=20%><b>Data</b></td>
@@ -1233,7 +1237,6 @@ $query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quand
 $lanc_total = $query_lanc->rowCount();
 if($lanc_total > 0){
 while($select_lanc = $query_lanc->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select_lanc['confirmacao'];
 $nome = $select_lanc['doc_nome'];
 $produto = $select_lanc['produto'];
 $feitopor = $select_lanc['feitopor'];
@@ -1244,12 +1247,11 @@ $valor = number_format($valor ,2,",",".");
 
 if($relatorio_tipo == 'pdf'){
 
-    $resultado_lanc = "$resultado_lanc<tr><td align=center>[$confirmacao] $nome</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
+    $resultado_lanc = "$resultado_lanc<tr><td align=center>$nome</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
         
     }else{
     
         $dados_relatorio[] = [
-            'confirmacao' => $select_lanc['confirmacao'],
             'doc_nome' => $select_lanc['doc_nome'],
             'produto' => $select_lanc['produto'],
             'feitopor' => $select_lanc['feitopor'],
@@ -1273,7 +1275,7 @@ $gera_body = "
 <b>Quantidade de Lançamentos</b>: $lanc_total<br>
 <table width=100% border=1px>
 <tr>
-<td align=center width=15%><b>[Confirmacao] Nome</b></td>
+<td align=center width=15%><b>Nome</b></td>
 <td align=center width=55%><b>[ Valor ] Descrição Produto</b></td>
 <td align=center width=20%><b>Responsavel</b></td>
 <td align=center width=20%><b>Data</b></td>
@@ -1445,7 +1447,6 @@ $query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quand
 $pgto_total = $query_pgto->rowCount();
 if($pgto_total > 0){
 while($select_pgto = $query_pgto->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select_pgto['confirmacao'];
 $nome = $select_pgto['doc_nome'];
 $produto = $select_pgto['produto'];
 $feitopor = $select_pgto['feitopor'];
@@ -1456,12 +1457,11 @@ $valor = number_format(($valor * (-1)) ,2,",",".");
 
 if($relatorio_tipo == 'pdf'){
 
-    $resultado_pgto = "$resultado_pgto<tr><td align=center>[$confirmacao] $nome</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
+    $resultado_pgto = "$resultado_pgto<tr><td align=center>$nome</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
         
     }else{
     
         $dados_relatorio[] = [
-            'confirmacao' => $select_pgto['confirmacao'],
             'doc_nome' => $select_pgto['doc_nome'],
             'produto' => $select_pgto['produto'],
             'feitopor' => $select_pgto['feitopor'],
@@ -1485,7 +1485,7 @@ $gera_body = "
 <b>Quantidade de Pagamentos</b>: $pgto_total<br>
 <table width=100% border=1px>
 <tr>
-<td align=center width=15%><b>[Confirmação] Nome</b></td>
+<td align=center width=15%><b>Nome</b></td>
 <td align=center width=55%><b>Descrição do Pagamento</b></td>
 <td align=center width=20%><b>Responsavel</b></td>
 <td align=center width=20%><b>Data</b></td>
@@ -1869,7 +1869,6 @@ $reservas_total = $query_reservas->rowCount();
 if($reservas_total > 0){
 while($select_reservas = $query_reservas->fetch(PDO::FETCH_ASSOC)){
 $hospede = $select_reservas['doc_nome'];
-$confirmacao = $select_reservas['confirmacao'];
 $status_consulta = $select_reservas['status_consulta'];
 $atendimento_dia = $select_reservas['atendimento_dia'];
 $atendimento_dia = date('d/m/Y', strtotime("$atendimento_dia"));
@@ -1878,13 +1877,12 @@ $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
 
 if($relatorio_tipo == 'pdf'){
 
-    $resultado_reservas = "$resultado_reservas<tr><td align=center>$confirmacao [$status_consulta]</td><td>$hospede</td><td align=center>$atendimento_dia</td><td align=center>$atendimento_hora</td></tr>";
+    $resultado_reservas = "$resultado_reservas<tr><td align=center>$status_consulta</td><td>$hospede</td><td align=center>$atendimento_dia</td><td align=center>$atendimento_hora</td></tr>";
             
 }else{
         
     $dados_relatorio[] = [
         'hospede' => $select_reservas['doc_nome'],
-        'confirmacao' => $select_reservas['confirmacao'],
         'status_consulta' => $select_reservas['status_consulta'],
         'atendimento_dia' => $select_reservas['atendimento_dia'],
         'atendimento_hora' => $select_reservas['atendimento_hora']
@@ -1906,7 +1904,7 @@ $gera_body = "
 <b>Quantidade de Consultas</b>: $reservas_total<br>
 <table width=100% border=1px>
 <tr>
-<td align=center width=30%><b>Confirmação [Status]</b></td>
+<td align=center width=30%><b>Status</b></td>
 <td align=center width=55%><b>Nome</b></td>
 <td align=center width=15%><b>Dia Atendimento</b></td>
 <td align=center width=15%><b>Hora Atendimento</b></td>

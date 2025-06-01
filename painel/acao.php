@@ -17,10 +17,10 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
     exit();
  }
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-//error_reporting(0);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $historico_data = date('Y-m-d H:i:s');
@@ -238,7 +238,7 @@ echo "<script>
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Lançou $lanc_quantiade $lanc_produto no valor de R$$lanc_valor na Confirmação $id_consulta"));
 
     echo "<script>
-    alert('Produto Lançado com Sucesso na Reserva $id_consulta')
+    alert('Produto Lançado com Sucesso na Consulta $id_consulta')
     window.location.replace('reserva.php?id_consulta=$id_consulta')
     </script>";
 
@@ -595,7 +595,7 @@ try {
 
 }else if($id_job == 'arquivos'){
 
-    $confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
+    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
     $arquivo_tipo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo_tipo']);
     $token_profile = mysqli_real_escape_string($conn_msqli, $_POST['token_profile']);
     $arquivo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo']).'.pdf';
@@ -605,24 +605,32 @@ try {
 
     if($arquivos['type'] != 'application/pdf'){
         echo "<script>
-        alert('Selecione apenas arquivos tipo PDF')
-        window.location.replace('reserva.php?confirmacao=$confirmacao')
+        alert('Selecione apenas arquivos tipo PDF');
+        window.location.replace('reserva.php?id_consulta=$id_consulta');
         </script>";
         exit();
     }
 
+    // Criar diretórios intermediários, se não existirem
     if (!is_dir($dirAtual)) {
-        mkdir($dirAtual);
+        mkdir($dirAtual, 0777, true); // o 'true' aqui é essencial!
     }
 
-    move_uploaded_file($arquivos['tmp_name'], $dirAtual.$arquivo);
+    $caminhoFinal = $dirAtual . $arquivo;
+
+    if (move_uploaded_file($arquivos['tmp_name'], $caminhoFinal)) {
+        // Sucesso
+    } else {
+        echo "Erro ao mover o arquivo para $caminhoFinal";
+    }
+
 
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo Arquivo $arquivo na Confirmação $confirmacao"));
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo Arquivo $arquivo na Consulta $id_consulta"));
 
     echo "<script>
-    alert('Arquivo Cadastrado com Sucesso $confirmacao')
-    window.location.replace('reserva.php?confirmacao=$confirmacao')
+    alert('Arquivo Cadastrado com Sucesso $id_consulta')
+    window.location.replace('reserva.php?id_consulta=$id_consulta')
     </script>";
     exit();
 
@@ -848,6 +856,7 @@ try {
     $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
     $doc_telefone = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_telefone']));
     $origem = mysqli_real_escape_string($conn_msqli, $_POST['origem']);
+    $nascimento = mysqli_real_escape_string($conn_msqli, $_POST['doc_nascimento']);
 
     $senha = '123456';
     $crip_senha = md5($senha);
@@ -902,8 +911,8 @@ try {
         exit();
     }
 
-    $query = $conexao->prepare("INSERT INTO painel_users (email, tipo, senha, nome, telefone, unico, token, codigo, tentativas, aut_painel, origem) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :cpf, :token, '0', '0', '1', :origem)");
-    $query->execute(array('email' => $doc_email, 'nome' => $doc_nome, 'cpf' => $doc_cpf, 'token' => $token, 'telefone' => $doc_telefone, 'senha' => $crip_senha, 'origem' => $origem));
+    $query = $conexao->prepare("INSERT INTO painel_users (email, tipo, senha, nome, telefone, nascimento, unico, token, codigo, tentativas, aut_painel, origem) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :nascimento, :cpf, :token, '0', '0', '1', :origem)");
+    $query->execute(array('email' => $doc_email, 'nome' => $doc_nome, 'cpf' => $doc_cpf, 'token' => $token, 'telefone' => $doc_telefone, 'nascimento' => $nascimento, 'senha' => $crip_senha, 'origem' => $origem));
 
     echo "<script>
     alert('Cliente Cadastrado Sucesso!')
@@ -921,14 +930,13 @@ try {
     $endereco_cep = mysqli_real_escape_string($conn_msqli, $_POST['endereco_cep']);
     $endereco_rua = mysqli_real_escape_string($conn_msqli, $_POST['endereco_rua']);
     $endereco_n = mysqli_real_escape_string($conn_msqli, $_POST['endereco_n']);
-    $endereco_comp = mysqli_real_escape_string($conn_msqli, $_POST['endereco_comp']);
     $endereco_bairro = mysqli_real_escape_string($conn_msqli, $_POST['endereco_bairro']);
     $endereco_cidade = mysqli_real_escape_string($conn_msqli, $_POST['endereco_cidade']);
     $endereco_uf = mysqli_real_escape_string($conn_msqli, $_POST['endereco_uf']);
     $feitopor = mysqli_real_escape_string($conn_msqli, $_POST['feitopor']);
 
-    $query = $conexao->prepare("UPDATE painel_users SET nome = :doc_nome, telefone = :doc_telefone, rg = :doc_rg, nascimento = :nascimento, profissao = :profissao, cep = :cep, rua = :rua, numero = :numero, complemento = :complemento, cidade = :cidade, bairro = :bairro, estado = :estado WHERE email = :email");
-    $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone, 'doc_rg' => $doc_rg, 'nascimento' => $nascimento, 'profissao' => $profissao, 'cep' => $endereco_cep, 'rua' => $endereco_rua, 'numero' => $endereco_n, 'complemento' => $endereco_comp, 'cidade' => $endereco_cidade, 'bairro' => $endereco_bairro, 'estado' => $endereco_uf));
+    $query = $conexao->prepare("UPDATE painel_users SET nome = :doc_nome, telefone = :doc_telefone, rg = :doc_rg, nascimento = :nascimento, profissao = :profissao, cep = :cep, rua = :rua, numero = :numero, cidade = :cidade, bairro = :bairro, estado = :estado WHERE email = :email");
+    $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone, 'doc_rg' => $doc_rg, 'nascimento' => $nascimento, 'profissao' => $profissao, 'cep' => $endereco_cep, 'rua' => $endereco_rua, 'numero' => $endereco_n, 'cidade' => $endereco_cidade, 'bairro' => $endereco_bairro, 'estado' => $endereco_uf));
 
     $query = $conexao->prepare("UPDATE consultas SET doc_nome = :doc_nome, doc_telefone = :doc_telefone WHERE doc_email = :email");
     $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone));

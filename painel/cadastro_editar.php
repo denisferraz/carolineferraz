@@ -27,7 +27,6 @@ $query->execute(array('email' => $email));
         $cep = $select['cep'];
         $rua = $select['rua'];
         $numero = $select['numero'];
-        $complemento = $select['complemento'];
         $cidade = $select['cidade'];
         $bairro = $select['bairro'];
         $estado = $select['estado'];
@@ -148,9 +147,6 @@ if($data_nascimento == ''){
             </div><div class="card-group">
             <label for="endereco_n">[<b>Numero</b>]</label>
             <input type="text" id="endereco_n" maxlength="50" value="<?php echo $numero ?>" name="endereco_n" placeholder="Numero..." required><br>
-            </div><div class="card-group">
-            <label for="endereco_comp">[<b>Complemento</b>]</label>
-            <input type="text" id="endereco_comp" maxlength="50" value="<?php echo $complemento ?>" name="endereco_comp" placeholder="Complemento..." required><br>
             </div><div class="card-group">
             <label for="endereco_bairro">[<b>Bairro</b>]</label>
             <input type="text" id="endereco_bairro" maxlength="50" value="<?php echo $bairro ?>" name="endereco_bairro" placeholder="Bairro..." required><br>

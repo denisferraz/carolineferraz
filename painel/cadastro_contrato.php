@@ -32,13 +32,12 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $cep = $select['cep'];
     $rua = $select['rua'];
     $numero = $select['numero'];
-    $complemento = $select['complemento'];
     $cidade = $select['cidade'];
     $bairro = $select['bairro'];
     $estado = $select['estado'];
 }
 
-if($nascimento == '' || $profissao == '' || $cep == '' || $rua == '' || $numero == '' || $complemento == '' || $cidade == '' || $bairro == '' || $estado == ''){
+if($nascimento == '' || $profissao == '' || $cep == '' || $rua == '' || $numero == '' || $cidade == '' || $bairro == '' || $estado == ''){
     echo "<script>
     alert('Complete o Cadastro antes de fazer um Contrato')
     window.location.replace('cadastro.php?email=$email')
