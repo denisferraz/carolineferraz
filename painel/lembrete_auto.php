@@ -1,18 +1,16 @@
 <?php
 
-require('../conexao.php');
+require('../config/database.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
-
 
   $diasemana_numero = date('w', time());
 
   if($diasemana_numero == 6){
   $amanha = date('Y-m-d', strtotime('+2 days'));
+  }else if($diasemana_numero == 5){
+  $amanha = date('Y-m-d', strtotime('+3 days')); 
   }else{
   $amanha = date('Y-m-d', strtotime('+1 days'));
   }
@@ -21,7 +19,7 @@ require '../PHPMailer/src/SMTP.php';
   $atendimentos_dia = '';
   
   //Envia E-mail
-  $result_check = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia = '{$amanha}' AND (status_sessao = 'Confirmada' OR status_sessao = 'Em Andamento') ");
+  $result_check = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia = '{$amanha}' AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento') ");
   if ($result_check->rowCount() > 0) {
 
   while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
@@ -29,7 +27,6 @@ require '../PHPMailer/src/SMTP.php';
   $atendimento_hora = $select_check['atendimento_hora'];
   $token = $select_check['token'];
   $doc_nome = $select_check['doc_nome'];
-  $confirmacao = $select_check['confirmacao'];
   $doc_email = $select_check['doc_email'];
   $doc_telefone = $select_check['doc_telefone'];
   
@@ -60,7 +57,7 @@ require '../PHPMailer/src/SMTP.php';
       $mail->SMTPAuth = true;
       $mail->Username = "$mail_Username";
       $mail->Password = "$mail_Password";
-      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+      $mail->SMTPSecure = "$mail_SMTPSecure";
       $mail->Port = "$mail_Port";
   
       $mail->setFrom("$config_email", "$config_empresa");
@@ -68,14 +65,14 @@ require '../PHPMailer/src/SMTP.php';
       $mail->addBCC("$config_email");
       
       $mail->isHTML(true);                                 
-      $mail->Subject = "$pdf_corpo_01 - $confirmacao";
+      $mail->Subject = "$pdf_corpo_01";
     // INICIO MENSAGEM  
       $mail->Body = "
   
       <fieldset>
       <legend>$pdf_corpo_01 $confirmacao</legend>
       <br>
-      $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
+      $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
       <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b></p>
       <b>$pdf_corpo_07 $data_email</b>
       </fieldset><br><fieldset>
@@ -109,7 +106,7 @@ require '../PHPMailer/src/SMTP.php';
   
       $doc_telefonewhats = "55$doc_telefone";
       $msg_wahstapp = "Oi $doc_nome, tudo bem? 😊 \n\n" .
-                "Passando para confirmar seu atendimento dia $atendimento_dia_str às $atendimento_hora_str e para garantir que tudo esteja pronto para te receber com todo o cuidado preciso que me der um retorno confirmando até as 17h, combinado?" .
+                "Passando para confirmar seu atendimento dia $atendimento_dia_str às $atendimento_hora_str e para garantir que tudo esteja pronto para te receber com todo o cuidado preciso que me dê um retorno confirmando até as 17h, combinado?" .
                 "\n\n Caso não haja confirmação até esse horário, precisaremos liberar o horário para outro paciente. Qualquer dúvida, estou à disposição! 🤍🤍";
       
       $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);

@@ -1,45 +1,31 @@
 <?php
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
-
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo '<div style="color: red; font-weight: bold; text-align: center; margin-top: 50px;">Você não tem permissão para acessar esta página.</div>';
-    exit;
-}
 
 $hoje = date('Y-m-d');
 $token = md5(date("YmdHismm"));
-$confirmacao = gerarConfirmacao();
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
+$tipo = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['tipo'] ?? 'Painel') : 'Painel';
 
 $email = $nome = $telefone = $cpf = '';
 
-if($id_job == 'Cadastro'){
-    $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+if($id_job == 'Cadastro' || $tipo != 'Painel'){
 
-    $query_check2 = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$email}'");
+    $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
+    $email = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['email'] ?? $_SESSION['email']) : $_SESSION['email'];
+
+    $query_check2 = $conexao->query("SELECT * FROM painel_users WHERE email = '{$email}'");
     while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $nome = $select_check2['nome'];
         $telefone = $select_check2['telefone'];
         $cpf = $select_check2['unico'];
     }
 }
+
+$error_reserva = isset($_SESSION['error_reserva']) ? $_SESSION['error_reserva'] : null;
+unset($_SESSION['error_reserva']);
 ?>
 
 <!DOCTYPE html>
@@ -156,6 +142,12 @@ if($id_job == 'Cadastro'){
                 <h2>Cadastrar Nova Consulta</h2>
             </div>
 
+            <?php if ($error_reserva): ?>
+            <div class="card-top">
+                <h3><?php echo $error_reserva; ?></h3>
+            </div>
+            <?php endif; ?>
+
             <div class="card-group">
                 <label>Dia do Atendimento</label>
                 <input type="date" name="atendimento_dia" min="<?php echo $hoje ?>" max="<?php echo $config_atendimento_dia_max ?>" required>
@@ -163,9 +155,25 @@ if($id_job == 'Cadastro'){
 
             <div class="card-group">
                 <label>Horário</label>
-                <input type="time" name="atendimento_hora" min="01:00" max="23:00" required>
+                <select name="atendimento_hora">
+                        <?php
+                        $atendimento_hora_comeco =  strtotime("$config_atendimento_hora_comeco");
+                        $atendimento_hora_fim =  strtotime("$config_atendimento_hora_fim");
+                        $atendimento_hora_intervalo = $config_atendimento_hora_intervalo * 60;
+                        while( $rodadas <= ($atendimento_hora_fim - $atendimento_hora_comeco + $atendimento_hora_intervalo)){
+                        ?>
+                                <option value="<?php echo date('H:i:s', $atendimento_hora_comeco) ?>"><?php echo date('H:i', $atendimento_hora_comeco) ?></option>
+    
+                        <?php
+                        $rodadas++;
+                        $atendimento_hora_comeco = $atendimento_hora_comeco + $atendimento_hora_intervalo;
+                            }
+
+                        ?>
+                            </select>
             </div>
 
+            <?php if($tipo == 'Painel'){ ?>
             <div class="card-group">
                 <label>CPF</label>
                 <input type="text" id="doc_cpf" name="doc_cpf" class="form-control" minlength="11" maxlength="14"
@@ -189,6 +197,13 @@ if($id_job == 'Cadastro'){
                 <input type="text" name="doc_telefone" minlength="11" maxlength="18" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
             </div>
 
+            <?php }else{ ?>
+                <input type="hidden" name="doc_cpf" value="<?php echo $cpf ?>">
+                <input type="hidden" name="doc_nome" value="<?php echo $nome ?>">
+                <input type="hidden" name="doc_email" value="<?php echo $email ?>">
+                <input type="hidden" name="doc_telefone" value="<?php echo $telefone ?>">
+            <?php } ?>
+
             <div class="card-group">
                 <label>Tipo de Consulta</label>
                 <select name="id_job">
@@ -208,12 +223,12 @@ if($id_job == 'Cadastro'){
             </div>
 
             <div class="card-group">
-                <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
                 <input type="hidden" name="token" value="<?php echo $token ?>">
-                <input type="hidden" name="status_reserva" value="Confirmado">
-                <input type="hidden" name="feitapor" value="Painel">
+                <input type="hidden" name="status_consulta" value="Confirmado">
+                <input type="hidden" name="feitapor" value="<?php echo $tipo; ?>">
             </div>
 
+            <?php if($tipo == 'Painel'){ ?>
             <div class="card-group">
                 <input id="overbook" type="checkbox" name="overbook">
                 <label for="overbook">Forçar Overbook</label>
@@ -223,6 +238,7 @@ if($id_job == 'Cadastro'){
                 <input id="overbook_data" type="checkbox" name="overbook_data">
                 <label for="overbook_data">Forçar Data/Horário</label>
             </div>
+            <?php } ?>
 
             <div class="card-group btn">
                 <button type="submit">Confirmar Consulta</button>

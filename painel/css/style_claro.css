@@ -164,20 +164,29 @@ body{
   background-color: var(--cor-btn-hover);
 }
 
-.dia.sabado {
+.sabado {
   background-color: var(--cor-fundo);
 }
 
-.dia.domingo {
+.domingo {
   background-color: #b3b3b3;
 }
 
-.dia.feriado {
+.feriado {
   background-color: #b3b3b3;
 }
 
-.dia.hoje {
+.hoje {
   background-color: rgb(244, 242, 148);
+}
+
+.passado {
+  background-color: #fba15c; /* cinza claro */
+}
+
+.futuro {
+  background-color: #78f48f; /* verde */
+  color: white;
 }
 
 .cabecalho.domingo {
@@ -188,6 +197,10 @@ body{
 .cabecalho.sabado, .cabecalho.diautil {
   background-color: var(--cor-fundo);
   color: var(--cor-titulo);
+}
+
+.legenda-calendario {
+  background-color: white;
 }
 
 fieldset {
@@ -306,7 +319,7 @@ input[type="date"]:focus {
   text-align: center;
 }
 
-.card-top h2 {
+.card-top h2, .card-top h3 {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -459,6 +472,13 @@ h2 {
   font-size: 1.2rem; /* ou 18px, ou clamp() para responsivo */
 }
 
+h3 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: darkred;
+  font-size: 1.6rem; /* ou 18px, ou clamp() para responsivo */
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -563,6 +583,10 @@ color: var(--cor-texto-inverso);
   background: #1a1a1a;
   padding: 1rem;
   border-radius: 8px;
+}
+
+.video-title {
+  color: var(--cor-texto);
 }
 
 @media (max-width: 600px) {

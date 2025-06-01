@@ -1,0 +1,91 @@
+/* 
+ * Ajustes específicos para garantir que o vermelho escuro seja usado apenas para títulos e destaques
+ * Arquivo complementar para sobrescrever qualquer uso incorreto da cor
+ */
+
+/* Garantir que o fundo nunca use vermelho escuro */
+body, header, footer, section, div, .card, .contact-card, .review-card {
+    background-color: var(--color-background);
+}
+
+.bg-light {
+    background-color: var(--color-background-alt);
+}
+
+.section-alt {
+    background-color: var(--color-background-alt);
+}
+
+/* Garantir que apenas títulos e elementos específicos usem vermelho escuro */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-primary);
+}
+
+/* Textos normais devem usar a cor de texto padrão */
+p, li, span, label {
+    color: var(--color-text);
+}
+
+/* Elementos de destaque que podem usar vermelho escuro */
+.text-primary {
+    color: var(--color-primary);
+}
+
+.contact-icon i.text-primary {
+    color: var(--color-primary);
+}
+
+/* Botões primários podem usar vermelho escuro */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* Botões outline podem ter borda vermelha escura */
+.btn-outline {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* Garantir que o rodapé não use vermelho escuro */
+footer {
+    background-color: var(--color-footer-bg);
+}
+
+/* Garantir que o cabeçalho seja claro */
+header {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Ajustar cores do carrossel para não usar vermelho escuro como fundo */
+.carousel-caption {
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+
+.carousel-caption h3 {
+    color: white;
+}
+
+/* Ajustar cores dos indicadores do carrossel */
+.carousel-indicator.active {
+    background-color: var(--color-primary);
+}
+
+/* Ajustar cores dos ícones sociais */
+.social-link:hover {
+    background-color: var(--color-primary);
+}
+
+/* Garantir que o modal tenha fundo claro */
+.modal-content {
+    background-color: var(--color-background);
+}
+
+/* Ajustar cores de foco para acessibilidade */
+:focus {
+    outline-color: rgba(var(--color-primary-rgb), 0.5);
+}

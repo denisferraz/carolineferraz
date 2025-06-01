@@ -1,21 +1,12 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
-
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
 
 $hoje = date('Y-m-d');
 
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -24,10 +15,11 @@ if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
 
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+$doc_email = mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
+$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao");
-$query->execute(array('confirmacao' => $confirmacao));
+$query = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email");
+$query->execute(array('doc_email' => $doc_email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $doc_nome = $select['doc_nome'];
 }
@@ -57,8 +49,7 @@ $doc_nome = $select['doc_nome'];
             </div>
 
             <div class="card-group">
-            <label>Nº Confirmação [ <b><u><?php echo $confirmacao ?></u></b> ]</label>
-            <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
+            <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
             <label>Nome  [ <b><u><?php echo $doc_nome ?></u></b> ]</label>
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
             <br>
@@ -70,6 +61,7 @@ $doc_nome = $select['doc_nome'];
             <input minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
             <br>
             <input type="hidden" name="lanc_data" value="<?php echo $hoje ?>" />
+            <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>" />
             <input type="hidden" name="id_job" value="reservas_lancamentos" />
             <div class="card-group btn"><button type="submit">Lançar</button></div>
 

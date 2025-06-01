@@ -4,19 +4,10 @@
 //error_reporting(0);
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -24,7 +15,13 @@ while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
 if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
-    $confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+    
+$token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE email IN (SELECT doc_email FROM consultas WHERE token = '{$token}')");
+while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
+    $token_profile = $select_check2['token'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +45,7 @@ if($aut_acesso == 1){
     <form class="form" action="acao.php" method="POST" enctype="multipart/form-data">
         <div class="card">
             <div class="card-top">
-                <h2>Salve um Novo Arquivo <?php echo $confirmacao ?></h2>
+                <h2>Salve um Novo Arquivo</h2>
             </div>
 
             <div class="card-group">
@@ -56,8 +53,17 @@ if($aut_acesso == 1){
                 <FONT COLOR="white"><input type="file" name="arquivos" id="arquivo" onchange="updateFileName()" required></font><br><br>
                 <label>Nome do Arquivo</label>
                 <input type="text" name="arquivo" minlength="5" maxlength="20" required><br>
+                <label>Tipo do Arquivo</label>
+                <select name="arquivo_tipo">
+                    <option value="Tratamento">Plano de Tratamento</option>
+                    <option value="Evolucao">Evolução</option>
+                    <option value="Orientacao">Orientações</option>
+                    <option value="Laudos">Laudos e Exames</option>
+                    <option value="Outros">Outros</option>
+                </select>
                 <input type="hidden" name="id_job" value="arquivos" />
-                <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>" />
+                <input type="hidden" name="token" value="<?php echo $token ?>" />
+                <input type="hidden" name="token_profile" value="<?php echo $token_profile ?>" />
                 <br>
                 <div class="card-group btn"><button type="submit">Salvar PDF</button></div>
 

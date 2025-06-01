@@ -1,10 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -109,7 +109,7 @@ $nascimento = $select_2['nascimento'];
 }
 
 if($id_job == 'Ver'){
-$query = $conexao->prepare("SELECT * FROM $tabela_formulario WHERE email = :email");
+$query = $conexao->prepare("SELECT * FROM formulario_atendimento WHERE email = :email");
 $query->execute(array('email' => $email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $confirmacao = $select['confirmacao'];

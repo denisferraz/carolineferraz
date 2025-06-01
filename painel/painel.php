@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
 // Pega o tema atual do usuário
@@ -13,9 +13,9 @@ $tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
 // Define o caminho do CSS
 $css_path = "css/style_$tema.css";
 
-$query = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
+    $tipo_acesso = $select['tipo'];
     $usuario = $select['nome'];
 }
 
@@ -29,21 +29,38 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
 <body>
-    <?php include 'includes/sidebar.php'; ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <?php if($tipo_acesso == 'Paciente'){
+          include 'includes/sidebar_paciente.php'; 
+        }else{
+          include 'includes/sidebar.php';
+        }
+        ?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <div class="main-content">
     <div class="header-fixo">
-        <?php include 'includes/header.php'; ?>
+        <?php if($tipo_acesso == 'Paciente'){
+          include 'includes/header_paciente.php'; 
+        }else{
+          include 'includes/header.php';
+        }
+        ?>
     </div>
     
     <div class="container-conteudo">
-        <iframe name="iframe-home" id="iframe-home" src="agenda.php"></iframe>
+        <?php if($tipo_acesso == 'Paciente'){
+          ?><iframe name="iframe-home" id="iframe-home" src="agenda_paciente.php"></iframe><?php
+        }else{
+          ?><iframe name="iframe-home" id="iframe-home" src="agenda.php"></iframe><?php
+        }
+        ?>
     </div>
 </div>
 

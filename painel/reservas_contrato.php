@@ -3,10 +3,10 @@
 session_start();
 ob_start();
 
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -16,7 +16,6 @@ if($aut_acesso == 1){
 }else{
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token = :token");
 $query->execute(array('token' => $token));
@@ -48,8 +47,8 @@ $parte3 = substr($cpf, 6, 3);
 $parte4 = substr($cpf, 9);
 $cpf = "$parte1.$parte2.$parte3-$parte4";
 
-$query2 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Não'");
-$query2->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+$query2 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Não'");
+$query2->execute(array('email' => $email));
 while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $assinado = $select2['assinado'];
     $assinado_data = $select2['assinado_data'];
@@ -59,7 +58,7 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $procedimento_data = $select2['assinado_empresa_data'];
 }
 
-$query_checkin = $conexao->query("SELECT * FROM $tabela_reservas WHERE confirmacao = '{$confirmacao}'");
+$query_checkin = $conexao->query("SELECT * FROM consultas WHERE doc_email = '{$email}'");
 while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
     $procedimento_local = $select_checkins['local_reserva'];
 }
@@ -78,7 +77,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
 </head>
 <body>
 <br><br>
-<center><a href="javascript:void(0)" onclick='window.open("reservas_aditivo.php?email=<?php echo $email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Cadastrar Aditivo Contratual</button></a></center>
+<center><a href="javascript:void(0)" onclick='window.open("reservas_aditivo.php?email=<?php echo $email ?>","iframe-home")'><button>Cadastrar Aditivo Contratual</button></a></center>
 <br>
 
 <center><h1>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h1></center>
@@ -93,7 +92,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
 <br><p>As partes resolvem firmar o presente CONTRATO DE PRESTAÇÃO DE SERVIÇOS, nos seguintes termos:</p>
 
 <br><p class="text-title">CLÁUSULA 1-OBJETO DO CONTRATO</p>
-1.1. O presente contrato tem como objeto a prestação do serviço de<b> <?php echo $procedimento ?></b>, estabelecido conforme avaliação técnica realizada pelo profissional responsável.<br>
+1.1. O presente contrato tem como objeto a prestação do serviço de<b> <?php echo nl2br(str_replace(["\\r", "\\n"], ["", "\n"], $procedimento)); ?></b>, estabelecido conforme avaliação técnica realizada pelo profissional responsável.<br>
 <p>1.2. O intervalo sugerido entre cada sessão será de aproximadamente <b><?php echo $procedimento_dias ?> dias</b>. </p>
 <p>1.3. O <b>CONTRATADO</b> reserva-se o direito de alterar o intervalo ou método aplicado durante o tratamento, mediante prévia comunicação ao <b>CONTRATANTE</b>.</p>
 
@@ -144,7 +143,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
 <br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
@@ -165,8 +164,8 @@ ______________________________________________________<br>
 
 <br>
 <?php
-$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao AND aditivo_status = 'Sim'");
-$query3->execute(array('email' => $email, 'confirmacao' => $confirmacao));
+$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Sim'");
+$query3->execute(array('email' => $email));
 $row_check3 = $query3->rowCount();
 if($row_check3 < 1){}else{
 ?>
@@ -184,14 +183,14 @@ while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
 ?>
 <p class="text-title">Aditivo <?php echo $aditivo_qtd ?></p>
 <p class="text-title"><?php echo $aditivo_qtd ?>.1.PROCEDIMENTO TÉCNICO A SER REALIZADO:</p>
-<b><?php echo $aditivo_procedimento ?></b><br>
+<b><?php echo nl2br(str_replace(["\\r", "\\n"], ["", "\n"], $aditivo_procedimento)); ?></b><br>
 <br><p class="text-title"><?php echo $aditivo_qtd ?>.2. VALOR TOTAL E FORMA DE PAGAMENTO:</p>
 <b><?php echo $aditivo_procedimento_valor ?></b><br>
 <br><p class="text-title"><?php echo $aditivo_qtd ?>.3. LOCAL E DATA DO ADITIVO:</p>
 <b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br>
 <center>
 <?php if($aditivo_assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
@@ -285,7 +284,7 @@ Sensibilidade exacerbada;<br>
 <b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo $confirmacao ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
@@ -10,27 +10,30 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
     exit();
  }
 
-if(empty($_POST['email']) || empty($_POST['senha'])){
-    header('Location: index.html');
+if(empty($_POST['email']) || empty($_POST['password'])){
+    header('Location: ../index.php');
     exit();
 }
 
 $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
-$senha = mysqli_real_escape_string($conn_msqli, $_POST['senha']);
+$senha = mysqli_real_escape_string($conn_msqli, $_POST['password']);
 $crip_senha = md5($senha);
 
-$query = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email AND senha = :senha AND tipo = 'Admin' AND aut_painel = '0'");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email AND senha = :senha");
 $query->execute(array('email' => $email, 'senha' => $crip_senha));
 $row = $query->rowCount();
 
 if($row == 1){
     $_SESSION['email'] = $email;
-    header('Location: painel.php');
+    echo json_encode([
+        'success' => true,
+        'redirect' => 'painel/painel.php'
+    ]);
     exit();
 }else{
-    echo "<script>
-    alert('Dados Invalidos!')
-    window.location.replace('index.html')
-    </script>";
+    echo json_encode([
+        'success' => false,
+        'message' => 'Credenciais inválidas.'
+    ]);
     exit();
 }

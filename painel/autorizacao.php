@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -66,7 +57,7 @@ while($select_alteracao = $query_alteracao->fetch(PDO::FETCH_ASSOC)){
     $atendimento_dia_anterior = $select_alteracao['atendimento_dia_anterior'];
     $atendimento_hora_anterior = $select_alteracao['atendimento_hora_anterior'];
 
-    $query_alteracao_reserva = $conexao->query("SELECT * FROM reservas_atendimento WHERE token = '{$token}'");
+    $query_alteracao_reserva = $conexao->query("SELECT * FROM consultas WHERE token = '{$token}'");
     while($select_alteracao_reserva = $query_alteracao_reserva->fetch(PDO::FETCH_ASSOC)){
     $confirmacao = $select_alteracao_reserva['confirmacao'];
     $doc_nome = $select_alteracao_reserva['doc_nome'];

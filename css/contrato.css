@@ -1,41 +1,68 @@
-body{
+/* Estilo geral */
+body {
     font-family: 'Poppins', sans-serif;
     background-color: rgb(240, 231, 219);
     margin: 15px;
 }
 
-h1{
-    font-style: 18px;
+h1 {
+    font-size: 18px;
 }
 
-h2{
+h2 {
     font-size: 20px;
 }
 
-h3{
-    font-size: 12px;
-    left: 100px;
+h3 {
+    font-size: 14px; /* aumentei para evitar cortes */
+    margin-left: 100px;
 }
 
-fieldset{
+fieldset {
     border-radius: 15px;
     font-size: 16px;
     color: black;
 }
 
-.text-title{
+/* Títulos com destaque */
+.text-title {
     font-weight: bold;
     text-decoration: underline;
 }
 
-canvas {
-    border: 1px solid black;
-  }
-
-@media only screen and (max-width: 450px){
-
-body{
-    margin: 10px;
+/* Contrato centralizado e configurado para não quebrar palavras */
+#contrato {
+    max-width: 800px;
+    margin: auto;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: normal;
+    line-height: 1.6;
 }
 
+/* Canvas com borda visível para depuração (pode remover se não quiser) */
+canvas {
+    border: 1px solid black;
+}
+
+/* Ajustes de impressão */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Ajustes para mobile */
+@media only screen and (max-width: 450px) {
+    body {
+        margin: 10px;
+    }
+}
+
+/* Ajustes globais para impressão correta de cores e box-sizing consistente */
+* {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    box-sizing: border-box;
 }

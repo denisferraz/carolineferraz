@@ -1,15 +1,6 @@
 <?php
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
-
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
 
 $mes = isset($_GET['mes']) ? (int)$_GET['mes'] : date('m');
 $ano = isset($_GET['ano']) ? (int)$_GET['ano'] : date('Y');
@@ -63,19 +54,56 @@ function feriadosMoveis($ano) {
     ];
 }
 
-$ano = date('Y');
 $feriados = array_merge(
     $feriadosFixos,
     feriadosMoveis($ano),
     $feriadosBahia,
     $feriadosSalvador
 );
+ 
+// Calcular mês anterior e próximo com ajuste de ano
+$mesAnterior = $mes - 1;
+$anoAnterior = $ano;
+if ($mesAnterior < 1) {
+    $mesAnterior = 12;
+    $anoAnterior--;
+}
+
+$mesProximo = $mes + 1;
+$anoProximo = $ano;
+if ($mesProximo > 12) {
+    $mesProximo = 1;
+    $anoProximo++;
+}
+
+if($css_path == 'css/style_escuro.css'){
+$font_color = '#fff';
+}else{
+$font_color = '#222';
+}
 
 $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE alt_status = 'Pendente'");
 $alteracao_qtd = $query_alteracao->rowCount();
-$temSolicitacaoPendente = $alteracao_qtd > 0;
- 
-?>
+
+if ($alteracao_qtd > 0): ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Swal.fire({
+            title: 'Alteração pendente',
+            text: 'Existe uma alteração pendente. Deseja visualizar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ver',
+            cancelButtonText: 'Fechar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'autorizacao.php';
+            }
+            // Se clicar fora ou em "Fechar", nada acontece
+        });
+    });
+    </script>
+<?php endif; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -83,6 +111,7 @@ $temSolicitacaoPendente = $alteracao_qtd > 0;
     <title>Agenda Mensal</title>
     <link rel="stylesheet" href="<?php echo $css_path ?>">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
 body {
   margin-top: 30px;
@@ -101,6 +130,8 @@ body {
 
 <div class="calendario-container">
     <div class="calendario-header">
+    <a href="?mes=<?= $mesAnterior ?>&ano=<?= $anoAnterior ?>" title="Mês Anterior" style="font-size: 1.5rem;">
+    <i style="color: <?php echo $font_color; ?>;" class="bi bi-arrow-left-square-fill"></i></a>
         <form method="get">
             <select name="mes" onchange="this.form.submit()">
                 <?php for ($m = 1; $m <= 12; $m++): ?>
@@ -115,34 +146,37 @@ body {
                 <?php endfor; ?>
             </select>
         </form>
+        <a href="?mes=<?= $mesProximo ?>&ano=<?= $anoProximo ?>" title="Próximo Mês" style="font-size: 1.5rem;">
+        <i style="color: <?php echo $font_color; ?>;" class="bi bi-arrow-right-square-fill"></i></a>
     </div>
-    
-    
-    <?php if ($temSolicitacaoPendente): ?>
-        <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            Swal.fire({
-                title: 'Solicitação Pendente!',
-                text: 'Há uma ou mais solicitações pendentes aguardando autorização.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ver',
-                cancelButtonText: 'Sair',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#444'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'autorizacao.php';
-                }
-            });
-        });
-        </script>
-        <?php endif; ?>
-
-
-    <?php if ($diaSelecionado): ?>
-
-    <?php else: ?>
+    <div style="display: flex; justify-content: center;">
+  <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; border-radius: 4px; padding: 5px; justify-content: center; max-width: 800px;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div class='passado' style="width: 20px; height: 20px; border-radius: 4px;"></div>
+      <span style="color: <?php echo $font_color; ?>;">Dias Passados</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div class='hoje' style="width: 20px; height: 20px; border-radius: 4px;"></div>
+      <span style="color: <?php echo $font_color; ?>;">Hoje</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div class='futuro' style="width: 20px; height: 20px; border-radius: 4px;"></div>
+      <span style="color: <?php echo $font_color; ?>;">Dias Futuros</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div class='sabado' style="width: 20px; height: 20px; border-radius: 4px;"></div>
+      <span style="color: <?php echo $font_color; ?>;">Sábado</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div class='domingo' style="width: 20px; height: 20px; border-radius: 4px;"></div>
+      <span style="color: <?php echo $font_color; ?>;">Domingo</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div class='feriado' style="width: 20px; height: 20px; border-radius: 4px;"></div>
+      <span style="color: <?php echo $font_color; ?>;">Feriado</span>
+    </div>
+  </div>
+</div>
         <div class="calendario">
             <?php
             $dias_semana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
@@ -181,27 +215,73 @@ body {
             $classe_extra = 'hoje';
         }
         
+        $query = $conexao->query("SELECT doc_nome, atendimento_hora FROM consultas WHERE atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
+        if($query->rowCount() > 0){
+            
+            //Veriica se é passado, presente, futuro
+            $hoje = date('Y-m-d');
+            if ($data_atual < $hoje) {
+                $classe_extra = 'passado';
+            } else if ($data_atual > $hoje){
+                $classe_extra = 'futuro';
+            }
+        }
         echo "<div class='dia {$classe_extra}' style='cursor: pointer;'>";
-
-
-        echo "<a href='home.php?data=$data_atual' style='display: block; color: inherit; text-decoration: none; height: 100%; width: 100%;'>"; // Tornando o link da data inteira clicável
+        echo "<a href='home.php?data=$data_atual' style='display: block; color: inherit; text-decoration: none; height: 100%; width: 100%;'>";
         echo "<div class='numero'>$dia_atual</div>";  // Número do dia
-        $query = $conexao->query("SELECT doc_nome, atendimento_hora FROM reservas_atendimento WHERE atendimento_dia = '{$data_atual}' AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento') AND status_sessao = 'Confirmada' ORDER BY atendimento_hora ASC");
-
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $hora = substr($row['atendimento_hora'], 0, 5);
             echo "<span class='evento'>{$hora}h - {$row['doc_nome']}</span>";
         }
 
-        echo "</a>";  // Fechando o link para tornar toda a área clicável
+        echo "</a>";
         echo "</div>";
         $dia_atual++;
     }
 }
             ?>
         </div>
-    <?php endif; ?>
-</div>
+</div><script>
+    let startX = 0;
+    let endX = 0;
+
+    document.addEventListener("touchstart", function(e) {
+        startX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener("touchend", function(e) {
+        endX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        const diffX = endX - startX;
+        const threshold = 50;
+
+        if (Math.abs(diffX) > threshold) {
+            const params = new URLSearchParams(window.location.search);
+            let mes = parseInt(params.get('mes')) || (new Date().getMonth() + 1);
+            let ano = parseInt(params.get('ano')) || (new Date().getFullYear());
+
+            if (diffX > 0) {
+                mes--;
+                if (mes < 1) {
+                    mes = 12;
+                    ano--;
+                }
+            } else {
+                mes++;
+                if (mes > 12) {
+                    mes = 1;
+                    ano++;
+                }
+            }
+
+            window.location.href = `?mes=${mes}&ano=${ano}`;
+        }
+    }
+</script>
+
 
 </body>
 </html>

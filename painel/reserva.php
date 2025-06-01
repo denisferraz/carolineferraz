@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -38,14 +29,13 @@ $hoje = date('Y-m-d');
 </head>
 <body>
 <?php
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao");
-$query->execute(array('confirmacao' => $confirmacao));
+$query = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta");
+$query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select['confirmacao'];
 $confirmacao_cancelamento = $select['confirmacao_cancelamento'];
-$status_reserva = $select['status_reserva'];
+$status_consulta = $select['status_consulta'];
 $doc_nome = $select['doc_nome'];
 $doc_email = $select['doc_email'];
 $doc_telefone = $select['doc_telefone'];
@@ -54,10 +44,8 @@ $atendimento_dia = $select['atendimento_dia'];
 $atendimento_hora = $select['atendimento_hora'];
 $data_cancelamento = $select['data_cancelamento'];
 $data_cancelamento = strtotime("$data_cancelamento");
-$id = $select['id'];
 $tipo_consulta = $select['tipo_consulta'];
-$local_reserva = $select['local_reserva'];
-$status_sessao = $select['status_sessao'];
+$local_consulta = $select['local_consulta'];
 }
 
 //Ajustar CPF
@@ -77,18 +65,18 @@ $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $query->execute(array('email' => $doc_email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $nome = $select['nome'];
-$token = $select['token'];
+$token_profile = $select['token'];
 $origem = $select['origem'];
 }
 
 //Contratos
-$query_contrato = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND confirmacao = :confirmacao");
-$query_contrato->execute(array('email' => $doc_email, 'confirmacao' => $confirmacao));
+$query_contrato = $conexao->prepare("SELECT * FROM contrato WHERE email = :email");
+$query_contrato->execute(array('email' => $doc_email));
 $contrato_row = $query_contrato->rowCount();
 
 //Plano de Tratamento
-$check_tratamento = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email AND confirmacao = :confirmacao");
-$check_tratamento->execute(array('email' => $doc_email, 'confirmacao' => $confirmacao));
+$check_tratamento = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email");
+$check_tratamento->execute(array('email' => $doc_email));
 while($select_tratamento = $check_tratamento->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select_tratamento['sum(sessao_atual)'];
     $sessao_total = $select_tratamento['sum(sessao_total)'];
@@ -105,7 +93,7 @@ $progress = $sessao_atual/$sessao_total*100;
 
 <!-- Dados da Consulta -->
   <fieldset>
-    <legend><h2>Consulta [ <?php echo $status_reserva ?> ]</h2></legend>
+    <legend><h2>Consulta [ <?php echo $status_consulta ?> ]</h2></legend>
 
     <div class="info-bloco">
       <p><strong>Origem:</strong> <?php echo $origem ?></p>
@@ -114,7 +102,7 @@ $progress = $sessao_atual/$sessao_total*100;
       <p><strong>Consulta:</strong> <?php echo $tipo_consulta ?></p>
       <p><strong>Data:</strong> <?php echo date('d/m/Y', strtotime($atendimento_dia)) ?></p>
       <p><strong>Hora:</strong> <?php echo date('H:i\h', strtotime($atendimento_hora)) ?></p>
-      <p><strong>Local:</strong> <?php echo $local_reserva ?></p>
+      <p><strong>Local:</strong> <?php echo $local_consulta ?></p>
       <strong>Telefone:</strong> <a class="whatsapp-link" href="https://wa.me/55<?= preg_replace('/[^0-9]/', '', $doc_telefone) ?>" target="_blank">
                             <i class="fab fa-whatsapp"></i><?= $doc_telefone ?></a>
       <p>
@@ -124,29 +112,28 @@ $progress = $sessao_atual/$sessao_total*100;
         </a>
       </p>
 
-      <?php if ($status_reserva == 'Cancelada') { ?>
+      <?php if ($status_consulta == 'Cancelada') { ?>
         <p><strong>Data Cancelamento:</strong> <?php echo date('d/m/Y - H:i:s\h', $data_cancelamento) ?></p>
         <p><strong>Confirmação Cancelamento:</strong> <?php echo $confirmacao_cancelamento ?></p>
       <?php } ?>
     </div>
         <center>
-        <a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")' class="btn-black">Alterar Sessão</a>
-          <?php if (($status_sessao == 'Finalizada' || $status_sessao == 'Cancelada' || $status_sessao == 'Em Andamento') && ($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada')) { ?>
-            <a href="javascript:void(0)" onclick='window.open("reserva_novasessao.php?id=<?php echo $id ?>","iframe-home")' class="btn-black">Nova Sessão</a>
+        <a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Alterar Sessão</a>
+          <?php if ($status_consulta == 'Finalizada' || $status_consulta == 'Cancelada' || $status_consulta == 'Em Andamento') { ?>
+            <a href="javascript:void(0)" onclick='window.open("reserva_novasessao.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Nova Sessão</a>
           <?php } else { ?>
-            <a href="javascript:void(0)" onclick='window.open("reservas_confirmacao.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Confirmação</a>
+            <a href="javascript:void(0)" onclick='window.open("reservas_confirmacao.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Enviar Confirmação</a>
           <?php } ?>
-          <a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Tratamento</a>
-          <a href="javascript:void(0)" onclick='window.open("reservas_lembrete.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Lembrete</a>
+          <a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Enviar Tratamento</a>
+          <a href="javascript:void(0)" onclick='window.open("reservas_lembrete.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Enviar Lembrete</a>
           <?php if ($contrato_row == 0) { ?>
-            <a href="javascript:void(0)" onclick='window.open("cadastro_contrato.php?email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Enviar Contrato</a>
+            <a href="javascript:void(0)" onclick='window.open("cadastro_contrato.php?email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Enviar Contrato</a>
             <?php } else { ?>
-            <a href="javascript:void(0)" onclick='window.open("reservas_contrato.php?token=<?php echo $token ?>&confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-black">Ver Contrato</a>
+            <a href="javascript:void(0)" onclick='window.open("reservas_contrato.php?token=<?php echo $token_profile ?>","iframe-home")' class="btn-black">Ver Contrato</a>
             <?php } ?>
             <br><br>
-            <a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")' class="btn-red">Cancelar Sessão</a>
-          <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")' class="btn-red">Finalizar Sessão</a>
-          <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=Finalizada","iframe-home")' class="btn-red">Finalizar Contrato</a>
+            <a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-red">Cancelar Sessão</a>
+          <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?id_consulta=<?php echo $id_consulta ?>&id_job=Finalizada","iframe-home")' class="btn-red">Finalizar Consulta</a>
             </center>
   </fieldset>
   <br>
@@ -170,8 +157,8 @@ $progress = $sessao_atual/$sessao_total*100;
         <td align="center"><b>Excluir</b></td>
     </tr>
 <?php
-$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND confirmacao = :confirmacao GROUP BY token ORDER BY id DESC");
-$check_tratamento_row->execute(array('email' => $doc_email, 'confirmacao' => $confirmacao));
+$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email GROUP BY token ORDER BY id DESC");
+$check_tratamento_row->execute(array('email' => $doc_email));
 if($check_tratamento_row->rowCount() < 1){
 ?>
     <tr>
@@ -205,9 +192,16 @@ $progress = $sessao_atual/$sessao_total*100;
             </div><div class="text"><?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
         </td>
         <td align="center"><?php echo $sessao_status ?></td>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=cadastrar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Cadastrar Sessão</button></a></td>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=finalizar&email=<?php echo $doc_email ?>&confirmacao=<?php echo $confirmacao ?>&id=<?php echo $id ?>","iframe-home")'><button>Finalizar</button></a></td>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id ?>&confirmacao=<?php echo $confirmacao ?>&sessao=0&id2=0","iframe-home")'><button>Excluir</button></a></td>
+        <?php if($sessao_status != 'Finalizada'){ ?>
+        <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=cadastrar&email=<?php echo $doc_email ?>&id=<?php echo $id ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")'><button>Cadastrar Sessão</button></a></td>
+        <td align="center"><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=finalizar&email=<?php echo $doc_email ?>&id=<?php echo $id ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")'><button>Finalizar</button></a></td>
+        <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id ?>&id_consulta=<?php echo $id_consulta ?>&token=<?php echo $token ?>&sessao=0&id2=0","iframe-home")'><button>Excluir</button></a></td>
+        <?php }else{ ?>
+        <td align="center">-</td>
+        <td align="center">-</td>
+        <td align="center">-</td>
+        <?php } ?>
+    </tr>
         <?php
 $check_tratamento_row2 = $conexao->prepare("SELECT * FROM tratamento WHERE token = :token AND id != :id ORDER BY id ASC");
 $check_tratamento_row2->execute(array('token' => $token, 'id' => $id));
@@ -224,8 +218,12 @@ if($comentario == ''){
 }
 ?> 
 <tr>
-    <td colspan="6"><?php echo $plano_data2 ?> | <?php echo $comentario ?></td>
-    <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id2 ?>&confirmacao=<?php echo $confirmacao ?>&sessao=<?php echo $sessao_excluir ?>&id2=<?php echo $id ?>","iframe-home")'><button>Excluir</button></a></td>
+    <td colspan="6"><?php echo $plano_data2 ?> | <?php echo nl2br(str_replace(["\\r", "\\n"], ["", "\n"], $comentario)); ?></td>
+    <?php if($sessao_status != 'Finalizada'){ ?>
+    <td align="center"><a href="javascript:void(0)" onclick='window.open("excluir_tratamento.php?id=<?php echo $id2 ?>&token=<?php echo $token ?>&sessao=<?php echo $sessao_excluir ?>&id2=<?php echo $id ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")'><button>Excluir</button></a></td>
+    <?php }else{ ?>
+    <td align="center">-</td>
+    <?php } ?>
 </tr>
 
 <?php
@@ -237,13 +235,13 @@ if($comentario == ''){
 <!-- Lançamentos -->
 <fieldset>
 <?php
-$check = $conexao->prepare("SELECT sum(valor) FROM $tabela_lancamentos WHERE confirmacao = :confirmacao");
-$check->execute(array('confirmacao' => $confirmacao));
+$check = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE doc_email = :doc_email");
+$check->execute(array('doc_email' => $doc_email));
 while($total_lanc = $check->fetch(PDO::FETCH_ASSOC)){
 $valor = $total_lanc['sum(valor)'];
 }
 ?>
-<legend><h2>Lançamentos Totais [ R$<?php echo number_format($valor ,2,",",".") ?> ]</h2></legend>
+<legend><h2>Lançamentos Totais [ R$<?php echo number_format($valor ?? 0, 2, ',', '.')?> ]</h2></legend>
 
 <table widht="100%" border="1px" style="color:white">
     <tr>
@@ -254,8 +252,8 @@ $valor = $total_lanc['sum(valor)'];
         <td width="25%" align="center"><b>Estornar</b></td>
     </tr>
 <?php 
-$query_lanc = $conexao->prepare("SELECT * FROM $tabela_lancamentos WHERE confirmacao = :confirmacao ORDER BY quando DESC");
-$query_lanc->execute(array('confirmacao' => $confirmacao));
+$query_lanc = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE doc_email = :doc_email ORDER BY quando, id DESC");
+$query_lanc->execute(array('doc_email' => $doc_email));
 while($select_lancamento = $query_lanc->fetch(PDO::FETCH_ASSOC)){
 $quando = $select_lancamento['quando'];
 $quando = strtotime("$quando");
@@ -276,11 +274,11 @@ $id = $select_lancamento['id'];
     <td align="center">R$<?php echo number_format( ($valor / $quantidade) ,2,",",".") ?></td>
     <td align="center">R$<?php echo number_format($valor ,2,",",".") ?></td>
     <?php
-        if($status_reserva == 'Finalizada' || $status_reserva == 'Cancelada'){
+        if($status_consulta == 'Finalizada' || $status_consulta == 'Cancelada'){
     ?>
     <td align="center"><b>-</b></td>
     <?php }else{  ?>
-    <td align="center"><a href="javascript:void(0)" onclick='window.open("lancamentos_ex.php?id=<?php echo $id ?>","iframe-home")'><button>Estornar</button></a></td>
+    <td align="center"><a href="javascript:void(0)" onclick='window.open("lancamentos_ex.php?id=<?php echo $id ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")'><button>Estornar</button></a></td>
     <?php }}else{  ?>
     <td align="center"><b>-</b></td>
     <td align="center"><b>-</b></td>
@@ -293,43 +291,58 @@ $id = $select_lancamento['id'];
 </table>
 <br>
 <?php
-if($status_reserva == 'Confirmada' || $status_reserva == 'NoShow' || $status_reserva == 'Finalizada' || $status_reserva == 'Em Andamento'){  ?>
-<a href="javascript:void(0)" onclick='window.open("reservas_lancamentos.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group btn"><button>Lançar Serviços ou Produtos</button></div></a>
+if($status_consulta == 'Confirmada' || $status_consulta == 'NoShow' || $status_consulta == 'Finalizada' || $status_consulta == 'Em Andamento'){  ?>
+<a href="javascript:void(0)" onclick='window.open("reservas_lancamentos.php?doc_email=<?php echo $doc_email ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")'><div class="card-group btn"><button>Lançar Serviços ou Produtos</button></div></a>
 <?php 
 } 
-if($status_reserva != 'Finalizada' && $status_reserva != 'Cancelada' && $status_reserva != 'NoShow'){  ?>
-<a href="javascript:void(0)" onclick='window.open("lancamentos_pgto.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-green btn"><button>Lançar Pagamentos</button></div></a>
-<?php }else if($status_reserva != 'Cancelada' && $status_reserva != 'NoShow'){  ?>
-<a href="javascript:void(0)" onclick='window.open("imprimir_rps.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Imprimir RPS</button></div></a>
+if($status_consulta != 'Finalizada' && $status_consulta != 'Cancelada' && $status_consulta != 'NoShow'){  ?>
+<a href="javascript:void(0)" onclick='window.open("lancamentos_pgto.php?doc_email=<?php echo $doc_email ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")'><div class="card-group-green btn"><button>Lançar Pagamentos</button></div></a>
+<?php }else if($status_consulta != 'Cancelada' && $status_consulta != 'NoShow'){  ?>
+<a href="javascript:void(0)" onclick='window.open("imprimir_rps.php?doc_email=<?php echo $doc_email ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")'><div class="card-group-black btn"><button>Imprimir RPS</button></div></a>
 <?php }  ?>
 </fieldset>
 <br>
 <!-- Arquivos -->
 <fieldset>
 <legend><h2>Arquivos</h2></legend>
-<a href="javascript:void(0)" onclick='window.open("arquivos.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
+<a href="javascript:void(0)" onclick='window.open("arquivos.php?token=<?php echo $token ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
 <br>
 <?php
-$dir = '../arquivos/'.$confirmacao;
-$files = glob($dir . '/*.pdf');
-$numFiles = count($files);
+$pastas = ['Tratamento', 'Evolucao', 'Orientacao', 'Laudos', 'Contratos', 'Outros'];
 
-if($numFiles < 1){
+foreach ($pastas as $pasta) {
+    $dir = '../arquivos/' . $token . '/' . $pasta;
+    $files = glob($dir . '/*.pdf');
+    $numFiles = count($files);
 
-    echo "<center>Nenhum <b>Arquivo</b> foi localizado</center>";
-
-}else{
-
-foreach ($files as $file) {
-    $fileName = basename($file);
-    echo '<div>';
-    echo '<a href="' . $file . '">' . $fileName . '</a> - ';
-    echo '<a href="arquivos_excluir.php?arquivo='.$dir.'/'.$fileName.'&confirmacao='.$confirmacao.'">';
-    echo '<button type="button">Excluir</button>';
-    echo '</a>';
-    echo '</div>';
-}}
+    if ($numFiles < 1) {
+        echo "<center>Nenhum <b>Arquivo</b> foi localizado na pasta <b>$pasta</b></center>";
+    } else {
+        if($pasta == 'Tratamento'){
+            $nome_pasta = 'Plano de Tratamento';
+        }else if($pasta == 'Evolucao'){
+            $nome_pasta = 'Evolução';
+        }else if($pasta == 'Orientacao'){
+            $nome_pasta = 'Orientações';
+        }else if($pasta == 'Laudos'){
+            $nome_pasta = 'Laudos e Exames';
+        }else{
+            $nome_pasta = 'Outros';
+        }
+        echo "<h2 style='margin-top: 15px;'><b>$nome_pasta</b></h2>";
+        foreach ($files as $file) {
+            $fileName = basename($file);
+            echo "<div class=\"card-group-black btn\" onclick=\"window.open('$file', '_blank')\">
+            <button>$fileName</button>
+            </div>";
+        }
+        echo '<a href="arquivos_excluir.php?arquivo='.$dir.'/'.$fileName.'&token='.$token.'">';
+        echo '<button type="button">Excluir</button>';
+        echo '</a>';
+    }echo "<br>";
+}
 ?>
+
 </fieldset>
 <br>
 <!-- Lançamentos -->
@@ -338,13 +351,14 @@ foreach ($files as $file) {
 <center>
 <table widht="100%" border="1px" style="color:white">
     <tr>
-        <td width="40%" align="center"><b>Data</b></td>
-        <td width="30%" align="center"><b>Hora</b></td>
-        <td width="50%" align="center"><b>Local</b></td>
+        <td align="center"><b>Data</b></td>
+        <td align="center"><b>Hora</b></td>
+        <td align="center"><b>Local</b></td>
+        <td align="center"><b>Status</b></td>
     </tr>
 <?php
-$check_history = $conexao->prepare("SELECT * FROM disponibilidade_atendimento WHERE confirmacao = :confirmacao ORDER BY atendimento_dia DESC");
-$check_history->execute(array('confirmacao' => $confirmacao));
+$check_history = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email ORDER BY atendimento_dia DESC");
+$check_history->execute(array('doc_email' => $doc_email));
 if($check_history->rowCount() < 1){
 ?>
     <tr>
@@ -355,14 +369,16 @@ if($check_history->rowCount() < 1){
 <?php
 }else{
 while($history = $check_history->fetch(PDO::FETCH_ASSOC)){
-$history_local = $history['local_reserva'];
+$history_local = $history['local_consulta'];
 $history_data = $history['atendimento_dia'];
 $history_hora = $history['atendimento_hora'];
+$history_status = $history['status_consulta'];
 ?>
     <tr>
         <td align="center"><?php echo date('d/m/Y', strtotime("$history_data")) ?></td>
         <td align="center"><?php echo date('H:i\h', strtotime("$history_hora")) ?></td>
-        <td width="50%" align="center"><?php echo $local_reserva; ?></td>
+        <td align="center"><?php echo $local_consulta; ?></td>
+        <td align="center"><?php echo $history_status; ?></td>
     </tr>
 <?php
 }}

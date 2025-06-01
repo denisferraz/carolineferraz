@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -50,7 +41,7 @@ $dia_domingo = $config_dia_domingo; //0
 <body>
 <?php
 
-$query = $conexao->query("SELECT * FROM configuracoes WHERE id = '{$tabela_configuracoes}'");
+$query = $conexao->query("SELECT * FROM configuracoes WHERE id = '-2'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $atendimento_hora_comeco = $select['atendimento_hora_comeco'];
 $atendimento_hora_fim = $select['atendimento_hora_fim'];
@@ -72,9 +63,7 @@ $atendimento_hora_intervalo = $select['atendimento_hora_intervalo'];
     <label>CNPJ Empresa</label>
     <input type="text" minlength="13" maxlength="18" name="config_cnpj" value="<?php echo $select['config_cnpj'] ?>" required>
     <label>Endereco Empresa</label>
-    <input type="text" minlength="10" maxlength="100" name="config_endereco" value="<?php echo $select['config_endereco'] ?>" required>
-    <label>Limite Diario</label>
-    <input type="number" min="1" max="99999" name="config_limitedia" value="<?php echo $select['config_limitedia'] ?>" required>
+    <textarea class="textarea-custom" name="config_endereco" rows="5" cols="43" required><?php echo $select['config_endereco'] ?></textarea><br><br>
     <label>Mensagem Confirmação</label>
     <textarea class="textarea-custom" name="config_msg_confirmacao" rows="5" cols="43" required><?php echo $select['config_msg_confirmacao'] ?></textarea><br><br>
     <label>Mensagem Cancelamento</label>

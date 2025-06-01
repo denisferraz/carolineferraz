@@ -1,27 +1,10 @@
 <?php
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
-
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
 
 $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega a data passada via GET
 
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
-while ($select_check = $query_check->fetch(PDO::FETCH_ASSOC)) {
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if ($aut_acesso == 1) {
-    echo 'Você não tem permissão para acessar esta página';
-} else {
     
 ?>
 
@@ -45,7 +28,7 @@ if ($aut_acesso == 1) {
     
         <?php
         // Busca os atendimentos para o dia selecionado
-        $query_checkin = $conexao->query("SELECT * FROM $tabela_reservas WHERE atendimento_dia = '{$dataSelecionada}' AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento') AND status_sessao = 'Confirmada' ORDER BY atendimento_dia, atendimento_hora ASC");
+        $query_checkin = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia = '{$dataSelecionada}' ORDER BY atendimento_dia, atendimento_hora ASC");
         $checkin_qtd = $query_checkin->rowCount();
         ?>
 
@@ -62,37 +45,43 @@ if ($aut_acesso == 1) {
         }
 
         while ($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)) {
-            $confirmacao = $select_checkins['confirmacao'];
+            $id_consulta = $select_checkins['id'];
             $doc_nome = $select_checkins['doc_nome'];
             $doc_email = $select_checkins['doc_email'];
             $atendimento_dia = $select_checkins['atendimento_dia'];
             $atendimento_dia = strtotime("$atendimento_dia");
             $atendimento_hora = $select_checkins['atendimento_hora'];
             $atendimento_hora = strtotime("$atendimento_hora");
-            $local_reserva = $select_checkins['local_reserva'];
+            $local_consulta = $select_checkins['local_consulta'];
             $id = $select_checkins['id'];
+            $status_consulta = $select_checkins['status_consulta'];
         ?>
             <div class="appointment">
-                <a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'>
+                <a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'>
                     <button><?php echo $doc_nome ?> | <?php echo date('d/m/Y', $atendimento_dia) ?> às <?php echo date('H:i\h', $atendimento_hora) ?></button>
                 </a>
-                <?php echo $local_reserva; ?>
+                <?php echo $local_consulta; 
+                
+                if($status_consulta == 'Confirmada' || $status_consulta == 'Em Andamento'){ ?>
                 <div class="actions">
-                    <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?confirmacao=<?php echo $confirmacao ?>&id_job=EmAndamento","iframe-home")'>
+                    <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?id_consulta=<?php echo $id_consulta ?>&id_job=EmAndamento","iframe-home")'>
                         <button>Finalizar</button>
                     </a>
-                    <a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")'>
+                    <a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'>
                         <button>Alterar</button>
                     </a>
-                    <a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'>
+                    <a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'>
                         <button>Cancelar</button>
                     </a>
                     <?php if ($atendimento_dia < strtotime("$hoje")) { ?>
-                    <a href="javascript:void(0)" onclick='window.open("reservas_noshow.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'>
+                    <a href="javascript:void(0)" onclick='window.open("reservas_noshow.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'>
                         <button>NoShow</button>
                     </a>
                     <?php } ?>
                 </div>
+                <?php }else{
+                    echo "<button>$status_consulta</button>";
+                } ?>
             </div>
         <?php } ?>
         </fieldset>
@@ -101,7 +90,3 @@ if ($aut_acesso == 1) {
 
 </body>
 </html>
-
-<?php
-}
-?>

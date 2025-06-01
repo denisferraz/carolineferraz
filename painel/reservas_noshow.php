@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -48,12 +39,11 @@ if($aut_acesso == 1){
                 <h2>Confirmar o No-Show</h2>
             </div>
 <?php
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
+$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao");
-$query->execute(array('confirmacao' => $confirmacao));
+$query = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta");
+$query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select['confirmacao'];
 $doc_nome = $select['doc_nome'];
 $doc_email = $select['doc_email'];
 $atendimento_dia = $select['atendimento_dia'];
@@ -61,8 +51,6 @@ $atendimento_hora = $select['atendimento_hora'];
 $atendimento_hora = strtotime("$atendimento_hora");
 ?>
             <div class="card-group">
-            <label>Nº Confirmação</label>
-            <input type="text" minlength="10" maxlength="10" name="confirmacao" value="<?php echo $confirmacao ?>" required>
             <label>Nome</label>
             <input type="text" minlength="8" maxlength="30" name="doc_nome" value="<?php echo $doc_nome ?>" required>
             <label>Data Atendimento</label>
@@ -71,7 +59,8 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="time" name="atendimento_hora" required>
             <label>E-mail</label>
             <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $doc_email ?>" required>
-            <input type="hidden" name="status_reserva" value="NoShow">
+            <input type="hidden" name="status_consulta" value="NoShow">
+            <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
             <input type="hidden" name="feitapor" value="Painel">
             <br><br>
             <div class="card-group btn"><button type="submit">No-Show</button></div>

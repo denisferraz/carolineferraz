@@ -56,6 +56,40 @@
             </div>
         </li>
 
+        <!-- ANAMNESE -->
+        <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuAnamnese" role="button" aria-expanded="false" aria-controls="menuAnamnese">
+                <span><i class="bi bi-journal-medical me-2"></i> Anamnese</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-2" id="menuAnamnese">
+                <a href="javascript:void(0)" onclick='window.open("anamnese_criar_modelo.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-file-earmark-medical me-2"></i> Criar Modelo
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("anamnese_modelos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-clipboard2-pulse me-2"></i> Modelos
+                </a>
+            </div>
+        </li>
+
+        <!-- VIDEOS -->
+        <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuVideo" role="button" aria-expanded="false" aria-controls="menuVideo">
+                <span><i class="bi bi-film me-2"></i> Videos</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuVideo">
+                <a href="javascript:void(0)" onclick='window.open("videos.php?id_job=Ver","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-youtube me-2"></i> Ver Videos
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("videos.php?id_job=Adicionar","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-youtube me-2"></i> Adicionar Videos
+                </a>
+            </div>
+        </li>
+
         <!-- DISPONIBILIDADE -->
         <li class="nav-item mt-2">
             <a class="nav-link text-white d-flex justify-content-between align-items-center"
@@ -107,11 +141,28 @@
                 <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-coin me-2"></i> Cadastrar Custos
                 </a>
-                <a href="javascript:void(0)" onclick='window.open("tratamentos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-file-earmark-medical me-2"></i> Cadastrar Tratamentos
+            </div>
+        </li>
+
+        <!-- ESTOQUE -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuEstoque" role="button" aria-expanded="false" aria-controls="menuEstoque">
+                <span><i class="bi bi-archive me-2"></i> Estoque</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuEstoque">
+                <a href="javascript:void(0)" onclick='window.open("estoque_ver.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-bag-dash me-2"></i> Ver Estoque
                 </a>
-                <a href="javascript:void(0)" onclick='window.open("ver_valores.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-currency-dollar me-2"></i> Valores
+                <a href="javascript:void(0)" onclick='window.open("estoque_produtos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-bag-plus me-2"></i> Produtos
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("estoque_entradas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-arrow-bar-right me-2"></i> Entradas
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("estoque_saidas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-arrow-bar-left me-2"></i> Saidas
                 </a>
             </div>
         </li>
@@ -140,6 +191,9 @@
             <div class="collapse ps-3" id="menuConfiguracoes">
                 <a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-gear-fill me-2"></i> Configurações
+                </a>
+                <a href="javascript:void(0)" onclick="abrirWhatsapp();" class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-whatsapp me-2"></i> Whatsapp
                 </a>
             </div>
         </li>
@@ -171,6 +225,31 @@
       title: 'Carregando...',
       text: 'Aguarde enquanto enviamos os Lembretes!',
       timer: 10000,
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      willOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  }
+</script>
+
+<script>
+  function abrirWhatsapp() {
+    // Exibe o popup de carregamento
+    exibirPopupWhatsapp();
+
+    // Abre a página lembrete.php em uma nova janela ou iframe
+    window.open("conectar_whatsapp.php", "iframe-home");
+  }
+
+  function exibirPopupWhatsapp() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Carregando...',
+      text: 'Aguarde enquanto configuramos a interface!',
+      timer: 6000,
       showCancelButton: false,
       showConfirmButton: false,
       allowOutsideClick: false,

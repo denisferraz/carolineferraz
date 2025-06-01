@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -45,10 +36,10 @@ $token = md5(date("YmdHismm"));
 <body>
 <?php
 
-$id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
+$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE id = :id");
-$query->execute(array('id' => $id));
+$query = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta");
+$query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $atendimento_hora = $select['atendimento_hora'];
 ?>
@@ -59,8 +50,6 @@ $atendimento_hora = $select['atendimento_hora'];
                 <h2>Reserva <u><?php echo $select['confirmacao'] ?></u></h2>
             </div>
 <div class="card-group">
-    <label>Nº Confirmação</label>
-    <input type="text" minlength="10" maxlength="10" name="confirmacao" value="<?php echo $select['confirmacao'] ?>" required>
     <label>Nome</label>
     <input type="text" minlength="8" maxlength="30" name="doc_nome" value="<?php echo $select['doc_nome'] ?>" required>
     <label>Atendimento Dia</label>
@@ -71,7 +60,7 @@ $atendimento_hora = $select['atendimento_hora'];
     <input type="text" minlength="8" maxlength="18" name="doc_telefone" value="<?php echo $select['doc_telefone'] ?>" required>
     <label>Email</label>
     <input type="email" minlength="10" maxlength="35" name="doc_email" value="<?php echo $select['doc_email'] ?>" required>
-    <input type="hidden" name="status_reserva" value="Alterado">
+    <input type="hidden" name="status_consulta" value="Alterado">
     <input type="hidden" name="feitapor" value="Painel">
     <br>
     <label><b>Local Consulta: 
@@ -85,12 +74,12 @@ $atendimento_hora = $select['atendimento_hora'];
     <input id="overbook_data" type="checkbox" name="overbook_data">
     <label for="overbook_data">Forçar Data/Horario</label>
     <br>
-    <input type="hidden" name="id" value="<?php echo $id ?>">
+    <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
     <input type="hidden" name="doc_cpf" value="<?php echo $select['doc_cpf'] ?>">
     <input type="hidden" name="token" value="<?php echo $token ?>">
     <input type="hidden" name="feitapor" value="Site">
     <input type="hidden" name="id_job" value="Nova Sessão">
-    <input type="hidden" name="status_reserva" value="Em Andamento">
+    <input type="hidden" name="status_consulta" value="Em Andamento">
     <input type="hidden" name="confirmacao" value="<?php echo $select['confirmacao'] ?>">
     <div class="card-group btn"><button type="submit">Confirmar</button></div>
 </div>

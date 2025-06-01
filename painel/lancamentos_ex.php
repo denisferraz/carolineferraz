@@ -1,10 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
     $feitopor = $select_check['nome'];
@@ -15,21 +15,22 @@ if($aut_acesso == 1){
 }else{
 
 $id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
+$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query_lancamento = $conexao->prepare("SELECT * FROM $tabela_lancamentos WHERE id = :id");
+$query_lancamento = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE id = :id");
 $query_lancamento->execute(array('id' => $id));
 while($select_lancamento = $query_lancamento->fetch(PDO::FETCH_ASSOC)){
-$confirmacao = $select_lancamento['confirmacao'];
+$doc_email = $select_lancamento['doc_email'];
 $produto = $select_lancamento['produto'];
 $quando = date('d/m/Y');
 $produto = "$produto [ Estornado - $quando ]";
 }
 
-$query = $conexao->prepare("UPDATE $tabela_lancamentos SET valor = '0', produto = '{$produto}', quantidade = '0', feitopor = '{$feitopor}' WHERE id = :id");
+$query = $conexao->prepare("UPDATE lancamentos_atendimento SET valor = '0', produto = '{$produto}', quantidade = '0', feitopor = '{$feitopor}' WHERE id = :id");
 $query->execute(array('id' => $id));
     echo "<script>
     alert('Lancamento Estornado com Sucesso')
-    window.location.replace('reserva.php?confirmacao=$confirmacao')
+    window.location.replace('reserva.php?id_consulta=$id_consulta')
     </script>";
 
 }

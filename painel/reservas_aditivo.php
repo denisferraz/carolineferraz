@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -23,7 +14,6 @@ if($aut_acesso == 1){
 }else{
     
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_GET['confirmacao']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $query->execute(array('email' => $email));
@@ -67,7 +57,6 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
             <br><br>
             <input type="hidden" name="nome" value="<?php echo $nome ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
-            <input type="hidden" name="confirmacao" value="<?php echo $confirmacao ?>">
             <input type="hidden" name="id_job" value="cadastro_aditivo" />
             <div class="card-group btn"><button type="submit">Enviar Aditivo</button></div>
 

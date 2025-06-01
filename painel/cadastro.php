@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -42,6 +33,7 @@ $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $query->execute(array('email' => $email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
+$id = $select['id'];
 $nome = $select['nome'];
 $rg = $select['rg'];
 $cpf = $select['unico'];
@@ -87,8 +79,7 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <label><b>Endereço: </b><?php echo $endereco ?></label><br><br>
 <label><b>Profissão: </b><?php echo $profissao ?></label><br><br>
 <label><b>Origem: </b><?php echo $origem ?></label><br><br>
-<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Ver&email=<?php echo $email ?>","iframe-home")'><div class="card-group-black btn"><button>Ver Anamnese Capilar</button></div></a>
-<a href="javascript:void(0)" onclick='window.open("reservas_formulario.php?id_job=Enviarr&email=<?php echo $email ?>","iframe-home")'><div class="card-group btn"><button>Enviar Anamnese Capilar</button></div></a>
+<a href="javascript:void(0)" onclick='window.open("anamnese.php?paciente_id=<?php echo $id ?>","iframe-home")'><div class="card-group-black btn"><button>Anamneses</button></div></a>
 <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?php echo $email ?>","iframe-home")'><div class="card-group-green btn"><button>Cadastrar Consulta</button></div></a>
 </fieldset>
 <br>
@@ -97,13 +88,13 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <legend><h2>Historico de Consultas</h2></legend>
 <table widht="100%" border="1px" style="color:white">
     <tr>
-        <td align="center"><b>Confirmação</b></td>
+        <td align="center"><b>Status</b></td>
         <td align="center"><b>Data</b></td>
         <td align="center"><b>Hora</b></td>
-        <td align="center"><b>Status</b></td>
+        <td align="center"><b>Local</b></td>
     </tr>
 <?php
-$check_history = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE doc_email = :email ORDER BY atendimento_dia DESC");
+$check_history = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :email ORDER BY atendimento_dia DESC");
 $check_history->execute(array('email' => $email));
 if($check_history->rowCount() < 1){
 ?>
@@ -116,17 +107,18 @@ if($check_history->rowCount() < 1){
 <?php
 }else{
 while($history = $check_history->fetch(PDO::FETCH_ASSOC)){
-$history_conf = $history['confirmacao'];
+$history_id = $history['id'];
 $history_nome = $history['doc_nome'];
 $history_data = $history['atendimento_dia'];
 $history_hora = $history['atendimento_hora'];
-$history_status = $history['status_reserva'];
+$history_status = $history['status_consulta'];
+$history_local = $history['local_consulta'];
 ?>
     <tr>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $history_conf ?>","iframe-home")'><button><b><?php echo $history_conf ?></b></button></a></td>
+        <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $history_id ?>","iframe-home")'><button><b><?php echo $history_status ?></b></button></a></td>
         <td align="center"><?php echo date('d/m/Y', strtotime("$history_data")) ?></td>
         <td align="center"><?php echo date('H:i\h', strtotime("$history_hora")) ?></td>
-        <td align="center"><?php echo $history_status ?></td>
+        <td align="center"><?php echo $history_local ?></td>
     </tr>
 <?php
 }}

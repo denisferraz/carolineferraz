@@ -1,19 +1,10 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -61,10 +52,10 @@ if($aut_acesso == 1){
 
     if($palavra == ''){
         $palavra = 'Todos';
-        $query_select = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim ORDER BY atendimento_dia ASC");
+        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim ORDER BY atendimento_dia ASC");
         $query_select->execute(array('busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }else{
-        $query_select = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_nome LIKE :palavra OR doc_email LIKE :palavra OR confirmacao LIKE :palavra) ORDER BY atendimento_dia ASC");
+        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_nome LIKE :palavra OR doc_email LIKE :palavra OR confirmacao LIKE :palavra) ORDER BY atendimento_dia ASC");
         $query_select->execute(array('palavra' => "%$palavra%", 'busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }
     $select_qtd = $query_select->rowCount();
@@ -88,7 +79,7 @@ if($aut_acesso == 1){
 </tr>
 <?php
     while($select = $query_select->fetch(PDO::FETCH_ASSOC)){
-        $status_reserva = $select['status_reserva'];
+        $status_consulta = $select['status_consulta'];
         $confirmacao = $select['confirmacao'];
         $doc_nome = $select['doc_nome'];
         $doc_email = $select['doc_email'];
@@ -101,13 +92,13 @@ if($aut_acesso == 1){
     <td><?php echo $doc_nome ?><br><?php echo $doc_email ?></td>
     <td><?php echo date('d/m/Y', $atendimento_dia) ?></td>
     <td><?php echo date('H:i\h', $atendimento_hora) ?></td>
-    <td><?php echo $status_reserva ?></td>
-    <?php if($status_reserva == 'Cancelada' || $status_reserva == 'Finalizada'){  ?>
+    <td><?php echo $status_consulta ?></td>
+    <?php if($status_consulta == 'Cancelada' || $status_consulta == 'Finalizada'){  ?>
     <td>-</td>
     <td>-</td>
     <?php }else{  ?>
     <td><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")'><button>Editar</button></td>
-    <?php if($status_reserva == 'Checkedin' || $status_reserva == 'NoShow'){  ?>
+    <?php if($status_consulta == 'Checkedin' || $status_consulta == 'NoShow'){  ?>
     <td>-</td>
     <?php }else{ ?>
     <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Cancelar</button></a></td>

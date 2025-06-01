@@ -1,0 +1,80 @@
+/* 
+ * Estilos para o modal do painel de acesso
+ * Correção para exibir como popup sobreposto
+ */
+
+/* Modal base */
+.modal, .modalReg, .modalRec {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background-color: var(--color-background);
+    margin: auto;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+/* Animação de entrada do modal */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Botão de fechar */
+.close-modal, .close-modalReg, .close-modalRec {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-text-light);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover, .close-modalReg:hover, .close-modalRec:hover {
+    color: var(--color-primary);
+}
+
+/* Título do modal */
+.modal-title {
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+/* Formulário dentro do modal */
+.modal form {
+    margin-top: 1.5rem;
+}
+
+/* Responsividade do modal */
+@media (max-width: 576px) {
+    .modal-content {
+        width: 90%;
+        padding: 1.5rem;
+    }
+}

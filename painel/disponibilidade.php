@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
 // CONFIGURAÇÕES
@@ -92,24 +92,25 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
 
         // Query de verificação
         $check_disponibilidade = $conexao->query(
-            "SELECT * FROM $tabela_disponibilidade 
+            "SELECT * FROM disponibilidade 
              WHERE atendimento_dia = '{$dataAtual}' 
              AND atendimento_hora = '{$atendimento_horas}'"
         );
 
-        if ($check_disponibilidade->rowCount() == 0) {
+        $check_consultas = $conexao->query(
+          "SELECT * FROM consultas 
+           WHERE atendimento_dia = '{$dataAtual}' 
+           AND atendimento_hora = '{$atendimento_horas}' 
+           AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')"
+      );
+
+        if ($check_disponibilidade->rowCount() == 0 && $check_consultas->rowCount() == 0) {
             $disponibilidades[$dataAtual][] = date('H:i', $horario); // ou H:i:s
         }
 
         $horario += $intervalo;
     }
 }
-
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
 
 if($tema == 'escuro'){
 $bg_body = '#121212';

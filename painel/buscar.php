@@ -4,20 +4,10 @@
 //error_reporting(0);
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
-
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
-
-// Define o caminho do CSS
-$css_path = "css/style_$tema.css";
-
-$query_check = $conexao->query("SELECT * FROM $tabela_painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -69,7 +59,7 @@ body {
     
     $historico_fim = date('Y-m-d', strtotime("$historico_fim") + 86400);
 
-    $query_historico = $conexao->prepare("SELECT * FROM $tabela_historico WHERE (oque LIKE :palavra OR quem LIKE :palavra) AND quando >= '{$historico_inicio}' AND quando <= '{$historico_fim}' ORDER BY id DESC");
+    $query_historico = $conexao->prepare("SELECT * FROM historico_atendimento WHERE (oque LIKE :palavra OR quem LIKE :palavra) AND quando >= '{$historico_inicio}' AND quando <= '{$historico_fim}' ORDER BY id DESC");
     $query_historico->execute(array('palavra' => "%$palavra%"));
     $historico_qtd = $query_historico->rowCount();
 

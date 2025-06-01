@@ -1,14 +1,12 @@
 <?php
 
 session_start();
-require('../conexao.php');
+require('../config/database.php');
 require('verifica_login.php');
 
+require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
-    require '../PHPMailer/src/Exception.php';
-    require '../PHPMailer/src/PHPMailer.php';
-    require '../PHPMailer/src/SMTP.php';
+use PHPMailer\PHPMailer\Exception;
     
     $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
     $alt_status = mysqli_real_escape_string($conn_msqli, $_GET['alt_status']);
@@ -24,11 +22,11 @@ use PHPMailer\PHPMailer\PHPMailer;
     $id_job = $select['id_job'];
     }
     
-    $result_check2 = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE token = :token");
+    $result_check2 = $conexao->prepare("SELECT * FROM consultas WHERE token = :token");
     $result_check2->execute(array('token' => $token));
     
     while($select2 = $result_check2->fetch(PDO::FETCH_ASSOC)){
-    $confirmacao = $select2['confirmacao'];
+    $id_consulta = $select2['id'];
     $doc_nome = $select2['doc_nome'];
     $doc_email = $select2['doc_email'];
     $doc_telefone = $select2['doc_telefone'];
@@ -46,16 +44,13 @@ use PHPMailer\PHPMailer\PHPMailer;
         $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
     
         if($alt_status == 'Aceita'){
-            $query = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_sessao = 'Confirmada', status_reserva = 'Confirmada' WHERE token = :token");
+            $query = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = 'Confirmada' WHERE token = :token");
             $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'token' => $token));
-    
-            $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
-            $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior));
         
         if($id_job == 'Consulta Capilar'){
             $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
-            $query_4 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
-            $query_4->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
+            $query_4 = $conexao->prepare("DELETE FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
+            $query_4->execute(array('atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
         }
     
         //Envio de Email	
@@ -70,7 +65,6 @@ use PHPMailer\PHPMailer\PHPMailer;
     
             $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
             $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
-            $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
         
         $mail = new PHPMailer(true);
         
@@ -82,7 +76,7 @@ use PHPMailer\PHPMailer\PHPMailer;
             $mail->SMTPAuth = true;
             $mail->Username = "$mail_Username";
             $mail->Password = "$mail_Password";
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = "$mail_SMTPSecure";
             $mail->Port = "$mail_Port";
     
             $mail->setFrom("$config_email", "$config_empresa");
@@ -90,14 +84,14 @@ use PHPMailer\PHPMailer\PHPMailer;
             $mail->addBCC("$config_email");
             
             $mail->isHTML(true);                                 
-            $mail->Subject = "$pdf_corpo_01 - $confirmacao";
+            $mail->Subject = "$pdf_corpo_01";
           // INICIO MENSAGEM  
             $mail->Body = "
         
             <fieldset>
             <legend>$pdf_corpo_01 $confirmacao</legend>
             <br>
-            $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
+            $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
             <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b></p>
             <p>Preencha o formulario, $link_formulario</p>
             <b>$pdf_corpo_07 $data_email</b>
@@ -127,11 +121,8 @@ use PHPMailer\PHPMailer\PHPMailer;
         //Fim Envio de Email
         }else{
     
-        $query = $conexao->prepare("UPDATE $tabela_reservas SET status_sessao = 'Confirmada', status_reserva = 'Confirmada' WHERE token = :token");
+        $query = $conexao->prepare("UPDATE consultas SET status_consulta = 'Confirmada' WHERE token = :token");
         $query->execute(array('token' => $token));
-    
-        $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
-        $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
     
         }
     
@@ -148,7 +139,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
     echo   "<script>
             alert('Alteração $alt_status com Sucesso!')
-            window.location.replace('reserva.php?confirmacao=$confirmacao')
+            window.location.replace('reserva.php?id_consulta=$id_consulta')
             </script>";
 
     ?>

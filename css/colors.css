@@ -1,0 +1,187 @@
+/* 
+ * Nova paleta de cores suave e acolhedora para o site do profissional de tricologia
+ * Redesign com vermelho escuro apenas para títulos e destaques
+ */
+
+:root {
+    /* Cores primárias */
+    --color-primary: #5a1f2b;         /* Vermelho escuro para títulos e destaques apenas */
+    --color-primary-light: #B22222;   /* Vermelho mais claro para hover states */
+    --color-primary-dark: #660000;    /* Vermelho mais escuro para elementos específicos */
+    --color-primary-rgb: 139, 0, 0;   /* Valores RGB para uso com opacidade */
+    
+    /* Cores secundárias */
+    --color-secondary: #5a1f2b;       /* Laranja como cor secundária */
+    --color-secondary-light: #B22222; /* Laranja mais claro */
+    --color-secondary-dark: #660000;  /* Laranja mais escuro */
+    --color-secondary-rgb: 139, 0, 0; /* Valores RGB para uso com opacidade */
+    
+    /* Cores de fundo */
+    --color-background: #FFFFFF;      /* Branco como fundo principal */
+    --color-background-alt: #F9F7F5;  /* Fundo alternativo suave (bege muito claro) */
+    --color-background-light: #FFF9F5; /* Fundo claro com tom quente */
+    
+    /* Cores neutras */
+    --color-text: #333333;            /* Texto principal */
+    --color-text-light: #666666;      /* Texto secundário */
+    --color-gray-light: #E0E0E0;      /* Cinza claro para bordas e separadores */
+    --color-gray-medium: #AAAAAA;     /* Cinza médio */
+    
+    /* Cores de destaque */
+    --color-accent: #FFC107;          /* Amarelo âmbar para pequenos destaques */
+    --color-success: #4CAF50;         /* Verde para mensagens de sucesso */
+    --color-error: #F44336;           /* Vermelho para mensagens de erro */
+    
+    /* Cores para o rodapé */
+    --color-footer-bg: #F5F5F5;       /* Fundo claro para o rodapé */
+    --color-footer-text: #555555;     /* Texto do rodapé */
+    --color-footer-title: #333333;    /* Títulos no rodapé */
+}
+
+/* 
+ * Guia de uso da nova paleta:
+ * 
+ * 1. Vermelho escuro (--color-primary):
+ *    - Usar APENAS para títulos principais
+ *    - Usar para textos em destaque
+ *    - Usar para ícones importantes
+ *    - Usar para links de destaque
+ *    - NUNCA usar como cor de fundo para grandes áreas
+ * 
+ * 2. Laranja (--color-secondary):
+ *    - Usar para botões de call-to-action
+ *    - Usar para pequenos elementos de destaque
+ *    - Usar para ícones secundários
+ * 
+ * 3. Fundos:
+ *    - Usar branco (--color-background) como fundo principal
+ *    - Usar bege muito claro (--color-background-alt) para separar seções
+ *    - Usar fundo com tom quente (--color-background-light) para áreas de destaque
+ * 
+ * 4. Texto:
+ *    - Usar cinza escuro (--color-text) para texto principal
+ *    - Usar cinza médio (--color-text-light) para texto secundário
+ * 
+ * 5. Destaques:
+ *    - Usar amarelo âmbar (--color-accent) para pequenos destaques como estrelas de avaliação
+ *    - Usar verde (--color-success) para mensagens de sucesso
+ *    - Usar vermelho (--color-error) para mensagens de erro
+ */
+
+/* Estilos base */
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Links */
+a {
+    color: var(--color-primary);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-primary-light);
+}
+
+/* Seções alternadas */
+.section-alt {
+    background-color: var(--color-background-alt);
+}
+
+.section-light {
+    background-color: var(--color-background-light);
+}
+
+/* Botões */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-light);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-secondary-light);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+/* Cabeçalho */
+header {
+    background-color: var(--color-background);
+}
+
+.logo {
+    color: var(--color-primary);
+}
+
+nav a {
+    color: var(--color-text);
+}
+
+nav a:hover {
+    color: var(--color-primary);
+}
+
+nav a::after {
+    background-color: var(--color-primary);
+}
+
+/* Cards */
+.card {
+    background-color: var(--color-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Formulários */
+.form-control {
+    border: 1px solid var(--color-gray-light);
+}
+
+.form-control:focus {
+    border-color: var(--color-primary);
+}
+
+/* Avaliações */
+.stars {
+    color: var(--color-accent);
+}
+
+/* Rodapé */
+footer {
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-text);
+}
+
+.footer-title {
+    color: var(--color-footer-title);
+}
+
+.social-link:hover {
+    background-color: var(--color-primary);
+}

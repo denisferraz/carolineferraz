@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('conexao.php');
+require('config/database.php');
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
@@ -12,19 +12,19 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
 
 require 'vendor/autoload.php';
 use Dompdf\Dompdf;
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
 
-$limite_dia = $config_limitedia;
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+//error_reporting(0);
+
+$limite_dia = 1;
 $atendimento_dia = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia']);
 $atendimento_hora = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora']);
-$confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['confirmacao']);
 $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
-$status_reserva = mysqli_real_escape_string($conn_msqli, $_POST['status_reserva']);
+$status_consulta = mysqli_real_escape_string($conn_msqli, $_POST['status_consulta']);
 $feitapor = mysqli_real_escape_string($conn_msqli, $_POST['feitapor']);
 $doc_telefone = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_telefone']));
 
@@ -34,7 +34,7 @@ $hoje = date('Y-m-d');
 $historico_data = date('Y-m-d H:i:s');
 if($feitapor == 'Painel'){
 $email = $_SESSION['email'];
-$result_historico = $conexao->prepare("SELECT * FROM $tabela_painel_users WHERE email = :email");
+$result_historico = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $result_historico->execute(array('email' => $email));
 while($select_historico = $result_historico->fetch(PDO::FETCH_ASSOC)){
 $historico_quem = $select_historico['nome'] ;
@@ -43,34 +43,29 @@ $historico_unico_usuario = $select_historico['unico'] ;
 $feitapor = $historico_quem;
 }
 
-if($status_reserva == 'Confirmada' || $status_reserva == 'Confirmado' || $status_reserva == 'Em Andamento'){
+if($status_consulta == 'Confirmada' || $status_consulta == 'Confirmado' || $status_consulta == 'Em Andamento'){
 
-if($status_reserva == 'Confirmada' || $status_reserva == 'Confirmado'){
-$status_reserva = 'Confirmada';
+if($status_consulta == 'Confirmada' || $status_consulta == 'Confirmado'){
+$status_consulta = 'Confirmada';
 }
 $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
 $doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_cpf']));
 $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 $horario = '';
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
-$local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
+$local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
 
     //Exclusao de Dias
 
     if(!isset($_POST['overbook_data']) && (( (date('w', strtotime("$atendimento_dia")) == 1) && $config_dia_segunda == -1) || ( (date('w', strtotime("$atendimento_dia")) == 2) && $config_dia_terca == -1) || ( (date('w', strtotime("$atendimento_dia")) == 3) && $config_dia_quarta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 4) && $config_dia_quinta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 5) && $config_dia_sexta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 6) && $config_dia_sabado == -1) || ( (date('w', strtotime("$atendimento_dia")) == 0) && $config_dia_domingo == -1))){
-        if($feitapor == 'Site'){
-        
-        $id = base64_encode("$id_job.1.$atendimento_dia.$confirmacao.$local_reserva");
-        echo   "<script>
-        window.location.replace('agendar_no.php?id=$id')
-                </script>";
-         exit();
+        if($feitapor == 'Paciente'){
+            $_SESSION['error_reserva'] = 'Não funcionamos nesta data!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Site&tipo=Paciente");
+            exit();
         }else{
-            echo   "<script>
-            alert('Não funcionamos nesta data')
-            window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
-                </script>";
-                exit();
+            $_SESSION['error_reserva'] = 'Não funcionamos nesta data!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Painel");
+            exit();
         }
         }
 
@@ -82,18 +77,15 @@ $local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loca
     $rodadas = 0;
 
     if(!isset($_POST['overbook_data']) && $atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
-        if($feitapor == 'Site'){
+        if($feitapor == 'Paciente'){
 
-        $id = base64_encode("$id_job.2.$atendimento_dia.$confirmacao.$local_reserva");
-        echo   "<script>
-        window.location.replace('agendar_no.php?id=$id')
-                </script>";
+        $_SESSION['error_reserva'] = 'Não funcionamos neste horário!';
+        header("Location: painel/reservas_cadastrar.php?id_job=Site&tipo=Paciente");
         exit();
+
         }else{
-        echo   "<script>
-        alert('Não é possivel agendar para este dia/horario')
-        window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
-            </script>";
+            $_SESSION['error_reserva'] = 'Não funcionamos neste horário!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Painel");
             exit();
     } 
     }
@@ -108,47 +100,36 @@ $local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loca
         }
 
     if($horario == '' && !isset($_POST['overbook_data'])){
-        if($feitapor == 'Site'){
-        echo   "<script>
-        window.location.replace('agendar_no.php')
-                </script>";
-        exit();
+        if($feitapor == 'Paciente'){
+            $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Site&tipo=Paciente");
+            exit();
         }else{
-        echo   "<script>
-        alert('Sem Disponibilidade para esta data!')
-        window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
-            </script>";
+            $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Painel");
             exit();
     }
     }
     //Verificar horarios de atendimento
 
 //Exclusao de dias
-if($local_reserva == 'Salvador'){
-    $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
-}else{
-    $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND local_reserva != 'Salvador'");   
-}
-
+    $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+    $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
+    $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
     $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
-    while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
 
-    if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
-        if($feitapor == 'Site'){
+    $total_consultas = $check_consultas->rowcount() + $check_disponibilidade->rowcount();
 
-        $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao.$local_reserva");
-        echo   "<script>
-        window.location.replace('agendar_no.php?id=$id')
-                </script>";
-         exit();
+    if(!isset($_POST['overbook']) && ($total_consultas + 1) > $limite_dia){
+        if($feitapor == 'Paciente'){
+            $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data/horario!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Site&tipo=Paciente");
+            exit();
         }else{
-            echo   "<script>
-            alert('Sem Disponibilidade para esta data/horario!')
-            window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
-                </script>";
-                exit();
+            $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data/horario!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Painel");
+            exit();
         }
-    }
     }
 
     //Caso seja procedimento de 2h (Consulta Capilar)
@@ -156,51 +137,41 @@ if($local_reserva == 'Salvador'){
     
         $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-        if($local_reserva == 'Salvador'){
-            $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
-        }else{
-            $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND local_reserva != 'Salvador'"); 
-        }   
+        $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+        $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
+        $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
         $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
-        
-        while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
-        
-        if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
-            if($feitopor == 'Site'){
 
-            $id = base64_encode("$id_job.3.$atendimento_dia.$confirmacao.$local_reserva");
-            echo   "<script>
-            window.location.replace('agendar_no.php?id=$id')
-                    </script>";
+        $total_consultas = $check_consultas->rowcount() + $check_disponibilidade->rowcount();
+        
+        if(!isset($_POST['overbook']) && ($total_consultas + 1) > $limite_dia){
+            if($feitopor == 'Site'){
+                $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data/horario!';
+                header("Location: painel/reservas_cadastrar.php?id_job=Site&tipo=Paciente");
                 exit();
             }else{
-                echo   "<script>
-                alert('Sem Disponibilidade para esta data/horario!')
-                window.location.replace('painel/reservas_cadastrar.php?id_job=Painel')
-                    </script>";
-                    exit();
+            $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data/horario!';
+            header("Location: painel/reservas_cadastrar.php?id_job=Painel");
+            exit();
             }
-        }
         }
         }
 
     if($id_job == 'Consulta Capilar'){
-    $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, 1)");
-    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
+    $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora) VALUES (:atendimento_dia, :atendimento_hora)");
+    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
     }
-    $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, 1)");
-    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
-    
-    if($status_reserva == 'Confirmada'){
-    $query_2 = $conexao->prepare("INSERT INTO $tabela_reservas (atendimento_inicio, atendimento_dia, atendimento_hora, confirmacao, tipo_consulta, status_sessao, doc_email, doc_nome, doc_cpf, doc_telefone, status_reserva, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_reserva) VALUES (:atendimento_inicio, :atendimento_dia, :atendimento_hora, :confirmacao, :tipo_consulta, 'Confirmada', :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :status_reserva, :data_cancelamento, 'Ativa', :feitapor, :token, :local_reserva)");
-    $query_2->execute(array('atendimento_inicio' => $atendimento_dia, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_reserva' => $status_reserva, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_reserva' => $local_reserva));
+
+    if($status_consulta == 'Confirmada'){
+    $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, doc_nome, doc_cpf, doc_telefone, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta)");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta));
     }else{
-    $query_2 = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_reserva = :status_reserva, token = :token, tipo_consulta = 'Nova Sessão', status_sessao = 'Confirmada', local_reserva = :local_reserva WHERE doc_email = :doc_email AND confirmacao = :confirmacao");
-    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'doc_email' => $doc_email, 'status_reserva' => $status_reserva, 'token' => $token, 'local_reserva' => $local_reserva));
+    $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = 'Nova Sessão', local_consulta = :local_consulta WHERE doc_email = :doc_email AND id = :id_consulta");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'token' => $token, 'local_consulta' => $local_consulta));
     }
-    if($feitapor != 'Site'){
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Criou a consulta $confirmacao"));    
+    if($feitapor != 'Paciente'){
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Criou a consulta $id_consulta"));    
     }
 
     //Incio Envio Whatsapp
@@ -210,43 +181,46 @@ if($envio_whatsapp == 'ativado'){
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
     
     $doc_telefonewhats = "5571997417190";
-    $msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome agendou uma $id_job para $local_reserva - Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n'."Telefone: $doc_telefone".'\n'."E-mail: $doc_email";
+    $msg_whastapp = "Olá $config_empresa\n\n".
+    "$doc_nome agendou uma $id_job para $local_consulta - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n".
+    "Telefone: $doc_telefone\n".
+    "E-mail: $doc_email";
     
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
+    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
     
     }
     //Fim Envio Whatsapp
 
-    if($feitapor == 'Site'){
+    if($feitapor == 'Paciente'){
     echo   "<script>
-    window.location.replace('agendar_ok.php?id=$token')
+    alert('Consulta Confirmada com Sucesso!')
+    window.location.replace('painel/reservas_paciente.php')
             </script>";
     exit();
     }else{
     echo   "<script>
     alert('Consulta Confirmada com Sucesso!')
-    window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
+    window.location.replace('painel/agenda.php')
         </script>";
         exit();
 }
 
-}else if($status_reserva == 'Cancelada' || $status_reserva == 'Cancelado'){
+}else if($status_consulta == 'Cancelada' || $status_consulta == 'Cancelado'){
 
-    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
     $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
+    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
     
     if($atendimento_dia < $hoje){
-        echo    "<script>
-                window.location.replace('cancelar.php?typeerror=1&token=$token')
-                </script>";
-         exit();
+        $_SESSION['error_reserva'] = 'Não é possivel Cancelar esta Consulta!';
+        header("Location: painel/reservas_cancelar.php?id_consulta=$id_consulta&tipo=$feitapor");
+        exit();
     }
 
-    $status_reserva = 'Cancelada';
+    $status_consulta = 'Cancelada';
     $confirmacao_cancelamento = strtoupper(substr(md5(date("YmdHismm")), 0, 10));
 
-        $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
-        $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'doc_email' => $doc_email, 'confirmacao' => $confirmacao));
+        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')");
+        $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta));
         $row_check = $result_check->rowCount();
 
         while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
@@ -254,20 +228,18 @@ if($envio_whatsapp == 'ativado'){
             }
 
         if($row_check >= 1){
-        $query = $conexao->prepare("UPDATE $tabela_reservas SET status_sessao = :status_reserva, data_cancelamento = :data_cancelamento, confirmacao_cancelamento = :confirmacao_cancelamento WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
-        $query->execute(array('status_reserva' => $status_reserva, 'data_cancelamento' => $historico_data, 'confirmacao_cancelamento' => $confirmacao_cancelamento ,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'doc_email' => $doc_email, 'confirmacao' => $confirmacao));
+        $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta, data_cancelamento = :data_cancelamento, confirmacao_cancelamento = :confirmacao_cancelamento WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta");
+        $query->execute(array('status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'confirmacao_cancelamento' => $confirmacao_cancelamento ,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta));
         
         if($id_job == 'Consulta Capilar'){
         $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
-        $query_2 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE id >= 1 AND confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
-        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'confirmacao' => $confirmacao, 'atendimento_hora' => $atendimento_hora_mais));
+        $query_2 = $conexao->prepare("DELETE FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
+        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
         }
-        $query_2 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE id >= 1 AND confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
-        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'confirmacao' => $confirmacao, 'atendimento_hora' => $atendimento_hora));
 
-        if($feitapor != 'Site'){
-        $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-        $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cancelou a consulta $confirmacao"));
+        if($feitapor != 'Paciente'){
+        $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+        $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cancelou a consulta $id_consulta"));
         }
 
             //Envio de Email	
@@ -297,7 +269,7 @@ if($envio_whatsapp == 'ativado'){
         $mail->SMTPAuth = true;
         $mail->Username = "$mail_Username";
         $mail->Password = "$mail_Password";
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->SMTPSecure = "$mail_SMTPSecure";
         $mail->Port = "$mail_Port";
 
         $mail->setFrom("$config_email", "$config_empresa");
@@ -305,14 +277,14 @@ if($envio_whatsapp == 'ativado'){
         $mail->addBCC("$config_email");
         
         $mail->isHTML(true);                                 
-        $mail->Subject = "$pdf_corpo_01 - $confirmacao";
+        $mail->Subject = "$pdf_corpo_01";
       // INICIO MENSAGEM  
         $mail->Body = "
 
         <fieldset>
-        <legend>$pdf_corpo_01 $confirmacao</legend>
+        <legend>$pdf_corpo_01</legend>
         <br>
-        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
+        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
         <p>Data: <b>$atendimento_dia_str</b> ás: <b>$atendimento_hora_str</b>h</p>
         <p>$pdf_corpo_04: <b>$confirmacao_cancelamento</b></p>
         <br><b>$pdf_corpo_07 $data_email</b>
@@ -341,40 +313,47 @@ if($envio_whatsapp == 'ativado'){
 
 
         }else{
-            echo    "<script>
-                window.location.replace('cancelar.php?typeerror=2&token=$token')
-                </script>";
-         exit();
+            $_SESSION['error_reserva'] = 'Não é possivel Cancelar esta Consulta!';
+            header("Location: painel/reservas_cancelar.php?id_consulta=$id_consulta&tipo=$feitapor");
+            exit();
         }
 
-        $id = base64_encode("$confirmacao.$token");
-        echo   "<script>
-                window.location.replace('reserva.php?id=$id')
-                </script>";
+        if($feitapor == 'Paciente'){
+            echo   "<script>
+            alert('Consulta Cancelada com Sucesso!')
+            window.location.replace('painel/reservas_paciente.php')
+            </script>";
+            exit();
+            }else{
+            echo   "<script>
+            alert('Consulta Cancelada com Sucesso!')
+            window.location.replace('painel/reserva.php?id_consulta=$id_consulta')
+            </script>";
+            exit();
+        }
 
-}else if($status_reserva == 'Alterada' || $status_reserva == 'Alterado'){
+}else if($status_consulta == 'Alterada' || $status_consulta == 'Alterado'){
 
         $horario = '';
         $token = mysqli_real_escape_string($conn_msqli, $_POST['new_token']);
         $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
         $atendimento_dia_anterior = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia_anterior']);
         $atendimento_hora_anterior = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_anterior']);
-        $local_reserva = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
+        $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
+        $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
 
         if($atendimento_dia < $hoje){
-            echo "<script>
-            window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
-                    </script>";
+            $_SESSION['error_reserva'] = 'Não é possivel Alterar esta Consulta!';
+            header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
             exit();
         }
 
             //Exclusao de Dias
 
     if(!isset($_POST['overbook_data']) && (( (date('w', strtotime("$atendimento_dia")) == 1) && $config_dia_segunda == -1) || ( (date('w', strtotime("$atendimento_dia")) == 2) && $config_dia_terca == -1) || ( (date('w', strtotime("$atendimento_dia")) == 3) && $config_dia_quarta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 4) && $config_dia_quinta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 5) && $config_dia_sexta == -1) || ( (date('w', strtotime("$atendimento_dia")) == 6) && $config_dia_sabado == -1) || ( (date('w', strtotime("$atendimento_dia")) == 0) && $config_dia_domingo == -1))){
-        echo "<script>
-        window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
-                </script>";
-         exit();
+        $_SESSION['error_reserva'] = 'Não funcionamos nesta data!';
+        header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
+        exit();
     }
 
     //Verificar horarios de atendimento
@@ -385,9 +364,8 @@ if($envio_whatsapp == 'ativado'){
     $rodadas = 0;
 
     if(!isset($_POST['overbook_data']) && $atendimento_dia == $hoje && ($atendimento_horas - $atendimento_hora_intervalo) <= strtotime("$hoje_hora")){
-        echo "<script>
-        window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
-                </script>";
+        $_SESSION['error_reserva'] = 'Não funcionamos neste horário!';
+        header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
         exit();   
     }
     while( $rodadas <= ($atendimento_hora_fim - $atendimento_hora_comeco + $atendimento_hora_intervalo)){
@@ -401,9 +379,8 @@ if($envio_whatsapp == 'ativado'){
         }
 
     if($horario == '' && !isset($_POST['overbook_data'])){
-        echo "<script>
-        window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
-                </script>";
+        $_SESSION['error_reserva'] = 'Não foi possivel alterar a Consulta!';
+        header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
         exit();
     }
     //Verificar horarios de atendimento
@@ -413,8 +390,8 @@ if($envio_whatsapp == 'ativado'){
         $feitapor = $historico_quem;
             }
 
-        $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'NoShow' OR status_reserva = 'Em Andamento')");
-        $result_check->execute(array('confirmacao' => $confirmacao,'doc_email' => $doc_email));
+        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'NoShow' OR status_consulta = 'Em Andamento')");
+        $result_check->execute(array('id_consulta' => $id_consulta,'doc_email' => $doc_email));
         $row_check = $result_check->rowCount();
 
         while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
@@ -423,106 +400,99 @@ if($envio_whatsapp == 'ativado'){
             }
 
             if($row_check < 1){
-                echo "<script>
-                window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
-                        </script>";
+                $_SESSION['error_reserva'] = 'Não foi possivel alterar a Consulta!';
+                header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
                 exit();
             }
-            $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao != :confirmacao");   
-            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao));
+            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
+            $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta));
             
-            while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
+            $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");   
+            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
 
-             if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
-                echo   "<script>
-                window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
-                        </script>";
-                 exit();
+            $check_total = $check_consulta->rowcount() + $check_disponibilidade->rowcount();
+
+             if(!isset($_POST['overbook']) && ($check_total + 1) > $limite_dia){
+                $_SESSION['error_reserva'] = 'Não temos disponibilidade para este horario e data!';
+                header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
+                exit();
             }
-
-        }
 
         //Caso seja procedimento de 2h (Consulta Capilar)
         if($id_job == 'Consulta Capilar'){
 
             $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-            $check_disponibilidade = $conexao->prepare("SELECT sum(quantidade) FROM $tabela_disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao != :confirmacao");   
-            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao));
+            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
+            $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta));
             
-            while($total_reservas = $check_disponibilidade->fetch(PDO::FETCH_ASSOC)){
+            $check_disponibilidade = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
+            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta));
 
-             if(!isset($_POST['overbook']) && ($total_reservas['sum(quantidade)'] + 1) > $limite_dia){
-                echo   "<script>
-                window.location.replace('alterar_erro.php?confirmacao=$confirmacao')
-                        </script>";
-                 exit();
+            $check_total = $check_consulta->rowcount() + $check_disponibilidade->rowcount();
+
+            if(!isset($_POST['overbook']) && ($check_total + 1) > $limite_dia){
+                $_SESSION['error_reserva'] = 'Não temos disponibilidade para este horario e data!';
+                header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
+                exit();
             }
-            
-        }
         }
 
 
         //Inicio do Aguarda retorno em casos de alterações antes das 24h
         if($atendimento_dia_original == date('Y-m-d', strtotime("$hoje"))){
 
-            $query = $conexao->prepare("UPDATE $tabela_reservas SET token = :token, status_reserva = 'A Confirmar' WHERE confirmacao = :confirmacao AND doc_email = :doc_email");
-            $query->execute(array('token' => $token,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
+            $query = $conexao->prepare("UPDATE consultas SET token = :token, status_consulta = 'A Confirmar' WHERE id = :id_consulta AND doc_email = :doc_email");
+            $query->execute(array('token' => $token,'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
 
             if($id_job == 'Consulta Capilar'){
 
             $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
+            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora) VALUES (:atendimento_dia, :atendimento_hora)");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
 
             }
 
             $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, 'Pendente', :id_job)");
             $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job));
 
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'local_reserva' => 'ALL'));
 
+        //Incio Envio Whatsapp
+        if($envio_whatsapp == 'ativado'){
 
-//Incio Envio Whatsapp
-if($envio_whatsapp == 'ativado'){
+        $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
+        $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
-$atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-$atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
+        $doc_telefonewhats = "5571997417190";
+        $msg_whastapp = "Olá $config_empresa\n\n".
+        "$doc_nome solicitou uma alteração para $local_consulta - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n\n".
+        "Para Aceitar clique abaixo:\n".
+        "$site_atual/painel/reservas_solicitacao.php?alt_status=Aceita&token=$token\n\n".
+        "Para Recusar clique abaixo:\n".
+        "$site_atual/painel/reservas_solicitacao.php?alt_status=Recusada&token=$token";
 
-$doc_telefonewhats = "5571997417190";
-$msg_wahstapp = "Olá $config_empresa".'\n\n'."$doc_nome solicitou uma alteração para $local_reserva - Data: $atendimento_dia_str ás: $atendimento_hora_str".'\n\n\n'."Para Aceitar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Aceita&token=$token".'\n\n'."Para Recusar clique abaixo:".'\n'."$site_atual/painel/reservas_solicitacao.php?alt_status=Recusada&token=$token";
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
 
-$whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
-
-}
+        }
 //Fim Envio Whatsapp
 
-            echo   "<script>
-            window.location.replace('alterar_limitedia.php?token=$token')
-                    </script>";
-            exit();
+        $_SESSION['error_reserva'] = 'Como faltam <b>menos do que 24h</b> para o seu <b>Horário Original</b>, uma <b>solicitação</b> foi enviada para Caroline Ferraz. Em breve entraremos em contato.';
+        header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
+        exit();
         }
         //Fim do Aguarda retorno em casos de alterações antes das 24h
 
-            $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
-            $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior));
-
             if($id_job == 'Consulta Capilar'){
             $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
-            $query_3 = $conexao->prepare("DELETE FROM $tabela_disponibilidade WHERE confirmacao = :confirmacao AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
-            $query_3->execute(array('confirmacao' => $confirmacao, 'atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'confirmacao' => $confirmacao, 'local_reserva' => $local_reserva));
+            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora) VALUES (:atendimento_dia, :atendimento_hora)");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
             }
-            $query = $conexao->prepare("INSERT INTO $tabela_disponibilidade (atendimento_dia, atendimento_hora, confirmacao, local_reserva, quantidade) VALUES (:atendimento_dia, :atendimento_hora, :confirmacao, :local_reserva, '1')");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'local_reserva' => $local_reserva));
-            $query_2 = $conexao->prepare("UPDATE $tabela_reservas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_reserva = 'Confirmada', local_reserva = :local_reserva WHERE confirmacao = :confirmacao AND doc_email = :doc_email");
-            $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'confirmacao' => $confirmacao, 'feitapor' => $feitapor, 'token' => $token, 'doc_email' => $doc_email, 'local_reserva' => $local_reserva));
-            if($feitapor != 'Site'){
-            $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-            $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Alterou a consulta $confirmacao"));  
+            $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_consulta = 'Confirmada', local_consulta = :local_consulta WHERE id = :id_consulta");
+            $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta));
+            if($feitapor != 'Paciente'){
+            $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+            $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Alterou a consulta $id_consulta"));  
             }
 
         
@@ -554,7 +524,7 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
             $mail->SMTPAuth = true;
             $mail->Username = "$mail_Username";
             $mail->Password = "$mail_Password";
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = "$mail_SMTPSecure";
             $mail->Port = "$mail_Port";
 
             $mail->setFrom("$config_email", "$config_empresa");
@@ -562,14 +532,14 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
             $mail->addBCC("$config_email");
             
             $mail->isHTML(true);                                 
-            $mail->Subject = "$pdf_corpo_01 - $confirmacao";
+            $mail->Subject = "Alteração da sua Consulta";
           // INICIO MENSAGEM  
             $mail->Body = "
         
             <fieldset>
-            <legend>$pdf_corpo_01 $confirmacao</legend>
+            <legend>Alteração da sua Consulta</legend>
             <br>
-            $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
+            $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
             <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
             <b>$pdf_corpo_07 $data_email</b>
             </fieldset><br><fieldset>
@@ -597,26 +567,37 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
         }
         //Fim Envio de Email
 
-    $id = base64_encode("$confirmacao.$token");
-    echo   "<script>
-            window.location.replace('reserva.php?id=$id')
+        if($feitapor == 'Paciente'){
+            echo   "<script>
+            alert('Consulta Alterada com Sucesso!')
+            window.location.replace('painel/reservas_paciente.php')
             </script>";
+            exit();
+            }else{
+            echo   "<script>
+            alert('Consulta Alterada com Sucesso!')
+            window.location.replace('painel/reserva.php?id_consulta=$id_consulta')
+            </script>";
+            exit();
+        }
 
-}else if($status_reserva == 'NoShow'){
+}else if($status_consulta == 'NoShow'){
 
-    $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
-    $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
+    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
+
+    $result_check = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
+    $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
     $row_check = $result_check->rowCount();
 
     if($row_check >= 1){
-    $query = $conexao->prepare("UPDATE $tabela_reservas SET status_reserva = :status_reserva WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
-    $query->execute(array('status_reserva' => $status_reserva,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou No-Show na consulta $confirmacao"));
+    $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
+    $query->execute(array('status_consulta' => $status_consulta,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou No-Show na consulta $id_consulta"));
     
     echo "<script>
     alert('No-Show cadastrado com Sucesso')
-    window.location.replace('painel/reserva.php?confirmacao=$confirmacao')
+    window.location.replace('painel/reserva.php?id_consulta=$id_consulta')
     </script>";
 
     }else{
@@ -624,20 +605,21 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
         exit();
     }
 
-}else if($status_reserva == 'Finalizada'){
+}else if($status_consulta == 'Finalizada'){
 
     $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-    $msg_finalizacao = mysqli_real_escape_string($conn_msqli, $_POST['msg_finalizar']);
+    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
+    $msg_finalizacao = $config_msg_finalizar;
 
-    $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
-    $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
+    $result_check = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')");
+    $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
     $row_check = $result_check->rowCount();
 
     if($row_check >= 1){
-    $query = $conexao->prepare("UPDATE $tabela_reservas SET status_reserva = :status_reserva WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
-    $query->execute(array('status_reserva' => $status_reserva, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $confirmacao"));  
+    $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
+    $query->execute(array('status_consulta' => $status_consulta, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $id_consulta"));  
 
             //Envio de Email	
 
@@ -664,7 +646,7 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
         $mail->SMTPAuth = true;
         $mail->Username = "$mail_Username";
         $mail->Password = "$mail_Password";
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->SMTPSecure = "$mail_SMTPSecure";
         $mail->Port = "$mail_Port";
 
         $mail->setFrom("$config_email", "$config_empresa");
@@ -672,14 +654,14 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
         $mail->addBCC("$config_email");
         
         $mail->isHTML(true);                                 
-        $mail->Subject = "$pdf_corpo_01 - $confirmacao";
+        $mail->Subject = "$pdf_corpo_01";
       // INICIO MENSAGEM  
         $mail->Body = "
 
         <fieldset>
-        <legend>$pdf_corpo_01 $confirmacao</legend>
+        <legend>$pdf_corpo_01</legend>
         <br>
-        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
+        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
         <p>Data: <b>$atendimento_dia_str</b> ás: <b>$atendimento_hora_str</b>h</p>
         <br><b>$pdf_corpo_07 $data_email</b>
         </fieldset>
@@ -696,17 +678,8 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
         "; // FIM MENSAGEM
     
             $mail->send();
-            
-            echo "<script>
-            window.location.replace('painel/home.php')
-                    </script>";
-             exit();
 
         } catch (Exception $e) {
-
-            echo "<script>
-            window.location.replace('painel/home.php')
-                    </script>";
 
         }
 
@@ -715,60 +688,30 @@ $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
 
 //Incio Envio Whatsapp
 if($envio_whatsapp == 'ativado'){
+    
+    $site_avaliacao1 = 'https://forms.gle/mc2gyyVwMCvW2HRq9';
+    $site_avaliacao2 = 'https://g.co/kgs/kgkGKy';
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, o seu Atendimento foi Finalizado com sucesso em $data_email!".'\n\n'."Não esqueça de nos avaliar em https://g.page/r/CY8KhBQj3vtrEB0/review!";
+    $msg_whastapp = "Olá $doc_nome, sua consulta foi finalizada em $data_email!\n".
+    "Obrigada por sua presença hoje!\n\n".
+    "Se puder, responda esse breve formulário pra me contar como foi sua experiência:\n".
+    "📋$site_avaliacao1\n\n".
+    "E se meu atendimento te ajudou, sua avaliação no Google faz toda a diferença. Isso fortalece meu trabalho e ajuda outras pessoas a me encontrarem:\n".
+    "🌟$site_avaliacao2";
     
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
-    
-    }
-    //Fim Envio Whatsapp
-
-        }else{
-            echo "<script>
-            window.location.replace('painel/home.php')
-                    </script>";
-            exit();
-        }
-
-
-
-}else if($status_reserva == 'EmAndamento'){
-
-    $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-    $status_reserva = 'Em Andamento';
-
-    $result_check = $conexao->prepare("SELECT * FROM $tabela_reservas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email AND (status_reserva = 'Confirmada' OR status_reserva = 'Em Andamento')");
-    $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
-    $row_check = $result_check->rowCount();
-
-    if($row_check >= 1){
-    $query = $conexao->prepare("UPDATE $tabela_reservas SET status_sessao = :status_reserva WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND confirmacao = :confirmacao AND doc_email = :doc_email");
-    $query->execute(array('status_reserva' => $status_reserva, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'confirmacao' => $confirmacao, 'doc_email' => $doc_email));
-    $query_historico = $conexao->prepare("INSERT INTO $tabela_historico (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $confirmacao"));  
-
-//Incio Envio Whatsapp
-if($envio_whatsapp == 'ativado'){
-
-    $data_email = date('d/m/Y \-\ H:i:s');
-    $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, o sua Sessão foi Finalizada com sucesso em $data_email! Aproveite e já Marque a sua Próxima Sessão!";
-    
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
+    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
     
     }
     //Fim Envio Whatsapp
 
     echo "<script>
-            alert('Sessão Finalizada com Sucesso')
-            window.location.replace('painel/home.php')
-                    </script>";
-            exit();
+    alert('Consulta finalizada com Sucesso')
+    window.location.replace('painel/reserva.php?id_consulta=$id_consulta')
+    </script>";
 
         }else{
             echo "<script>
-            alert('Erro ao Finalizar Sessao')
             window.location.replace('painel/home.php')
                     </script>";
             exit();
@@ -776,7 +719,7 @@ if($envio_whatsapp == 'ativado'){
 
 
 
-}else if($status_reserva == 'EnvioMensagem'){
+}else if($status_consulta == 'EnvioMensagem'){
 
 $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
 $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
@@ -813,7 +756,7 @@ try {
     $mail->SMTPAuth = true;
     $mail->Username = "$mail_Username";
     $mail->Password = "$mail_Password";
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->SMTPSecure = "$mail_SMTPSecure";
     $mail->Port = "$mail_Port";
 
     $mail->setFrom("$config_email", "$config_empresa");
@@ -864,9 +807,12 @@ if(isset($_POST['whatsapp'])){
 if($envio_whatsapp == 'ativado'){
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome, tudo bem?".'\n\n'."Aqui vai a confirmação da sua $id_job para a Data: $atendimento_dia_str ás $atendimento_hora_str.".'\n\n\n'."Para Alterar seu Atendimento acesse: $site_atual/alterar.php?token=$token".'\n\n\n'."Para Cancelar seu Atendimento acesse: $site_atual/cancelar.php?token=$token&typeerror=0";
+    $msg_whatsapp = "Olá $doc_nome, tudo bem?\n\n" .
+                "Aqui vai a confirmação da sua $id_job para a Data: $atendimento_dia_str às $atendimento_hora_str.\n\n\n" .
+                "Para Alterar seu Atendimento acesse: $site_atual/alterar.php?token=$token\n\n\n" .
+                "Para Cancelar seu Atendimento acesse: $site_atual/cancelar.php?token=$token&typeerror=0";
     
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
+    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
     
     }
 
