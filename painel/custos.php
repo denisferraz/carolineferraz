@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -76,7 +76,7 @@ if($aut_acesso == 1){
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM custos WHERE id >= :id ORDER BY custo_tipo DESC");
+                $query = $conexao->prepare("SELECT * FROM custos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY custo_tipo DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {

@@ -17,13 +17,13 @@ if($query_tratamento->rowCount() != 1){
     exit();  
 }else{
 
-$query = $conexao->prepare("DELETE from modelos_anamnese WHERE id = :id");
+$query = $conexao->prepare("DELETE from modelos_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id");
 $query->execute(array('id' => $id));
 
-$query = $conexao->prepare("DELETE from respostas_anamnese WHERE modelo_id = :modelo_id");
+$query = $conexao->prepare("DELETE from respostas_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = :modelo_id");
 $query->execute(array('modelo_id' => $id));
 
-$query = $conexao->prepare("DELETE from perguntas_modelo WHERE modelo_id = :modelo_id");
+$query = $conexao->prepare("DELETE from perguntas_modelo WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = :modelo_id");
 $query->execute(array('modelo_id' => $id));
 
 

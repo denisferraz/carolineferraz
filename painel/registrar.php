@@ -67,7 +67,7 @@ if($password != $password_conf){
     exit();
 }
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email OR unico = :cpf");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email OR unico = :cpf");
 $query->execute(array('email' => $email, 'cpf' => $doc_cpf));
 $row = $query->rowCount();
 
@@ -82,8 +82,8 @@ if($row == 1){
     
     $token = md5(date("YmdHismm"));
     $crip_senha = md5($password);
-    $query = $conexao->prepare("INSERT INTO painel_users (email, senha, nome, telefone, unico, token, codigo, tentativas, aut_painel, tema_painel, tipo) VALUES (:email, :senha, :nome, :telefone, :cpf, :token, :codigo, :tentativas, :aut_painel, :tema_painel, :tipo)");
-    $query->execute(array('email' => $email, 'senha' => $crip_senha, 'nome' => $nome, 'telefone' => $telefone, 'cpf' => $doc_cpf, 'token' => $token, 'codigo' => 0, 'tentativas' => 0, 'aut_painel' => 0, 'tema_painel' => 'colorido', 'tipo' => 'Paciente'));
+    $query = $conexao->prepare("INSERT INTO painel_users (email, senha, nome, telefone, unico, token, codigo, tentativas, aut_painel, tema_painel, tipo, token_emp) VALUES (:email, :senha, :nome, :telefone, :cpf, :token, :codigo, :tentativas, :aut_painel, :tema_painel, :tipo, :token_emp)");
+    $query->execute(array('email' => $email, 'senha' => $crip_senha, 'nome' => $nome, 'telefone' => $telefone, 'cpf' => $doc_cpf, 'token' => $token, 'codigo' => 0, 'tentativas' => 0, 'aut_painel' => 0, 'tema_painel' => 'colorido', 'tipo' => 'Paciente', 'token_emp' => $_SESSION['token_emp']));
     
         $_SESSION['email'] = $email;
         echo json_encode([

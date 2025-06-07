@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -18,7 +18,7 @@ $hoje = date('Y-m-d');
 $id_job = isset($_GET['id_job']) ? mysqli_real_escape_string($conn_msqli, $_GET['id_job']) : 'Cadastro';
 $doc_email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $doc_email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $paciente_id = $select['id'];
@@ -116,7 +116,7 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <fieldset>
 <legend><h2>Cadastro <u><?php echo $nome ?></u></h2></legend>
 
-<label><b>Nome: </b><?php echo $nome ?></label> <a href="javascript:void(0)" onclick='window.open("cadastro_editar.php?email=<?php echo $email ?>","iframe-home")'><button>Editar</button></a><br>
+<label><b>Nome: </b><?php echo $nome ?></label> <a href="javascript:void(0)" onclick='window.open("cadastro_editar.php?email=<?php echo $doc_email ?>","iframe-home")'><button>Editar</button></a><br>
 <label><b>Email: </b><?php echo $doc_email ?></label><br>
 <label><b>Telefone: </b><?php echo $telefone ?></label><br><br>
 <label><b>RG: </b><?php echo $rg ?></label><br>
@@ -130,7 +130,7 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <?php
 if($id_job == 'Tratamento'){
 //Plano de Tratamento
-$check_tratamento = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email");
+$check_tratamento = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $check_tratamento->execute(array('email' => $doc_email));
 while($select_tratamento = $check_tratamento->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select_tratamento['sum(sessao_atual)'];
@@ -164,7 +164,7 @@ $progress = $sessao_atual/$sessao_total*100;
         <td align="center"><b>Excluir</b></td>
     </tr>
 <?php
-$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email GROUP BY token ORDER BY id DESC");
+$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email GROUP BY token ORDER BY id DESC");
 $check_tratamento_row->execute(array('email' => $doc_email));
 if($check_tratamento_row->rowCount() < 1){
 ?>
@@ -210,7 +210,7 @@ $progress = $sessao_atual/$sessao_total*100;
         <?php } ?>
     </tr>
         <?php
-$check_tratamento_row2 = $conexao->prepare("SELECT * FROM tratamento WHERE token = :token AND id != :id ORDER BY id ASC");
+$check_tratamento_row2 = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token AND id != :id ORDER BY id ASC");
 $check_tratamento_row2->execute(array('token' => $token, 'id' => $id));
 while($tratamento_row2 = $check_tratamento_row2->fetch(PDO::FETCH_ASSOC)){
 $plano_data2 = $tratamento_row2['plano_data'];
@@ -308,7 +308,7 @@ foreach ($pastas as $pasta) {
         <td align="center"><b>Status</b></td>
     </tr>
 <?php
-$check_history = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email ORDER BY atendimento_dia DESC");
+$check_history = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email ORDER BY atendimento_dia DESC");
 $check_history->execute(array('doc_email' => $doc_email));
 if($check_history->rowCount() < 1){
 ?>
@@ -382,7 +382,7 @@ $id_consulta = $history['id'];
     </tr>
 <center>
 <?php
-$check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Nao'");
+$check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Nao'");
 $check_contratos->execute(array('email' => $doc_email));
 
 $row_check_contratos = $check_contratos->rowCount();
@@ -393,12 +393,13 @@ while($select3 = $check_contratos->fetch(PDO::FETCH_ASSOC)){
     $assinado = $select3['assinado'];
     $assinado_data = $select3['assinado_data'];
     $token_contrato = $select3['token'];
+    $id_contrato = $select3['id'];
 ?>
     <tr>
-        <td align="center"><a href="reservas_contrato.php?token=<?php echo $token_profile ?>"><button class="home-btn">Ver Contrato</button></a></td>
+        <td align="center"><button type="button" onclick="window.open('reservas_contrato.php?token=<?= $token_profile ?>&token_contrato=<?= $token_contrato ?>','iframe-home')">Ver Contrato</button></td>
         <td align="center"><?php echo $assinado ?></td>
         <td align="center"> <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$assinado_data")) ?> </td>
-        <td align="center"><button type="button" class="btn-excluir" onclick="window.open('contrato_excluir.php?email=<?= $doc_email ?>&token=<?= $token_contrato ?>','iframe-home')">Excluir</button></td>
+        <td align="center"><button type="button" class="btn-excluir" onclick="window.open('contrato_excluir.php?email=<?= $doc_email ?>&token=<?= $token_contrato ?>&id_contrato=<?= $id_contrato ?>','iframe-home')">Excluir</button></td>
     </tr>
     <?php
 }
@@ -432,7 +433,7 @@ if($row_check_contratos == 0){
     </thead>
     <tbody>
         <?php
-        $query = $conexao->prepare("SELECT * FROM modelos_anamnese WHERE id >= :id ORDER BY id DESC");
+        $query = $conexao->prepare("SELECT * FROM modelos_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
         $query->execute(['id' => 1]);
 
         while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -454,7 +455,7 @@ if($row_check_contratos == 0){
 <!-- Lançamentos -->
 <fieldset>
 <?php
-$check = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE doc_email = :doc_email");
+$check = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email");
 $check->execute(array('doc_email' => $doc_email));
 while($total_lanc = $check->fetch(PDO::FETCH_ASSOC)){
 $valor = $total_lanc['sum(valor)'];
@@ -471,7 +472,7 @@ $valor = $total_lanc['sum(valor)'];
         <td width="25%" align="center"><b>Estornar</b></td>
     </tr>
 <?php 
-$query_lanc = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE doc_email = :doc_email ORDER BY quando, id DESC");
+$query_lanc = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email ORDER BY quando, id DESC");
 $query_lanc->execute(array('doc_email' => $doc_email));
 while($select_lancamento = $query_lanc->fetch(PDO::FETCH_ASSOC)){
 $quando = $select_lancamento['quando'];
@@ -523,7 +524,7 @@ $id = $select_lancamento['id'];
 <legend><h2>Prontuário de <?= $nome ?></h2></legend>
 <?php 
 
-$evolucoes = $conexao->prepare("SELECT * FROM evolucoes WHERE doc_email = ? ORDER BY data DESC");
+$evolucoes = $conexao->prepare("SELECT * FROM evolucoes WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = ? ORDER BY data DESC");
 $evolucoes->execute([$doc_email]);
 ?>
 <center>

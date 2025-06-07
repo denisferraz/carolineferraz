@@ -12,7 +12,7 @@ if (isset($_POST['assinatura'])) {
 
   $email = $_SESSION['email'];
 
-  $query = $conexao->query("SELECT * FROM painel_users WHERE email = '{$email}'");
+  $query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$email}'");
   while($select = $query->fetch(PDO::FETCH_ASSOC)){
       $nome = $select['unico'];
   }
@@ -50,7 +50,7 @@ if (isset($_POST['assinatura'])) {
   // Definir as permissões
   chmod($caminho, 0755);
   
-  $query = $conexao->prepare("UPDATE contrato SET assinado = 'Sim', assinado_data = :assinado_data WHERE email = :email");
+  $query = $conexao->prepare("UPDATE contrato SET assinado = 'Sim', assinado_data = :assinado_data WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
   $query->execute(array('assinado_data' => $data_assinatura, 'email' => $email));
 
 }else if (isset($_FILES['pdf']) && isset($_POST['token'])) {

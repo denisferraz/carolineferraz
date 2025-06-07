@@ -11,7 +11,7 @@ use PHPMailer\PHPMailer\Exception;
     $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
     $alt_status = mysqli_real_escape_string($conn_msqli, $_GET['alt_status']);
     
-    $result_check = $conexao->prepare("SELECT * FROM alteracoes WHERE token = :token");
+    $result_check = $conexao->prepare("SELECT * FROM alteracoes WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
     $result_check->execute(array('token' => $token));
     
     while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
@@ -22,7 +22,7 @@ use PHPMailer\PHPMailer\Exception;
     $id_job = $select['id_job'];
     }
     
-    $result_check2 = $conexao->prepare("SELECT * FROM consultas WHERE token = :token");
+    $result_check2 = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
     $result_check2->execute(array('token' => $token));
     
     while($select2 = $result_check2->fetch(PDO::FETCH_ASSOC)){
@@ -36,23 +36,23 @@ use PHPMailer\PHPMailer\Exception;
     
     <?php
     
-        $query = $conexao->prepare("DELETE FROM alteracoes WHERE token = :token");
+        $query = $conexao->prepare("DELETE FROM alteracoes WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
         $query->execute(array('token' => $token));
 
         if($alt_status == 'Aceita'){
 
-        $query = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = 'Confirmada' WHERE token = :token");
+        $query = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = 'Confirmada' WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
         $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'token' => $token));
         
         if($id_job == 'Consulta Capilar'){
             $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
-            $query_4 = $conexao->prepare("DELETE FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
+            $query_4 = $conexao->prepare("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
             $query_4->execute(array('atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
         }
 
         }else{
     
-        $query = $conexao->prepare("UPDATE consultas SET status_consulta = 'Confirmada' WHERE token = :token");
+        $query = $conexao->prepare("UPDATE consultas SET status_consulta = 'Confirmada' WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
         $query->execute(array('token' => $token));
         
         }

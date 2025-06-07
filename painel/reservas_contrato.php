@@ -16,8 +16,9 @@ if($aut_acesso == 1){
 }else{
 
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
+$token_contrato = mysqli_real_escape_string($conn_msqli, $_GET['token_contrato']);
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE token = :token");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
 $query->execute(array('token' => $token));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $nome = $select['nome'];
@@ -46,8 +47,8 @@ $parte3 = substr($cpf, 6, 3);
 $parte4 = substr($cpf, 9);
 $cpf = "$parte1.$parte2.$parte3-$parte4";
 
-$query2 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Não'");
-$query2->execute(array('email' => $email));
+$query2 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Não' AND token = :token");
+$query2->execute(array('email' => $email, 'token' => $token_contrato));
 while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $assinado = $select2['assinado'];
     $assinado_data = $select2['assinado_data'];
@@ -55,10 +56,9 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $procedimento_valor = $select2['procedimento_valor'];
     $procedimento_dias = $select2['procedimento_dias'];
     $procedimento_data = $select2['assinado_empresa_data'];
-    $token_contrato = $select2['token'];
 }
 
-$query_checkin = $conexao->query("SELECT * FROM consultas WHERE doc_email = '{$email}'");
+$query_checkin = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = '{$email}'");
 while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
     $procedimento_local = $select_checkins['local_reserva'];
 }
@@ -164,7 +164,7 @@ ______________________________________________________<br>
 
 <br>
 <?php
-$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Sim'");
+$query3 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Sim'");
 $query3->execute(array('email' => $email));
 $row_check3 = $query3->rowCount();
 if($row_check3 < 1){}else{

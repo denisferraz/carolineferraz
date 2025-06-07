@@ -20,7 +20,7 @@ $hoje = date('Y-m-d'); // hoje no formato padrão
 <fieldset>
 <?php
 
-    $query_select = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email ORDER BY atendimento_dia DESC");
+    $query_select = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email ORDER BY atendimento_dia DESC");
     $query_select->execute(array('doc_email' => $_SESSION['email']));    
 
     $select_qtd = $query_select->rowCount();

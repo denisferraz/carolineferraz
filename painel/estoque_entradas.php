@@ -34,7 +34,7 @@ require('verifica_login.php');
             <label>Produto</label>
             <select name="produto" required>
             <?php
-                $query = $conexao->prepare("SELECT * FROM estoque_item WHERE id >= :id ORDER BY produto DESC");
+                $query = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY produto DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -69,7 +69,7 @@ require('verifica_login.php');
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM estoque WHERE id >= :id AND tipo = 'Entrada' ORDER BY data_entrada DESC");
+                $query = $conexao->prepare("SELECT * FROM estoque WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id AND tipo = 'Entrada' ORDER BY data_entrada DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -77,7 +77,7 @@ require('verifica_login.php');
                     $quantidade = $select['quantidade'];
                     $data_entrada = $select['data_entrada'];
 
-                    $query2 = $conexao->prepare("SELECT * FROM estoque_item WHERE id = :id");
+                    $query2 = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id");
                     $query2->execute(['id' => $produto_id]);
                     while ($select2 = $query2->fetch(PDO::FETCH_ASSOC)) {
                         $produto = $select2['produto'];

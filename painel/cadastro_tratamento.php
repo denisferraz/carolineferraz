@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -17,7 +17,7 @@ $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 $id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $nome = $select['nome'];
@@ -76,7 +76,7 @@ if($id_job == 'enviar'){
 <?php
 }else if($id_job == 'cadastrar'){
 
-$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND sessao_status = 'Em Andamento' AND id = :id");
+$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND sessao_status = 'Em Andamento' AND id = :id");
 $query_cadastrar->execute(array('email' => $email, 'id' => $id));
 while($select_cadastrar = $query_cadastrar->fetch(PDO::FETCH_ASSOC)){
     $plano_descricao = $select_cadastrar['plano_descricao'];
@@ -129,7 +129,7 @@ $progress = $sessao_atual/$sessao_total*100;
 <?php
 }else if($id_job == 'finalizar'){
 
-$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email AND sessao_status = 'Em Andamento' AND id = :id");
+$query_cadastrar = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND sessao_status = 'Em Andamento' AND id = :id");
 $query_cadastrar->execute(array('email' => $email, 'id' => $id));
 while($select_cadastrar = $query_cadastrar->fetch(PDO::FETCH_ASSOC)){
 $plano_descricao = $select_cadastrar['plano_descricao'];

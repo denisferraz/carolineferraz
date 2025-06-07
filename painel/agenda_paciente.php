@@ -194,7 +194,7 @@ body {
             $classe_extra = 'hoje';
         }
         
-        $query = $conexao->query("SELECT local_consulta, atendimento_hora FROM consultas WHERE doc_email = '{$_SESSION['email']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
+        $query = $conexao->query("SELECT local_consulta, atendimento_hora FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = '{$_SESSION['email']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
         if($query->rowCount() > 0){
             //Veriica se é passado, presente, futuro
             $hoje = date('Y-m-d');

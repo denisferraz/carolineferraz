@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -41,7 +41,7 @@ $dia_domingo = $config_dia_domingo; //0
 <body>
 <?php
 
-$query = $conexao->query("SELECT * FROM configuracoes WHERE id = '-2'");
+$query = $conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESSION['token_emp']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $atendimento_hora_comeco = $select['atendimento_hora_comeco'];
 $atendimento_hora_fim = $select['atendimento_hora_fim'];

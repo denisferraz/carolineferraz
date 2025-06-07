@@ -7,7 +7,7 @@ require('verifica_login.php');
 $id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
 
 
-    $query = $conexao->prepare("DELETE FROM estoque_item WHERE id = :id");
+    $query = $conexao->prepare("DELETE FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id");
     $query->execute(array('id' => $id));
 
     echo "<script>

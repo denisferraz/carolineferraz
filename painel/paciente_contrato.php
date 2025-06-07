@@ -5,7 +5,7 @@ ob_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $_SESSION['email']));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $nome = $select['nome'];
@@ -35,7 +35,7 @@ $parte3 = substr($cpf, 6, 3);
 $parte4 = substr($cpf, 9);
 $cpf = "$parte1.$parte2.$parte3-$parte4";
 
-$query2 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Não'");
+$query2 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Não'");
 $query2->execute(array('email' => $_SESSION['email']));
 while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $assinado = $select2['assinado'];
@@ -157,7 +157,7 @@ ______________________________________________________<br>
 </fieldset>
 <br>
 <?php
-$query3 = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Sim'");
+$query3 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Sim'");
 $query3->execute(array('email' => $email));
 $row_check3 = $query3->rowCount();
 if($row_check3 < 1){}else{

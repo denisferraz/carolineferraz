@@ -10,7 +10,7 @@ if($id_job == 'Ver'){
 
 $videos = [];
 
-$result_check = $conexao->query("SELECT * FROM videos WHERE id > 0");
+$result_check = $conexao->query("SELECT * FROM videos WHERE token_emp = '{$_SESSION['token_emp']}' AND id > 0");
 while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)) {
     $link_youtube = $select_check['link_youtube'];
     $descricao = $select_check['descricao'];
@@ -135,7 +135,7 @@ endforeach;
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM videos WHERE id >= :id ORDER BY id DESC");
+                $query = $conexao->prepare("SELECT * FROM videos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {

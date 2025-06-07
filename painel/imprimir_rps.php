@@ -7,7 +7,7 @@ require('verifica_login.php');
 use Dompdf\Dompdf;
 require '../vendor/autoload.php';
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -30,7 +30,7 @@ $config_endereco<br>
 $doc_email= mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
 $tipo = 'portrait';
 
-$query_reserva = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email");
+$query_reserva = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email");
 $query_reserva->execute(array('doc_email' => $doc_email));
 while($select_reserva = $query_reserva->fetch(PDO::FETCH_ASSOC)){
     $hospede = $select_reserva['doc_nome'];
@@ -43,7 +43,7 @@ while($select_reserva = $query_reserva->fetch(PDO::FETCH_ASSOC)){
     $atendimento_hora =$select_reserva['atendimento_hora'];
     $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
 }
-$query_rps = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE doc_email = :doc_email ORDER BY quando ASC");
+$query_rps = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email ORDER BY quando ASC");
 $query_rps->execute(array('doc_email' => $doc_email));
 $rps_total = $query_rps->rowCount();
 if($rps_total > 0){
@@ -61,7 +61,7 @@ $resultado_rps = "$resultado_rps<tr><td align=center>$quando</td><td>($quantidad
 }else{
 $resultado_rps = '<tr><td align=center>-</td><td align=center>-</td><td align=center>-</td></tr>';
     }
-$check_total = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE tipo = 'Pagamento' AND doc_email = :doc_email"); 
+$check_total = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND tipo = 'Pagamento' AND doc_email = :doc_email"); 
 $check_total->execute(array('doc_email' => $doc_email));
 while($total_total = $check_total->fetch(PDO::FETCH_ASSOC)){
 $total = number_format(($total_total['sum(valor)'] * (-1)) ,2,",",".");

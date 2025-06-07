@@ -13,7 +13,7 @@ use PHPMailer\PHPMailer\Exception;
 //error_reporting(E_ALL);
 error_reporting(0);
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -41,7 +41,7 @@ if($aut_acesso == 1){
   
   //Envia Consultas
   $placeholders = implode(',', array_fill(0, count($datas_envio), '?'));
-  $sql = "SELECT * FROM consultas WHERE atendimento_dia IN ($placeholders) AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')";
+  $sql = "SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia IN ($placeholders) AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')";
   $stmt = $conexao->prepare($sql);
   $stmt->execute($datas_envio);
 

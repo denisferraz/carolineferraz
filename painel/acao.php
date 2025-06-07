@@ -25,7 +25,7 @@ error_reporting(E_ALL);
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $historico_data = date('Y-m-d H:i:s');
 
-$result_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
 $historico_quem = $select_check['nome'];
 $historico_unico_usuario = $select_check['unico'];
@@ -85,11 +85,11 @@ if($id_job == 'editar_configuracoes_agenda'){
         exit(); 
     }
 
-    $query = $conexao->prepare("UPDATE configuracoes SET config_limitedia = :config_limitedia, atendimento_hora_comeco = :atendimento_hora_comeco, atendimento_hora_fim = :atendimento_hora_fim, atendimento_hora_intervalo = :atendimento_hora_intervalo, atendimento_dia_max = :atendimento_dia_max, config_dia_segunda = :dia_segunda, config_dia_terca = :dia_terca, config_dia_quarta = :dia_quarta, config_dia_quinta = :dia_quinta, config_dia_sexta = :dia_sexta, config_dia_sabado = :dia_sabado, config_dia_domingo = :dia_domingo WHERE id = '-2'");
+    $query = $conexao->prepare("UPDATE configuracoes SET config_limitedia = :config_limitedia, atendimento_hora_comeco = :atendimento_hora_comeco, atendimento_hora_fim = :atendimento_hora_fim, atendimento_hora_intervalo = :atendimento_hora_intervalo, atendimento_dia_max = :atendimento_dia_max, config_dia_segunda = :dia_segunda, config_dia_terca = :dia_terca, config_dia_quarta = :dia_quarta, config_dia_quinta = :dia_quinta, config_dia_sexta = :dia_sexta, config_dia_sabado = :dia_sabado, config_dia_domingo = :dia_domingo WHERE token_emp = '{$_SESSION['token_emp']}'");
     $query->execute(array('config_limitedia' => $config_limitedia, 'atendimento_hora_comeco' => $atendimento_hora_comeco, 'atendimento_hora_fim' => $atendimento_hora_fim, 'atendimento_hora_intervalo' => $atendimento_hora_intervalo, 'atendimento_dia_max' => $atendimento_dia_max, 'dia_segunda' => $dia_segunda, 'dia_terca' => $dia_terca, 'dia_quarta' => $dia_quarta, 'dia_quinta' => $dia_quinta, 'dia_sexta' => $dia_sexta, 'dia_sabado' => $dia_sabado, 'dia_domingo' => $dia_domingo));
     
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações'));   
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações', 'token_emp' => $_SESSION['token_emp']));   
 
     echo "<script>
     alert('Configurações Editadas com sucesso')
@@ -105,11 +105,11 @@ if($id_job == 'editar_configuracoes_agenda'){
     $config_cnpj = mysqli_real_escape_string($conn_msqli, $_POST['config_cnpj']);
     $config_endereco = mysqli_real_escape_string($conn_msqli, $_POST['config_endereco']);
 
-    $query = $conexao->prepare("UPDATE configuracoes SET config_empresa = :config_empresa, config_email = :config_email, config_telefone = :config_telefone, config_cnpj = :config_cnpj, config_endereco = :config_endereco WHERE id = '-2'");
+    $query = $conexao->prepare("UPDATE configuracoes SET config_empresa = :config_empresa, config_email = :config_email, config_telefone = :config_telefone, config_cnpj = :config_cnpj, config_endereco = :config_endereco WHERE token_emp = '{$_SESSION['token_emp']}'");
     $query->execute(array('config_empresa' => $config_empresa, 'config_email' => $config_email, 'config_telefone' => $config_telefone, 'config_cnpj' => $config_cnpj, 'config_endereco' => $config_endereco));
 
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações'));   
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações', 'token_emp' => $_SESSION['token_emp']));   
 
     echo "<script>
     alert('Configurações Editadas com sucesso')
@@ -164,11 +164,11 @@ if($id_job == 'editar_configuracoes_agenda'){
     $is_domingo = 0;
     }
 
-    $query = $conexao->prepare("UPDATE configuracoes SET config_msg_confirmacao = :config_msg_confirmacao, config_msg_cancelamento = :config_msg_cancelamento, config_msg_finalizar = :config_msg_finalizar, config_msg_lembrete = :config_msg_lembrete, config_msg_aniversario = :config_msg_aniversario, envio_whatsapp = :envio_whatsapp, envio_email = :envio_email, is_segunda = :is_segunda, is_terca = :is_terca, is_quarta = :is_quarta, is_quinta = :is_quinta, is_sexta = :is_sexta, is_sabado = :is_sabado, is_domingo = :is_domingo, lembrete_auto_time = :lembrete_auto_time WHERE id = '-2'");
+    $query = $conexao->prepare("UPDATE configuracoes SET config_msg_confirmacao = :config_msg_confirmacao, config_msg_cancelamento = :config_msg_cancelamento, config_msg_finalizar = :config_msg_finalizar, config_msg_lembrete = :config_msg_lembrete, config_msg_aniversario = :config_msg_aniversario, envio_whatsapp = :envio_whatsapp, envio_email = :envio_email, is_segunda = :is_segunda, is_terca = :is_terca, is_quarta = :is_quarta, is_quinta = :is_quinta, is_sexta = :is_sexta, is_sabado = :is_sabado, is_domingo = :is_domingo, lembrete_auto_time = :lembrete_auto_time WHERE token_emp = '{$_SESSION['token_emp']}'");
     $query->execute(array('config_msg_confirmacao' => $msg_confirmacao, 'config_msg_cancelamento' => $msg_cancelamento, 'config_msg_finalizar' => $msg_finalizar, 'config_msg_lembrete' => $msg_lembrete, 'config_msg_aniversario' => $msg_aniversario, 'envio_whatsapp' => $envio_whatsapp, 'envio_email' => $envio_email, 'is_segunda' => $is_segunda, 'is_terca' => $is_terca, 'is_quarta' => $is_quarta, 'is_quinta' => $is_quinta, 'is_sexta' => $is_sexta, 'is_sabado' => $is_sabado, 'is_domingo' => $is_domingo, 'lembrete_auto_time' => $lembrete_auto_time));
         
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações'));   
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações', 'token_emp' => $_SESSION['token_emp']));   
 
     echo "<script>
     alert('Configurações Editadas com sucesso')
@@ -202,7 +202,7 @@ while($close <= $reserva_close){
     //Hora Inicio
     while($close_hora <= $hora_close){
 
-    $query = $conexao->query("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora) VALUES ('{$close_dias}', '{$close_horas}')");
+    $query = $conexao->query("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES ('{$close_dias}', '{$close_horas}', '{$_SESSION['token_emp']}')");
 
     $close_hora++;
     $close_horas = date('H:i:s', strtotime("$close_horas") + ($config_atendimento_hora_intervalo * 60));
@@ -253,7 +253,7 @@ while($close <= $reserva_close){
     //Hora Inicio
     while($close_hora <= $hora_close){
 
-    $query = $conexao->query("DELETE FROM disponibilidade WHERE atendimento_dia = '{$close_dias}' AND atendimento_hora = '{$close_horas}'");
+    $query = $conexao->query("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$close_dias}' AND atendimento_hora = '{$close_horas}'");
 
     $close_hora++;
     $close_horas = date('H:i:s', strtotime("$close_horas") + ($config_atendimento_hora_intervalo * 60));
@@ -270,8 +270,8 @@ while($close <= $reserva_close){
 $fechar_inicio = date('d/m/Y', strtotime($fechar_inicio));
 $fechar_fim = date('d/m/Y', strtotime($fechar_fim));
 
-$query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-$query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Abriu disponibilidade entre as datas $fechar_inicio e $fechar_fim"));
+$query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+$query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Abriu disponibilidade entre as datas $fechar_inicio e $fechar_fim", 'token_emp' => $_SESSION['token_emp']));
 
 echo "<script>
     alert('Disponibilidade entre os dias $fechar_inicio e $fechar_fim abertas')
@@ -301,11 +301,11 @@ echo "<script>
     $tipo = 'Produto';
     }
 
-    $query = $conexao->prepare("INSERT INTO lancamentos_atendimento (doc_email, produto, quantidade, valor, quando, feitopor, tipo, doc_nome) VALUES ('{$doc_email}', :lanc_produto, :lanc_quantidade, :valor, '{$lanc_data}', '{$historico_quem}', '{$tipo}', '{$doc_nome}')");
-    $query->execute(array('lanc_produto' => $lanc_produto, 'lanc_quantidade' => $lanc_quantidade, 'valor' => $valor));
+    $query = $conexao->prepare("INSERT INTO lancamentos_atendimento (doc_email, produto, quantidade, valor, quando, feitopor, tipo, doc_nome, token_emp) VALUES ('{$doc_email}', :lanc_produto, :lanc_quantidade, :valor, '{$lanc_data}', '{$historico_quem}', '{$tipo}', '{$doc_nome}', :token_emp)");
+    $query->execute(array('lanc_produto' => $lanc_produto, 'lanc_quantidade' => $lanc_quantidade, 'valor' => $valor, 'token_emp' => $_SESSION['token_emp']));
     $lanc_valor = number_format($lanc_valor ,2,",",".");
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Lançou $lanc_quantiade $lanc_produto no valor de R$$lanc_valor no Cadastro $doc_email"));
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Lançou $lanc_quantiade $lanc_produto no valor de R$$lanc_valor no Cadastro $doc_email", 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Produto Lançado com Sucesso!')
@@ -321,8 +321,8 @@ echo "<script>
 
 
 
-    $query = $conexao->prepare("INSERT INTO despesas (despesa_dia, despesa_valor, despesa_tipo, despesa_descricao, despesa_quem) VALUES (:despesa_dia, :despesa_valor, :despesa_tipo, :despesa_descricao, :despesa_quem)");
-    $query->execute(array('despesa_dia' => $despesa_dia, 'despesa_valor' => $despesa_valor, 'despesa_tipo' => $despesa_tipo, 'despesa_descricao' => $despesa_descricao, 'despesa_quem' => $historico_quem));
+    $query = $conexao->prepare("INSERT INTO despesas (despesa_dia, despesa_valor, despesa_tipo, despesa_descricao, despesa_quem, token_emp) VALUES (:despesa_dia, :despesa_valor, :despesa_tipo, :despesa_descricao, :despesa_quem, :token_emp)");
+    $query->execute(array('despesa_dia' => $despesa_dia, 'despesa_valor' => $despesa_valor, 'despesa_tipo' => $despesa_tipo, 'despesa_descricao' => $despesa_descricao, 'despesa_quem' => $historico_quem, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Despesa Cadastrada com Sucesso')
@@ -337,8 +337,8 @@ echo "<script>
     $custo_tipo = mysqli_real_escape_string($conn_msqli, $_POST['custo_tipo']);
     $custo_descricao = mysqli_real_escape_string($conn_msqli, $_POST['custo_descricao']);
 
-    $query = $conexao->prepare("INSERT INTO custos (custo_valor, custo_tipo, custo_descricao, custo_quem) VALUES (:custo_valor, :custo_tipo, :custo_descricao, :custo_quem)");
-    $query->execute(array('custo_valor' => $custo_valor, 'custo_tipo' => $custo_tipo, 'custo_descricao' => $custo_descricao, 'custo_quem' => $historico_quem));
+    $query = $conexao->prepare("INSERT INTO custos (custo_valor, custo_tipo, custo_descricao, custo_quem, token_emp) VALUES (:custo_valor, :custo_tipo, :custo_descricao, :custo_quem, :token_emp)");
+    $query->execute(array('custo_valor' => $custo_valor, 'custo_tipo' => $custo_tipo, 'custo_descricao' => $custo_descricao, 'custo_quem' => $historico_quem, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Custo Cadastrado com Sucesso')
@@ -354,7 +354,7 @@ echo "<script>
     $custo_tipo = mysqli_real_escape_string($conn_msqli, $_POST['custo_tipo']);
     $custo_descricao = mysqli_real_escape_string($conn_msqli, $_POST['custo_descricao']);
 
-    $query = $conexao->prepare("UPDATE custos SET custo_valor = :custo_valor, custo_tipo = :custo_tipo, custo_descricao = :custo_descricao WHERE id = :custo_id");
+    $query = $conexao->prepare("UPDATE custos SET custo_valor = :custo_valor, custo_tipo = :custo_tipo, custo_descricao = :custo_descricao WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :custo_id");
     $query->execute(array('custo_valor' => $custo_valor, 'custo_tipo' => $custo_tipo, 'custo_descricao' => $custo_descricao, 'custo_id' => $custo_id));
 
     echo "<script>
@@ -368,8 +368,8 @@ echo "<script>
 
     $tratamento_descricao = mysqli_real_escape_string($conn_msqli, $_POST['tratamento_descricao']);
 
-    $query = $conexao->prepare("INSERT INTO tratamentos (tratamento, tratamento_quem) VALUES (:tratamento_descricao, :tratamento_quem)");
-    $query->execute(array('tratamento_descricao' => $tratamento_descricao, 'tratamento_quem' => $historico_quem));
+    $query = $conexao->prepare("INSERT INTO tratamentos (tratamento, tratamento_quem, token_emp) VALUES (:tratamento_descricao, :tratamento_quem, :token_emp)");
+    $query->execute(array('tratamento_descricao' => $tratamento_descricao, 'tratamento_quem' => $historico_quem, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Tratamento Cadastrado com Sucesso')
@@ -384,8 +384,8 @@ echo "<script>
     $quantidade = mysqli_real_escape_string($conn_msqli, $_POST['quantidade']);
     $tratamento_id = mysqli_real_escape_string($conn_msqli, $_POST['tratamento_id']);
 
-    $query = $conexao->prepare("INSERT INTO custos_tratamentos (tratamento_id, custo_id, quantidade) VALUES (:tratamento_id, :custo_id, :quantidade)");
-    $query->execute(array('tratamento_id' => $tratamento_id, 'custo_id' => $custo_id, 'quantidade' => $quantidade));
+    $query = $conexao->prepare("INSERT INTO custos_tratamentos (tratamento_id, custo_id, quantidade, token_emp) VALUES (:tratamento_id, :custo_id, :quantidade, :token_emp)");
+    $query->execute(array('tratamento_id' => $tratamento_id, 'custo_id' => $custo_id, 'quantidade' => $quantidade, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Custo Cadastrado com Sucesso')
@@ -403,8 +403,8 @@ echo "<script>
     $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
     $token_contrato = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 
-    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_dias, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, token) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_dias, :procedimento_valor, '-', '-', 'Não', :token)");
-    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'procedimento_dias' => $procedimento_dias, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'token' => $token_contrato));
+    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_dias, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, token, token_emp) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_dias, :procedimento_valor, '-', '-', 'Não', :token, :token_emp)");
+    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'procedimento_dias' => $procedimento_dias, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'token' => $token_contrato, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Contrato Enviado com Sucesso')
@@ -420,10 +420,10 @@ echo "<script>
     $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
     $token_contrato = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 
-    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, token) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, '-', '-', :procedimento, :procedimento_valor, 'Sim', :token)");
-    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'token' => $token_contrato));
+    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, token, token_emp) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, '-', '-', :procedimento, :procedimento_valor, 'Sim', :token, :token_emp)");
+    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'token' => $token_contrato, 'token_emp' => $_SESSION['token_emp']));
 
-    $query2 = $conexao->prepare("UPDATE contrato SET assinado = 'Não' WHERE token = :token");
+    $query2 = $conexao->prepare("UPDATE contrato SET assinado = 'Não' WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
     $query2->execute(array('token' => $token_contrato));
 
     echo "<script>
@@ -441,8 +441,8 @@ echo "<script>
     $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
     $comentario = mysqli_real_escape_string($conn_msqli, $_POST['comentario']);
 
-    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, token, comentario) VALUES (:email, :plano_descricao, :plano_data, 0, :sessao_total, 'Em Andamento', :token, :comentario)");
-    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => $tratamento_sessao, 'token' => $token, 'comentario' => $comentario));
+    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, token, comentario, token_emp) VALUES (:email, :plano_descricao, :plano_data, 0, :sessao_total, 'Em Andamento', :token, :comentario, :token_emp)");
+    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => $tratamento_sessao, 'token' => $token, 'comentario' => $comentario, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Tratamento Enviado com Sucesso')
@@ -461,11 +461,11 @@ echo "<script>
     $tratamento_data = mysqli_real_escape_string($conn_msqli, $_POST['tratamento_data']);
     $tratamento = mysqli_real_escape_string($conn_msqli, $_POST['tratamento']);
 
-    $query = $conexao->prepare("UPDATE tratamento SET sessao_atual = :tratamento_sessao WHERE id = :id AND email = :email AND token = :token");
+    $query = $conexao->prepare("UPDATE tratamento SET sessao_atual = :tratamento_sessao WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id AND email = :email AND token = :token");
     $query->execute(array('email' => $email, 'id' => $id, 'tratamento_sessao' => $tratamento_sessao, 'token' => $token));
 
-    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, token, comentario) VALUES (:email, :plano_descricao, :plano_data, :sessao_total, :sessao_total, 'Em Andamento', :token, :comentario)");
-    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => 0, 'token' => $token, 'comentario' => $comentario));
+    $query = $conexao->prepare("INSERT INTO tratamento (email, plano_descricao, plano_data, sessao_atual, sessao_total, sessao_status, token, comentario, token_emp) VALUES (:email, :plano_descricao, :plano_data, :sessao_total, :sessao_total, 'Em Andamento', :token, :comentario, :token_emp)");
+    $query->execute(array('email' => $email, 'plano_descricao' => $tratamento, 'plano_data' => $tratamento_data, 'sessao_total' => 0, 'token' => $token, 'comentario' => $comentario, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Sessao $tratamento_sessao Cadastrada com Sucesso')
@@ -479,7 +479,7 @@ echo "<script>
     $id = trim(mysqli_real_escape_string($conn_msqli, $_POST['id']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
 
-    $query = $conexao->prepare("UPDATE tratamento SET sessao_status = 'Finalizada' WHERE id = :id AND email = :email");
+    $query = $conexao->prepare("UPDATE tratamento SET sessao_status = 'Finalizada' WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id AND email = :email");
     $query->execute(array('email' => $email, 'id' => $id));
 
     echo "<script>
@@ -521,8 +521,8 @@ echo "<script>
     }
 
 
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo Arquivo $arquivo na Consulta $id_consulta"));
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo Arquivo $arquivo na Consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Arquivo Cadastrado com Sucesso $id_consulta')
@@ -782,7 +782,7 @@ echo "<script>
         exit();
     }
 
-    $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email OR unico = :cpf");
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email OR unico = :cpf");
     $query->execute(array('email' => $doc_email, 'cpf' => $doc_cpf));
     $row_check = $query->rowCount();
     
@@ -794,8 +794,8 @@ echo "<script>
         exit();
     }
 
-    $query = $conexao->prepare("INSERT INTO painel_users (email, tipo, senha, nome, telefone, nascimento, unico, token, codigo, tentativas, aut_painel, origem) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :nascimento, :cpf, :token, '0', '0', '1', :origem)");
-    $query->execute(array('email' => $doc_email, 'nome' => $doc_nome, 'cpf' => $doc_cpf, 'token' => $token, 'telefone' => $doc_telefone, 'nascimento' => $nascimento, 'senha' => $crip_senha, 'origem' => $origem));
+    $query = $conexao->prepare("INSERT INTO painel_users (email, tipo, senha, nome, telefone, nascimento, unico, token, codigo, tentativas, aut_painel, origem, token_emp) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :nascimento, :cpf, :token, '0', '0', '1', :origem, :token_emp)");
+    $query->execute(array('email' => $doc_email, 'nome' => $doc_nome, 'cpf' => $doc_cpf, 'token' => $token, 'telefone' => $doc_telefone, 'nascimento' => $nascimento, 'senha' => $crip_senha, 'origem' => $origem, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Cliente Cadastrado Sucesso!')
@@ -818,10 +818,10 @@ echo "<script>
     $endereco_uf = mysqli_real_escape_string($conn_msqli, $_POST['endereco_uf']);
     $feitopor = mysqli_real_escape_string($conn_msqli, $_POST['feitopor']);
 
-    $query = $conexao->prepare("UPDATE painel_users SET nome = :doc_nome, telefone = :doc_telefone, rg = :doc_rg, nascimento = :nascimento, profissao = :profissao, cep = :cep, rua = :rua, numero = :numero, cidade = :cidade, bairro = :bairro, estado = :estado WHERE email = :email");
+    $query = $conexao->prepare("UPDATE painel_users SET nome = :doc_nome, telefone = :doc_telefone, rg = :doc_rg, nascimento = :nascimento, profissao = :profissao, cep = :cep, rua = :rua, numero = :numero, cidade = :cidade, bairro = :bairro, estado = :estado WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
     $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone, 'doc_rg' => $doc_rg, 'nascimento' => $nascimento, 'profissao' => $profissao, 'cep' => $endereco_cep, 'rua' => $endereco_rua, 'numero' => $endereco_n, 'cidade' => $endereco_cidade, 'bairro' => $endereco_bairro, 'estado' => $endereco_uf));
 
-    $query = $conexao->prepare("UPDATE consultas SET doc_nome = :doc_nome, doc_telefone = :doc_telefone WHERE doc_email = :email");
+    $query = $conexao->prepare("UPDATE consultas SET doc_nome = :doc_nome, doc_telefone = :doc_telefone WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :email");
     $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone));
 
     if($feitopor == 'Paciente'){
@@ -853,13 +853,13 @@ echo "<script>
     $crip_senha = md5($senha_antes);
     $crip_senha_nova = md5($senha_nova);
     
-    $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email AND senha = :senha");
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND senha = :senha");
     $query->execute(array('email' => $doc_email, 'senha' => $crip_senha));
     $row = $query->rowCount();
     
     if($row == 1){
 
-    $query = $conexao->prepare("UPDATE painel_users SET senha = :senha WHERE email = :email");
+    $query = $conexao->prepare("UPDATE painel_users SET senha = :senha WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
     $query->execute(array('email' => $doc_email, 'senha' => $crip_senha_nova));
 
     echo "<script>
@@ -879,8 +879,8 @@ echo "<script>
     $produto_minimo = mysqli_real_escape_string($conn_msqli, $_POST['produto_minimo']);
     $produto_unidade = mysqli_real_escape_string($conn_msqli, $_POST['produto_unidade']);
 
-    $query = $conexao->prepare("INSERT INTO estoque_item (produto, minimo, unidade) VALUES (:produto, :minimo, :unidade)");
-    $query->execute(array('produto' => $produto, 'minimo' => $produto_minimo, 'unidade' => $produto_unidade));
+    $query = $conexao->prepare("INSERT INTO estoque_item (produto, minimo, unidade, token_emp) VALUES (:produto, :minimo, :unidade, :token_emp)");
+    $query->execute(array('produto' => $produto, 'minimo' => $produto_minimo, 'unidade' => $produto_unidade, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Produto Cadastrado com Sucesso')
@@ -896,7 +896,7 @@ echo "<script>
     $produto_minimo = mysqli_real_escape_string($conn_msqli, $_POST['produto_minimo']);
     $produto_unidade = mysqli_real_escape_string($conn_msqli, $_POST['produto_unidade']);
 
-    $query = $conexao->prepare("UPDATE estoque_item SET produto = :produto, minimo = :minimo, unidade = :unidade WHERE id = :produto_id");
+    $query = $conexao->prepare("UPDATE estoque_item SET produto = :produto, minimo = :minimo, unidade = :unidade WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :produto_id");
     $query->execute(array('produto' => $produto, 'minimo' => $produto_minimo, 'unidade' => $produto_unidade, 'produto_id' => $produto_id));
 
     echo "<script>
@@ -911,8 +911,8 @@ echo "<script>
     $produto = mysqli_real_escape_string($conn_msqli, $_POST['produto']);
     $produto_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['produto_quantidade']);
 
-    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade) VALUES (:produto, :tipo, :quantidade)");
-    $query->execute(array('produto' => $produto, 'tipo' => 'Entrada', 'quantidade' => $produto_quantidade));
+    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, token_emp) VALUES (:produto, :tipo, :quantidade, :token_emp)");
+    $query->execute(array('produto' => $produto, 'tipo' => 'Entrada', 'quantidade' => $produto_quantidade, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Entrada Cadastrada com Sucesso')
@@ -928,8 +928,8 @@ echo "<script>
 
     $produto_quantidade = $produto_quantidade * -1;
 
-    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade) VALUES (:produto, :tipo, :quantidade)");
-    $query->execute(array('produto' => $produto, 'tipo' => 'Saida', 'quantidade' => $produto_quantidade));
+    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, token_emp) VALUES (:produto, :tipo, :quantidade, :token_emp)");
+    $query->execute(array('produto' => $produto, 'tipo' => 'Saida', 'quantidade' => $produto_quantidade, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Saida Cadastrada com Sucesso')
@@ -946,8 +946,8 @@ $link_youtube = mysqli_real_escape_string($conn_msqli, $_POST['video_link']);
 // Verifica se é um link do YouTube
 if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_youtube)) {
 
-    $query = $conexao->prepare("INSERT INTO videos (link_youtube, descricao) VALUES (:link_youtube, :descricao)");
-    $query->execute(array('link_youtube' => $link_youtube, 'descricao' => $descricao));
+    $query = $conexao->prepare("INSERT INTO videos (link_youtube, descricao, token_emp) VALUES (:link_youtube, :descricao, :token_emp)");
+    $query->execute(array('link_youtube' => $link_youtube, 'descricao' => $descricao, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
         alert('Vídeo cadastrado com sucesso');
@@ -973,7 +973,7 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     // Verifica se é um link do YouTube
     if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_youtube)) {
 
-    $query = $conexao->prepare("UPDATE videos SET link_youtube = :link_youtube, descricao = :descricao WHERE id = :video_id");
+    $query = $conexao->prepare("UPDATE videos SET link_youtube = :link_youtube, descricao = :descricao WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :video_id");
     $query->execute(array('link_youtube' => $link_youtube, 'descricao' => $descricao, 'video_id' => $video_id));
 
     echo "<script>
@@ -997,8 +997,8 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     $profissional = mysqli_real_escape_string($conn_msqli, $_POST['profissional']);
     $anotacao = mysqli_real_escape_string($conn_msqli, $_POST['anotacao']);
 
-    $stmt = $conexao->prepare("INSERT INTO evolucoes (doc_email, profissional, anotacao) VALUES (?, ?, ?)");
-    $stmt->execute([$doc_email, $profissional, $anotacao]);
+    $stmt = $conexao->prepare("INSERT INTO evolucoes (doc_email, profissional, anotacao, token_emp) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$doc_email, $profissional, $anotacao, $_SESSION['token_emp']]);
 
     echo "<script>
         alert('Prontuario Registrado com Sucesso');

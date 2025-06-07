@@ -7,7 +7,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -59,7 +59,7 @@ body {
     
     $historico_fim = date('Y-m-d', strtotime("$historico_fim") + 86400);
 
-    $query_historico = $conexao->prepare("SELECT * FROM historico_atendimento WHERE (oque LIKE :palavra OR quem LIKE :palavra) AND quando >= '{$historico_inicio}' AND quando <= '{$historico_fim}' ORDER BY id DESC");
+    $query_historico = $conexao->prepare("SELECT * FROM historico_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND (oque LIKE :palavra OR quem LIKE :palavra) AND quando >= '{$historico_inicio}' AND quando <= '{$historico_fim}' ORDER BY id DESC");
     $query_historico->execute(array('palavra' => "%$palavra%"));
     $historico_qtd = $query_historico->rowCount();
 

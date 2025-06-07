@@ -9,11 +9,11 @@ $modelo_id = $_POST['modelo_id'] ?? null;
 
 if ($modelo_id) {
   // Atualiza título
-  $stmt = $conexao->prepare("UPDATE modelos_anamnese SET titulo = ? WHERE id = ?");
+  $stmt = $conexao->prepare("UPDATE modelos_anamnese SET titulo = ? WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
   $stmt->execute([$titulo, $modelo_id]);
 
   // Busca perguntas atuais do banco
-  $stmt = $conexao->prepare("SELECT id FROM perguntas_modelo WHERE modelo_id = ?");
+  $stmt = $conexao->prepare("SELECT id FROM perguntas_modelo WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ?");
   $stmt->execute([$modelo_id]);
   $ids_atuais = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
@@ -23,7 +23,7 @@ if ($modelo_id) {
 
     if ($pergunta_id && in_array($pergunta_id, $ids_atuais)) {
       // Atualiza pergunta existente
-      $stmt = $conexao->prepare("UPDATE perguntas_modelo SET ordem = ?, tipo = ?, pergunta = ?, opcoes = ? WHERE id = ? AND modelo_id = ?");
+      $stmt = $conexao->prepare("UPDATE perguntas_modelo SET ordem = ?, tipo = ?, pergunta = ?, opcoes = ? WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ? AND modelo_id = ?");
       $stmt->execute([
         $ordem,
         $pergunta['tipo'],
@@ -35,13 +35,14 @@ if ($modelo_id) {
       $ids_recebidos[] = $pergunta_id;
     } else {
       // Insere nova pergunta
-      $stmt = $conexao->prepare("INSERT INTO perguntas_modelo (modelo_id, ordem, tipo, pergunta, opcoes) VALUES (?, ?, ?, ?, ?)");
+      $stmt = $conexao->prepare("INSERT INTO perguntas_modelo (modelo_id, ordem, tipo, pergunta, opcoes, token_emp) VALUES (?, ?, ?, ?, ?, ?)");
       $stmt->execute([
         $modelo_id,
         $ordem,
         $pergunta['tipo'],
         $pergunta['texto'],
-        $pergunta['opcoes'] ?? null
+        $pergunta['opcoes'] ?? null,
+        $_SESSION['token_emp']
       ]);
       $ids_recebidos[] = $conexao->lastInsertId();
     }
@@ -51,26 +52,27 @@ if ($modelo_id) {
   $ids_para_deletar = array_diff($ids_atuais, $ids_recebidos);
   if ($ids_para_deletar) {
     $in  = str_repeat('?,', count($ids_para_deletar) - 1) . '?';
-    $stmt = $conexao->prepare("DELETE FROM perguntas_modelo WHERE id IN ($in) AND modelo_id = ?");
+    $stmt = $conexao->prepare("DELETE FROM perguntas_modelo WHERE token_emp = '{$_SESSION['token_emp']}' AND id IN ($in) AND modelo_id = ?");
     $params = array_merge($ids_para_deletar, [$modelo_id]);
     $stmt->execute($params);
   }
 
 } else {
   // Insere novo modelo
-  $stmt = $conexao->prepare("INSERT INTO modelos_anamnese (titulo) VALUES (?)");
-  $stmt->execute([$titulo]);
+  $stmt = $conexao->prepare("INSERT INTO modelos_anamnese (titulo, token_emp) VALUES (?, ?)");
+  $stmt->execute([$titulo, $_SESSION['token_emp']]);
   $modelo_id = $conexao->lastInsertId();
 
   // Insere perguntas novas
   foreach ($perguntas as $ordem => $pergunta) {
-    $stmt = $conexao->prepare("INSERT INTO perguntas_modelo (modelo_id, ordem, tipo, pergunta, opcoes) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conexao->prepare("INSERT INTO perguntas_modelo (modelo_id, ordem, tipo, pergunta, opcoes, token_emp) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([
       $modelo_id,
       $ordem,
       $pergunta['tipo'],
       $pergunta['texto'],
-      $pergunta['opcoes'] ?? null
+      $pergunta['opcoes'] ?? null,
+      $_SESSION['token_emp']
     ]);
   }
 }

@@ -31,7 +31,7 @@ require('verifica_login.php');
                 $query = $conexao->prepare("
                 SELECT produto, SUM(quantidade) AS total_quantidade, MAX(data_entrada) as ultima_entrada
                 FROM estoque 
-                WHERE id >= :id 
+                WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id 
                 GROUP BY produto 
                 ORDER BY produto DESC
             ");
@@ -47,7 +47,7 @@ require('verifica_login.php');
                 $query2 = $conexao->prepare("
                     SELECT produto, unidade, minimo 
                     FROM estoque_item 
-                    WHERE id = :id
+                    WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id
                 ");
                 $query2->execute([
                     'id' => $produto_id

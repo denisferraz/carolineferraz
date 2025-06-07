@@ -5,7 +5,7 @@ require('verifica_login.php');
 
 $email = $_SESSION['email'];
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $email));
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $doc_nome = $select['nome'];

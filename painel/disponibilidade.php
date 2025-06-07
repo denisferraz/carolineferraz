@@ -93,13 +93,13 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
         // Query de verificação
         $check_disponibilidade = $conexao->query(
             "SELECT * FROM disponibilidade 
-             WHERE atendimento_dia = '{$dataAtual}' 
+             WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$dataAtual}' 
              AND atendimento_hora = '{$atendimento_horas}'"
         );
 
         $check_consultas = $conexao->query(
           "SELECT * FROM consultas 
-           WHERE atendimento_dia = '{$dataAtual}' 
+           WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$dataAtual}' 
            AND atendimento_hora = '{$atendimento_horas}' 
            AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')"
       );

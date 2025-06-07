@@ -28,7 +28,7 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
     
         <?php
         // Busca os atendimentos para o dia selecionado
-        $query_checkin = $conexao->query("SELECT * FROM consultas WHERE doc_email = '{$_SESSION['email']}' AND atendimento_dia = '{$dataSelecionada}' ORDER BY atendimento_dia, atendimento_hora ASC");
+        $query_checkin = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = '{$_SESSION['email']}' AND atendimento_dia = '{$dataSelecionada}' ORDER BY atendimento_dia, atendimento_hora ASC");
         $checkin_qtd = $query_checkin->rowCount();
         ?>
 

@@ -3,7 +3,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -125,17 +125,17 @@ $cpf = "$parte1.$parte2.$parte3-$parte4";
 
             <div class="card-group">
                 <label>Nome</label>
-                <input type="text" name="doc_nome" minlength="5" maxlength="30" value="<?php echo $nome ?>" placeholder="Nome e Sobrenome" required>
+                <input type="text" name="doc_nome" minlength="5" maxlength="30" placeholder="Nome e Sobrenome" required>
             </div>
 
             <div class="card-group">
                 <label>Email</label>
-                <input type="email" name="doc_email" minlength="10" maxlength="35" value="<?php echo $email ?>" placeholder="exemplo@exemplo.com" required>
+                <input type="email" name="doc_email" minlength="10" maxlength="35" placeholder="exemplo@exemplo.com" required>
             </div>
 
             <div class="card-group">
                 <label>Telefone</label>
-                <input type="text" name="doc_telefone" minlength="11" maxlength="18" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
+                <input type="text" name="doc_telefone" minlength="11" maxlength="18" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
             </div>
 
             <div class="card-group">

@@ -30,7 +30,7 @@ require('verifica_login.php');
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM modelos_anamnese WHERE id >= :id ORDER BY id DESC");
+                $query = $conexao->prepare("SELECT * FROM modelos_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {

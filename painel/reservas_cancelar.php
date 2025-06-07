@@ -43,7 +43,7 @@ unset($_SESSION['error_reserva']);
 <?php
 $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta");
+$query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
 $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $doc_nome = $select['doc_nome'];

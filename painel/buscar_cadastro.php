@@ -5,7 +5,7 @@ require('verifica_login.php');
 
 $doc_cpf = $_POST['cpf'] ?? '';
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE unico = :cpf");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND unico = :cpf");
 $query->execute(['cpf' => $doc_cpf]);
 
 if ($query->rowCount() > 0) {

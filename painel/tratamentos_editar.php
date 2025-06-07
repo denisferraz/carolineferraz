@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -15,7 +15,7 @@ if($aut_acesso == 1){
 
 $tratamento_id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
 
-$query = $conexao->prepare("SELECT * FROM tratamentos WHERE id = :id");
+$query = $conexao->prepare("SELECT * FROM tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id");
 $query->execute(array('id' => $tratamento_id));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $tratamento = $select['tratamento'];
@@ -57,7 +57,7 @@ $tratamento = $select['tratamento'];
             <label><b>Custo:  
                 <select name="custo_id">
                 <?php
-            $query2 = $conexao->prepare("SELECT * FROM custos WHERE id >= :id ORDER BY custo_tipo DESC");
+            $query2 = $conexao->prepare("SELECT * FROM custos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY custo_tipo DESC");
             $query2->execute(array('id' => '1'));
             while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
             $id_custo = $select2['id'];
@@ -94,14 +94,14 @@ $tratamento = $select['tratamento'];
                             <td align="center"><b>Excluir</b></td>
                         </tr>
 <?php
-$query = $conexao->prepare("SELECT * FROM custos_tratamentos WHERE id >= :id ORDER BY id DESC");
+$query = $conexao->prepare("SELECT * FROM custos_tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
 $query->execute(array('id' => '1'));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $id = $select['id'];
 $custo_id = $select['custo_id'];
 $quantidade = $select['quantidade'];
 
-$query_custos = $conexao->prepare("SELECT * FROM custos WHERE id = :custo_id");
+$query_custos = $conexao->prepare("SELECT * FROM custos WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :custo_id");
 $query_custos->execute(array('custo_id' => $custo_id));
 while($select_custos = $query_custos->fetch(PDO::FETCH_ASSOC)){
 $custo_descricao = $select_custos['custo_descricao'];

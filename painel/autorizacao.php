@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -43,7 +43,7 @@ $proximos_dias = date('Y-m-d', strtotime("$hoje") + (86400 * 7 ));
 <!-- Solicitações Pendentes -->
 <fieldset>
 <?php
-    $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE alt_status = 'Pendente'");
+    $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE token_emp = '{$_SESSION['token_emp']}' AND alt_status = 'Pendente'");
     $alteracao_qtd = $query_alteracao->rowCount();
 
 if($alteracao_qtd > 0){

@@ -16,7 +16,7 @@ if($id_job == 'Cadastro' || $tipo != 'Painel'){
     $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
     $email = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['email'] ?? $_SESSION['email']) : $_SESSION['email'];
 
-    $query_check2 = $conexao->query("SELECT * FROM painel_users WHERE email = '{$email}'");
+    $query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$email}'");
     while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $nome = $select_check2['nome'];
         $telefone = $select_check2['telefone'];

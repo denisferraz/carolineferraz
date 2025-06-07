@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2025 at 05:13 PM
+-- Generation Time: Jun 07, 2025 at 05:29 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -475,39 +475,31 @@ CREATE TABLE `contrato` (
 --
 
 INSERT INTO `contrato` (`id`, `email`, `assinado`, `assinado_data`, `assinado_empresa`, `assinado_empresa_data`, `procedimento`, `procedimento_dias`, `procedimento_valor`, `aditivo_valor`, `aditivo_procedimento`, `aditivo_status`, `token`) VALUES
-(3, 'erikadourado14@gmail.com', 'Não', '2023-05-12 15:42:49', 'Sim', '2023-05-02 19:17:14', '1 Sessão de Laser<br>1 Sessão de Microagulhamento', 15, 'R$ 590,00 sendo R$127,00 em pix e R$463,00 no cartão de credito dividido em 2x', '-', '-', 'Não', ''),
-(5, 'alinerochas@hotmail.com', 'Não', '2023-05-07 19:08:43', 'Sim', '2023-05-07 19:08:43', '4 Sessões de Fotobioestimulação com Laser<br>2 Sessões SPA dos Fios<br>2 Sessões de Blend de óleos no couro cabeludo', 15, 'R$ 1380,00 Parcelado em 7x sem juros', '-', '-', 'Não', ''),
-(6, 'everton.pinheiro@hotmail.com', 'Sim', '2023-05-18 16:31:54', 'Sim', '2023-05-07 19:33:35', '3 Sessões de Microagulhamento<br> 3 Sessões de Fotobioestimulação com Laser<br> 2 Sessões de Terapia ILIB<br> 1 Sessão brinde de Terapia ILIB', 15, 'R$1870,00 parcelado em 10x sem juros ', '-', '-', 'Não', ''),
-(7, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-07 19:38:15', '3 Sessões de Terapia com Laser<br> 1 Sessão de microagulhamento', 15, 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', '-', '-', 'Não', ''),
-(8, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-07 19:38:20', '-', 15, '-', 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', '3 Sessões de Terapia com Laser<br> 1 Sessão de microagulhamento', 'Sim', ''),
-(10, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-23 19:11:26', '-', 15, '-', '3 Sessões de Fotobioestimulação com Laser<br>1 Sessão de Microagulhamento com drug delivery', 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', 'Sim', ''),
-(11, 'henrique.amon@saude.ba.gov.br', 'Não', '2023-05-23 19:16:46', 'Sim', '2023-05-23 19:16:46', '3 Sessões de Fotobioestimulação com Laser<br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$1050,00 em cartão de débito', '-', '-', 'Não', ''),
-(12, 'alinerochas@hotmail.com', 'Não', '2023-06-06 19:08:35', 'Sim', '2023-06-06 19:08:35', '3 Sessões de Fotobioestimulação com laser <br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$ 997,00 EM PIX', '-', '-', 'Não', ''),
-(13, 'denis_ferraz359@hotmail.com', 'Sim', '2025-05-31 18:54:01', 'Sim', '2023-07-02 22:51:30', 'bado viado', 15, 'R$1.000,00 parcelado em 10x de R$100,00', '-', '-', 'Não', ''),
-(14, 'michel.oliveira2701@gmail.com', 'Não', '2023-07-27 17:51:08', 'Sim', '2023-07-27 17:51:08', '3 Sessões de Fotobiomodulação com Laser <br> 1 Sessão de Microagulhamento', 15, 'R$ 976,00 em espécie', '-', '-', 'Não', ''),
-(15, 'manucassia@gmail.com', 'Não', '2023-08-02 18:13:01', 'Sim', '2023-08-02 18:13:01', '-', 15, '-', '2 Sessões de Fotobiomodulação com laser<br>2 Sessões de Intradermoterapia Capilar', 'R$ 980,00 EM DÉBITO', 'Sim', ''),
-(16, 'evanilsonsoliveira@gmail.com', 'Não', '2023-08-05 09:17:48', 'Sim', '2023-08-05 09:17:48', '3 Sessões de Microagulhamento<br>3 Sessões de fotobiomodulação com laser', 15, 'R$1990,00 parcelado em 10x sem juros', '-', '-', 'Não', ''),
-(17, 'priscila_nutri89@hotmail.com', 'Não', '2023-09-03 17:23:10', 'Sim', '2023-09-03 17:23:10', '3 Sessões de Laser<BR>1 Sessão de Microagulhamento com drug delivery<BR>2 Sessões de Intradermoterapia', 15, 'R$ 1550,00 Parcelado em 6x s/ juros', '-', '-', 'Não', ''),
-(18, 'manucassia@gmail.com', 'Não', '2023-09-03 17:24:53', 'Sim', '2023-09-03 17:24:53', '-', 15, '-', '2 Sessões de Laserterapia <br> 2 Sessões de Intradermoterapia', 'R$ 980,00 EM DÉBITO', 'Sim', ''),
-(19, 'erikadourado14@gmail.com', 'Não', '2023-09-03 17:26:15', 'Sim', '2023-09-03 17:26:15', '-', 15, '-', '1 Sessão de Microagulhamento com drug delivery', 'R$ 330,00 em débito', 'Sim', ''),
-(20, 'jr_losant@hotmail.com', 'Não', '2023-10-11 23:58:20', 'Sim', '2023-10-11 23:58:20', '4 Sessões de laserterapia', 15, 'R$ 960,00 parcelado em 2x sem juros ', '-', '-', 'Não', ''),
-(21, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:15:38', 'Sim', '2023-10-13 12:15:38', '2 Sessões de Laserterapia>br>2 Sessões de Microagulhamento>br>2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não', ''),
-(22, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:17:27', 'Sim', '2023-10-13 12:17:27', '2 Sessões de Laserterapia<br>2 Sessões de Microagulhamento<br> 2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não', ''),
-(23, 'erikadourado14@gmail.com', 'Não', '2023-10-13 12:18:39', 'Sim', '2023-10-13 12:18:39', '-', 15, '-', 'Sessão individual de Intradermoterapia mensal', 'RS 250,000', 'Sim', ''),
-(24, 'brenoalmeidasantana@gmail.com', 'Não', '2023-10-13 12:19:38', 'Sim', '2023-10-13 12:19:38', 'Sessão intradermoterapia mensal', 15, 'R$ 250,000', '-', '-', 'Não', ''),
-(25, 'Rosana_silva654@hotmail.com', 'Não', '2023-11-07 18:49:16', 'Sim', '2023-11-07 18:49:16', '6 sessões de tratamento em consultório', 15, 'R$1620,00 pago em 6x por sessão em dinheiro', '-', '-', 'Não', ''),
-(26, 'Kaiqueeecr7@gmail.com', 'Não', '2023-11-07 19:33:38', 'Sim', '2023-11-07 19:33:38', '4 SESSÕES DE TRATAMENTO EM CONSULTÓRIO', 15, 'R$ 980,00 EM PIX COM 5% DE DESCONTO', '-', '-', 'Não', ''),
-(27, 'bruno.ferreira88@icloud.com', 'Não', '2023-11-17 16:58:46', 'Sim', '2023-11-17 16:58:46', '6 Sessões com tecnologia em Consultório<br>', 15, 'R$ 1740,00 EM 3X SEM JUROS', '-', '-', 'Não', ''),
-(28, 'bruno.ferreira88@icloud.com', 'Não', '2024-03-14 17:15:29', 'Sim', '2024-03-14 17:15:29', '-', 15, '-', '6 Sessões programa HaiRecupere', 'R$2310,00 parcelado em 6 vezes sem juros', 'Sim', ''),
-(29, 'sand11cost@gmail.com', 'Não', '2024-06-04 14:03:46', 'Sim', '2024-06-04 14:03:46', '4 sessões de Laserterapia<br> 1 Sessão de Microagulhamento', 15, 'R$1187,50em débito automàtico', '-', '-', 'Não', ''),
-(30, 'luciana_gomes@hotmail.com', 'Não', '2024-08-09 19:41:13', 'Sim', '2024-08-09 19:41:13', 'Sessão de intradermoterapia mensal', 15, 'R$ 107,00 em pix mensalmente  referente a mão de obra ', '-', '-', 'Não', ''),
-(31, 'neilsonrabelo@hotmail.com', 'Não', '2024-08-15 09:06:29', 'Sim', '2024-08-14 17:44:45', '2 SESSÕES DE FOTOBIOMODULAÇÃO COM LASER', 15, 'R$550,00 EM 3X SEM JUROS ', '-', '-', 'Não', ''),
-(32, 'neilsonrabelo@hotmail.com', 'Não', '2024-09-12 00:43:59', 'Sim', '2024-09-12 00:43:59', '-', 15, '-', '2 sessões de laserterapia', 'R$ 520,00 parcelado em 3x sem juros ', 'Sim', ''),
-(33, 'everton.pinheiro@hotmail.com', 'Não', '2024-12-14 12:33:15', 'Sim', '2024-12-14 12:33:15', 'PLANO DE TRATAMENTO HAIRCUPERE POR 6 MESES', 15, 'RS1980,00 PARCELADO EM 7X NO CARTÃO DE CRÉDITO', '-', '-', 'Não', ''),
-(37, 'eli.trevo@gmail.com', 'Não', '2025-04-17 11:16:05', 'Sim', '2025-04-17 11:16:05', 'Programa Haircupere Clinica<br> Sessão mensal de injetáveis associado a laserterapia', 30, 'R$ 2580,00 Parcelado em 6x sem juros ', '-', '-', 'Não', ''),
-(38, 'erico_nascimento@hotmail.com', 'Não', '2025-05-12 15:21:04', 'Sim', '2025-05-12 15:21:04', 'Programa Haircupere Clinica Personalizado por 3 meses<br>Programa Haircupere Home Care personalizado por 3 meses totalizando 6 meses de tratamento', 30, 'R$ 1500,00 sendoR$ 500,00 abatido referente a credito anterior e  R$1000,00 pago a vista via pix .', '-', '-', 'Não', ''),
-(39, 'livia.carvalho@msn.com', 'Não', '2025-05-30 11:53:16', 'Sim', '2025-05-30 11:53:16', 'Programa Haircupere Clinica (6 Sessões com laserterapia+ 6 Sessões com aplicação de injetáveis).', 30, 'R$ 2382,00 Parcelado em 6x sem juros ', '-', '-', 'Não', ''),
-(40, 'pacienteteste@pacienteteste.com', 'Não', '2025-06-01 18:43:35', 'Sim', '2025-06-01 18:43:35', 'TESTE TESTE TESTE', 30, 'R$ 1000 PAGO EM CARTAO', '-', '-', 'Não', '');
+(3, 'erikadourado14@gmail.com', 'Não', '2023-05-12 15:42:49', 'Sim', '2023-05-02 19:17:14', '1 Sessão de Laser<br>1 Sessão de Microagulhamento', 15, 'R$ 590,00 sendo R$127,00 em pix e R$463,00 no cartão de credito dividido em 2x', '-', '-', 'Não', '053dd635bc2b4ad53c47240ff20d29f6'),
+(5, 'alinerochas@hotmail.com', 'Não', '2023-05-07 19:08:43', 'Sim', '2023-05-07 19:08:43', '4 Sessões de Fotobioestimulação com Laser<br>2 Sessões SPA dos Fios<br>2 Sessões de Blend de óleos no couro cabeludo', 15, 'R$ 1380,00 Parcelado em 7x sem juros', '-', '-', 'Não', '076ee3cce883300a9be2e8d8e72c40be'),
+(6, 'everton.pinheiro@hotmail.com', 'Sim', '2023-05-18 16:31:54', 'Sim', '2023-05-07 19:33:35', '3 Sessões de Microagulhamento<br> 3 Sessões de Fotobioestimulação com Laser<br> 2 Sessões de Terapia ILIB<br> 1 Sessão brinde de Terapia ILIB', 15, 'R$1870,00 parcelado em 10x sem juros ', '-', '-', 'Não', 'a65e2c05eee407b2f5609fbf0ee6248e'),
+(7, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-07 19:38:15', '3 Sessões de Terapia com Laser<br> 1 Sessão de microagulhamento', 15, 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', '-', '-', 'Não', '35bfb3518df572b44520bb9a3d7bad7a'),
+(11, 'henrique.amon@saude.ba.gov.br', 'Não', '2023-05-23 19:16:46', 'Sim', '2023-05-23 19:16:46', '3 Sessões de Fotobioestimulação com Laser<br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$1050,00 em cartão de débito', '-', '-', 'Não', '0c6254026d4568e76ae844079152672a'),
+(12, 'alinerochas@hotmail.com', 'Não', '2023-06-06 19:08:35', 'Sim', '2023-06-06 19:08:35', '3 Sessões de Fotobioestimulação com laser <br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$ 997,00 EM PIX', '-', '-', 'Não', '9e31b171d57d0ac76a51b1d823cba4a5'),
+(13, 'denis_ferraz359@hotmail.com', 'Sim', '2025-05-31 18:54:01', 'Sim', '2023-07-02 22:51:30', 'bado viado', 15, 'R$1.000,00 parcelado em 10x de R$100,00', '-', '-', 'Não', '8fb2f79127aa6eaf63369e4f7bb0c4a7'),
+(14, 'michel.oliveira2701@gmail.com', 'Não', '2023-07-27 17:51:08', 'Sim', '2023-07-27 17:51:08', '3 Sessões de Fotobiomodulação com Laser <br> 1 Sessão de Microagulhamento', 15, 'R$ 976,00 em espécie', '-', '-', 'Não', 'b10ea2e38723a154dc88c4a21c2b49f2'),
+(16, 'evanilsonsoliveira@gmail.com', 'Não', '2023-08-05 09:17:48', 'Sim', '2023-08-05 09:17:48', '3 Sessões de Microagulhamento<br>3 Sessões de fotobiomodulação com laser', 15, 'R$1990,00 parcelado em 10x sem juros', '-', '-', 'Não', 'a9c2e48eeeda2544f3d6654a82d805dc'),
+(17, 'priscila_nutri89@hotmail.com', 'Não', '2023-09-03 17:23:10', 'Sim', '2023-09-03 17:23:10', '3 Sessões de Laser<BR>1 Sessão de Microagulhamento com drug delivery<BR>2 Sessões de Intradermoterapia', 15, 'R$ 1550,00 Parcelado em 6x s/ juros', '-', '-', 'Não', '1895c16fe111a0a40d9714d52f6e361f'),
+(20, 'jr_losant@hotmail.com', 'Não', '2023-10-11 23:58:20', 'Sim', '2023-10-11 23:58:20', '4 Sessões de laserterapia', 15, 'R$ 960,00 parcelado em 2x sem juros ', '-', '-', 'Não', 'a0ad0b171b15e855ce078c9ec216e480'),
+(21, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:15:38', 'Sim', '2023-10-13 12:15:38', '2 Sessões de Laserterapia>br>2 Sessões de Microagulhamento>br>2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não', 'cbb766534b190db0616dc9ec69f4a288'),
+(22, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:17:27', 'Sim', '2023-10-13 12:17:27', '2 Sessões de Laserterapia<br>2 Sessões de Microagulhamento<br> 2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não', 'f7dcab111f422dca1104b45feaf5f396'),
+(24, 'brenoalmeidasantana@gmail.com', 'Não', '2023-10-13 12:19:38', 'Sim', '2023-10-13 12:19:38', 'Sessão intradermoterapia mensal', 15, 'R$ 250,000', '-', '-', 'Não', 'ca7c39fb4d36bea9e37a7f8616528204'),
+(25, 'Rosana_silva654@hotmail.com', 'Não', '2023-11-07 18:49:16', 'Sim', '2023-11-07 18:49:16', '6 sessões de tratamento em consultório', 15, 'R$1620,00 pago em 6x por sessão em dinheiro', '-', '-', 'Não', '584b6f08426a243c04dcd1d7e69c4ef9'),
+(26, 'Kaiqueeecr7@gmail.com', 'Não', '2023-11-07 19:33:38', 'Sim', '2023-11-07 19:33:38', '4 SESSÕES DE TRATAMENTO EM CONSULTÓRIO', 15, 'R$ 980,00 EM PIX COM 5% DE DESCONTO', '-', '-', 'Não', '9204655a460242b886d19b2d7449fdc7'),
+(27, 'bruno.ferreira88@icloud.com', 'Não', '2023-11-17 16:58:46', 'Sim', '2023-11-17 16:58:46', '6 Sessões com tecnologia em Consultório<br>', 15, 'R$ 1740,00 EM 3X SEM JUROS', '-', '-', 'Não', '40f9f2bff2df0378bf6f6ea8c57f5c75'),
+(29, 'sand11cost@gmail.com', 'Não', '2024-06-04 14:03:46', 'Sim', '2024-06-04 14:03:46', '4 sessões de Laserterapia<br> 1 Sessão de Microagulhamento', 15, 'R$1187,50em débito automàtico', '-', '-', 'Não', '407a8b0dc63bb2c0f8cbe7de80826ac3'),
+(30, 'luciana_gomes@hotmail.com', 'Não', '2024-08-09 19:41:13', 'Sim', '2024-08-09 19:41:13', 'Sessão de intradermoterapia mensal', 15, 'R$ 107,00 em pix mensalmente  referente a mão de obra ', '-', '-', 'Não', 'a6472a8788b5c364fb826b414e9a203c'),
+(31, 'neilsonrabelo@hotmail.com', 'Não', '2024-08-15 09:06:29', 'Sim', '2024-08-14 17:44:45', '2 SESSÕES DE FOTOBIOMODULAÇÃO COM LASER', 15, 'R$550,00 EM 3X SEM JUROS ', '-', '-', 'Não', 'ec8f026201b59991210ff2c77546bc3f'),
+(33, 'everton.pinheiro@hotmail.com', 'Não', '2024-12-14 12:33:15', 'Sim', '2024-12-14 12:33:15', 'PLANO DE TRATAMENTO HAIRCUPERE POR 6 MESES', 15, 'RS1980,00 PARCELADO EM 7X NO CARTÃO DE CRÉDITO', '-', '-', 'Não', '4e03728f5d095308118b0ef9902a52f3'),
+(37, 'eli.trevo@gmail.com', 'Não', '2025-04-17 11:16:05', 'Sim', '2025-04-17 11:16:05', 'Programa Haircupere Clinica<br> Sessão mensal de injetáveis associado a laserterapia', 30, 'R$ 2580,00 Parcelado em 6x sem juros ', '-', '-', 'Não', '93c4d844bb8f986bcb006f2a4d42f229'),
+(38, 'erico_nascimento@hotmail.com', 'Não', '2025-05-12 15:21:04', 'Sim', '2025-05-12 15:21:04', 'Programa Haircupere Clinica Personalizado por 3 meses<br>Programa Haircupere Home Care personalizado por 3 meses totalizando 6 meses de tratamento', 30, 'R$ 1500,00 sendoR$ 500,00 abatido referente a credito anterior e  R$1000,00 pago a vista via pix .', '-', '-', 'Não', '1f5e630453f3cab6c9d91690eafdb211'),
+(39, 'livia.carvalho@msn.com', 'Não', '2025-05-30 11:53:16', 'Sim', '2025-05-30 11:53:16', 'Programa Haircupere Clinica (6 Sessões com laserterapia+ 6 Sessões com aplicação de injetáveis).', 30, 'R$ 2382,00 Parcelado em 6x sem juros ', '-', '-', 'Não', '3c0545fa05356ff20297daf599fd72da'),
+(40, 'pacienteteste@pacienteteste.com', 'Não', '2025-06-01 18:43:35', 'Sim', '2025-06-01 18:43:35', 'TESTE TESTE TESTE', 30, 'R$ 1000 PAGO EM CARTAO', '-', '-', 'Não', 'ea5c02b6c73b249624c942100d1c3a2a');
 
 -- --------------------------------------------------------
 

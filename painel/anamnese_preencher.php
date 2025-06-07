@@ -6,19 +6,19 @@ require('verifica_login.php');
 $modelo_id = $_GET['modelo_id'] ?? 0;
 $paciente_id = $_GET['paciente_id'] ?? 0;
 
-$stmt = $conexao->prepare("SELECT titulo FROM modelos_anamnese WHERE id = ?");
+$stmt = $conexao->prepare("SELECT titulo FROM modelos_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
 $stmt->execute([$modelo_id]);
 $modelo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $conexao->prepare("SELECT * FROM perguntas_modelo WHERE modelo_id = ? ORDER BY ordem ASC");
+$stmt = $conexao->prepare("SELECT * FROM perguntas_modelo WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? ORDER BY ordem ASC");
 $stmt->execute([$modelo_id]);
 $perguntas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $conexao->prepare("SELECT pergunta_id, resposta FROM respostas_anamnese WHERE modelo_id = ? AND paciente_id = ?");
+$stmt = $conexao->prepare("SELECT pergunta_id, resposta FROM respostas_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? AND paciente_id = ?");
 $stmt->execute([$modelo_id, $paciente_id]);
 $respostas_salvas = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-$stmt = $conexao->prepare("SELECT nome, email FROM painel_users WHERE id = ?");
+$stmt = $conexao->prepare("SELECT nome, email FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
 $stmt->execute([$paciente_id]);
 $painel = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>

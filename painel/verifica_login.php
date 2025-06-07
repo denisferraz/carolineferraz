@@ -19,7 +19,7 @@ if(!$_SESSION['email']){
 }
 
 // Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $_SESSION['email']));
 $result = $query->fetch(PDO::FETCH_ASSOC);
 $tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro

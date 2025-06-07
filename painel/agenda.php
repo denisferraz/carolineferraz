@@ -215,7 +215,7 @@ body {
             $classe_extra = 'hoje';
         }
         
-        $query = $conexao->query("SELECT doc_nome, atendimento_hora FROM consultas WHERE atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
+        $query = $conexao->query("SELECT doc_nome, atendimento_hora FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
         if($query->rowCount() > 0){
             
             //Veriica se é passado, presente, futuro

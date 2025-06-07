@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -31,7 +31,7 @@ $hoje = date('Y-m-d');
 <?php
 $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta");
+$query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
 $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $confirmacao_cancelamento = $select['confirmacao_cancelamento'];
@@ -61,7 +61,7 @@ $prefixo = substr($doc_telefone, 2, 5);
 $sufixo = substr($doc_telefone, 7);
 $doc_telefone = "($ddd)$prefixo-$sufixo";
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $doc_email));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $nome = $select['nome'];

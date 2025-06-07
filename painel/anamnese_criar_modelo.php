@@ -20,7 +20,7 @@ if (isset($_GET['id_modelo'])) {
   }
 
   // Carregar perguntas do modelo
-  $stmt = $conexao->prepare("SELECT id, ordem, tipo, pergunta, opcoes FROM perguntas_modelo WHERE modelo_id = ? ORDER BY ordem ASC");
+  $stmt = $conexao->prepare("SELECT id, ordem, tipo, pergunta, opcoes FROM perguntas_modelo WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? ORDER BY ordem ASC");
   $stmt->execute([$modelo_id]);
   $perguntas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

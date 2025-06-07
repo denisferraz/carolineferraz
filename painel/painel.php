@@ -5,7 +5,7 @@ require('../config/database.php');
 require('verifica_login.php');
 
 // Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $_SESSION['email']));
 $result = $query->fetch(PDO::FETCH_ASSOC);
 $tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
@@ -13,7 +13,7 @@ $tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
 // Define o caminho do CSS
 $css_path = "css/style_$tema.css";
 
-$query = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $tipo_acesso = $select['tipo'];
     $usuario = $select['nome'];

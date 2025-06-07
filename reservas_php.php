@@ -34,7 +34,7 @@ $hoje = date('Y-m-d');
 $historico_data = date('Y-m-d H:i:s');
 if($feitapor == 'Painel'){
 $email = $_SESSION['email'];
-$result_historico = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$result_historico = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $result_historico->execute(array('email' => $email));
 while($select_historico = $result_historico->fetch(PDO::FETCH_ASSOC)){
 $historico_quem = $select_historico['nome'] ;
@@ -113,9 +113,9 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
     //Verificar horarios de atendimento
 
 //Exclusao de dias
-    $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+    $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
     $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
-    $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+    $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
     $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
 
     $total_consultas = $check_consultas->rowcount() + $check_disponibilidade->rowcount();
@@ -137,9 +137,9 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
     
         $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-        $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+        $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
         $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
-        $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+        $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
         $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
 
         $total_consultas = $check_consultas->rowcount() + $check_disponibilidade->rowcount();
@@ -158,20 +158,20 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
         }
 
     if($id_job == 'Consulta Capilar'){
-    $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora) VALUES (:atendimento_dia, :atendimento_hora)");
-    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
+    $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
+    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
     }
 
     if($status_consulta == 'Confirmada'){
-    $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, doc_nome, doc_cpf, doc_telefone, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta)");
-    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta));
+    $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, doc_nome, doc_cpf, doc_telefone, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta, :token_emp)");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta, 'token_emp' => $_SESSION['token_emp']));
     }else{
-    $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = 'Nova Sessão', local_consulta = :local_consulta WHERE doc_email = :doc_email AND id = :id_consulta");
+    $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = 'Nova Sessão', local_consulta = :local_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email AND id = :id_consulta");
     $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'token' => $token, 'local_consulta' => $local_consulta));
     }
     if($feitapor != 'Paciente'){
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Criou a consulta $id_consulta"));    
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Criou a consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));    
     }
 
     //Incio Envio Whatsapp
@@ -219,7 +219,7 @@ if($envio_whatsapp == 'ativado'){
     $status_consulta = 'Cancelada';
     $confirmacao_cancelamento = strtoupper(substr(md5(date("YmdHismm")), 0, 10));
 
-        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')");
+        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')");
         $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta));
         $row_check = $result_check->rowCount();
 
@@ -228,18 +228,18 @@ if($envio_whatsapp == 'ativado'){
             }
 
         if($row_check >= 1){
-        $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta, data_cancelamento = :data_cancelamento, confirmacao_cancelamento = :confirmacao_cancelamento WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta");
+        $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta, data_cancelamento = :data_cancelamento, confirmacao_cancelamento = :confirmacao_cancelamento WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta");
         $query->execute(array('status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'confirmacao_cancelamento' => $confirmacao_cancelamento ,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta));
         
         if($id_job == 'Consulta Capilar'){
         $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
-        $query_2 = $conexao->prepare("DELETE FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
+        $query_2 = $conexao->prepare("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
         $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
         }
 
         if($feitapor != 'Paciente'){
-        $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-        $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cancelou a consulta $id_consulta"));
+        $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+        $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cancelou a consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));
         }
 
             //Envio de Email	
@@ -390,7 +390,7 @@ if($envio_whatsapp == 'ativado'){
         $feitapor = $historico_quem;
             }
 
-        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'NoShow' OR status_consulta = 'Em Andamento')");
+        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'NoShow' OR status_consulta = 'Em Andamento')");
         $result_check->execute(array('id_consulta' => $id_consulta,'doc_email' => $doc_email));
         $row_check = $result_check->rowCount();
 
@@ -404,10 +404,10 @@ if($envio_whatsapp == 'ativado'){
                 header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
                 exit();
             }
-            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
+            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
             $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta));
             
-            $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");   
+            $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");   
             $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
 
             $check_total = $check_consulta->rowcount() + $check_disponibilidade->rowcount();
@@ -423,10 +423,10 @@ if($envio_whatsapp == 'ativado'){
 
             $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
+            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
             $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta));
             
-            $check_disponibilidade = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
+            $check_disponibilidade = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
             $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta));
 
             $check_total = $check_consulta->rowcount() + $check_disponibilidade->rowcount();
@@ -442,20 +442,20 @@ if($envio_whatsapp == 'ativado'){
         //Inicio do Aguarda retorno em casos de alterações antes das 24h
         if($atendimento_dia_original == date('Y-m-d', strtotime("$hoje"))){
 
-            $query = $conexao->prepare("UPDATE consultas SET token = :token, status_consulta = 'A Confirmar' WHERE id = :id_consulta AND doc_email = :doc_email");
+            $query = $conexao->prepare("UPDATE consultas SET token = :token, status_consulta = 'A Confirmar' WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta AND doc_email = :doc_email");
             $query->execute(array('token' => $token,'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
 
             if($id_job == 'Consulta Capilar'){
 
             $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
 
-            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora) VALUES (:atendimento_dia, :atendimento_hora)");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
+            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
 
             }
 
-            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, 'Pendente', :id_job)");
-            $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job));
+            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job, token_emp) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, 'Pendente', :id_job, :token_emp)");
+            $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job, 'token_emp' => $_SESSION['token_emp']));
 
 
         //Incio Envio Whatsapp
@@ -485,14 +485,14 @@ if($envio_whatsapp == 'ativado'){
 
             if($id_job == 'Consulta Capilar'){
             $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
-            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora) VALUES (:atendimento_dia, :atendimento_hora)");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
+            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
             }
-            $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_consulta = 'Confirmada', local_consulta = :local_consulta WHERE id = :id_consulta");
+            $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_consulta = 'Confirmada', local_consulta = :local_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
             $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta));
             if($feitapor != 'Paciente'){
-            $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-            $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Alterou a consulta $id_consulta"));  
+            $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+            $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Alterou a consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));  
             }
 
         
@@ -585,15 +585,15 @@ if($envio_whatsapp == 'ativado'){
 
     $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
 
-    $result_check = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
+    $result_check = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
     $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
     $row_check = $result_check->rowCount();
 
     if($row_check >= 1){
-    $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
+    $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
     $query->execute(array('status_consulta' => $status_consulta,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou No-Show na consulta $id_consulta"));
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou No-Show na consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));
     
     echo "<script>
     alert('No-Show cadastrado com Sucesso')
@@ -612,15 +612,15 @@ if($envio_whatsapp == 'ativado'){
     $enviar_mensagem = mysqli_real_escape_string($conn_msqli, $_POST['enviar_mensagem']);
     $msg_finalizacao = $config_msg_finalizar;
 
-    $result_check = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')");
+    $result_check = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')");
     $result_check->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
     $row_check = $result_check->rowCount();
 
     if($row_check >= 1){
-    $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
+    $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email");
     $query->execute(array('status_consulta' => $status_consulta, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
-    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $id_consulta"));  
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));  
 
     if($enviar_mensagem == 'sim'){
   

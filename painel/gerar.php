@@ -30,7 +30,7 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
     exit();
  }
 
- $query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+ $query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
     $gerador_nome = $select_check['nome'];
@@ -440,93 +440,93 @@ $dias_trabalho++;
 }
 
     //Relatorios Dia
-    $check_lanc = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE tipo = 'Produto' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
+    $check_lanc = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND tipo = 'Produto' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
     $check_lanc->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_lanc = $check_lanc->fetch(PDO::FETCH_ASSOC)){
     $receita_lancamento_dia = $total_lanc['sum(valor)'];
     }
-    $check_dinheiro = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
+    $check_dinheiro = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
     $check_dinheiro->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_dinheiro = $check_dinheiro->fetch(PDO::FETCH_ASSOC)){
     $receita_dinheiro_dia = number_format(($total_dinheiro['sum(valor)'] * (-1)) ,2,",",".");
     }
-    $check_cartao = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
+    $check_cartao = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
     $check_cartao->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_cartao = $check_cartao->fetch(PDO::FETCH_ASSOC)){
     $receita_cartao_dia = number_format(($total_cartao['sum(valor)'] * (-1)) ,2,",",".");
     }
-    $check_transferencia = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
+    $check_transferencia = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
     $check_transferencia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_transferencia = $check_transferencia->fetch(PDO::FETCH_ASSOC)){
     $receita_transferencia_dia = number_format(($total_transferencia['sum(valor)'] * (-1)) ,2,",",".");
     }
-    $check_outros = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
+    $check_outros = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio AND quando <= :relatorio_fim"); 
     $check_outros->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_outros = $check_outros->fetch(PDO::FETCH_ASSOC)){
     $receita_outros_dia = number_format(($total_outros['sum(valor)'] * (-1)) ,2,",",".");
     }
 
-    $row_dispnibilidade_dia = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia = :relatorio_inicio");
+    $row_dispnibilidade_dia = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :relatorio_inicio");
     $row_dispnibilidade_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $row_dispnibilidade_dia = $row_dispnibilidade_dia->rowCount();
-    $row_cancelamentos_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND status_consulta = 'Cancelada'");
+    $row_cancelamentos_dia = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :relatorio_inicio AND status_consulta = 'Cancelada'");
     $row_cancelamentos_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $row_cancelamentos_dia = $row_cancelamentos_dia->rowCount();
-    $row_reservas_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
+    $row_reservas_dia = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
     $row_reservas_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $row_reservas_dia = $row_reservas_dia->rowCount();
-    $arrivals_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND status_consulta = 'Finalizada'");
+    $arrivals_dia = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :relatorio_inicio AND status_consulta = 'Finalizada'");
     $arrivals_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $arrivals_dia = $arrivals_dia->rowCount();
-    $arrivals_dia_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
+    $arrivals_dia_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
     $arrivals_dia_consultas->execute(array('relatorio_inicio' => $relatorio_inicio));
     $arrivals_dia_consultas = $arrivals_dia_consultas->rowCount();
-    $noshows_dia = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :relatorio_inicio AND status_consulta = 'NoShow'");
+    $noshows_dia = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :relatorio_inicio AND status_consulta = 'NoShow'");
     $noshows_dia->execute(array('relatorio_inicio' => $relatorio_inicio));
     $noshows_dia = $noshows_dia->rowCount();
 
     //Despesas
-    $check_despesa_aluguel_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_aluguel_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_aluguel_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_aluguel_dia = $check_despesa_aluguel_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_aluguel_dia = number_format(($total_despesa_aluguel_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_luz_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_luz_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_luz_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_luz_dia = $check_despesa_luz_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_luz_dia = number_format(($total_despesa_luz_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_internet_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_internet_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_internet_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_internet_dia = $check_despesa_internet_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_internet_dia = number_format(($total_despesa_internet_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_insumos_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_insumos_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_insumos_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_insumos_dia = $check_despesa_insumos_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_insumos_dia = number_format(($total_despesa_insumos_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_mobiliario_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_mobiliario_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_mobiliario_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_mobiliario_dia = $check_despesa_mobiliario_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_mobiliario_dia = number_format(($total_despesa_mobiliario_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_equipamentos_aluguel_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_equipamentos_aluguel_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_aluguel_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_aluguel_dia = $check_despesa_equipamentos_aluguel_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_equipamentos_aluguel_dia = number_format(($total_despesa_equipamentos_aluguel_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_equipamentos_compra_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_equipamentos_compra_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_compra_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_compra_dia = $check_despesa_equipamentos_compra_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_equipamentos_compra_dia = number_format(($total_despesa_equipamentos_compra_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_outros_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_outros_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_outros_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_outros_dia = $check_despesa_outros_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_outros_dia = number_format(($total_despesa_outros_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
-    $check_despesa_total_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_total_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_total_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_total_dia = $check_despesa_total_dia->fetch(PDO::FETCH_ASSOC)){
     $despesa_total_dia = $total_despesa_total_dia['sum(despesa_valor)'];
@@ -546,93 +546,93 @@ $dias_trabalho++;
     $receita_lancamentos_dia = number_format($receita_lancamento_dia ,2,",",".");
 
     //Relatorios Mensal
-    $check_lanc_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE tipo = 'Produto' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
+    $check_lanc_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND tipo = 'Produto' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_lanc_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_lanc_mes = $check_lanc_mes->fetch(PDO::FETCH_ASSOC)){
     $receita_lancamento_mes = $total_lanc_mes['sum(valor)'];
     }
-    $check_dinheiro_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
+    $check_dinheiro_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_dinheiro_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_dinheiro_mes = $check_dinheiro_mes->fetch(PDO::FETCH_ASSOC)){
     $receita_dinheiro_mes = number_format(($total_dinheiro_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
-    $check_cartao_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
+    $check_cartao_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_cartao_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_cartao_mes = $check_cartao_mes->fetch(PDO::FETCH_ASSOC)){
     $receita_cartao_mes = number_format(($total_cartao_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
-    $check_transferencia_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
+    $check_transferencia_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_transferencia_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_transferencia_mes = $check_transferencia_mes->fetch(PDO::FETCH_ASSOC)){
     $receita_transferencia_mes = number_format(($total_transferencia_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
-    $check_outros_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
+    $check_outros_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_outros_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_outros_mes = $check_outros_mes->fetch(PDO::FETCH_ASSOC)){
     $receita_outros_mes = number_format(($total_outros_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
 
-    $row_dispnibilidade_mes = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio");
+    $row_dispnibilidade_mes = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio");
     $row_dispnibilidade_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $row_dispnibilidade_mes = $row_dispnibilidade_mes->rowCount();
-    $row_cancelamentos_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Cancelada'");
+    $row_cancelamentos_mes = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Cancelada'");
     $row_cancelamentos_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $row_cancelamentos_mes = $row_cancelamentos_mes->rowCount();
-    $row_reservas_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
+    $row_reservas_mes = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
     $row_reservas_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $row_reservas_mes = $row_reservas_mes->rowCount();
-    $arrivals_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Finalizada'");
+    $arrivals_mes = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Finalizada'");
     $arrivals_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $arrivals_mes = $arrivals_mes->rowCount();
-    $arrivals_mes_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
+    $arrivals_mes_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
     $arrivals_mes_consultas->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $arrivals_mes_consultas = $arrivals_mes_consultas->rowCount();
-    $noshows_mes = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'NoShow'");
+    $noshows_mes = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'NoShow'");
     $noshows_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_inicio' => $relatorio_inicio));
     $noshows_mes = $noshows_mes->rowCount();
 
     //Despesas
-    $check_despesa_aluguel_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_aluguel_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_aluguel_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_aluguel_mes = $check_despesa_aluguel_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_aluguel_mes = number_format(($total_despesa_aluguel_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_luz_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_luz_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_luz_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_luz_mes = $check_despesa_luz_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_luz_mes = number_format(($total_despesa_luz_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_internet_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_internet_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_internet_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_internet_mes = $check_despesa_internet_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_internet_mes = number_format(($total_despesa_internet_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_insumos_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_insumos_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_insumos_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_insumos_mes = $check_despesa_insumos_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_insumos_mes = number_format(($total_despesa_insumos_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_mobiliario_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_mobiliario_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_mobiliario_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_mobiliario_mes = $check_despesa_mobiliario_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_mobiliario_mes = number_format(($total_despesa_mobiliario_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_equipamentos_aluguel_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_equipamentos_aluguel_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_aluguel_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_aluguel_mes = $check_despesa_equipamentos_aluguel_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_equipamentos_aluguel_mes = number_format(($total_despesa_equipamentos_aluguel_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_equipamentos_compra_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_equipamentos_compra_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_compra_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_compra_mes = $check_despesa_equipamentos_compra_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_equipamentos_compra_mes = number_format(($total_despesa_equipamentos_compra_mes['sum(despesa_valor)'] ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_outros_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_outros_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_outros_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_outros_mes = $check_despesa_outros_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_outros_mes = number_format(($total_despesa_outros_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_total_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_total_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_total_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_total_mes = $check_despesa_total_mes->fetch(PDO::FETCH_ASSOC)){
     $despesa_total_mes = $total_despesa_total_mes['sum(despesa_valor)'];
@@ -652,93 +652,93 @@ $dias_trabalho++;
     $receita_lancamentos_mes = number_format($receita_lancamento_mes ,2,",",".");
 
     //Relatorios Anual
-    $check_lanc_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE tipo = 'Produto' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
+    $check_lanc_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND tipo = 'Produto' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_lanc_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_lanc_ano = $check_lanc_ano->fetch(PDO::FETCH_ASSOC)){
     $receita_lancamento_ano = $total_lanc_ano['sum(valor)'];
     }
-    $check_dinheiro_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
+    $check_dinheiro_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_dinheiro_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_dinheiro_ano = $check_dinheiro_ano->fetch(PDO::FETCH_ASSOC)){
     $receita_dinheiro_ano = number_format(($total_dinheiro_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
-    $check_cartao_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
+    $check_cartao_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_cartao_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_cartao_ano = $check_cartao_ano->fetch(PDO::FETCH_ASSOC)){
     $receita_cartao_ano = number_format(($total_cartao_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
-    $check_transferencia_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
+    $check_transferencia_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_transferencia_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_transferencia_ano = $check_transferencia_ano->fetch(PDO::FETCH_ASSOC)){
     $receita_transferencia_ano = number_format(($total_transferencia_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
-    $check_outros_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
+    $check_outros_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_outros_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_outros_ano = $check_outros_ano->fetch(PDO::FETCH_ASSOC)){
     $receita_outros_ano = number_format(($total_outros_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
 
-    $row_dispnibilidade_ano = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio");
+    $row_dispnibilidade_ano = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio");
     $row_dispnibilidade_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $row_dispnibilidade_ano = $row_dispnibilidade_ano->rowCount();
-    $row_cancelamentos_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Cancelada'");
+    $row_cancelamentos_ano = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Cancelada'");
     $row_cancelamentos_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $row_cancelamentos_ano = $row_cancelamentos_ano->rowCount();
-    $row_reservas_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
+    $row_reservas_ano = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND tipo_consulta != 'Nova Sessão'");
     $row_reservas_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $row_reservas_ano = $row_reservas_ano->rowCount();
-    $arrivals_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Finalizada'");
+    $arrivals_ano = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'Finalizada'");
     $arrivals_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $arrivals_ano = $arrivals_ano->rowCount();
-    $arrivals_ano_consultas = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
+    $arrivals_ano_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND tipo_consulta = 'Nova Sessão' AND (status_consulta != 'Cancelada' OR status_consulta != 'NoShow')");
     $arrivals_ano_consultas->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $arrivals_ano_consultas = $arrivals_ano_consultas->rowCount();
-    $noshows_ano = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'NoShow'");
+    $noshows_ano = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio AND status_consulta = 'NoShow'");
     $noshows_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_inicio' => $relatorio_inicio));
     $noshows_ano = $noshows_ano->rowCount();
 
     //Despesas
-    $check_despesa_aluguel_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_aluguel_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_aluguel_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_aluguel_ano = $check_despesa_aluguel_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_aluguel_ano = number_format(($total_despesa_aluguel_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_luz_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_luz_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_luz_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_luz_ano = $check_despesa_luz_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_luz_ano = number_format(($total_despesa_luz_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_internet_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_internet_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_internet_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_internet_ano = $check_despesa_internet_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_internet_ano = number_format(($total_despesa_internet_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_insumos_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_insumos_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_insumos_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_insumos_ano = $check_despesa_insumos_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_insumos_ano = number_format(($total_despesa_insumos_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_mobiliario_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_mobiliario_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_mobiliario_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_mobiliario_ano = $check_despesa_mobiliario_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_mobiliario_ano = number_format(($total_despesa_mobiliario_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_equipamentos_aluguel_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_equipamentos_aluguel_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_aluguel_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_aluguel_ano = $check_despesa_equipamentos_aluguel_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_equipamentos_aluguel_ano = number_format(($total_despesa_equipamentos_aluguel_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_equipamentos_compra_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_equipamentos_compra_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_compra_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_compra_ano = $check_despesa_equipamentos_compra_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_equipamentos_compra_ano = number_format(($total_despesa_equipamentos_compra_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_outros_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_outros_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_outros_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_outros_ano = $check_despesa_outros_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_outros_ano = number_format(($total_despesa_outros_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
-    $check_despesa_total_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
+    $check_despesa_total_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_total_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_total_ano = $check_despesa_total_ano->fetch(PDO::FETCH_ASSOC)){
     $despesa_total_ano = $total_despesa_total_ano['sum(despesa_valor)'];
@@ -1024,11 +1024,11 @@ $worksheet->setSelectedCell('A1');
 
 $resultado_estorno = '';
 if($relatorio == 'Estornos Dia'){
-$query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
 }else if($relatorio == 'Estornos Mes'){
-$query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
 }else{
-$query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND produto LIKE '%Estornado%' AND tipo = 'Produto' ORDER BY quando DESC");
 }
 $estorno_total = $query_estorno->rowCount();
 if($estorno_total > 0){
@@ -1227,11 +1227,11 @@ $worksheet->setSelectedCell('A1');
 
 $resultado_lanc = '';
 if($relatorio == 'Lançamentos Dia'){
-$query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
 }else if($relatorio == 'Lançamentos Mes'){
-$query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
 }else{
-$query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
+$query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Produto' ORDER BY quando DESC");
 }
 $lanc_total = $query_lanc->rowCount();
 if($lanc_total > 0){
@@ -1436,11 +1436,11 @@ $worksheet->setSelectedCell('A1');
 
 $resultado_pgto = '';
 if($relatorio == 'Pagamentos Dia'){
-$query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
+$query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
 }else if($relatorio == 'Pagamentos Mes'){
-$query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
+$query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio_mes}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
 }else{
-$query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
+$query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND quando >= '{$relatorio_inicio_ano}' AND quando <= '{$relatorio_fim_outros}' AND tipo = 'Pagamento' ORDER BY quando DESC");
 }
 $pgto_total = $query_pgto->rowCount();
 if($pgto_total > 0){
@@ -1645,11 +1645,11 @@ $resultado_pgto
 
 $resultado_despesa = '';
 if($relatorio == 'Despesas Dia'){
-$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
+$query_despesas = $conexao->query("SELECT * FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_dia >= '{$relatorio_inicio}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
 }else if($relatorio == 'Despesas Mes'){
-$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio_mes}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
+$query_despesas = $conexao->query("SELECT * FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_dia >= '{$relatorio_inicio_mes}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
 }else{
-$query_despesas = $conexao->query("SELECT * FROM despesas WHERE despesa_dia >= '{$relatorio_inicio_ano}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
+$query_despesas = $conexao->query("SELECT * FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND despesa_dia >= '{$relatorio_inicio_ano}' AND despesa_dia <= '{$relatorio_fim_outros}' ORDER BY despesa_tipo, despesa_dia DESC");
 }
 $despesas_total = $query_despesas->rowCount();
 if($despesas_total > 0){
@@ -1855,11 +1855,11 @@ $resultado_despesa
 
 $resultado_reservas = '';
 if($relatorio == 'Consultas Dia'){
-$query_reservas = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia = '{$relatorio_inicio}' ORDER BY atendimento_dia, atendimento_hora");
+$query_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$relatorio_inicio}' ORDER BY atendimento_dia, atendimento_hora");
 }else if($relatorio == 'Consultas Mes'){
-$query_reservas = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia >= '{$relatorio_inicio_mes}' AND atendimento_dia <= '{$relatorio_inicio}' ORDER BY atendimento_dia, atendimento_hora");
+$query_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= '{$relatorio_inicio_mes}' AND atendimento_dia <= '{$relatorio_inicio}' ORDER BY atendimento_dia, atendimento_hora");
 }else{
-$query_reservas = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia >= '{$relatorio_inicio_ano}' AND atendimento_dia <= '{$relatorio_inicio}' ORDER BY atendimento_dia, atendimento_hora");
+$query_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= '{$relatorio_inicio_ano}' AND atendimento_dia <= '{$relatorio_inicio}' ORDER BY atendimento_dia, atendimento_hora");
 }
 
 $reservas_total = $query_reservas->rowCount();
@@ -2060,11 +2060,11 @@ $resultado_reservas
 
 $resultado_canc_reservas = '';
 if($relatorio == 'Cancelamentos Dia'){
-$query_canc_reservas = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia = '{$relatorio_inicio}' AND status_consulta = 'Cancelada' ORDER BY atendimento_hora");
+$query_canc_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$relatorio_inicio}' AND status_consulta = 'Cancelada' ORDER BY atendimento_hora");
 }else if($relatorio == 'Cancelamentos Mes'){
-$query_canc_reservas = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia >= '{$relatorio_inicio_mes}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'Cancelada' ORDER BY atendimento_dia, atendimento_hora");
+$query_canc_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= '{$relatorio_inicio_mes}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'Cancelada' ORDER BY atendimento_dia, atendimento_hora");
 }else{
-$query_canc_reservas = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia >= '{$relatorio_inicio_ano}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'Cancelada' ORDER BY atendimento_dia, atendimento_hora");
+$query_canc_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= '{$relatorio_inicio_ano}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'Cancelada' ORDER BY atendimento_dia, atendimento_hora");
 }
 
 $canc_reservas_total = $query_canc_reservas->rowCount();
@@ -2265,11 +2265,11 @@ $resultado_canc_reservas
 
 $resultado_noshows = '';
 if($relatorio == 'No-Shows Dia'){
-$query_noshows = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia = '{$relatorio_inicio}' AND status_consulta = 'NoShow' ORDER BY atendimento_hora");
+$query_noshows = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$relatorio_inicio}' AND status_consulta = 'NoShow' ORDER BY atendimento_hora");
 }else if($relatorio == 'No-Shows Mes'){
-$query_noshows = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia >= '{$relatorio_inicio_mes}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'NoShow' ORDER BY atendimento_dia, atendimento_hora");
+$query_noshows = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= '{$relatorio_inicio_mes}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'NoShow' ORDER BY atendimento_dia, atendimento_hora");
 }else{
-$query_noshows = $conexao->query("SELECT * FROM consultas WHERE atendimento_dia >= '{$relatorio_inicio_ano}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'NoShow' ORDER BY atendimento_dia, atendimento_hora");
+$query_noshows = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= '{$relatorio_inicio_ano}' AND atendimento_dia <= '{$relatorio_inicio}' AND status_consulta = 'NoShow' ORDER BY atendimento_dia, atendimento_hora");
 }
 $noshows_total = $query_noshows->rowCount();
 if($noshows_total > 0){

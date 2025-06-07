@@ -61,7 +61,7 @@ require('verifica_login.php');
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM estoque_item WHERE id >= :id ORDER BY produto DESC");
+                $query = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY produto DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {

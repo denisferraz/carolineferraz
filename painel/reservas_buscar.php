@@ -4,7 +4,7 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $aut_acesso = $select_check['aut_painel'];
 }
@@ -52,10 +52,10 @@ if($aut_acesso == 1){
 
     if($palavra == ''){
         $palavra = 'Todos';
-        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim ORDER BY atendimento_dia ASC");
+        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim ORDER BY atendimento_dia ASC");
         $query_select->execute(array('busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }else{
-        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_nome LIKE :palavra OR doc_email LIKE :palavra OR confirmacao LIKE :palavra) ORDER BY atendimento_dia ASC");
+        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_nome LIKE :palavra OR doc_email LIKE :palavra OR confirmacao LIKE :palavra) ORDER BY atendimento_dia ASC");
         $query_select->execute(array('palavra' => "%$palavra%", 'busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }
     $select_qtd = $query_select->rowCount();

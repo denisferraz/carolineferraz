@@ -8,7 +8,7 @@ $hoje = date('Y-m-d');
 
 $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_job'] ?? 'Tratamento') : 'Tratamento';
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $token_profile = $select_check['token'];
 }
@@ -36,7 +36,7 @@ $qtd_tratamentos = 0;
 <legend><h2>Plano de Tratamento</h2></legend>
 <center>
 <?php
-$check_tratamento = $conexao->prepare("SELECT plano_descricao, sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE email = :email");
+$check_tratamento = $conexao->prepare("SELECT plano_descricao, sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $check_tratamento->execute(array('email' => $_SESSION['email']));
 while($select_tratamento = $check_tratamento->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select_tratamento['sum(sessao_atual)'];
@@ -62,7 +62,7 @@ echo "<b></u>$plano_descricao</u></b>";
         <td align="center"><b>Sessão</b></td>
     </tr>
 <?php
-$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE email = :email GROUP BY token ORDER BY id DESC");
+$check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email GROUP BY token ORDER BY id DESC");
 $check_tratamento_row->execute(array('email' => $_SESSION['email']));
 if($check_tratamento_row->rowCount() < 1){
 ?>
@@ -95,7 +95,7 @@ $progress = $sessao_atual/$sessao_total*100;
         </td>
     </tr>
         <?php
-$check_tratamento_row2 = $conexao->prepare("SELECT * FROM tratamento WHERE token = :token AND id != :id ORDER BY id ASC");
+$check_tratamento_row2 = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token AND id != :id ORDER BY id ASC");
 $check_tratamento_row2->execute(array('token' => $token, 'id' => $id));
 while($tratamento_row2 = $check_tratamento_row2->fetch(PDO::FETCH_ASSOC)){
 $plano_data2 = $tratamento_row2['plano_data'];
@@ -179,7 +179,7 @@ $qtd_contratos = 0;
     </tr>
 <center>
 <?php
-$check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE email = :email AND aditivo_status = 'Nao'");
+$check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Nao'");
 $check_contratos->execute(array('email' => $_SESSION['email']));
 
 $row_check_contratos = $check_contratos->rowCount();
