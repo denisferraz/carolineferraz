@@ -16,7 +16,6 @@ if($aut_acesso == 1){
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 $id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
-$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
 $query->execute(array('email' => $email));
@@ -70,7 +69,6 @@ if($id_job == 'enviar'){
             <textarea class="textarea-custom" name="comentario" cols="45" rows="5"></textarea>
             <br>
             <input type="hidden" name="email" value="<?php echo $email ?>">
-            <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_enviar" />
             <div class="card-group btn"><button type="submit">Enviar Tratamento</button></div>
@@ -121,7 +119,6 @@ $progress = $sessao_atual/$sessao_total*100;
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="tratamento" value="<?php echo $plano_descricao ?>">
-            <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_cadastrar" />
             <div class="card-group btn"><button type="submit">Cadastrar Sessão</button></div>
@@ -161,7 +158,6 @@ $progress = $sessao_atual/$sessao_total*100;
             <label><b>Para Finalizar o tratamento, clique abaixo</b></label><br>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
-            <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_finalizar" />
             <div class="card-group btn"><button type="submit">Finalizar Tratamento</button></div>
             <?php

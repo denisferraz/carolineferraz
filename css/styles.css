@@ -89,11 +89,11 @@ p {
 }
 
 .carousel-img {
-    width: 80%;
-    height: 400px;
+    width: 85%;
+    height: 60vh;
+    object-fit: cover;
     display: block;
     margin: 0 auto;
-    object-fit: cover; /* Adicional para garantir boa exibição */
 }
 
 
@@ -422,8 +422,9 @@ textarea.form-control {
     h3 { font-size: 1.5rem; }
     
     .carousel-img {
-        height: 400px;
+        height: clamp(200px, 50vh, 450px);
     }
+
 }
 
 @media (max-width: 768px) {
@@ -436,7 +437,8 @@ textarea.form-control {
     }
     
     .carousel-img {
-        height: 300px;
+        width: 100%;
+        height: clamp(100px, 40vh, 300px);
     }
     
     .carousel-caption {
@@ -450,11 +452,12 @@ textarea.form-control {
 
 @media (max-width: 576px) {
     .carousel-img {
-        height: 250px;
+        width: 100%;
+        height: clamp(50px, 30vh, 150px);
     }
     
     .carousel-control {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
     }
 }

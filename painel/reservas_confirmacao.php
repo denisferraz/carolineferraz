@@ -44,6 +44,7 @@ $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 $query = $conexao->prepare("SELECT * FROM consultas WHERE id = :id_consulta");
 $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
+$tipo_consulta = $select['tipo_consulta'];
 $doc_nome = $select['doc_nome'];
 $doc_email = $select['doc_email'];
 $doc_telefone = $select['doc_telefone'];
@@ -72,6 +73,7 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <input type="hidden" name="id_job" value="EnvioConfirmacao">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
+            <input type="hidden" name="tipo_consulta" value="<?php echo $tipo_consulta ?>">
             <div class="card-group-green btn"><button type="submit">Enviar</button></div>
 
             </div>

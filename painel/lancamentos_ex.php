@@ -15,7 +15,7 @@ if($aut_acesso == 1){
 }else{
 
 $id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
-$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
+$email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
 $query_lancamento = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE id = :id");
 $query_lancamento->execute(array('id' => $id));
@@ -30,7 +30,7 @@ $query = $conexao->prepare("UPDATE lancamentos_atendimento SET valor = '0', prod
 $query->execute(array('id' => $id));
     echo "<script>
     alert('Lancamento Estornado com Sucesso')
-    window.location.replace('reserva.php?id_consulta=$id_consulta')
+    window.location.replace('cadastro.php?email=$email&id_job=Lancamentos')
     </script>";
 
 }

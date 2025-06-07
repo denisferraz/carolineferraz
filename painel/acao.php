@@ -17,10 +17,10 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
     exit();
  }
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-error_reporting(0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+//error_reporting(0);
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $historico_data = date('Y-m-d H:i:s');
@@ -31,7 +31,7 @@ $historico_quem = $select_check['nome'];
 $historico_unico_usuario = $select_check['unico'];
 }
 
-if($id_job == 'editar_configuracoes' || $id_job == 'disponibilidade_fechar' || $id_job == 'disponibilidade_abrir'){
+if($id_job == 'editar_configuracoes_agenda' || $id_job == 'disponibilidade_fechar' || $id_job == 'disponibilidade_abrir'){
 if(isset($_POST['dia_segunda'])){
     $dia_segunda = 1;
     } else {
@@ -69,39 +69,110 @@ if(isset($_POST['dia_segunda'])){
     }
 }
 
-if($id_job == 'editar_configuracoes'){
+if($id_job == 'editar_configuracoes_agenda'){
+
+    $config_limitedia = mysqli_real_escape_string($conn_msqli, $_POST['config_limitedia']);
+    $atendimento_hora_comeco = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_comeco']);
+    $atendimento_hora_fim = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_fim']);
+    $atendimento_hora_intervalo = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_intervalo']);
+    $atendimento_dia_max = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia_max']);
+
+    if($dia_segunda == -1 && $dia_terca == -1 && $dia_quarta == -1 && $dia_quinta == -1 && $dia_sexta == -1 && $dia_sabado == -1 && $dia_domingo){
+        echo "<script>
+        alert('Pelo menos um dia precisa estar Selecionado')
+        window.location.replace('config_agenda.php')
+        </script>";
+        exit(); 
+    }
+
+    $query = $conexao->prepare("UPDATE configuracoes SET config_limitedia = :config_limitedia, atendimento_hora_comeco = :atendimento_hora_comeco, atendimento_hora_fim = :atendimento_hora_fim, atendimento_hora_intervalo = :atendimento_hora_intervalo, atendimento_dia_max = :atendimento_dia_max, config_dia_segunda = :dia_segunda, config_dia_terca = :dia_terca, config_dia_quarta = :dia_quarta, config_dia_quinta = :dia_quinta, config_dia_sexta = :dia_sexta, config_dia_sabado = :dia_sabado, config_dia_domingo = :dia_domingo WHERE id = '-2'");
+    $query->execute(array('config_limitedia' => $config_limitedia, 'atendimento_hora_comeco' => $atendimento_hora_comeco, 'atendimento_hora_fim' => $atendimento_hora_fim, 'atendimento_hora_intervalo' => $atendimento_hora_intervalo, 'atendimento_dia_max' => $atendimento_dia_max, 'dia_segunda' => $dia_segunda, 'dia_terca' => $dia_terca, 'dia_quarta' => $dia_quarta, 'dia_quinta' => $dia_quinta, 'dia_sexta' => $dia_sexta, 'dia_sabado' => $dia_sabado, 'dia_domingo' => $dia_domingo));
+    
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações'));   
+
+    echo "<script>
+    alert('Configurações Editadas com sucesso')
+    window.location.replace('config_agenda.php');
+    </script>";
+    exit();
+
+}else if($id_job == 'editar_configuracoes_empresa'){
 
     $config_empresa = mysqli_real_escape_string($conn_msqli, $_POST['config_empresa']);
     $config_email = mysqli_real_escape_string($conn_msqli, $_POST['config_email']);
     $config_telefone = mysqli_real_escape_string($conn_msqli, $_POST['config_telefone']);
     $config_cnpj = mysqli_real_escape_string($conn_msqli, $_POST['config_cnpj']);
     $config_endereco = mysqli_real_escape_string($conn_msqli, $_POST['config_endereco']);
-    $msg_cancelamento = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_cancelamento']);
-    $msg_confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_confirmacao']);
-    $msg_finalizar = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_finalizar']);
-    $atendimento_hora_comeco = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_comeco']);
-    $atendimento_hora_fim = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_fim']);
-    $atendimento_hora_intervalo = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_intervalo']);
-    $atendimento_dia_max = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia_max']);
-    $envio_whatsapp = mysqli_real_escape_string($conn_msqli, $_POST['envio_whatsapp']);
-    $envio_email = mysqli_real_escape_string($conn_msqli, $_POST['envio_email']);
 
-    if($dia_segunda == -1 && $dia_terca == -1 && $dia_quarta == -1 && $dia_quinta == -1 && $dia_sexta == -1 && $dia_sabado == -1 && $dia_domingo){
-        echo "<script>
-        alert('Pelo menos um dia precisa estar Selecionado')
-        window.location.replace('configuracoes.php')
-        </script>";
-        exit(); 
-    }
+    $query = $conexao->prepare("UPDATE configuracoes SET config_empresa = :config_empresa, config_email = :config_email, config_telefone = :config_telefone, config_cnpj = :config_cnpj, config_endereco = :config_endereco WHERE id = '-2'");
+    $query->execute(array('config_empresa' => $config_empresa, 'config_email' => $config_email, 'config_telefone' => $config_telefone, 'config_cnpj' => $config_cnpj, 'config_endereco' => $config_endereco));
 
-    $query = $conexao->prepare("UPDATE configuracoes SET config_empresa = :config_empresa, config_email = :config_email, config_telefone = :config_telefone, config_cnpj = :config_cnpj, config_endereco = :config_endereco, config_msg_cancelamento = :msg_cancelamento, config_msg_finalizar = :msg_finalizar, config_msg_confirmacao = :msg_confirmacao, atendimento_hora_comeco = :atendimento_hora_comeco, atendimento_hora_fim = :atendimento_hora_fim, atendimento_hora_intervalo = :atendimento_hora_intervalo, atendimento_dia_max = :atendimento_dia_max, config_dia_segunda = :dia_segunda, config_dia_terca = :dia_terca, config_dia_quarta = :dia_quarta, config_dia_quinta = :dia_quinta, config_dia_sexta = :dia_sexta, config_dia_sabado = :dia_sabado, config_dia_domingo = :dia_domingo, envio_whatsapp = :envio_whatsapp, envio_email = :envio_email WHERE id = '-2'");
-    $query->execute(array('config_empresa' => $config_empresa, 'config_email' => $config_email, 'config_telefone' => $config_telefone, 'config_cnpj' => $config_cnpj, 'config_endereco' => $config_endereco, 'msg_cancelamento' => $msg_cancelamento, 'msg_finalizar' => $msg_finalizar, 'msg_confirmacao' => $msg_confirmacao, 'atendimento_hora_comeco' => $atendimento_hora_comeco, 'atendimento_hora_fim' => $atendimento_hora_fim, 'atendimento_hora_intervalo' => $atendimento_hora_intervalo, 'atendimento_dia_max' => $atendimento_dia_max, 'dia_segunda' => $dia_segunda, 'dia_terca' => $dia_terca, 'dia_quarta' => $dia_quarta, 'dia_quinta' => $dia_quinta, 'dia_sexta' => $dia_sexta, 'dia_sabado' => $dia_sabado, 'dia_domingo' => $dia_domingo, 'envio_whatsapp' => $envio_whatsapp, 'envio_email' => $envio_email));
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações'));   
 
     echo "<script>
     alert('Configurações Editadas com sucesso')
-    window.location.replace('configuracoes.php')
+    window.location.replace('config_empresa.php')
+    </script>";
+    exit();
+
+}else if($id_job == 'editar_configuracoes_msg'){
+
+    $msg_cancelamento = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_cancelamento']);
+    $msg_confirmacao = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_confirmacao']);
+    $msg_finalizar = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_finalizar']);
+    $msg_lembrete = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_lembrete']);
+    $msg_aniversario = mysqli_real_escape_string($conn_msqli, $_POST['config_msg_aniversario']);
+    $envio_whatsapp = mysqli_real_escape_string($conn_msqli, $_POST['envio_whatsapp']);
+    $envio_email = mysqli_real_escape_string($conn_msqli, $_POST['envio_email']);
+    $lembrete_auto_time = mysqli_real_escape_string($conn_msqli, $_POST['lembrete_hora']);
+
+    if(isset($_POST['is_segunda'])){
+    $is_segunda = 1;
+    } else {
+    $is_segunda = 0;
+    }
+    if(isset($_POST['is_terca'])){
+    $is_terca = 1;
+    } else {
+    $is_terca = 0;
+    }
+    if(isset($_POST['is_quarta'])){
+    $is_quarta = 1;
+    } else {
+    $is_quarta = 0;
+    }
+    if(isset($_POST['is_quinta'])){
+    $is_quinta = 1;
+    } else {
+    $is_quinta = 0;
+    }
+    if(isset($_POST['is_sexta'])){
+    $is_sexta = 1;
+    } else {
+    $is_sexta = 0;
+    }
+    if(isset($_POST['is_sabado'])){
+    $is_sabado = 1;
+    } else {
+    $is_sabado = 0;
+    }
+    if(isset($_POST['is_domingo'])){
+    $is_domingo = 1;
+    } else {
+    $is_domingo = 0;
+    }
+
+    $query = $conexao->prepare("UPDATE configuracoes SET config_msg_confirmacao = :config_msg_confirmacao, config_msg_cancelamento = :config_msg_cancelamento, config_msg_finalizar = :config_msg_finalizar, config_msg_lembrete = :config_msg_lembrete, config_msg_aniversario = :config_msg_aniversario, envio_whatsapp = :envio_whatsapp, envio_email = :envio_email, is_segunda = :is_segunda, is_terca = :is_terca, is_quarta = :is_quarta, is_quinta = :is_quinta, is_sexta = :is_sexta, is_sabado = :is_sabado, is_domingo = :is_domingo, lembrete_auto_time = :lembrete_auto_time WHERE id = '-2'");
+    $query->execute(array('config_msg_confirmacao' => $msg_confirmacao, 'config_msg_cancelamento' => $msg_cancelamento, 'config_msg_finalizar' => $msg_finalizar, 'config_msg_lembrete' => $msg_lembrete, 'config_msg_aniversario' => $msg_aniversario, 'envio_whatsapp' => $envio_whatsapp, 'envio_email' => $envio_email, 'is_segunda' => $is_segunda, 'is_terca' => $is_terca, 'is_quarta' => $is_quarta, 'is_quinta' => $is_quinta, 'is_sexta' => $is_sexta, 'is_sabado' => $is_sabado, 'is_domingo' => $is_domingo, 'lembrete_auto_time' => $lembrete_auto_time));
+        
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações'));   
+
+    echo "<script>
+    alert('Configurações Editadas com sucesso')
+    window.location.replace('config_msg.php')
     </script>";
     exit();
 
@@ -209,7 +280,6 @@ echo "<script>
 
 }else if($id_job == 'reservas_lancamentos'){
 
-    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
     $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
     $lanc_produto = mysqli_real_escape_string($conn_msqli, $_POST['lanc_produto']);
     $lanc_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['lanc_quantidade']);
@@ -235,11 +305,11 @@ echo "<script>
     $query->execute(array('lanc_produto' => $lanc_produto, 'lanc_quantidade' => $lanc_quantidade, 'valor' => $valor));
     $lanc_valor = number_format($lanc_valor ,2,",",".");
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Lançou $lanc_quantiade $lanc_produto no valor de R$$lanc_valor na Confirmação $id_consulta"));
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Lançou $lanc_quantiade $lanc_produto no valor de R$$lanc_valor no Cadastro $doc_email"));
 
     echo "<script>
-    alert('Produto Lançado com Sucesso na Consulta $id_consulta')
-    window.location.replace('reserva.php?id_consulta=$id_consulta')
+    alert('Produto Lançado com Sucesso!')
+    window.location.replace('cadastro.php?email=$doc_email&id_job=Lancamentos')
     </script>";
 
 }else if($id_job == 'lancar_despesas'){
@@ -331,68 +401,16 @@ echo "<script>
     $procedimentos = trim(mysqli_real_escape_string($conn_msqli, $_POST['procedimentos']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
+    $token_contrato = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 
-    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_dias, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_dias, :procedimento_valor, '-', '-', 'Não')");
-    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'procedimento_dias' => $procedimento_dias, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s')));
-
-    //Envio de Email	
-
-    $data_email = date('d/m/Y \-\ H:i:s');
-
-if($envio_email == 'ativado'){
-
-    $mail = new PHPMailer(true);
-
-try {
-    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->CharSet = 'UTF-8';
-    $mail->isSMTP();
-    $mail->Host = "$mail_Host";
-    $mail->SMTPAuth = true;
-    $mail->Username = "$mail_Username";
-    $mail->Password = "$mail_Password";
-    $mail->SMTPSecure = "$mail_SMTPSecure";
-    $mail->Port = "$mail_Port";
-
-    $mail->setFrom("$config_email", "$config_empresa");
-    $mail->addAddress("$email", "$nome");
-    $mail->addBCC("$config_email");
-    
-    $mail->isHTML(true);                                 
-    $mail->Subject = "$config_empresa - Contrato";
-  // INICIO MENSAGEM  
-    $mail->Body = "
-
-    <fieldset>
-    <legend><b>Novo Contrato</b></legend>
-    <br>
-    Ola <b>$nome</b>, tudo bem?<br>
-    <br>$config_empresa lhe enviou um novo <b><u>Contrato</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
-    <br><b>Contrato enviado em $data_email</b>
-    </fieldset><br><fieldset>
-    <legend><b><u>$config_empresa</u></legend>
-    <p>CNPJ: $config_cnpj</p>
-    <p>$config_telefone - $config_email</p>
-    <p>$config_endereco</p></b>
-    </fieldset>
-    
-    "; // FIM MENSAGEM
-
-        $mail->send();
-
-    } catch (Exception $e) {
-
-    }
-
-}
-//Fim Envio de Email
+    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_dias, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, token) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, :procedimento, :procedimento_dias, :procedimento_valor, '-', '-', 'Não', :token)");
+    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'procedimento_dias' => $procedimento_dias, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'token' => $token_contrato));
 
     echo "<script>
     alert('Contrato Enviado com Sucesso')
-    window.location.replace('reserva.php?email=$email')
+    window.location.replace('cadastro.php?email=$email&id_job=Contratos')
     </script>";
     exit();
-
 
 }else if($id_job == 'cadastro_aditivo'){
 
@@ -400,70 +418,19 @@ try {
     $procedimentos = trim(mysqli_real_escape_string($conn_msqli, $_POST['procedimentos']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $nome = mysqli_real_escape_string($conn_msqli, $_POST['nome']);
+    $token_contrato = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 
-    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, '-', '-', :procedimento, :procedimento_valor, 'Sim')");
-    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s')));
+    $query = $conexao->prepare("INSERT INTO contrato (email, assinado, assinado_data, assinado_empresa, assinado_empresa_data, procedimento, procedimento_valor, aditivo_valor, aditivo_procedimento, aditivo_status, token) VALUES (:email, 'Não', :ass_data, 'Sim', :ass_data, '-', '-', :procedimento, :procedimento_valor, 'Sim', :token)");
+    $query->execute(array('procedimento_valor' => $procedimento_valor, 'procedimento' => $procedimentos, 'email' => $email, 'ass_data' => date('Y-m-d H:i:s'), 'token' => $token_contrato));
 
-    $query2 = $conexao->prepare("UPDATE contrato SET assinado = 'Não' WHERE email = :email");
-    $query2->execute(array('email' => $email, 'confirmacao' => $confirmacao));
-
-    //Envio de Email	
-
-    $data_email = date('d/m/Y \-\ H:i:s');
-
-    if($envio_email == 'ativado'){
-    $mail = new PHPMailer(true);
-
-try {
-    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->CharSet = 'UTF-8';
-    $mail->isSMTP();
-    $mail->Host = "$mail_Host";
-    $mail->SMTPAuth = true;
-    $mail->Username = "$mail_Username";
-    $mail->Password = "$mail_Password";
-    $mail->SMTPSecure = "$mail_SMTPSecure";
-    $mail->Port = "$mail_Port";
-
-    $mail->setFrom("$config_email", "$config_empresa");
-    $mail->addAddress("$email", "$nome");
-    $mail->addBCC("$config_email");
-    
-    $mail->isHTML(true);                                 
-    $mail->Subject = "$config_empresa - Aditivo Contratual";
-  // INICIO MENSAGEM  
-    $mail->Body = "
-
-    <fieldset>
-    <legend><b>Aditivo Contratual</b></legend>
-    <br>
-    Ola <b>$nome</b>, tudo bem?<br>
-    <br>$config_empresa lhe enviou o <b><u>Aditivo Contratual</u></b>. Va no seu Perfil/Acompanhamentos e acesse o seu Contrato para Assinar.<br>
-    <br><b>Aditivo do Contrato enviado em $data_email</b>
-    </fieldset><br><fieldset>
-    <legend><b><u>$config_empresa</u></legend>
-    <p>CNPJ: $config_cnpj</p>
-    <p>$config_telefone - $config_email</p>
-    <p>$config_endereco</p></b>
-    </fieldset>
-    
-    "; // FIM MENSAGEM
-
-        $mail->send();
-
-    } catch (Exception $e) {
-
-    }
-
-}
-//Fim Envio de Email
+    $query2 = $conexao->prepare("UPDATE contrato SET assinado = 'Não' WHERE token = :token");
+    $query2->execute(array('token' => $token_contrato));
 
     echo "<script>
     alert('Aditivo Contrato Enviado com Sucesso')
-    window.location.replace('reserva.php?email=$email')
+    window.location.replace('cadastro.php?email=$email&id_job=Contratos')
     </script>";
     exit();
-
 
 }else if($id_job == 'cadastro_tratamento_enviar'){
 
@@ -471,7 +438,6 @@ try {
     $tratamento_sessao = trim(mysqli_real_escape_string($conn_msqli, $_POST['tratamento_sessao']));
     $tratamento_data = mysqli_real_escape_string($conn_msqli, $_POST['tratamento_data']);
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
-    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
     $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
     $comentario = mysqli_real_escape_string($conn_msqli, $_POST['comentario']);
 
@@ -480,7 +446,7 @@ try {
 
     echo "<script>
     alert('Tratamento Enviado com Sucesso')
-    window.location.replace('reserva.php?id_consulta=$id_consulta')
+    window.location.replace('cadastro.php?email=$email&id_job=Tratamento')
     </script>";
     exit();
 
@@ -494,7 +460,6 @@ try {
     $comentario = mysqli_real_escape_string($conn_msqli, $_POST['comentario']);
     $tratamento_data = mysqli_real_escape_string($conn_msqli, $_POST['tratamento_data']);
     $tratamento = mysqli_real_escape_string($conn_msqli, $_POST['tratamento']);
-    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
 
     $query = $conexao->prepare("UPDATE tratamento SET sessao_atual = :tratamento_sessao WHERE id = :id AND email = :email AND token = :token");
     $query->execute(array('email' => $email, 'id' => $id, 'tratamento_sessao' => $tratamento_sessao, 'token' => $token));
@@ -504,7 +469,7 @@ try {
 
     echo "<script>
     alert('Sessao $tratamento_sessao Cadastrada com Sucesso')
-    window.location.replace('reserva.php?id_consulta=$id_consulta')
+    window.location.replace('cadastro.php?email=$email&id_job=Tratamento')
     </script>";
     exit();
 
@@ -513,89 +478,20 @@ try {
 
     $id = trim(mysqli_real_escape_string($conn_msqli, $_POST['id']));
     $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
-    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
 
     $query = $conexao->prepare("UPDATE tratamento SET sessao_status = 'Finalizada' WHERE id = :id AND email = :email");
     $query->execute(array('email' => $email, 'id' => $id));
 
     echo "<script>
     alert('Sessao Finalizada com Sucesso')
-    window.location.replace('reserva.php?id_consulta=$id_consulta')
-    </script>";
-    exit();
-
-
-}else if($id_job == 'formulario_enviar'){
-
-    $email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
-    $nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
-
-    //Envio de Email	
-
-    $data_email = date('d/m/Y \-\ H:i:s');
-
-    if($envio_email == 'ativado'){
-
-    $link_formulario = "<a href=\"$site_atual/formulario.php?token=$token\"'>Clique Aqui</a>";
-
-    $mail = new PHPMailer(true);
-
-try {
-    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->CharSet = 'UTF-8';
-    $mail->isSMTP();
-    $mail->Host = "$mail_Host";
-    $mail->SMTPAuth = true;
-    $mail->Username = "$mail_Username";
-    $mail->Password = "$mail_Password";
-    $mail->SMTPSecure = "$mail_SMTPSecure";
-    $mail->Port = "$mail_Port";
-
-    $mail->setFrom("$config_email", "$config_empresa");
-    $mail->addAddress("$email", "$nome");
-    $mail->addBCC("$config_email");
-    
-    $mail->isHTML(true);                                 
-    $mail->Subject = "Formulario Anamnese - $config_empresa";
-  // INICIO MENSAGEM  
-    $mail->Body = "
-
-    <fieldset>
-    <legend><b>Formulario Anamnese</b></legend>
-    <br>
-    Ola <b>$nome</b>, tudo bem?<br>
-    $config_empresa lhe enviou um <b><u>Formulario de Anamnese</u></b>, preencha-o assim que possivel.<br>
-    <p>Preencha o formulario, $link_formulario</p>
-    <b>Formulario enviado em $data_email</b>
-    </fieldset><br><fieldset>
-    <legend><b><u>$config_empresa</u></legend>
-    <p>CNPJ: $config_cnpj</p>
-    <p>$config_telefone - $config_email</p>
-    <p>$config_endereco</p></b>
-    </fieldset>
-    
-    "; // FIM MENSAGEM
-
-        $mail->send();
-
-    } catch (Exception $e) {
-
-    }
-
-}
-//Fim Envio de Email
-
-    echo "<script>
-    alert('Formulario Enviado com Sucesso')
-    window.location.replace('cadastro.php?email=$email')
+    window.location.replace('cadastro.php?email=$email&id_job=Tratamento')
     </script>";
     exit();
 
 
 }else if($id_job == 'arquivos'){
 
-    $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
+    $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
     $arquivo_tipo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo_tipo']);
     $token_profile = mysqli_real_escape_string($conn_msqli, $_POST['token_profile']);
     $arquivo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo']).'.pdf';
@@ -606,7 +502,7 @@ try {
     if($arquivos['type'] != 'application/pdf'){
         echo "<script>
         alert('Selecione apenas arquivos tipo PDF');
-        window.location.replace('reserva.php?id_consulta=$id_consulta');
+        window.location.replace('cadastro.php?email=$email&id_job=Arquivos');
         </script>";
         exit();
     }
@@ -630,7 +526,7 @@ try {
 
     echo "<script>
     alert('Arquivo Cadastrado com Sucesso $id_consulta')
-    window.location.replace('reserva.php?id_consulta=$id_consulta')
+    window.location.replace('cadastro.php?email=$email&id_job=Arquivos')
     </script>";
     exit();
 
@@ -643,26 +539,28 @@ try {
     $atendimento_dia = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia']);
     $atendimento_hora = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora']);
     $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
-    
-    //Envio de Email	
+    $tipo_consulta = mysqli_real_escape_string($conn_msqli, $_POST['tipo_consulta']);
     
     $data_email = date('d/m/Y \-\ H:i:s');
     $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
+      
+    $msg_replace = str_replace(
+        ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}'],    // o que procurar
+        [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta],  // o que colocar no lugar
+        $config_msg_confirmacao
+    );
+      
+    $msg_string = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $msg_replace);
+
+    $msg_html = nl2br(htmlspecialchars($msg_string)); //Email
+    $msg_texto = $msg_string; // Whatsapp
     
-    
+        //Envio de Email
     if(isset($_POST['email'])){
         if($envio_email == 'ativado'){
     
-        $pdf_corpo_00 = 'Olá';
-        $pdf_corpo_01 = 'Confirmação Atendimento';
-        $pdf_corpo_03 = 'foi confirmado com sucesso';
-        $pdf_corpo_07 = 'Atendimento confirmado em'; 
-        $pdf_corpo_02 = 'o seu atendimento';
-        $pdf_corpo_04 = 'Atenção';
-    
-        $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token&typeerror=0\"'>Clique Aqui</a>";
-        $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
+        $link_paneil = "<a href=\"$site_atual\"'>Clique Aqui</a>";
     
         $mail = new PHPMailer(true);
     
@@ -679,33 +577,27 @@ try {
     
         $mail->setFrom("$config_email", "$config_empresa");
         $mail->addAddress("$doc_email", "$doc_nome");
-        $mail->addBCC("$config_email");
         
         $mail->isHTML(true);                                 
-        $mail->Subject = "Confirmação $id_job - $config_empresa";
+        $mail->Subject = "$config_empresa - Sua Consulta";
       // INICIO MENSAGEM  
         $mail->Body = "
     
         <fieldset>
-        <legend>$pdf_corpo_01</legend>
-        <br>
-        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
-        <p>Tipo Consulta: <b>$id_job</b><br>
-        Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b></p>
-        <b>$pdf_corpo_07 $data_email</b>
-        </fieldset><br><fieldset>
-        <legend><b><u>$pdf_corpo_04</u></legend>
-        <p>$config_msg_confirmacao</p>
-        </fieldset><br><fieldset>
-        <legend><b><u>Gerenciar seus Atendimentos</u></legend>
-        <p>Para Alterar seu Atendimento, $link_alterar</p>
-        <p>Para Cancelar seu Atendimento, $link_cancelar</p>
-        </fieldset><br><fieldset>
-        <legend><b><u>$config_empresa</u></legend>
-        <p>CNPJ: $config_cnpj</p>
-        <p>$config_telefone - $config_email</p>
-        <p>$config_endereco</p></b>
-        </fieldset>
+      <legend><b><u>Sua Consulta</u></legend>
+      <p>$msg_html</p>
+      </fieldset><br><fieldset>
+      <legend><b><u>Gerencia sua Consulta</u></legend>
+      <p>Acesse o nosso portal, $link_paneil</p>
+      </fieldset><br><fieldset>
+      <legend><b><u>$config_empresa</u></legend>
+      <p>CNPJ: $config_cnpj</p>
+      <p>$config_telefone - $config_email</p>
+      <p>$config_endereco</p></b>
+      </fieldset><br><fieldset>
+      <legend><b><u>Atenção</u></legend>
+      <p>Este e-mail é automatico. Favor não responder!</p>
+      </fieldset>
         
         "; // FIM MENSAGEM
     
@@ -725,10 +617,7 @@ try {
     if($envio_whatsapp == 'ativado'){
     
         $doc_telefonewhats = "55$doc_telefone";
-        $msg_whatsapp = "Olá $doc_nome, tudo bem?\n\n".
-                "Aqui vai a confirmação da sua Consulta para a Data: $atendimento_dia_str às $atendimento_hora_str.\n\n\n".
-                "Para Alterar seu Atendimento acesse: $site_atual/alterar.php?token=$token\n\n\n".
-                "Para Cancelar seu Atendimento acesse: $site_atual/cancelar.php?token=$token&typeerror=0";
+        $msg_whatsapp = $msg_texto;
         
         $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
         
@@ -758,20 +647,23 @@ try {
     $data_email = date('d/m/Y \-\ H:i:s');
     $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
+      
+    $msg_replace = str_replace(
+        ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}'],    // o que procurar
+        [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta],  // o que colocar no lugar
+        $config_msg_lembrete
+    );
+      
+    $msg_string = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $msg_replace);
+
+    $msg_html = nl2br(htmlspecialchars($msg_string)); //Email
+    $msg_texto = $msg_string; // Whatsapp
     
     
     if(isset($_POST['email'])){
         if($envio_email == 'ativado'){
-    
-    $pdf_corpo_00 = 'Olá';
-    $pdf_corpo_01 = 'Lembrete de Consulta';
-    $pdf_corpo_03 = 'esta confirmada e chegando!';
-    $pdf_corpo_07 = 'Lembrete Enviado em'; 
-    $pdf_corpo_02 = 'passando para lembrar que a sua Consulta';
-    $pdf_corpo_04 = 'Atenção';
-  
-    $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
-    $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
+
+    $link_paneil = "<a href=\"$site_atual\"'>Clique Aqui</a>";
   
     $mail = new PHPMailer(true);
   
@@ -788,31 +680,26 @@ try {
   
       $mail->setFrom("$config_email", "$config_empresa");
       $mail->addAddress("$doc_email", "$doc_nome");
-      $mail->addBCC("$config_email");
       
       $mail->isHTML(true);                                 
-      $mail->Subject = "$pdf_corpo_01";
+      $mail->Subject = "$config_empresa - Lembrete de Consulta";
     // INICIO MENSAGEM  
       $mail->Body = "
   
       <fieldset>
-      <legend>$pdf_corpo_01 $confirmacao</legend>
-      <br>
-      $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
-      <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b>h</p>
-      <b>$pdf_corpo_07 $data_email</b>
-      </fieldset><br><fieldset>
-      <legend><b><u>$pdf_corpo_04</u></legend>
-      <p>$config_msg_confirmacao</p>
+      <legend><b><u>Lembrete de Consulta</u></legend>
+      <p>$msg_html</p>
       </fieldset><br><fieldset>
       <legend><b><u>Gerencia sua Consulta</u></legend>
-      <p>Para Alterar sua consulta, $link_alterar</p>
-      <p>Para Cancelar sua consulta, $link_cancelar</p>
+      <p>Acesse o nosso portal, $link_paneil</p>
       </fieldset><br><fieldset>
       <legend><b><u>$config_empresa</u></legend>
       <p>CNPJ: $config_cnpj</p>
       <p>$config_telefone - $config_email</p>
       <p>$config_endereco</p></b>
+      </fieldset><br><fieldset>
+      <legend><b><u>Atenção</u></legend>
+      <p>Este e-mail é automatico. Favor não responder!</p>
       </fieldset>
       
       "; // FIM MENSAGEM
@@ -832,18 +719,14 @@ try {
     if($envio_whatsapp == 'ativado'){
     
         $doc_telefonewhats = "55$doc_telefone";
-        $msg_wahstapp = "Oi $doc_nome, tudo bem? 😊 \n\n" .
-                "Passando para confirmar seu atendimento dia $atendimento_dia_str às $atendimento_hora_str e para garantir que tudo esteja pronto para te receber com todo o cuidado preciso que me dê um retorno confirmando até as 17h, combinado?" .
-                "\n\n Caso não haja confirmação até esse horário, precisaremos liberar o horário para outro paciente. Qualquer dúvida, estou à disposição! 🤍🤍";
+        $msg_whatsapp = $msg_texto;
         
-        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
         
         }
     
     }
     //Fim Envio Whatsapp
-    
-    $id = base64_encode("$confirmacao.$token");
         echo   "<script>
                 alert('Lembrete Enviado com Sucesso')
                 window.location.replace('reserva.php?id_consulta=$id_consulta')
@@ -1106,6 +989,23 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     </script>";
     exit();
     }
+
+
+}else if($id_job == 'Prontuario_Add'){
+
+    $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
+    $profissional = mysqli_real_escape_string($conn_msqli, $_POST['profissional']);
+    $anotacao = mysqli_real_escape_string($conn_msqli, $_POST['anotacao']);
+
+    $stmt = $conexao->prepare("INSERT INTO evolucoes (doc_email, profissional, anotacao) VALUES (?, ?, ?)");
+    $stmt->execute([$doc_email, $profissional, $anotacao]);
+
+    echo "<script>
+        alert('Prontuario Registrado com Sucesso');
+        window.location.replace('cadastro.php?email=$doc_email&id_job=Prontuario');
+    </script>";
+    exit();
+
 
 
 }

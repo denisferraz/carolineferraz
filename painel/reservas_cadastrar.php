@@ -208,6 +208,7 @@ unset($_SESSION['error_reserva']);
                 <label>Tipo de Consulta</label>
                 <select name="id_job">
                     <option value="Nova Sessão">Nova Sessão</option>
+                    <option value="Consulta Retorno">Consulta Retorno</option>
                     <option value="Avaliação Capilar">Avaliação Capilar</option>
                     <option value="Consulta Capilar">Consulta Capilar</option>
                     <option value="Consulta Online">Consulta Online</option>

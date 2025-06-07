@@ -16,9 +16,9 @@ if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
     
-$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
+$email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
-$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE email IN (SELECT doc_email FROM consultas WHERE id = '{$id_consulta}')");
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE email = '{$email}'");
 while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
     $token_profile = $select_check2['token'];
 }
@@ -63,7 +63,7 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
                     <option value="Outros">Outros</option>
                 </select>
                 <input type="hidden" name="id_job" value="arquivos" />
-                <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>" />
+                <input type="hidden" name="email" value="<?php echo $email ?>" />
                 <input type="hidden" name="token_profile" value="<?php echo $token_profile ?>" />
                 <br>
                 <div class="card-group btn"><button type="submit">Salvar PDF</button></div>

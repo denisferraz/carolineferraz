@@ -58,7 +58,7 @@ $conditionGrey->setConditionType(Conditional::CONDITION_CELLIS)
 $spreadsheet->getProperties()
 ->setCreator("Denis Ferraz")
 ->setLastModifiedBy("Denis Ferraz")
-->setTitle("Auditoria Digital by Denis Ferraz");
+->setTitle("Sistema de Agendamento - Caroline Ferraz");
 
 $security = $spreadsheet->getSecurity();
 $security->setLockWindows(true);
@@ -489,42 +489,42 @@ $dias_trabalho++;
     $check_despesa_aluguel_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_aluguel_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_aluguel_dia = $check_despesa_aluguel_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_aluguel_dia = number_format(($total_despesa_aluguel_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_aluguel_dia = number_format(($total_despesa_aluguel_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_luz_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_luz_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_luz_dia = $check_despesa_luz_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_luz_dia = number_format(($total_despesa_luz_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_luz_dia = number_format(($total_despesa_luz_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_internet_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_internet_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_internet_dia = $check_despesa_internet_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_internet_dia = number_format(($total_despesa_internet_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_internet_dia = number_format(($total_despesa_internet_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_insumos_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_insumos_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_insumos_dia = $check_despesa_insumos_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_insumos_dia = number_format(($total_despesa_insumos_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_insumos_dia = number_format(($total_despesa_insumos_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_mobiliario_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_mobiliario_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_mobiliario_dia = $check_despesa_mobiliario_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_mobiliario_dia = number_format(($total_despesa_mobiliario_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_mobiliario_dia = number_format(($total_despesa_mobiliario_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_equipamentos_aluguel_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_aluguel_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_aluguel_dia = $check_despesa_equipamentos_aluguel_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_equipamentos_aluguel_dia = number_format(($total_despesa_equipamentos_aluguel_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_equipamentos_aluguel_dia = number_format(($total_despesa_equipamentos_aluguel_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_equipamentos_compra_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_compra_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_compra_dia = $check_despesa_equipamentos_compra_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_equipamentos_compra_dia = number_format(($total_despesa_equipamentos_compra_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_equipamentos_compra_dia = number_format(($total_despesa_equipamentos_compra_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_outros_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_outros_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_outros_dia = $check_despesa_outros_dia->fetch(PDO::FETCH_ASSOC)){
-    $despesa_outros_dia = number_format(($total_despesa_outros_dia['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_outros_dia = number_format(($total_despesa_outros_dia['sum(despesa_valor)'] ?? 0) ,2,",",".");
     }
     $check_despesa_total_dia = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_dia >= :relatorio_inicio AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_total_dia->execute(array('relatorio_inicio' => $relatorio_inicio, 'relatorio_fim' => $relatorio_fim));
@@ -554,22 +554,22 @@ $dias_trabalho++;
     $check_dinheiro_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_dinheiro_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_dinheiro_mes = $check_dinheiro_mes->fetch(PDO::FETCH_ASSOC)){
-    $receita_dinheiro_mes = number_format(($total_dinheiro_mes['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_dinheiro_mes = number_format(($total_dinheiro_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
     $check_cartao_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_cartao_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_cartao_mes = $check_cartao_mes->fetch(PDO::FETCH_ASSOC)){
-    $receita_cartao_mes = number_format(($total_cartao_mes['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_cartao_mes = number_format(($total_cartao_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
     $check_transferencia_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_transferencia_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_transferencia_mes = $check_transferencia_mes->fetch(PDO::FETCH_ASSOC)){
-    $receita_transferencia_mes = number_format(($total_transferencia_mes['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_transferencia_mes = number_format(($total_transferencia_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
     $check_outros_mes = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_mes AND quando <= :relatorio_fim"); 
     $check_outros_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_outros_mes = $check_outros_mes->fetch(PDO::FETCH_ASSOC)){
-    $receita_outros_mes = number_format(($total_outros_mes['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_outros_mes = number_format(($total_outros_mes['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
 
     $row_dispnibilidade_mes = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_mes AND atendimento_dia <= :relatorio_inicio");
@@ -595,42 +595,42 @@ $dias_trabalho++;
     $check_despesa_aluguel_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_aluguel_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_aluguel_mes = $check_despesa_aluguel_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_aluguel_mes = number_format(($total_despesa_aluguel_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_aluguel_mes = number_format(($total_despesa_aluguel_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_luz_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_luz_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_luz_mes = $check_despesa_luz_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_luz_mes = number_format(($total_despesa_luz_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_luz_mes = number_format(($total_despesa_luz_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_internet_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_internet_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_internet_mes = $check_despesa_internet_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_internet_mes = number_format(($total_despesa_internet_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_internet_mes = number_format(($total_despesa_internet_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_insumos_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_insumos_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_insumos_mes = $check_despesa_insumos_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_insumos_mes = number_format(($total_despesa_insumos_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_insumos_mes = number_format(($total_despesa_insumos_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_mobiliario_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_mobiliario_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_mobiliario_mes = $check_despesa_mobiliario_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_mobiliario_mes = number_format(($total_despesa_mobiliario_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_mobiliario_mes = number_format(($total_despesa_mobiliario_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_equipamentos_aluguel_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_aluguel_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_aluguel_mes = $check_despesa_equipamentos_aluguel_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_equipamentos_aluguel_mes = number_format(($total_despesa_equipamentos_aluguel_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_equipamentos_aluguel_mes = number_format(($total_despesa_equipamentos_aluguel_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_equipamentos_compra_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_compra_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_compra_mes = $check_despesa_equipamentos_compra_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_equipamentos_compra_mes = number_format(($total_despesa_equipamentos_compra_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_equipamentos_compra_mes = number_format(($total_despesa_equipamentos_compra_mes['sum(despesa_valor)'] ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_outros_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_outros_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_outros_mes = $check_despesa_outros_mes->fetch(PDO::FETCH_ASSOC)){
-    $despesa_outros_mes = number_format(($total_despesa_outros_mes['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_outros_mes = number_format(($total_despesa_outros_mes['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_total_mes = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_dia >= :relatorio_inicio_mes AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_total_mes->execute(array('relatorio_inicio_mes' => $relatorio_inicio_mes, 'relatorio_fim' => $relatorio_fim));
@@ -660,22 +660,22 @@ $dias_trabalho++;
     $check_dinheiro_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Cart%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_dinheiro_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_dinheiro_ano = $check_dinheiro_ano->fetch(PDO::FETCH_ASSOC)){
-    $receita_dinheiro_ano = number_format(($total_dinheiro_ano['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_dinheiro_ano = number_format(($total_dinheiro_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
     $check_cartao_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Dinheiro%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_cartao_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_cartao_ano = $check_cartao_ano->fetch(PDO::FETCH_ASSOC)){
-    $receita_cartao_ano = number_format(($total_cartao_ano['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_cartao_ano = number_format(($total_cartao_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
     $check_transferencia_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Transferencia%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_transferencia_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_transferencia_ano = $check_transferencia_ano->fetch(PDO::FETCH_ASSOC)){
-    $receita_transferencia_ano = number_format(($total_transferencia_ano['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_transferencia_ano = number_format(($total_transferencia_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
     $check_outros_ano = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE produto LIKE '%Outros%' AND tipo = 'Pagamento' AND quando >= :relatorio_inicio_ano AND quando <= :relatorio_fim"); 
     $check_outros_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_outros_ano = $check_outros_ano->fetch(PDO::FETCH_ASSOC)){
-    $receita_outros_ano = number_format(($total_outros_ano['sum(valor)'] * (-1)) ,2,",",".");
+    $receita_outros_ano = number_format(($total_outros_ano['sum(valor)']  ?? 0) * (-1) ,2,",",".");
     }
 
     $row_dispnibilidade_ano = $conexao->prepare("SELECT * FROM disponibilidade WHERE atendimento_dia >= :relatorio_inicio_ano AND atendimento_dia <= :relatorio_inicio");
@@ -701,42 +701,42 @@ $dias_trabalho++;
     $check_despesa_aluguel_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Aluguel' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_aluguel_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_aluguel_ano = $check_despesa_aluguel_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_aluguel_ano = number_format(($total_despesa_aluguel_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_aluguel_ano = number_format(($total_despesa_aluguel_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_luz_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Luz' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_luz_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_luz_ano = $check_despesa_luz_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_luz_ano = number_format(($total_despesa_luz_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_luz_ano = number_format(($total_despesa_luz_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_internet_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Internet' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_internet_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_internet_ano = $check_despesa_internet_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_internet_ano = number_format(($total_despesa_internet_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_internet_ano = number_format(($total_despesa_internet_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_insumos_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Insumos' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_insumos_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_insumos_ano = $check_despesa_insumos_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_insumos_ano = number_format(($total_despesa_insumos_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_insumos_ano = number_format(($total_despesa_insumos_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_mobiliario_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Mobiliario' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_mobiliario_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_mobiliario_ano = $check_despesa_mobiliario_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_mobiliario_ano = number_format(($total_despesa_mobiliario_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_mobiliario_ano = number_format(($total_despesa_mobiliario_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_equipamentos_aluguel_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Aluguel]' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_aluguel_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_aluguel_ano = $check_despesa_equipamentos_aluguel_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_equipamentos_aluguel_ano = number_format(($total_despesa_equipamentos_aluguel_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_equipamentos_aluguel_ano = number_format(($total_despesa_equipamentos_aluguel_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_equipamentos_compra_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Equipamentos [Compra]' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_equipamentos_compra_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_equipamentos_compra_ano = $check_despesa_equipamentos_compra_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_equipamentos_compra_ano = number_format(($total_despesa_equipamentos_compra_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_equipamentos_compra_ano = number_format(($total_despesa_equipamentos_compra_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_outros_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_tipo = 'Outros' AND despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_outros_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
     while($total_despesa_outros_ano = $check_despesa_outros_ano->fetch(PDO::FETCH_ASSOC)){
-    $despesa_outros_ano = number_format(($total_despesa_outros_ano['sum(despesa_valor)'] * (1)) ,2,",",".");
+    $despesa_outros_ano = number_format(($total_despesa_outros_ano['sum(despesa_valor)']  ?? 0) * (1) ,2,",",".");
     }
     $check_despesa_total_ano = $conexao->prepare("SELECT sum(despesa_valor) FROM despesas WHERE despesa_dia >= :relatorio_inicio_ano AND despesa_dia <= :relatorio_fim"); 
     $check_despesa_total_ano->execute(array('relatorio_inicio_ano' => $relatorio_inicio_ano, 'relatorio_fim' => $relatorio_fim));
@@ -761,9 +761,9 @@ $dias_trabalho++;
     $inventario_mes = number_format( ( ($inventario_dia + $row_dispnibilidade_dia) * $inicio_fim_mes / 7 * $dias_trabalho) ,0,"","") - $row_dispnibilidade_mes;
     $inventario_ano = number_format( ( ($inventario_dia + $row_dispnibilidade_dia) * $inicio_fim_ano / 7 * $dias_trabalho) ,0,"","") - $row_dispnibilidade_ano;
 
-    $ocupacao_dia = number_format( floatval(( ($row_reservas_dia - $row_cancelamentos_dia - $noshows_dia ) / $inventario_dia) * 100) ,2,",",".");
-    $ocupacao_mes = number_format( floatval(( ($row_reservas_mes - $row_cancelamentos_mes - $noshows_mes ) / $inventario_mes) * 100) ,2,",",".");
-    $ocupacao_ano = number_format( floatval(( ($row_reservas_ano - $row_cancelamentos_ano - $noshows_ano ) / $inventario_ano) * 100) ,2,",",".");
+    $ocupacao_dia = number_format( floatval(( ($arrivals_dia_consultas + $row_reservas_dia - $row_cancelamentos_dia - $noshows_dia ) / $inventario_dia) * 100) ,2,",",".");
+    $ocupacao_mes = number_format( floatval(( ($arrivals_mes_consultas + $row_reservas_mes - $row_cancelamentos_mes - $noshows_mes ) / $inventario_mes) * 100) ,2,",",".");
+    $ocupacao_ano = number_format( floatval(( ($arrivals_ano_consultas + $row_reservas_ano - $row_cancelamentos_ano - $noshows_ano ) / $inventario_ano) * 100) ,2,",",".");
 
     if($relatorio_tipo == 'pdf'){
     //Corpo do PDF
@@ -772,8 +772,8 @@ $dias_trabalho++;
     <center><b>Receitas</b><br></center>
     <table width=100% border=2px>
     <tr><td align=center width=34%><b>Topico</td><td align=center width=34%><b>Dia</td><td align=center width=34%><b>Mês</td><td align=center width=34%><b>Ano</td></tr>
-    <tr><td><b>Consultas</td><td align=center>$arrivals_dia_consultas</td><td align=center>$arrivals_mes_consultas</td><td align=center>$arrivals_ano_consultas</td></tr>
-    <tr><td><b>Atendimentos</td><td align=center>$row_reservas_dia</td><td align=center>$row_reservas_mes</td><td align=center>$row_reservas_ano</td></tr>
+    <tr><td><b>Atendimentos</td><td align=center>$arrivals_dia_consultas</td><td align=center>$arrivals_mes_consultas</td><td align=center>$arrivals_ano_consultas</td></tr>
+    <tr><td><b>Consultas</td><td align=center>$row_reservas_dia</td><td align=center>$row_reservas_mes</td><td align=center>$row_reservas_ano</td></tr>
     <tr><td><b>Finalizadas</td><td align=center>$arrivals_dia</td><td align=center>$arrivals_mes</td><td align=center>$arrivals_ano</td></tr>
     <tr><td><b>Canceladas</td><td align=center>$row_cancelamentos_dia</td><td align=center>$row_cancelamentos_mes</td><td align=center>$row_cancelamentos_ano</td></tr>
     <tr><td><b>No-Shows</td><td align=center>$noshows_dia</td><td align=center>$noshows_mes</td><td align=center>$noshows_ano</td></tr>
@@ -830,15 +830,15 @@ $activeWorksheet->setCellValue('C6', 'Linha');
 $activeWorksheet->setCellValue('D6', 'Dia');
 $activeWorksheet->setCellValue('E6', 'Mês');
 $activeWorksheet->setCellValue('F6', 'Ano');
-$activeWorksheet->setCellValue('C7', 'Capacidade');
-$activeWorksheet->setCellValue('D7', $inventario_dia);
-$activeWorksheet->setCellValue('E7', $inventario_mes);
-$activeWorksheet->setCellValue('F7', $inventario_ano);
-$activeWorksheet->setCellValue('C8', 'Bloqueados');
-$activeWorksheet->setCellValue('D8', $row_dispnibilidade_dia);
-$activeWorksheet->setCellValue('E8', $row_dispnibilidade_mes);
-$activeWorksheet->setCellValue('F8', $row_dispnibilidade_ano);
-$activeWorksheet->setCellValue('C9', 'Consultas');
+$activeWorksheet->setCellValue('C7', 'Atendimentos');
+$activeWorksheet->setCellValue('D7', $arrivals_dia_consultas);
+$activeWorksheet->setCellValue('E7', $arrivals_mes_consultas);
+$activeWorksheet->setCellValue('F7', $arrivals_ano_consultas);
+$activeWorksheet->setCellValue('C8', 'Consultas');
+$activeWorksheet->setCellValue('D8', $row_reservas_dia);
+$activeWorksheet->setCellValue('E8', $row_reservas_mes);
+$activeWorksheet->setCellValue('F8', $row_reservas_ano);
+$activeWorksheet->setCellValue('C9', 'Finalizadas');
 $activeWorksheet->setCellValue('D9', $row_reservas_dia);
 $activeWorksheet->setCellValue('E9', $row_reservas_mes);
 $activeWorksheet->setCellValue('F9', $row_reservas_ano);
@@ -859,25 +859,25 @@ $activeWorksheet->setCellValue('D12', $ocupacao_dia.'%');
 $activeWorksheet->setCellValue('E12', $ocupacao_mes.'%');
 $activeWorksheet->setCellValue('F12', $ocupacao_ano.'%');
 $activeWorksheet->setCellValue('C13', 'Outros Pagamentos');
-$activeWorksheet->setCellValue('D13', floatval($receita_outros_dia));
-$activeWorksheet->setCellValue('E13', floatval($receita_outros_mes));
-$activeWorksheet->setCellValue('F13', floatval($receita_outros_ano));
+$activeWorksheet->setCellValue('D13', str_replace(['.', ','], ['', '.'], $receita_outros_dia));
+$activeWorksheet->setCellValue('E13', str_replace(['.', ','], ['', '.'], $receita_outros_mes));
+$activeWorksheet->setCellValue('F13', str_replace(['.', ','], ['', '.'], $receita_outros_ano));
 $activeWorksheet->setCellValue('C14', 'Pagamento em Cartão');
-$activeWorksheet->setCellValue('D14', floatval($receita_cartao_dia));
-$activeWorksheet->setCellValue('E14', floatval($receita_cartao_mes));
-$activeWorksheet->setCellValue('F14', floatval($receita_cartao_ano));
+$activeWorksheet->setCellValue('D14', str_replace(['.', ','], ['', '.'], $receita_cartao_dia));
+$activeWorksheet->setCellValue('E14', str_replace(['.', ','], ['', '.'], $receita_cartao_mes));
+$activeWorksheet->setCellValue('F14', str_replace(['.', ','], ['', '.'], $receita_cartao_ano));
 $activeWorksheet->setCellValue('C15', 'Pagamento em Dinheiro');
-$activeWorksheet->setCellValue('D15', floatval($receita_dinheiro_dia));
-$activeWorksheet->setCellValue('E15', floatval($receita_dinheiro_mes));
-$activeWorksheet->setCellValue('F15', floatval($receita_dinheiro_ano));
+$activeWorksheet->setCellValue('D15', str_replace(['.', ','], ['', '.'], $receita_dinheiro_dia));
+$activeWorksheet->setCellValue('E15', str_replace(['.', ','], ['', '.'], $receita_dinheiro_mes));
+$activeWorksheet->setCellValue('F15', str_replace(['.', ','], ['', '.'], $receita_dinheiro_ano));
 $activeWorksheet->setCellValue('C16', 'Pagamento em Transferencias');
-$activeWorksheet->setCellValue('D16', floatval($receita_transferencia_dia));
-$activeWorksheet->setCellValue('E16', floatval($receita_transferencia_mes));
-$activeWorksheet->setCellValue('F16', floatval($receita_transferencia_ano));
+$activeWorksheet->setCellValue('D16', str_replace(['.', ','], ['', '.'], $receita_transferencia_dia));
+$activeWorksheet->setCellValue('E16', str_replace(['.', ','], ['', '.'], $receita_transferencia_mes));
+$activeWorksheet->setCellValue('F16', str_replace(['.', ','], ['', '.'], $receita_transferencia_ano));
 $activeWorksheet->setCellValue('C17', 'Receita Total');
-$activeWorksheet->setCellValue('D17', floatval($receita_lancamentos_dia));
-$activeWorksheet->setCellValue('E17', floatval($receita_lancamentos_mes));
-$activeWorksheet->setCellValue('F17', floatval($receita_lancamentos_ano));
+$activeWorksheet->setCellValue('D17', str_replace(['.', ','], ['', '.'], $receita_lancamentos_dia));
+$activeWorksheet->setCellValue('E17', str_replace(['.', ','], ['', '.'], $receita_lancamentos_mes));
+$activeWorksheet->setCellValue('F17', str_replace(['.', ','], ['', '.'], $receita_lancamentos_ano));
 
 //Despesas
 $activeWorksheet->setCellValue('C19', 'Despesas');
@@ -887,47 +887,47 @@ $activeWorksheet->setCellValue('D20', 'Dia');
 $activeWorksheet->setCellValue('E20', 'Mês');
 $activeWorksheet->setCellValue('F20', 'Ano');
 $activeWorksheet->setCellValue('C21', 'Aluguel');
-$activeWorksheet->setCellValue('D21', floatval($despesa_aluguel_dia * (-1)));
-$activeWorksheet->setCellValue('E21', floatval($despesa_aluguel_mes * (-1)));
-$activeWorksheet->setCellValue('F21', floatval($despesa_aluguel_ano * (-1)));
+$activeWorksheet->setCellValue('D21', str_replace(['.', ','], ['', '.'], $despesa_aluguel_dia));
+$activeWorksheet->setCellValue('E21', str_replace(['.', ','], ['', '.'], $despesa_aluguel_mes));
+$activeWorksheet->setCellValue('F21', str_replace(['.', ','], ['', '.'], $despesa_aluguel_ano));
 $activeWorksheet->setCellValue('C22', 'Energia');
-$activeWorksheet->setCellValue('D22', floatval($despesa_luz_dia * (-1)));
-$activeWorksheet->setCellValue('E22', floatval($despesa_luz_mes * (-1)));
-$activeWorksheet->setCellValue('F22', floatval($despesa_luz_ano * (-1)));
+$activeWorksheet->setCellValue('D22', str_replace(['.', ','], ['', '.'], $despesa_luz_dia));
+$activeWorksheet->setCellValue('E22', str_replace(['.', ','], ['', '.'], $despesa_luz_mes));
+$activeWorksheet->setCellValue('F22', str_replace(['.', ','], ['', '.'], $despesa_luz_ano));
 $activeWorksheet->setCellValue('C23', 'Internet');
-$activeWorksheet->setCellValue('D23', floatval($despesa_internet_dia * (-1)));
-$activeWorksheet->setCellValue('E23', floatval($despesa_internet_mes * (-1)));
-$activeWorksheet->setCellValue('F23', floatval($despesa_internet_ano * (-1)));
+$activeWorksheet->setCellValue('D23', str_replace(['.', ','], ['', '.'], $despesa_internet_dia));
+$activeWorksheet->setCellValue('E23', str_replace(['.', ','], ['', '.'], $despesa_internet_mes));
+$activeWorksheet->setCellValue('F23', str_replace(['.', ','], ['', '.'], $despesa_internet_ano));
 $activeWorksheet->setCellValue('C24', 'Insumos');
-$activeWorksheet->setCellValue('D24', floatval($despesa_insumos_dia * (-1)));
-$activeWorksheet->setCellValue('E24', floatval($despesa_insumos_mes * (-1)));
-$activeWorksheet->setCellValue('F24', floatval($despesa_insumos_ano * (-1)));
+$activeWorksheet->setCellValue('D24', str_replace(['.', ','], ['', '.'], $despesa_insumos_dia));
+$activeWorksheet->setCellValue('E24', str_replace(['.', ','], ['', '.'], $despesa_insumos_mes));
+$activeWorksheet->setCellValue('F24', str_replace(['.', ','], ['', '.'], $despesa_insumos_ano));
 $activeWorksheet->setCellValue('C25', 'Mobiliario');
-$activeWorksheet->setCellValue('D25', floatval($despesa_mobiliario_dia * (-1)));
-$activeWorksheet->setCellValue('E25', floatval($despesa_mobiliario_mes * (-1)));
-$activeWorksheet->setCellValue('F25', floatval($despesa_mobiliario_ano * (-1)));
+$activeWorksheet->setCellValue('D25', str_replace(['.', ','], ['', '.'], $despesa_mobiliario_dia));
+$activeWorksheet->setCellValue('E25', str_replace(['.', ','], ['', '.'], $despesa_mobiliario_mes));
+$activeWorksheet->setCellValue('F25', str_replace(['.', ','], ['', '.'], $despesa_mobiliario_ano));
 $activeWorksheet->setCellValue('C26', 'Equipamentos [Aluguel]');
-$activeWorksheet->setCellValue('D26', floatval($despesa_equipamentos_aluguel_dia * (-1)));
-$activeWorksheet->setCellValue('E26', floatval($despesa_equipamentos_aluguel_mes * (-1)));
-$activeWorksheet->setCellValue('F26', floatval($despesa_equipamentos_aluguel_ano * (-1)));
+$activeWorksheet->setCellValue('D26', str_replace(['.', ','], ['', '.'], $despesa_equipamentos_aluguel_dia));
+$activeWorksheet->setCellValue('E26', str_replace(['.', ','], ['', '.'], $despesa_equipamentos_aluguel_mes));
+$activeWorksheet->setCellValue('F26', str_replace(['.', ','], ['', '.'], $despesa_equipamentos_aluguel_ano));
 $activeWorksheet->setCellValue('C27', 'Equipamentos [Compra]');
-$activeWorksheet->setCellValue('D27', floatval($despesa_equipamentos_compra_dia * (-1)));
-$activeWorksheet->setCellValue('E27', floatval($despesa_equipamentos_compra_mes * (-1)));
-$activeWorksheet->setCellValue('F27', floatval($despesa_equipamentos_compra_ano * (-1)));
+$activeWorksheet->setCellValue('D27', str_replace(['.', ','], ['', '.'], $despesa_equipamentos_compra_dia));
+$activeWorksheet->setCellValue('E27', str_replace(['.', ','], ['', '.'], $despesa_equipamentos_compra_mes));
+$activeWorksheet->setCellValue('F27', str_replace(['.', ','], ['', '.'], $despesa_equipamentos_compra_ano));
 $activeWorksheet->setCellValue('C28', 'Outros');
-$activeWorksheet->setCellValue('D28', floatval($despesa_outros_dia * (-1)));
-$activeWorksheet->setCellValue('E28', floatval($despesa_outros_mes * (-1)));
-$activeWorksheet->setCellValue('F28', floatval($despesa_outros_ano * (-1)));
+$activeWorksheet->setCellValue('D28', str_replace(['.', ','], ['', '.'], $despesa_outros_dia));
+$activeWorksheet->setCellValue('E28', str_replace(['.', ','], ['', '.'], $despesa_outros_mes));
+$activeWorksheet->setCellValue('F28', str_replace(['.', ','], ['', '.'], $despesa_outros_ano));
 $activeWorksheet->setCellValue('C29', 'Despesas Total');
-$activeWorksheet->setCellValue('D29', floatval($despesa_total_dia * (-1)));
-$activeWorksheet->setCellValue('E29', floatval($despesa_total_mes * (-1)));
-$activeWorksheet->setCellValue('F29', floatval($despesa_total_ano * (-1)));
+$activeWorksheet->setCellValue('D29', str_replace(['.', ','], ['', '.'], $despesa_total_dia));
+$activeWorksheet->setCellValue('E29', str_replace(['.', ','], ['', '.'], $despesa_total_mes));
+$activeWorksheet->setCellValue('F29', str_replace(['.', ','], ['', '.'], $despesa_total_ano));
 
 //Lucro
 $activeWorksheet->setCellValue('C31', 'Lucro Bruto');
-$activeWorksheet->setCellValue('D31', floatval($lucro_liquido_dia));
-$activeWorksheet->setCellValue('E31', floatval($lucro_liquido_mes));
-$activeWorksheet->setCellValue('F31', floatval($lucro_liquido_ano));
+$activeWorksheet->setCellValue('D31', str_replace(['.', ','], ['', '.'], $lucro_liquido_dia));
+$activeWorksheet->setCellValue('E31', str_replace(['.', ','], ['', '.'], $lucro_liquido_mes));
+$activeWorksheet->setCellValue('F31', str_replace(['.', ','], ['', '.'], $lucro_liquido_ano));
 
 //Assinatura
 $activeWorksheet->setCellValue('C34', $gerador_nome.' | '.$data_gerador);
@@ -953,14 +953,14 @@ $activeWorksheet->getColumnDimension('K')->setWidth(1);
 $activeWorksheet->getColumnDimension('L')->setWidth(2);
 
 // Inserir uma imagem
-$imagePath = '../images/logo_pequena.jpg';
+$imagePath = '../images/logo_03.jpg';
 $objDrawing = new Drawing();
 $objDrawing->setName('Caroline Ferraz');
 $objDrawing->setDescription('Caroline Ferraz');
 $objDrawing->setPath($imagePath);
 $objDrawing->setCoordinates('H5'); // Posição onde a imagem será inserida
-$objDrawing->setWidth(150); // Largura da imagem em pixels
-$objDrawing->setHeight(115); // Altura da imagem em pixels
+$objDrawing->setWidth(170); // Largura da imagem em pixels
+$objDrawing->setHeight(170); // Altura da imagem em pixels
 $objDrawing->setWorksheet($activeWorksheet);
 
 $spreadsheet->getActiveSheet()->getStyle('C8:F8')->applyFromArray($styleArray_separacao);
@@ -1103,7 +1103,7 @@ $activeWorksheet->setCellValue('C5', $relatorio);
 $activeWorksheet->mergeCells('C5:G5');
 $activeWorksheet->mergeCells('C7:G7');
 $activeWorksheet->setCellValue('C9', 'Qtd.');
-$activeWorksheet->setCellValue('D9', '[Confirmacao] Nome');
+$activeWorksheet->setCellValue('D9', 'Nome');
 $activeWorksheet->setCellValue('E9', 'Descrição Produto');
 $activeWorksheet->setCellValue('F9', 'Responsavel');
 $activeWorksheet->setCellValue('G9', 'Data');
@@ -1115,7 +1115,6 @@ $linha_excel = 9;
 $qtd = 0;
 
 foreach ($dados_relatorio as $select) {
-    $confirmacao = $select['confirmacao'];
     $nome = $select['doc_nome'];
     $produto = $select['produto'];
     $feitopor = $select['feitopor'];
@@ -1129,7 +1128,7 @@ foreach ($dados_relatorio as $select) {
     }
 
 $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-$activeWorksheet->setCellValue('D'.$linha_excel, '['.$confirmacao.']'.' - '.$nome);
+$activeWorksheet->setCellValue('D'.$linha_excel, $nome);
 $activeWorksheet->setCellValue('E'.$linha_excel, $produto);
 $activeWorksheet->setCellValue('F'.$linha_excel, $feitopor);
 $activeWorksheet->setCellValue('G'.$linha_excel, date('d/m/Y', strtotime("$quando")));
@@ -1173,14 +1172,14 @@ $activeWorksheet->getColumnDimension('I')->setWidth(24);
 $activeWorksheet->getColumnDimension('J')->setWidth(2);
 
 // Inserir uma imagem
-$imagePath = '../images/logo_pequena.jpg';
+$imagePath = '../images/logo_03.jpg';
 $objDrawing = new Drawing();
 $objDrawing->setName('Caroline Ferraz');
 $objDrawing->setDescription('Caroline Ferraz');
 $objDrawing->setPath($imagePath);
 $objDrawing->setCoordinates('I5'); // Posição onde a imagem será inserida
 $objDrawing->setWidth(150); // Largura da imagem em pixels
-$objDrawing->setHeight(115); // Altura da imagem em pixels
+$objDrawing->setHeight(150); // Altura da imagem em pixels
 $objDrawing->setWorksheet($activeWorksheet);
 
 //Colocar as bordas
@@ -1309,7 +1308,7 @@ $activeWorksheet->setCellValue('C5', $relatorio);
 $activeWorksheet->mergeCells('C5:G5');
 $activeWorksheet->mergeCells('C7:G7');
 $activeWorksheet->setCellValue('C9', 'Qtd.');
-$activeWorksheet->setCellValue('D9', '[Confirmacao] Nome');
+$activeWorksheet->setCellValue('D9', 'Nome');
 $activeWorksheet->setCellValue('E9', '[Valor] Descrição Produto');
 $activeWorksheet->setCellValue('F9', 'Responsavel');
 $activeWorksheet->setCellValue('G9', 'Data');
@@ -1322,7 +1321,6 @@ $qtd = 0;
 $valor_total = 0.00;
 
 foreach ($dados_relatorio as $select) {
-    $confirmacao = $select['confirmacao'];
     $nome = $select['doc_nome'];
     $produto = $select['produto'];
     $feitopor = $select['feitopor'];
@@ -1339,7 +1337,7 @@ foreach ($dados_relatorio as $select) {
     }
 
 $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-$activeWorksheet->setCellValue('D'.$linha_excel, '['.$confirmacao.']'.' - '.$nome);
+$activeWorksheet->setCellValue('D'.$linha_excel, $nome);
 $activeWorksheet->setCellValue('E'.$linha_excel, '[ R$'.number_format($valor ,2,",",".").' ]'.$produto);
 $activeWorksheet->setCellValue('F'.$linha_excel, $feitopor);
 $activeWorksheet->setCellValue('G'.$linha_excel, date('d/m/Y', strtotime("$quando")));
@@ -1383,14 +1381,14 @@ $activeWorksheet->getColumnDimension('I')->setWidth(24);
 $activeWorksheet->getColumnDimension('J')->setWidth(2);
 
 // Inserir uma imagem
-$imagePath = '../images/logo_pequena.jpg';
+$imagePath = '../images/logo_03.jpg';
 $objDrawing = new Drawing();
 $objDrawing->setName('Caroline Ferraz');
 $objDrawing->setDescription('Caroline Ferraz');
 $objDrawing->setPath($imagePath);
 $objDrawing->setCoordinates('I5'); // Posição onde a imagem será inserida
 $objDrawing->setWidth(150); // Largura da imagem em pixels
-$objDrawing->setHeight(115); // Altura da imagem em pixels
+$objDrawing->setHeight(150); // Altura da imagem em pixels
 $objDrawing->setWorksheet($activeWorksheet);
 
 //Colocar as bordas
@@ -1519,7 +1517,7 @@ $resultado_pgto
     $activeWorksheet->mergeCells('C5:G5');
     $activeWorksheet->mergeCells('C7:G7');
     $activeWorksheet->setCellValue('C9', 'Qtd.');
-    $activeWorksheet->setCellValue('D9', '[Confirmacao] Nome');
+    $activeWorksheet->setCellValue('D9', 'Nome');
     $activeWorksheet->setCellValue('E9', '[Valor] Tipo Pagamento');
     $activeWorksheet->setCellValue('F9', 'Responsavel');
     $activeWorksheet->setCellValue('G9', 'Data');
@@ -1532,7 +1530,6 @@ $resultado_pgto
     $valor_total = 0.00;
     
     foreach ($dados_relatorio as $select) {
-        $confirmacao = $select['confirmacao'];
         $nome = $select['doc_nome'];
         $produto = $select['produto'];
         $feitopor = $select['feitopor'];
@@ -1549,7 +1546,7 @@ $resultado_pgto
         }
     
     $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-    $activeWorksheet->setCellValue('D'.$linha_excel, '['.$confirmacao.']'.' - '.$nome);
+    $activeWorksheet->setCellValue('D'.$linha_excel, $nome);
     $activeWorksheet->setCellValue('E'.$linha_excel, '[ R$'.number_format($valor ,2,",",".").' ]'.$produto);
     $activeWorksheet->setCellValue('F'.$linha_excel, $feitopor);
     $activeWorksheet->setCellValue('G'.$linha_excel, date('d/m/Y', strtotime("$quando")));
@@ -1593,14 +1590,14 @@ $resultado_pgto
     $activeWorksheet->getColumnDimension('J')->setWidth(2);
     
     // Inserir uma imagem
-    $imagePath = '../images/logo_pequena.jpg';
+    $imagePath = '../images/logo_03.jpg';
     $objDrawing = new Drawing();
     $objDrawing->setName('Caroline Ferraz');
     $objDrawing->setDescription('Caroline Ferraz');
     $objDrawing->setPath($imagePath);
     $objDrawing->setCoordinates('I5'); // Posição onde a imagem será inserida
     $objDrawing->setWidth(150); // Largura da imagem em pixels
-    $objDrawing->setHeight(115); // Altura da imagem em pixels
+    $objDrawing->setHeight(150); // Altura da imagem em pixels
     $objDrawing->setWorksheet($activeWorksheet);
     
     //Colocar as bordas
@@ -1803,14 +1800,14 @@ $resultado_despesa
     $activeWorksheet->getColumnDimension('J')->setWidth(2);
     
     // Inserir uma imagem
-    $imagePath = '../images/logo_pequena.jpg';
+    $imagePath = '../images/logo_03.jpg';
     $objDrawing = new Drawing();
     $objDrawing->setName('Caroline Ferraz');
     $objDrawing->setDescription('Caroline Ferraz');
     $objDrawing->setPath($imagePath);
     $objDrawing->setCoordinates('I5'); // Posição onde a imagem será inserida
     $objDrawing->setWidth(150); // Largura da imagem em pixels
-    $objDrawing->setHeight(115); // Altura da imagem em pixels
+    $objDrawing->setHeight(150); // Altura da imagem em pixels
     $objDrawing->setWorksheet($activeWorksheet);
     
     //Colocar as bordas
@@ -1938,7 +1935,7 @@ $resultado_reservas
     $activeWorksheet->mergeCells('C5:G5');
     $activeWorksheet->mergeCells('C7:G7');
     $activeWorksheet->setCellValue('C9', 'Qtd.');
-    $activeWorksheet->setCellValue('D9', 'Confirmação [Status]');
+    $activeWorksheet->setCellValue('D9', 'Status');
     $activeWorksheet->setCellValue('E9', 'Nome');
     $activeWorksheet->setCellValue('F9', 'Dia Atendimento');
     $activeWorksheet->setCellValue('G9', 'Hora Atendimento');
@@ -1951,7 +1948,6 @@ $resultado_reservas
     
     foreach ($dados_relatorio as $select) {
         $hospede = $select['hospede'];
-        $confirmacao = $select['confirmacao'];
         $status_consulta = $select['status_consulta'];
         $atendimento_dia = $select['atendimento_dia'];
         $atendimento_hora = $select['atendimento_hora'];
@@ -1964,7 +1960,7 @@ $resultado_reservas
         }
     
     $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-    $activeWorksheet->setCellValue('D'.$linha_excel, '['.$confirmacao.']'.' - '.$status_consulta);
+    $activeWorksheet->setCellValue('D'.$linha_excel, $status_consulta);
     $activeWorksheet->setCellValue('E'.$linha_excel, $hospede);
     $activeWorksheet->setCellValue('F'.$linha_excel, date('d/m/Y', strtotime("$atendimento_dia")));
     $activeWorksheet->setCellValue('G'.$linha_excel, date('H:i\h', strtotime("$atendimento_hora")));
@@ -2009,14 +2005,14 @@ $resultado_reservas
     $activeWorksheet->getColumnDimension('J')->setWidth(2);
     
     // Inserir uma imagem
-    $imagePath = '../images/logo_pequena.jpg';
+    $imagePath = '../images/logo_03.jpg';
     $objDrawing = new Drawing();
     $objDrawing->setName('Caroline Ferraz');
     $objDrawing->setDescription('Caroline Ferraz');
     $objDrawing->setPath($imagePath);
     $objDrawing->setCoordinates('I5'); // Posição onde a imagem será inserida
     $objDrawing->setWidth(150); // Largura da imagem em pixels
-    $objDrawing->setHeight(115); // Altura da imagem em pixels
+    $objDrawing->setHeight(150); // Altura da imagem em pixels
     $objDrawing->setWorksheet($activeWorksheet);
     
     //Colocar as bordas
@@ -2075,7 +2071,6 @@ $canc_reservas_total = $query_canc_reservas->rowCount();
 if($canc_reservas_total > 0){
 while($select_canc_reservas = $query_canc_reservas->fetch(PDO::FETCH_ASSOC)){
 $hospede = $select_canc_reservas['doc_nome'];
-$confirmacao = $select_canc_reservas['confirmacao'];
 $status_consulta = $select_canc_reservas['status_consulta'];
 $atendimento_dia = $select_canc_reservas['atendimento_dia'];
 $atendimento_dia = date('d/m/Y', strtotime("$atendimento_dia"));
@@ -2084,13 +2079,12 @@ $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
 
 if($relatorio_tipo == 'pdf'){
 
-    $resultado_canc_reservas = "$resultado_canc_reservas<tr><td align=center>$confirmacao [$status_consulta]</td><td>$hospede</td><td align=center>$atendimento_dia</td><td align=center>$atendimento_hora</td></tr>";
+    $resultado_canc_reservas = "$resultado_canc_reservas<tr><td align=center>$status_consulta</td><td>$hospede</td><td align=center>$atendimento_dia</td><td align=center>$atendimento_hora</td></tr>";
             
 }else{
         
     $dados_relatorio[] = [
         'hospede' => $select_canc_reservas['doc_nome'],
-        'confirmacao' => $select_canc_reservas['confirmacao'],
         'status_consulta' => $select_canc_reservas['status_consulta'],
         'atendimento_dia' => $select_canc_reservas['atendimento_dia'],
         'atendimento_hora' => $select_canc_reservas['atendimento_hora']
@@ -2112,7 +2106,7 @@ $gera_body = "
 <b>Quantidade de Cancelamentos</b>: $canc_reservas_total<br>
 <table width=100% border=1px>
 <tr>
-<td align=center width=30%><b>Confirmação [Status]</b></td>
+<td align=center width=30%><b>Status</b></td>
 <td align=center width=55%><b>Nome</b></td>
 <td align=center width=15%><b>Dia Atendimento</b></td>
 <td align=center width=15%><b>Hora Atendimento</b></td>
@@ -2146,7 +2140,7 @@ $resultado_canc_reservas
     $activeWorksheet->mergeCells('C5:G5');
     $activeWorksheet->mergeCells('C7:G7');
     $activeWorksheet->setCellValue('C9', 'Qtd.');
-    $activeWorksheet->setCellValue('D9', 'Confirmação [Status]');
+    $activeWorksheet->setCellValue('D9', 'Status');
     $activeWorksheet->setCellValue('E9', 'Nome');
     $activeWorksheet->setCellValue('F9', 'Dia Atendimento');
     $activeWorksheet->setCellValue('G9', 'Hora Atendimento');
@@ -2159,7 +2153,6 @@ $resultado_canc_reservas
     
     foreach ($dados_relatorio as $select) {
         $hospede = $select['hospede'];
-        $confirmacao = $select['confirmacao'];
         $status_consulta = $select['status_consulta'];
         $atendimento_dia = $select['atendimento_dia'];
         $atendimento_hora = $select['atendimento_hora'];
@@ -2172,7 +2165,7 @@ $resultado_canc_reservas
         }
     
     $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-    $activeWorksheet->setCellValue('D'.$linha_excel, '['.$confirmacao.']'.' - '.$status_consulta);
+    $activeWorksheet->setCellValue('D'.$linha_excel, $status_consulta);
     $activeWorksheet->setCellValue('E'.$linha_excel, $hospede);
     $activeWorksheet->setCellValue('F'.$linha_excel, date('d/m/Y', strtotime("$atendimento_dia")));
     $activeWorksheet->setCellValue('G'.$linha_excel, date('H:i\h', strtotime("$atendimento_hora")));
@@ -2217,14 +2210,14 @@ $resultado_canc_reservas
     $activeWorksheet->getColumnDimension('J')->setWidth(2);
     
     // Inserir uma imagem
-    $imagePath = '../images/logo_pequena.jpg';
+    $imagePath = '../images/logo_03.jpg';
     $objDrawing = new Drawing();
     $objDrawing->setName('Caroline Ferraz');
     $objDrawing->setDescription('Caroline Ferraz');
     $objDrawing->setPath($imagePath);
     $objDrawing->setCoordinates('I5'); // Posição onde a imagem será inserida
     $objDrawing->setWidth(150); // Largura da imagem em pixels
-    $objDrawing->setHeight(115); // Altura da imagem em pixels
+    $objDrawing->setHeight(150); // Altura da imagem em pixels
     $objDrawing->setWorksheet($activeWorksheet);
     
     //Colocar as bordas
@@ -2282,7 +2275,6 @@ $noshows_total = $query_noshows->rowCount();
 if($noshows_total > 0){
 while($select_noshows = $query_noshows->fetch(PDO::FETCH_ASSOC)){
 $hospede = $select_noshows['doc_nome'];
-$confirmacao = $select_noshows['confirmacao'];
 $status_consulta = $select_noshows['status_consulta'];
 $atendimento_dia = $select_noshows['atendimento_dia'];
 $atendimento_dia = date('d/m/Y', strtotime("$select_noshows->atendimento_dia"));
@@ -2291,13 +2283,12 @@ $atendimento_hora = date('H:i\h', strtotime("$select_noshows->atendimento_hora")
 
 if($relatorio_tipo == 'pdf'){
 
-    $resultado_noshows = "$resultado_noshows<tr><td align=center>$confirmacao [$status_consulta]</td><td>$hospede</td><td align=center>$atendimento_dia</td><td align=center>$atendimento_hora</td></tr>";
+    $resultado_noshows = "$resultado_noshows<tr><td align=center>$status_consulta</td><td>$hospede</td><td align=center>$atendimento_dia</td><td align=center>$atendimento_hora</td></tr>";
             
 }else{
         
     $dados_relatorio[] = [
         'hospede' => $select_noshows['doc_nome'],
-        'confirmacao' => $select_noshows['confirmacao'],
         'status_consulta' => $select_noshows['status_consulta'],
         'atendimento_dia' => $select_noshows['atendimento_dia'],
         'atendimento_hora' => $select_noshows['atendimento_hora']
@@ -2319,7 +2310,7 @@ $gera_body = "
 <b>Quantidade de No-Shows</b>: $noshows_total<br>
 <table width=100% border=1px>
 <tr>
-<td align=center width=30%><b>Confirmação [Status]</b></td>
+<td align=center width=30%><b>Status</b></td>
 <td align=center width=55%><b>Nome</b></td>
 <td align=center width=15%><b>Dia Atendimento</b></td>
 <td align=center width=15%><b>Hora Atendimento</b></td>
@@ -2353,7 +2344,7 @@ $resultado_noshows
     $activeWorksheet->mergeCells('C5:G5');
     $activeWorksheet->mergeCells('C7:G7');
     $activeWorksheet->setCellValue('C9', 'Qtd.');
-    $activeWorksheet->setCellValue('D9', 'Confirmação [Status]');
+    $activeWorksheet->setCellValue('D9', 'Status');
     $activeWorksheet->setCellValue('E9', 'Nome');
     $activeWorksheet->setCellValue('F9', 'Dia Atendimento');
     $activeWorksheet->setCellValue('G9', 'Hora Atendimento');
@@ -2366,7 +2357,6 @@ $resultado_noshows
     
     foreach ($dados_relatorio as $select) {
         $hospede = $select['hospede'];
-        $confirmacao = $select['confirmacao'];
         $status_consulta = $select['status_consulta'];
         $atendimento_dia = $select['atendimento_dia'];
         $atendimento_hora = $select['atendimento_hora'];
@@ -2379,7 +2369,7 @@ $resultado_noshows
         }
     
     $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-    $activeWorksheet->setCellValue('D'.$linha_excel, '['.$confirmacao.']'.' - '.$status_consulta);
+    $activeWorksheet->setCellValue('D'.$linha_excel, $status_consulta);
     $activeWorksheet->setCellValue('E'.$linha_excel, $hospede);
     $activeWorksheet->setCellValue('F'.$linha_excel, date('d/m/Y', strtotime("$atendimento_dia")));
     $activeWorksheet->setCellValue('G'.$linha_excel, date('H:i\h', strtotime("$atendimento_hora")));
@@ -2424,14 +2414,14 @@ $resultado_noshows
     $activeWorksheet->getColumnDimension('J')->setWidth(2);
     
     // Inserir uma imagem
-    $imagePath = '../images/logo_pequena.jpg';
+    $imagePath = '../images/logo_03.jpg';
     $objDrawing = new Drawing();
     $objDrawing->setName('Caroline Ferraz');
     $objDrawing->setDescription('Caroline Ferraz');
     $objDrawing->setPath($imagePath);
     $objDrawing->setCoordinates('I5'); // Posição onde a imagem será inserida
     $objDrawing->setWidth(150); // Largura da imagem em pixels
-    $objDrawing->setHeight(115); // Altura da imagem em pixels
+    $objDrawing->setHeight(150); // Altura da imagem em pixels
     $objDrawing->setWorksheet($activeWorksheet);
     
     //Colocar as bordas

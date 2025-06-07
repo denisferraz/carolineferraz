@@ -278,7 +278,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <h2 class="section-title">Depoimentos de Pacientes</h2>
             <p class="section-subtitle">O que nossos pacientes dizem sobre os resultados obtidos</p>
-            <script defer async src='https://cdn.trustindex.io/loader.js?b96a8e3471a720054b5650c0d7b'></script>
+            <!-- Elfsight Google Reviews | Untitled Google Reviews -->
+            <script src="https://static.elfsight.com/platform/platform.js" async></script>
+            <div class="elfsight-app-21320711-1a35-4138-b063-aee54ae6198b" data-elfsight-app-lazy></div>
         </div>
     </section>
 
@@ -313,8 +315,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </section>
-
-    <!-- Sobre Section -->
 
     <!-- Contato -->
     <section id="contact" class="section bg-light">

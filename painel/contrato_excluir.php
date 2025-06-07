@@ -13,14 +13,18 @@ if($aut_acesso == 1){
     echo 'Você não tem permissão para acessar esta pagina';
 }else{
 
+$token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
-$arquivo = mysqli_real_escape_string($conn_msqli, $_GET['arquivo']);
-unlink($arquivo);
+
+
+    $query = $conexao->prepare("DELETE FROM contrato WHERE token = :token");
+    $query->execute(array('token' => $token));
 
     echo "<script>
-    alert('Arquivo excluido com sucesso')
-    window.location.replace('cadastro.php?email=$email&id_job=Arquivos')
+    alert('Contrato Excluido com Sucesso!')
+    window.location.replace('cadastro.php?email=$email&id_job=Contratos')
     </script>";
+    exit();
 
 }
 

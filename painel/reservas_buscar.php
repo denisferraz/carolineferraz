@@ -69,7 +69,7 @@ if($aut_acesso == 1){
 <legend><h2>Veja abaixo todas as consultas com o filtro [ <?php echo $palavra ?> ]</h2></legend>
 <table>
 <tr>
-    <th>Confirmação</th>
+    <th>Acessar</th>
     <th>Nome [ E-mail ]</th>
     <th>Entrada</th>
     <th>Horário</th>
@@ -80,7 +80,6 @@ if($aut_acesso == 1){
 <?php
     while($select = $query_select->fetch(PDO::FETCH_ASSOC)){
         $status_consulta = $select['status_consulta'];
-        $confirmacao = $select['confirmacao'];
         $doc_nome = $select['doc_nome'];
         $doc_email = $select['doc_email'];
         $atendimento_dia = strtotime($select['atendimento_dia']);
@@ -88,7 +87,7 @@ if($aut_acesso == 1){
         $id = $select['id'];
 ?>
 <tr>
-    <td><a href="javascript:void(0)" onclick='window.open("reserva.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button><?php echo $confirmacao ?></button></a></td>
+    <td><a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id ?>","iframe-home")'><button>Acessar</button></a></td>
     <td><?php echo $doc_nome ?><br><?php echo $doc_email ?></td>
     <td><?php echo date('d/m/Y', $atendimento_dia) ?></td>
     <td><?php echo date('H:i\h', $atendimento_hora) ?></td>
@@ -97,11 +96,11 @@ if($aut_acesso == 1){
     <td>-</td>
     <td>-</td>
     <?php }else{  ?>
-    <td><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id=<?php echo $id ?>","iframe-home")'><button>Editar</button></td>
+    <td><a href="javascript:void(0)" onclick='window.open("editar_reservas.php?id_consulta=<?php echo $id ?>","iframe-home")'><button>Editar</button></td>
     <?php if($status_consulta == 'Checkedin' || $status_consulta == 'NoShow'){  ?>
     <td>-</td>
     <?php }else{ ?>
-    <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?confirmacao=<?php echo $confirmacao ?>","iframe-home")'><button>Cancelar</button></a></td>
+    <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?id_consulta=<?php echo $confirmacao ?>","iframe-home")'><button>Cancelar</button></a></td>
     <?php }}  ?>
 </tr>
 <?php

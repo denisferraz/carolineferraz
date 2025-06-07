@@ -57,11 +57,15 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
             $status_consulta = $select_checkins['status_consulta'];
         ?>
             <div class="appointment">
+                <?php echo date('d/m/Y', $atendimento_dia) ?> às <?php echo date('H:i\h', $atendimento_hora) ?>
+                [ <?php echo $local_consulta; ?> ]
                 <a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'>
-                    <button><?php echo $doc_nome ?> | <?php echo date('d/m/Y', $atendimento_dia) ?> às <?php echo date('H:i\h', $atendimento_hora) ?></button>
+                    <button>Acessar Detalhes</button>
                 </a>
-                <?php echo $local_consulta; 
-                
+                <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>","iframe-home")'>
+                    <button><?php echo $doc_nome ?></button>
+                </a>
+                <?php
                 if($status_consulta == 'Confirmada' || $status_consulta == 'Em Andamento'){ ?>
                 <div class="actions">
                     <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?id_consulta=<?php echo $id_consulta ?>&id_job=EmAndamento","iframe-home")'>

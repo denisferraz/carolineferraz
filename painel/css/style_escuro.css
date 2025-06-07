@@ -52,7 +52,7 @@ body{
   overflow: hidden;
 }
 
-#iframe-home {
+#iframe-home, #iframe-cadastro {
   width: 100%;
   height: 100%;
   border: none;
@@ -592,105 +592,150 @@ width: 150px;
   color: var(--cor-texto);
 }
 
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-      display: block;
-  }
-
-  table{
-    width: 85%;
-}
-
-  thead {
-      display: none;
-  }
-
-  tr {
-      margin-bottom: 20px;
-  }
-
-  td {
-      text-align: right;
-      padding-left: 50%;
-      position: relative;
-  }
-
-  td::before {
-      content: attr(data-label);
-      position: absolute;
-      left: 15px;
-      width: 45%;
-      padding-right: 10px;
-      text-align: left;
-      color: #00ffcc;
-  }
-}
 
 /* Estilo para o botão Voltar */
 button.voltar {
-    background-color: var(--cor-botao);
-    color: var(--cor-texto);
-    font-size: 1rem;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-bottom: 30px;
+  background-color: var(--cor-botao);
+  color: var(--cor-texto);
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 30px;
 }
 
 button.voltar:hover {
-    background-color: var(--cor-botao-hover);
-    color: var(--cor-texto);
+  background-color: var(--cor-botao-hover);
+  color: var(--cor-texto);
 }
 
 button.voltar:focus {
-    outline: none;
+  outline: none;
 }
 
 
 /* Barra de Progresso */
 #progress-bar, #progress-bar-mini {
-  background-color: darkgrey;
-  height: 20px;
-  width: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  border-radius: 5px; /* Estética mais suave */
-  overflow: hidden;
+background-color: darkgrey;
+height: 20px;
+width: 300px;
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+border-radius: 5px; /* Estética mais suave */
+overflow: hidden;
 }
 
 #progress-bar-mini {
-  background-color: darkgrey;
-  height: 20px;
-  width: clamp(50px, 5vw, 500px);
-  margin: 0 auto;
+background-color: darkgrey;
+height: 20px;
+width: clamp(50px, 5vw, 500px);
+margin: 0 auto;
 }
 
 #progress-bar .filled, #progress-bar-mini .filled {
-  background-color: darkgreen;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  transition: width 0.3s ease-in-out; /* Animação suave */
+background-color: darkgreen;
+height: 100%;
+position: absolute;
+top: 0;
+left: 0;
+z-index: 1;
+transition: width 0.3s ease-in-out; /* Animação suave */
 }
 
 #progress-bar .text{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+color: white;
+font-weight: bold;
+font-size: 0.9rem; /* Reduz um pouco para caber melhor em telas pequenas */
+z-index: 2;
+}
+
+.top-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: var(--cor-fundo);
+  padding: 10px;
+  gap: 20px;
+  border-bottom: 2px solid var(--cor-texto);
+}
+
+.top-menu a {
+  color: var(--cor-texto);
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-weight: bold;
-  font-size: 0.9rem; /* Reduz um pouco para caber melhor em telas pequenas */
-  z-index: 2;
+}
+
+.top-menu a:hover {
+  background-color: var(--cor-fundo-focus);
+}
+
+.top-menu i {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .top-menu a span {
+    display: none;
+  }
+
+  .top-menu i {
+    font-size: 24px; /* Ícones maiores */
+  }
+
+  .top-menu a {
+    padding: 12px;
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 @media (max-width: 600px) {
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+}
+
+table{
+  width: 85%;
+}
+
+thead {
+    display: none;
+}
+
+tr {
+    margin-bottom: 20px;
+}
+
+td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+}
+
+td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    width: 45%;
+    padding-right: 10px;
+    text-align: left;
+    color: #00ffcc;
+}
 
   #progress-bar {
     display: none;

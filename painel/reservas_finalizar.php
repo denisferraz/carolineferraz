@@ -33,7 +33,7 @@ if($aut_acesso == 1){
 </head>
 <body>
 
-    <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
+    <form class="form" action="../reservas_php.php" method="POST" id="form-finalizacao">
         <div class="card">
             <div class="card-top">
                 <h2>Confirmar a Finalização</h2>
@@ -65,6 +65,7 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone?>">
             <input type="hidden" name="id_consulta" value="<?php echo $id_consulta?>">
             <input type="hidden" name="feitapor" value="Painel">
+            <input type="hidden" name="enviar_mensagem" id="enviar_mensagem" value="nao">
             <div class="card-group-green btn"><button type="submit">Finalizar</button></div>
 
             </div>
@@ -74,19 +75,36 @@ $atendimento_hora = strtotime("$atendimento_hora");
         </div>
     </form>
     <script>
-    function exibirPopup() {
+document.getElementById("form-finalizacao").addEventListener("submit", function(event) {
+    event.preventDefault(); // Impede envio automático
+
+    Swal.fire({
+        title: "Deseja enviar mensagem de finalização?",
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Sim, enviar",
+        cancelButtonText: "Não enviar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById("enviar_mensagem").value = "sim";
+        } else {
+            document.getElementById("enviar_mensagem").value = "nao";
+        }
+
         Swal.fire({
-            icon: 'warning',
-            title: 'Carregando...',
-            text: 'Aguarde enquanto finalizamos a Consulta!',
-            showCancelButton: false,
+            icon: 'info',
+            title: 'Finalizando...',
+            text: 'Aguarde enquanto finalizamos a consulta.',
             showConfirmButton: false,
             allowOutsideClick: false,
-            willOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => Swal.showLoading()
         });
-    }
+
+        // Envia o formulário manualmente após decisão
+        event.target.submit();
+    });
+});
 </script>
 </body>
 </html>

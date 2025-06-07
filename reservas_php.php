@@ -609,6 +609,7 @@ if($envio_whatsapp == 'ativado'){
 
     $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
     $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
+    $enviar_mensagem = mysqli_real_escape_string($conn_msqli, $_POST['enviar_mensagem']);
     $msg_finalizacao = $config_msg_finalizar;
 
     $result_check = $conexao->prepare("SELECT * FROM consultas WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')");
@@ -621,20 +622,27 @@ if($envio_whatsapp == 'ativado'){
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Finalizou a consulta $id_consulta"));  
 
-            //Envio de Email	
-
+    if($enviar_mensagem == 'sim'){
+  
         $data_email = date('d/m/Y \-\ H:i:s');
         $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-        $atendimento_hora_str = date('H:i',  strtotime($atendimento_hora));
-        
+        $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
+      
+        $msg_replace = str_replace(
+            ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}'],    // o que procurar
+            [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta],  // o que colocar no lugar
+            $config_msg_finalizar
+        );
+      
+        $msg_string = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $msg_replace);
+
+        $msg_html = nl2br(htmlspecialchars($msg_string)); //Email
+        $msg_texto = $msg_string; // Whatsapp
+
+        //Envio Email
         if($envio_email == 'ativado'){
 
-        $pdf_corpo_00 = 'Olá';
-        $pdf_corpo_01 = 'Atendimento Finalizado';
-        $pdf_corpo_02 = 'o seu atendimento';
-        $pdf_corpo_03 = 'foi finalizado com sucesso';
-        $pdf_corpo_05 = 'Obrigado';
-        $pdf_corpo_07 = 'Atendimento finalizado em';
+        $link_paneil = "<a href=\"$site_atual\"'>Clique Aqui</a>";
 
     $mail = new PHPMailer(true);
 
@@ -651,30 +659,27 @@ if($envio_whatsapp == 'ativado'){
 
         $mail->setFrom("$config_email", "$config_empresa");
         $mail->addAddress("$doc_email", "$doc_nome");
-        $mail->addBCC("$config_email");
         
         $mail->isHTML(true);                                 
-        $mail->Subject = "$pdf_corpo_01";
+        $mail->Subject = "$config_empresa - Consulta Finalizada";
       // INICIO MENSAGEM  
         $mail->Body = "
 
         <fieldset>
-        <legend>$pdf_corpo_01</legend>
-        <br>
-        $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
-        <p>Data: <b>$atendimento_dia_str</b> ás: <b>$atendimento_hora_str</b>h</p>
-        <br><b>$pdf_corpo_07 $data_email</b>
-        </fieldset>
-        <br>
-        <fieldset>
-        <legend><b><u>$pdf_corpo_05</u></b></legend>
-        <p><b>$msg_finalizacao</b></p>
-        </fieldset><br><fieldset>
-        <legend><b><u>$config_empresa</u></legend>
-        <p>CNPJ: $config_cnpj</p>
-        <p>$config_telefone - $config_email</p>
-        <p>$config_endereco</p></b>
-        </fieldset>
+      <legend><b><u>Consulta Finalizada</u></legend>
+      <p>$msg_html</p>
+      </fieldset><br><fieldset>
+      <legend><b><u>Gerencia sua Consulta</u></legend>
+      <p>Acesse o nosso portal, $link_paneil</p>
+      </fieldset><br><fieldset>
+      <legend><b><u>$config_empresa</u></legend>
+      <p>CNPJ: $config_cnpj</p>
+      <p>$config_telefone - $config_email</p>
+      <p>$config_endereco</p></b>
+      </fieldset><br><fieldset>
+      <legend><b><u>Atenção</u></legend>
+      <p>Este e-mail é automatico. Favor não responder!</p>
+      </fieldset>
         "; // FIM MENSAGEM
     
             $mail->send();
@@ -688,22 +693,16 @@ if($envio_whatsapp == 'ativado'){
 
 //Incio Envio Whatsapp
 if($envio_whatsapp == 'ativado'){
-    
-    $site_avaliacao1 = 'https://forms.gle/mc2gyyVwMCvW2HRq9';
-    $site_avaliacao2 = 'https://g.co/kgs/kgkGKy';
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_whastapp = "Olá $doc_nome, sua consulta foi finalizada em $data_email!\n".
-    "Obrigada por sua presença hoje!\n\n".
-    "Se puder, responda esse breve formulário pra me contar como foi sua experiência:\n".
-    "📋$site_avaliacao1\n\n".
-    "E se meu atendimento te ajudou, sua avaliação no Google faz toda a diferença. Isso fortalece meu trabalho e ajuda outras pessoas a me encontrarem:\n".
-    "🌟$site_avaliacao2";
+    $msg_whastapp = $msg_texto;
     
     $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
     
     }
     //Fim Envio Whatsapp
+
+}
 
     echo "<script>
     alert('Consulta finalizada com Sucesso')
@@ -718,110 +717,5 @@ if($envio_whatsapp == 'ativado'){
         }
 
 
-
-}else if($status_consulta == 'EnvioMensagem'){
-
-$doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-$doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-$token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
-$id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
-
-//Envio de Email	
-
-$data_email = date('d/m/Y \-\ H:i:s');
-$atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-$atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
-
-
-if(isset($_POST['email'])){
-    if($envio_email == 'ativado'){
-
-    $pdf_corpo_00 = 'Olá';
-    $pdf_corpo_01 = 'Confirmação Atendimento';
-    $pdf_corpo_03 = 'foi confirmado com sucesso';
-    $pdf_corpo_07 = 'Atendimento confirmado em'; 
-    $pdf_corpo_02 = 'o seu atendimento';
-    $pdf_corpo_04 = 'Atenção';
-
-    $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token&typeerror=0\"'>Clique Aqui</a>";
-    $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
-
-    $mail = new PHPMailer(true);
-
-try {
-    //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->CharSet = 'UTF-8';
-    $mail->isSMTP();
-    $mail->Host = "$mail_Host";
-    $mail->SMTPAuth = true;
-    $mail->Username = "$mail_Username";
-    $mail->Password = "$mail_Password";
-    $mail->SMTPSecure = "$mail_SMTPSecure";
-    $mail->Port = "$mail_Port";
-
-    $mail->setFrom("$config_email", "$config_empresa");
-    $mail->addAddress("$doc_email", "$doc_nome");
-    $mail->addBCC("$config_email");
-    
-    $mail->isHTML(true);                                 
-    $mail->Subject = "Confirmação $id_job - $config_empresa";
-  // INICIO MENSAGEM  
-    $mail->Body = "
-
-    <fieldset>
-    <legend>$pdf_corpo_01 $confirmacao</legend>
-    <br>
-    $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 <b><u>$confirmacao</u></b> $pdf_corpo_03.<br>
-    <p>Tipo Consulta: <b>$id_job</b><br>
-    Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b></p>
-    <b>$pdf_corpo_07 $data_email</b>
-    </fieldset><br><fieldset>
-    <legend><b><u>$pdf_corpo_04</u></legend>
-    <p>$config_msg_confirmacao</p>
-    </fieldset><br><fieldset>
-    <legend><b><u>Gerenciar seus Atendimentos</u></legend>
-    <p>Para Alterar seu Atendimento, $link_alterar</p>
-    <p>Para Cancelar seu Atendimento, $link_cancelar</p>
-    </fieldset><br><fieldset>
-    <legend><b><u>$config_empresa</u></legend>
-    <p>CNPJ: $config_cnpj</p>
-    <p>$config_telefone - $config_email</p>
-    <p>$config_endereco</p></b>
-    </fieldset>
-    
-    "; // FIM MENSAGEM
-
-        $mail->send();
-
-    } catch (Exception $e) {
-
-    }
-
-}
-}
-//Fim Envio de Email
-
-if(isset($_POST['whatsapp'])){
-
-//Incio Envio Whatsapp
-if($envio_whatsapp == 'ativado'){
-
-    $doc_telefonewhats = "55$doc_telefone";
-    $msg_whatsapp = "Olá $doc_nome, tudo bem?\n\n" .
-                "Aqui vai a confirmação da sua $id_job para a Data: $atendimento_dia_str às $atendimento_hora_str.\n\n\n" .
-                "Para Alterar seu Atendimento acesse: $site_atual/alterar.php?token=$token\n\n\n" .
-                "Para Cancelar seu Atendimento acesse: $site_atual/cancelar.php?token=$token&typeerror=0";
-    
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
-    
-    }
-
-}
-//Fim Envio Whatsapp
-
-$id = base64_encode("$confirmacao.$token");
-    echo   "<script>
-            window.location.replace('reserva.php?id=$id')
-            </script>";
 
 }

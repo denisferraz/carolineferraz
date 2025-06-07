@@ -30,7 +30,7 @@ $config_endereco<br>
 $doc_email= mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
 $tipo = 'portrait';
 
-$query_reserva = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email AND status_consulta = 'Finalizada'");
+$query_reserva = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email");
 $query_reserva->execute(array('doc_email' => $doc_email));
 while($select_reserva = $query_reserva->fetch(PDO::FETCH_ASSOC)){
     $hospede = $select_reserva['doc_nome'];
@@ -66,6 +66,13 @@ $check_total->execute(array('doc_email' => $doc_email));
 while($total_total = $check_total->fetch(PDO::FETCH_ASSOC)){
 $total = number_format(($total_total['sum(valor)'] * (-1)) ,2,",",".");
 }
+
+//Ajustar CPF
+$parte1 = substr($doc_cpf, 0, 3);
+$parte2 = substr($doc_cpf, 3, 3);
+$parte3 = substr($doc_cpf, 6, 3);
+$parte4 = substr($doc_cpf, 9);
+$doc_cpf = "$parte1.$parte2.$parte3-$parte4";
 
 //Corpo do PDF
 $gera_body = "

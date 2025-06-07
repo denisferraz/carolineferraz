@@ -55,6 +55,7 @@ while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $procedimento_valor = $select2['procedimento_valor'];
     $procedimento_dias = $select2['procedimento_dias'];
     $procedimento_data = $select2['assinado_empresa_data'];
+    $token_contrato = $select2['token'];
 }
 
 $query_checkin = $conexao->query("SELECT * FROM consultas WHERE doc_email = '{$email}'");
@@ -76,7 +77,7 @@ while($select_checkins = $query_checkin->fetch(PDO::FETCH_ASSOC)){
 </head>
 <body>
 <br><br>
-<center><a href="javascript:void(0)" onclick='window.open("reservas_aditivo.php?email=<?php echo $email ?>","iframe-home")'><button>Cadastrar Aditivo Contratual</button></a></center>
+<center><a href="javascript:void(0)" onclick='window.open("reservas_aditivo.php?email=<?php echo $email; ?>&token=<?php echo $token_contrato; ?>","iframe-home")'><button>Cadastrar Aditivo Contratual</button></a></center>
 <br>
 
 <center><h1>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h1></center>

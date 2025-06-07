@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2025 at 12:42 AM
+-- Generation Time: Jun 07, 2025 at 05:13 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -38,42 +38,6 @@ CREATE TABLE `alteracoes` (
   `id_job` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `alteracoes`
---
-
-INSERT INTO `alteracoes` (`id`, `token`, `atendimento_dia`, `atendimento_hora`, `atendimento_dia_anterior`, `atendimento_hora_anterior`, `alt_status`, `id_job`) VALUES
-(2, '3b1dcc8d38e51987f72475f053616e38', '2023-06-28', '18:00:00.000000', '2023-06-21', '18:00:00', 'Nova Sessão', 'Pendente'),
-(3, 'a4aa8d1390b47347aa040a5b58dba564', '2023-08-08', '18:00:00.000000', '2023-08-07', '18:00:00', 'Aceita', 'Nova Sessão'),
-(4, '5c80e252432400ebc652abcc899b93ee', '2023-08-16', '16:00:00.000000', '2023-08-15', '09:00:00', 'Aceita', 'Nova Sessão'),
-(5, 'eb7d3f4334ed6dcf2a4d9cd2d71e00c2', '2023-09-01', '16:00:00.000000', '2023-08-18', '16:00:00', 'Recusada', 'Nova Sessão'),
-(6, 'e9045a63a4c8b5eeff0b34061d19330d', '2023-09-08', '10:00:00.000000', '2023-09-06', '18:00:00', 'Aceita', 'Nova Sessão'),
-(7, 'c0c748e905a5b9746801248b6f2244bd', '2023-09-18', '18:00:00.000000', '2023-09-14', '18:00:00', 'Aceita', 'Nova Sessão'),
-(8, '184eafc6988e8fb40cba40eae1380ad9', '2023-09-20', '18:00:00.000000', '2023-09-18', '18:00:00', 'Aceita', 'Nova Sessão'),
-(9, 'c8b003ec315cf128e85ca9f05b6ca9a8', '2023-11-07', '16:00:00.000000', '2023-11-03', '16:00:00', 'Aceita', 'Nova Sessão'),
-(10, '0502404b4de6857f81b676f5d050f48b', '2023-11-17', '16:00:00.000000', '2023-11-07', '16:00:00', 'Aceita', 'Nova Sessão'),
-(11, '6a87ff6d39ddb81e3110558ae4631c22', '2023-11-30', '15:00:00.000000', '2023-11-16', '15:00:00', 'Aceita', 'Nova Sessão'),
-(12, '8b311e205c28dc26e5300b6cf5639bff', '2023-11-21', '16:00:00.000000', '2023-11-17', '16:00:00', 'Aceita', 'Nova Sessão'),
-(13, '4293aea9bfb61e5ede78ae026c3f7cab', '2023-12-28', '16:00:00.000000', '2023-12-26', '16:00:00', 'Aceita', 'Nova Sessão'),
-(14, '04e682675f3de84eb5de8600bdc1006d', '2024-01-17', '08:00:00.000000', '2024-01-16', '16:00:00', 'Aceita', 'Nova Sessão'),
-(15, '00f2cdc6b92e2c23c242fdb023e71a43', '2024-02-07', '16:00:00.000000', '2024-01-18', '14:00:00', 'Aceita', 'Nova Sessão'),
-(16, '9d3a49f012704ccacbb8ceb86cbcf18d', '2024-02-16', '15:00:00.000000', '2024-02-08', '15:00:00', 'Recusada', 'Consulta Capilar'),
-(17, '204a606c4ec0cb009becfaad654d8075', '2024-02-16', '15:00:00.000000', '2024-02-08', '15:00:00', 'Aceita', 'Consulta Capilar'),
-(18, '37887763beaac5fad159f327ddcf0127', '2024-07-05', '09:00:00.000000', '2024-06-28', '09:00:00', 'Aceita', 'Nova Sessão'),
-(19, '2cb409ce5f955c8719028fef31761579', '2024-07-08', '08:00:00.000000', '2024-07-04', '08:00:00', 'Aceita', 'Nova Sessão'),
-(20, '0d79de755399a9a65b31bc6f2639fc17', '2024-07-11', '17:00:00.000000', '2024-07-05', '17:00:00', 'Aceita', 'Nova Sessão'),
-(21, 'bddd94d79171e311e427998824c0ad6f', '2024-07-13', '11:00:00.000000', '2024-07-06', '11:00:00', 'Aceita', 'Nova Sessão'),
-(22, '8559e3bb4269914d1bcf45da7d4a648b', '2024-07-18', '15:00:00.000000', '2024-07-09', '15:00:00', 'Aceita', 'Nova Sessão'),
-(23, '97e10626834428de185978688176bfae', '2024-09-10', '08:00:00.000000', '2024-09-06', '08:00:00', 'Aceita', 'Nova Sessão'),
-(24, 'c34dec4560f3510ba9a2c11322f0ee21', '2024-10-18', '08:00:00.000000', '2024-10-14', '08:00:00', 'Aceita', 'Nova Sessão'),
-(25, '676daaf05a6637686bf73d49d1c4edcd', '2024-12-13', '08:00:00.000000', '2024-12-09', '08:00:00', 'Aceita', 'Nova Sessão'),
-(26, '988ad0b59e358fb0a89075e3c917f8d0', '2025-02-15', '15:00:00.000000', '2025-01-30', '09:00:00', 'Aceita', 'Consulta Capilar'),
-(27, '920d2728fc27f3c2a42deca83d287f9a', '2025-03-14', '09:00:00.000000', '2025-03-12', '09:00:00', 'Aceita', 'Nova Sessão'),
-(28, 'bdede4dd658bc717aed92bc9bc982d27', '2025-04-16', '14:00:00.000000', '2025-04-11', '09:00:00', 'Aceita', 'Nova Sessão'),
-(29, '4d604aa21e244071e1bc7b4886ce46c7', '2025-04-24', '14:00:00.000000', '2025-04-17', '14:00:00', 'Aceita', 'Nova Sessão'),
-(30, '027a9db4cdf49893e9091e964f42abd4', '2025-04-24', '12:00:00.000000', '2025-04-17', '17:00:00', 'Aceita', 'Nova Sessão'),
-(31, 'a8aa9a69e17566f1a50348bb1dd7100d', '2025-05-20', '09:00:00.000000', '2025-05-12', '08:00:00', 'Recusada', 'Avaliação Capilar');
-
 -- --------------------------------------------------------
 
 --
@@ -81,37 +45,49 @@ INSERT INTO `alteracoes` (`id`, `token`, `atendimento_dia`, `atendimento_hora`, 
 --
 
 CREATE TABLE `configuracoes` (
-  `id` int(1) NOT NULL,
-  `configuracao` varchar(4) DEFAULT NULL,
-  `config_empresa` varchar(30) NOT NULL,
-  `config_email` varchar(35) NOT NULL,
-  `config_telefone` varchar(18) NOT NULL,
-  `config_cnpj` varchar(18) NOT NULL,
-  `config_endereco` mediumtext NOT NULL,
-  `config_msg_confirmacao` text NOT NULL,
-  `config_msg_cancelamento` text NOT NULL,
-  `config_msg_finalizar` text NOT NULL,
+  `id` int(11) NOT NULL,
+  `token` varchar(50) DEFAULT NULL,
+  `config_empresa` varchar(30) DEFAULT NULL,
+  `config_email` varchar(35) DEFAULT NULL,
+  `config_telefone` varchar(18) DEFAULT NULL,
+  `config_cnpj` varchar(18) DEFAULT NULL,
+  `config_limitedia` int(5) DEFAULT NULL,
+  `config_limitepax` int(5) DEFAULT NULL,
+  `config_endereco` mediumtext DEFAULT NULL,
+  `config_msg_confirmacao` mediumtext DEFAULT NULL,
+  `config_msg_cancelamento` mediumtext DEFAULT NULL,
+  `config_msg_finalizar` mediumtext DEFAULT NULL,
+  `config_msg_lembrete` mediumtext DEFAULT NULL,
+  `config_msg_aniversario` mediumtext DEFAULT NULL,
   `atendimento_hora_comeco` time(6) DEFAULT NULL,
   `atendimento_hora_fim` time(6) DEFAULT NULL,
   `atendimento_hora_intervalo` int(3) DEFAULT NULL,
-  `atendimento_dia_max` date NOT NULL,
-  `config_dia_segunda` int(1) NOT NULL,
-  `config_dia_terca` int(1) NOT NULL,
-  `config_dia_quarta` int(1) NOT NULL,
-  `config_dia_quinta` int(1) NOT NULL,
-  `config_dia_sexta` int(1) NOT NULL,
-  `config_dia_sabado` int(1) NOT NULL,
-  `config_dia_domingo` int(1) NOT NULL,
-  `envio_whatsapp` varchar(15) NOT NULL,
-  `envio_email` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `atendimento_dia_max` date DEFAULT NULL,
+  `config_dia_segunda` int(1) DEFAULT NULL,
+  `config_dia_terca` int(1) DEFAULT NULL,
+  `config_dia_quarta` int(1) DEFAULT NULL,
+  `config_dia_quinta` int(1) DEFAULT NULL,
+  `config_dia_sexta` int(1) DEFAULT NULL,
+  `config_dia_sabado` int(1) DEFAULT NULL,
+  `config_dia_domingo` int(1) DEFAULT NULL,
+  `envio_whatsapp` varchar(15) DEFAULT NULL,
+  `envio_email` varchar(15) DEFAULT NULL,
+  `is_segunda` int(1) NOT NULL DEFAULT 0,
+  `is_terca` int(1) NOT NULL DEFAULT 0,
+  `is_quarta` int(1) NOT NULL DEFAULT 0,
+  `is_quinta` int(1) NOT NULL DEFAULT 0,
+  `is_sexta` int(1) NOT NULL DEFAULT 0,
+  `is_sabado` int(1) NOT NULL DEFAULT 0,
+  `is_domingo` int(1) NOT NULL DEFAULT 0,
+  `lembrete_auto_time` time NOT NULL DEFAULT '09:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `configuracoes`
 --
 
-INSERT INTO `configuracoes` (`id`, `configuracao`, `config_empresa`, `config_email`, `config_telefone`, `config_cnpj`, `config_endereco`, `config_msg_confirmacao`, `config_msg_cancelamento`, `config_msg_finalizar`, `atendimento_hora_comeco`, `atendimento_hora_fim`, `atendimento_hora_intervalo`, `atendimento_dia_max`, `config_dia_segunda`, `config_dia_terca`, `config_dia_quarta`, `config_dia_quinta`, `config_dia_sexta`, `config_dia_sabado`, `config_dia_domingo`, `envio_whatsapp`, `envio_email`) VALUES
-(-2, NULL, 'Caroline Ferraz', 'contato@carolineferraz.com.br', '71991293370', 'N/A', 'Rua Lafaiete F. dos Santos, 153-Centro, Lauro de Freitas. Edf. Dual Medical, 5ª andar,  sala 506<br><br>Rua  Ewerton Visco, nº 290-Caminho das Árvores ,Salvador.Edf. Boulevard Side  Empresarial, 10• andar', 'É indispensável a utilização da mascara durante todo o nosso procedimento<br>Qualquer duvida, sinta-se a vontade para entrar em contato conosco.', 'Lembre-se que o cancelamento é irreversível e com isso você ira precisar realizar um novo horário no futuro', 'Foi muito bom ter você conosco<br>Esperamos ver você em breve!!<br>Não esqueça de nos avaliar, é muito importante e nos ajuda a crescer cada vez mais', '08:00:00.000000', '18:00:00.000000', 60, '2025-12-31', 1, 2, 3, 4, 5, 6, -1, 'ativado', 'desativado');
+INSERT INTO `configuracoes` (`id`, `token`, `config_empresa`, `config_email`, `config_telefone`, `config_cnpj`, `config_limitedia`, `config_limitepax`, `config_endereco`, `config_msg_confirmacao`, `config_msg_cancelamento`, `config_msg_finalizar`, `config_msg_lembrete`, `config_msg_aniversario`, `atendimento_hora_comeco`, `atendimento_hora_fim`, `atendimento_hora_intervalo`, `atendimento_dia_max`, `config_dia_segunda`, `config_dia_terca`, `config_dia_quarta`, `config_dia_quinta`, `config_dia_sexta`, `config_dia_sabado`, `config_dia_domingo`, `envio_whatsapp`, `envio_email`, `is_segunda`, `is_terca`, `is_quarta`, `is_quinta`, `is_sexta`, `is_sabado`, `is_domingo`, `lembrete_auto_time`) VALUES
+(-2, '24774953ab53456d38dfdd421a995b51', 'Caroline Ferraz', 'contato@carolineferraz.com.br', '71991293370', 'N/A', 0, 1, 'Rua Lafaiete F. dos Santos, 153-Centro, Lauro de Freitas. Edf. Dual Medical, 5ª andar,  sala 506<br><br>Rua  Ewerton Visco, nº 290-Caminho das Árvores ,Salvador.Edf. Boulevard Side  Empresarial, 10• andar', '{NOME}, obrigado por confirmar a sua consulta conosco. ✅\\r\\n\\r\\nSegue abaixo, as informações sobre o nosso atendimento:\\r\\n\\r\\n📅Data: {DATA} ás {HORA}\\r\\n✅Consulta: {TIPO}', 'Lembre-se que o cancelamento é irreversível e com isso você ira precisar realizar um novo horário no futuro', 'Foi muito bom ter você conosco!\\r\\n\\r\\nEsperamos ver você em breve!!\\r\\n\\r\\nNão esqueça de nos avaliar, é muito importante e nos ajuda a crescer cada vez mais', 'Oi {NOME}, tudo bem? 😊\\r\\n\\r\\nPassando para confirmar seu atendimento dia {DATA} às {HORA} e para garantir que tudo esteja pronto para te receber com todo o cuidado preciso que me dê um retorno confirmando até as 17h, combinado?\\r\\n\\r\\nCaso não haja confirmação até esse horário, precisaremos liberar o horário para outro paciente. Qualquer dúvida, estou à disposição! 🤍🤍', '🎉Olá, {NOME}!\\r\\nHoje é um dia especial, e não poderíamos deixar de te enviar uma mensagem cheia de carinho.\\r\\n\\r\\nDesejamos a você um novo ciclo repleto de saúde, paz, alegria e conquistas. Que a sua jornada continue iluminada e cheia de boas surpresas!\\r\\n\\r\\nConte sempre conosco para cuidar de você com dedicação e respeito.\\r\\nFeliz aniversário! 🥳\\r\\n\\r\\nCom carinho, Carol!', '08:00:00.000000', '18:00:00.000000', 60, '2025-12-31', 1, 2, 3, 4, 5, 6, -1, 'ativado', 'desativado', 1, 1, 1, 1, 1, 0, 0, '09:00:00');
 
 -- --------------------------------------------------------
 
@@ -141,332 +117,336 @@ CREATE TABLE `consultas` (
 --
 
 INSERT INTO `consultas` (`id`, `atendimento_dia`, `atendimento_hora`, `tipo_consulta`, `feitapor`, `doc_email`, `doc_nome`, `doc_telefone`, `doc_cpf`, `status_consulta`, `data_cancelamento`, `confirmacao_cancelamento`, `token`, `local_consulta`) VALUES
-(1, '2025-05-30', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-03-14 20:27:15.000000', '82A3CB2F81', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
+(1, '2025-05-30', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-03-14 20:27:15.000000', '82A3CB2F81', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
 (2, '2023-05-06', '09:00:00.000000', 'Avaliação Capilar', 'Denis Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Em Andamento', '2023-04-24 11:42:16.000000', 'Ativa', 'f6d6d1877a58fa4b08ab2a0c5843aebb', ''),
 (5, '2024-02-17', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'NoShow', '2023-07-26 11:58:52.000000', '68CA5BF126', '31946ec0f29162557b632db0732d02d7', 'Lauro de Freitas'),
 (6, '2023-05-12', '18:00:00.000000', 'Avaliação Capilar', 'Site', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2023-05-05 19:25:46.000000', 'Ativa', 'ba12e9e1dadf88b1133c5927aed07fbf', ''),
 (7, '2023-06-03', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'fernandaandradeteixeira@gmail.com', 'Fernanda de Andrade  Teixeira', '71992577650', '01670551512', 'Finalizada', '2023-05-06 12:12:35.000000', 'Ativa', '4966c7f0318a5b1c760f192ff763c808', ''),
 (8, '2023-07-27', '15:00:00.000000', 'Nova Sessão', 'Site', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2023-05-07 10:09:51.000000', 'Ativa', '888f06fce9e71d050306fb492a98741e', ''),
 (12, '2023-06-30', '14:00:00.000000', 'Nova Sessão', 'Site', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2023-05-07 18:48:41.000000', 'Ativa', 'bc5aba92df6ec3ce34fa06979456bb85', ''),
-(13, '2023-05-13', '09:00:00.000000', 'Consulta Capilar', 'Site', 'andreacrb03@gmail.com', 'Andrea Cardoso Rabelo Brandao', '71991942348', '03538716560', 'Confirmada', '2023-05-09 09:20:11.000000', 'Ativa', '2e70f9960d416e58a56fb9ca23f045aa', ''),
-(18, '2023-05-18', '17:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas', '71991884225', '019.076.885-10', 'Confirmada', '2023-05-18 17:38:53.000000', '4C61ABDA41', 'f2f1d01a6ba85665e82feca093ff82c3', ''),
+(13, '2023-05-13', '09:00:00.000000', 'Consulta Capilar', 'Site', 'andreacrb03@gmail.com', 'Andrea Cardoso Rabelo Brandao', '71991942348', '03538716560', 'Finalizada', '2023-05-09 09:20:11.000000', 'Ativa', '2e70f9960d416e58a56fb9ca23f045aa', ''),
+(18, '2023-05-18', '17:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas', '71991884225', '019.076.885-10', 'Finalizada', '2023-05-18 17:38:53.000000', '4C61ABDA41', 'f2f1d01a6ba85665e82feca093ff82c3', ''),
 (19, '2023-08-08', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2023-05-16 18:05:14.000000', 'Ativa', 'a4aa8d1390b47347aa040a5b58dba564', ''),
-(20, '2023-06-23', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Confirmada', '2023-05-19 08:38:47.000000', 'Ativa', '0d8e811e2d60318b12b30ea60b82131e', ''),
-(21, '2023-06-01', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'amandalgarcez@hotmail.com', 'Amanda Yoshioka ', '71999221500', '84153865591', 'Confirmada', '2023-05-24 18:59:10.000000', 'Ativa', 'dc697c2a966748a66b57af1a203f1901', ''),
-(28, '2023-06-17', '11:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '75999149687', '867.922.005-14', 'Confirmada', '2023-06-11 08:50:25.000000', 'Ativa', '181832b31fe7b226bf8576d12e7d2d5f', ''),
+(20, '2023-06-23', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Finalizada', '2023-05-19 08:38:47.000000', 'Ativa', '0d8e811e2d60318b12b30ea60b82131e', ''),
+(21, '2023-06-01', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'amandalgarcez@hotmail.com', 'Amanda Yoshioka ', '71999221500', '84153865591', 'Finalizada', '2023-05-24 18:59:10.000000', 'Ativa', 'dc697c2a966748a66b57af1a203f1901', ''),
+(28, '2023-06-17', '11:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '75999149687', '867.922.005-14', 'Finalizada', '2023-06-11 08:50:25.000000', 'Ativa', '181832b31fe7b226bf8576d12e7d2d5f', ''),
 (30, '2023-06-22', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'elizamatine74@gmail.com', 'Elizama Eglantine e Silva', '71994004607', '000.000.000-00', 'NoShow', '2023-06-20 18:24:57.000000', 'Ativa', 'e41a83b0db3e7b68474ea3f4f38f03f3', ''),
-(31, '2023-06-23', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2023-06-20 20:14:47.000000', 'A9C2647F90', '0d04b631ff96ba3f646dc204279a9fa1', ''),
+(31, '2023-06-23', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2023-06-20 20:14:47.000000', 'A9C2647F90', '0d04b631ff96ba3f646dc204279a9fa1', ''),
 (32, '2023-09-23', '08:00:00.000000', 'Nova Sessão', 'Site', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Em Andamento', '2023-06-28 19:33:42.000000', 'Ativa', '281a59f024eb983fa8646d4df0b8812a', ''),
-(33, '2023-06-29', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'exemplo@exemplo.com', 'Anna Gémes ', '75981018398', '000000000000', 'Confirmada', '2023-06-29 11:52:51.000000', 'Ativa', 'f8280a9b16b10d6a40dcbc785595e73b', ''),
+(33, '2023-06-29', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'exemplo@exemplo.com', 'Anna Gémes ', '75981018398', '000000000000', 'Finalizada', '2023-06-29 11:52:51.000000', 'Ativa', 'f8280a9b16b10d6a40dcbc785595e73b', ''),
 (36, '2023-07-04', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'iraesfoliano@gmail.com', 'Iramacia Ramos Ferreira', '71988300494', '03466257506', 'NoShow', '2023-07-01 10:32:58.000000', 'Ativa', '69fc936eec40e2ad5510117eb5e379ca', ''),
-(38, '2023-07-11', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'shirleylaranjeira14@gmail.com', 'Shirley Laranjeira', '71992175104', '00000000000', 'Confirmada', '2023-07-07 17:51:43.000000', 'Ativa', 'ce46db19549318224838f4523d3f23d7', ''),
-(39, '2023-07-24', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '75999149687', '86792200514', 'Confirmada', '2023-07-22 10:05:37.000000', 'Ativa', '89a164a63a6c3eb421e804448d6fb3a9', ''),
+(38, '2023-07-11', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'shirleylaranjeira14@gmail.com', 'Shirley Laranjeira', '71992175104', '00000000000', 'Finalizada', '2023-07-07 17:51:43.000000', 'Ativa', 'ce46db19549318224838f4523d3f23d7', ''),
+(39, '2023-07-24', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '75999149687', '86792200514', 'Finalizada', '2023-07-22 10:05:37.000000', 'Ativa', '89a164a63a6c3eb421e804448d6fb3a9', ''),
 (40, '2023-08-22', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Finalizada', '2023-08-21 12:15:51.000000', '8ADB5BA70C', '83702a0192922ae7547d0059c5a67cc8', ''),
-(41, '2023-09-04', '14:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'jr_rosant@hormail.com', 'Jailson Lopes dos Santos Junio', '71981638525', '35438798800', 'Confirmada', '2023-08-09 15:22:36.000000', 'Ativa', '424f23601e1b1f9a7c0e8ef3cb7073d7', ''),
-(42, '2023-08-11', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'teste@gmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2023-08-10 09:58:46.000000', 'Ativa', 'c08d39020cea67491777a6fbc079f2a2', ''),
+(41, '2023-09-04', '14:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'jr_rosant@hormail.com', 'Jailson Lopes dos Santos Junio', '71981638525', '35438798800', 'Finalizada', '2023-08-09 15:22:36.000000', 'Ativa', '424f23601e1b1f9a7c0e8ef3cb7073d7', ''),
+(42, '2023-08-11', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'teste@gmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2023-08-10 09:58:46.000000', 'Ativa', 'c08d39020cea67491777a6fbc079f2a2', ''),
 (43, '2023-11-01', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2023-08-17 10:44:30.000000', 'Ativa', '56ec054dae36e9ce651976ed6b8c085b', ''),
-(46, '2023-09-04', '16:30:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71999538335', '85936433536', 'Confirmada', '2023-08-29 18:00:05.000000', 'Ativa', 'd9c8da67f6ccd26b54e9c995b3373292', ''),
-(47, '2023-09-11', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'exemplo@exemplo.com', 'Breno Almeida ', '71981610441', '05617759582', 'Confirmada', '2023-09-07 13:31:02.000000', 'Ativa', 'f2c46d58ff8009454649b3c3df95b332', ''),
+(46, '2023-09-04', '16:30:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71999538335', '85936433536', 'Finalizada', '2023-08-29 18:00:05.000000', 'Ativa', 'd9c8da67f6ccd26b54e9c995b3373292', ''),
+(47, '2023-09-11', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'exemplo@exemplo.com', 'Breno Almeida ', '71981610441', '05617759582', 'Finalizada', '2023-09-07 13:31:02.000000', 'Ativa', 'f2c46d58ff8009454649b3c3df95b332', ''),
 (48, '2025-07-08', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Em Andamento', '2025-04-23 11:50:25.000000', '36F79230D5', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(51, '2024-01-17', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Confirmada', '2024-01-16 16:21:22.000000', '796A4004AE', '05339a27091486a2ab71abfc55f753a8', 'Lauro de Freitas'),
-(52, '2023-10-10', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'exemplo@exemplo.com', 'Jailson Lopes ', '71981638525', '35438798800', 'Confirmada', '2023-10-09 09:44:37.000000', 'Ativa', 'ec184ec6c66b1c188f80ce2374fbaa76', ''),
-(53, '2023-10-18', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2023-10-09 17:11:50.000000', '882F194377', 'fbc4efd9ecbf0f70bcbe1e5c64702867', ''),
-(54, '2024-01-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Confirmada', '2023-10-11 23:53:06.000000', 'Ativa', '037d0457f8cf8d40b48ba71307624e28', 'Lauro de Freitas'),
+(51, '2024-01-17', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Finalizada', '2024-01-16 16:21:22.000000', '796A4004AE', '05339a27091486a2ab71abfc55f753a8', 'Lauro de Freitas'),
+(52, '2023-10-10', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'exemplo@exemplo.com', 'Jailson Lopes ', '71981638525', '35438798800', 'Finalizada', '2023-10-09 09:44:37.000000', 'Ativa', 'ec184ec6c66b1c188f80ce2374fbaa76', ''),
+(53, '2023-10-18', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2023-10-09 17:11:50.000000', '882F194377', 'fbc4efd9ecbf0f70bcbe1e5c64702867', ''),
+(54, '2024-01-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Finalizada', '2023-10-11 23:53:06.000000', 'Ativa', '037d0457f8cf8d40b48ba71307624e28', 'Lauro de Freitas'),
 (55, '2025-01-18', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Em Andamento', '2025-01-17 15:40:37.000000', '410A553324', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
 (56, '2023-11-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Em Andamento', '2023-10-11 23:57:40.000000', 'Ativa', 'c2fc0c38105e12d101efeae9f96e72aa', ''),
 (57, '2025-06-26', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Em Andamento', '2025-01-17 15:40:19.000000', 'A746E9DF53', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(58, '2023-11-11', '09:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fernandinhacruz2017@gmail.com', 'MARIA FERNANDA DA CRUZ RESENDE', '71999390878', '07821490571', 'Confirmada', '2023-11-09 14:15:15.000000', '8D10B961B8', '1ecf6daa75c97badcb965b78af493f68', ''),
+(58, '2023-11-11', '09:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fernandinhacruz2017@gmail.com', 'MARIA FERNANDA DA CRUZ RESENDE', '71999390878', '07821490571', 'Finalizada', '2023-11-09 14:15:15.000000', '8D10B961B8', '1ecf6daa75c97badcb965b78af493f68', ''),
 (59, '2023-11-16', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira ', '71982116819', '03533772527', 'Em Andamento', '2023-11-06 15:53:19.000000', 'Ativa', '1b5d0ad0e1900d4aae02043845afb6f4', ''),
 (62, '2025-07-09', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Em Andamento', '2023-11-16 15:09:46.000000', 'Ativa', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
-(64, '2023-11-27', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fabriciomjpop4321@gmail.com', 'Fabrício dos Santos Batista ', '75998671707', '86626529560', 'Confirmada', '2023-11-24 23:35:41.000000', 'Ativa', '2908c334334fc56c38f6ded14aa723e7', 'Lauro de Freitas'),
+(64, '2023-11-27', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fabriciomjpop4321@gmail.com', 'Fabrício dos Santos Batista ', '75998671707', '86626529560', 'Finalizada', '2023-11-24 23:35:41.000000', 'Ativa', '2908c334334fc56c38f6ded14aa723e7', 'Lauro de Freitas'),
 (65, '2023-12-05', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'fabriciomjpop4321@gmail.com', 'Fabrício dos Santos Batista ', '71984258391', '86626529560', 'NoShow', '2023-12-05 12:09:42.000000', 'Ativa', '8be78e1d6d45695310cade4fe7a225c5', 'Lauro de Freitas'),
-(66, '2023-12-09', '09:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86249472517', 'Confirmada', '2023-12-07 11:24:31.000000', 'Ativa', '71d6c6e7904c7422e7f8f445d4301a84', 'Lauro de Freitas'),
-(67, '2023-12-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86249472517', 'Confirmada', '2023-12-09 10:10:47.000000', 'Ativa', '31f4f36f92b99e57247092ce9286210d', 'Lauro de Freitas'),
-(68, '2023-12-26', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86792200514', 'Confirmada', '2023-12-11 17:34:00.000000', 'Ativa', '724539bf06c1ab1fe9ffc96e04b9a412', 'Lauro de Freitas'),
-(69, '2023-12-18', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fonseca.mayana@gmail.com', 'Mayana Fonseca Barreto ', '71999486549', '54259550578', 'Confirmada', '2023-12-13 00:56:31.000000', 'Ativa', 'e1e401ee10788d056c779917b6f802c0', 'Salvador'),
-(70, '2024-02-07', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86249472517', 'Confirmada', '2023-12-27 06:40:06.000000', 'Ativa', '00f2cdc6b92e2c23c242fdb023e71a43', 'Lauro de Freitas'),
-(71, '2024-01-06', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'gadmessias@gmail.com', 'Gladistone Correia Messias', '77991654525', '04509359578', 'Confirmada', '2024-01-03 22:19:11.000000', 'Ativa', '664356bc8c06ee511f138b02425aca09', 'Salvador'),
-(72, '2024-01-04', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'tiago.manicoba@gmail.com', 'Tiago Amorim', '71988123866', '01642637564', 'Confirmada', '2024-01-04 17:10:23.000000', 'Ativa', '41b20518d1e6ec22e7ce819d52521500', 'Lauro de Freitas'),
+(66, '2023-12-09', '09:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86249472517', 'Finalizada', '2023-12-07 11:24:31.000000', 'Ativa', '71d6c6e7904c7422e7f8f445d4301a84', 'Lauro de Freitas'),
+(67, '2023-12-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86249472517', 'Finalizada', '2023-12-09 10:10:47.000000', 'Ativa', '31f4f36f92b99e57247092ce9286210d', 'Lauro de Freitas'),
+(68, '2023-12-26', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86792200514', 'Finalizada', '2023-12-11 17:34:00.000000', 'Ativa', '724539bf06c1ab1fe9ffc96e04b9a412', 'Lauro de Freitas'),
+(69, '2023-12-18', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fonseca.mayana@gmail.com', 'Mayana Fonseca Barreto ', '71999486549', '54259550578', 'Finalizada', '2023-12-13 00:56:31.000000', 'Ativa', 'e1e401ee10788d056c779917b6f802c0', 'Salvador'),
+(70, '2024-02-07', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'filipeferreira99@hotmail.com', 'Filipe Nascimento Ferreira ', '71982019715', '86249472517', 'Finalizada', '2023-12-27 06:40:06.000000', 'Ativa', '00f2cdc6b92e2c23c242fdb023e71a43', 'Lauro de Freitas'),
+(71, '2024-01-06', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'gadmessias@gmail.com', 'Gladistone Correia Messias', '77991654525', '04509359578', 'Finalizada', '2024-01-03 22:19:11.000000', 'Ativa', '664356bc8c06ee511f138b02425aca09', 'Salvador'),
+(72, '2024-01-04', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'tiago.manicoba@gmail.com', 'Tiago Amorim', '71988123866', '01642637564', 'Finalizada', '2024-01-04 17:10:23.000000', 'Ativa', '41b20518d1e6ec22e7ce819d52521500', 'Lauro de Freitas'),
 (73, '2024-01-12', '09:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'luaduques@hotmail.com', 'Luana Gonçalves Duques', '71999547957', '04550738561', 'NoShow', '2024-01-08 12:12:34.000000', 'Ativa', '3cb380970ebbbd561a8b658e3bfaaa75', 'Salvador'),
-(74, '2024-02-03', '09:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'camila-pita@hotmail.com', 'Camila da Silva Pita ', '71999078673', '02252751550', 'Confirmada', '2024-01-29 11:10:35.000000', 'Ativa', 'ffb3fb88d2656d10657cfd26903d4b89', 'Salvador'),
-(75, '2024-02-16', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'vej2305@gmail.com', 'Vanessa P. de Almeida Silva', '71993993003', '02338999525', 'Confirmada', '2024-02-02 16:40:46.000000', 'Ativa', '204a606c4ec0cb009becfaad654d8075', 'Lauro de Freitas'),
-(76, '2024-02-26', '08:00:00.000000', 'Avaliação Capilar', 'Site', 'denis_ferraz359@hotmail.com', 'Denis Ferraz', '71992604877', '05336888508', 'Confirmada', '2024-02-25 09:03:44.000000', '7B551483CC', 'a232c0ed5a7b1b0b46ce5e299dc4d341', 'Lauro de Freitas'),
-(77, '2024-03-21', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'rzyssapaz@gmail.com', 'Rayssa Miranda Da Paz de Lima', '71981040193', '06572310531', 'Confirmada', '2024-03-07 17:00:56.000000', '8B1C632B63', '4107d7144d8c3e022ed3899a2b794243', 'Salvador'),
-(78, '2025-06-04', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Em Andamento', '2024-03-12 09:39:19.000000', 'Ativa', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(79, '2024-03-28', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'emersonsc1000@gmail.com', ' Emerson Soares Conrado ', '71991858286', '07461425508', 'Confirmada', '2024-03-26 13:09:13.000000', 'Ativa', 'e6d2375430960c4273a152d93b891d8c', 'Salvador'),
-(80, '2024-05-14', '17:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'camila-pita@hotmail.com', 'Camila Da Silva Pita', '71999078673', '02252751550', 'Confirmada', '2024-04-26 10:39:00.000000', 'Ativa', '554d7db4bc36e25bfcecf33da7bc58dd', 'Salvador'),
-(81, '2024-07-06', '09:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'exemplo@exemplo.com.br', 'Caroline da Cruz Lordêlo', '71985049974', '00000000000', 'Confirmada', '2024-05-02 17:37:46.000000', 'Ativa', '39ce5eb44845dd293c0bdfb0da3cff73', 'Salvador'),
-(82, '2024-05-10', '11:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'betamerces38@gmail.com', 'Betânia Merces de Araujo', '71985024947', '68248962504', 'Confirmada', '2024-05-09 21:00:51.000000', 'Ativa', '4c06c966eaa2b690e92ecedd5ec11190', 'Lauro de Freitas'),
+(74, '2024-02-03', '09:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'camila-pita@hotmail.com', 'Camila da Silva Pita ', '71999078673', '02252751550', 'Finalizada', '2024-01-29 11:10:35.000000', 'Ativa', 'ffb3fb88d2656d10657cfd26903d4b89', 'Salvador'),
+(75, '2024-02-16', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'vej2305@gmail.com', 'Vanessa P. de Almeida Silva', '71993993003', '02338999525', 'Finalizada', '2024-02-02 16:40:46.000000', 'Ativa', '204a606c4ec0cb009becfaad654d8075', 'Lauro de Freitas'),
+(76, '2024-02-26', '08:00:00.000000', 'Avaliação Capilar', 'Site', 'denis_ferraz359@hotmail.com', 'Denis Ferraz', '71992604877', '05336888508', 'Finalizada', '2024-02-25 09:03:44.000000', '7B551483CC', 'a232c0ed5a7b1b0b46ce5e299dc4d341', 'Lauro de Freitas'),
+(77, '2024-03-21', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'rzyssapaz@gmail.com', 'Rayssa Miranda Da Paz de Lima', '71981040193', '06572310531', 'Finalizada', '2024-03-07 17:00:56.000000', '8B1C632B63', '4107d7144d8c3e022ed3899a2b794243', 'Salvador'),
+(78, '2025-06-04', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2024-03-12 09:39:19.000000', 'Ativa', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(79, '2024-03-28', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'emersonsc1000@gmail.com', ' Emerson Soares Conrado ', '71991858286', '07461425508', 'Finalizada', '2024-03-26 13:09:13.000000', 'Ativa', 'e6d2375430960c4273a152d93b891d8c', 'Salvador'),
+(80, '2024-05-14', '17:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'camila-pita@hotmail.com', 'Camila Da Silva Pita', '71999078673', '02252751550', 'Finalizada', '2024-04-26 10:39:00.000000', 'Ativa', '554d7db4bc36e25bfcecf33da7bc58dd', 'Salvador'),
+(81, '2024-07-06', '09:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'exemplo@exemplo.com.br', 'Caroline da Cruz Lordêlo', '71985049974', '00000000000', 'Finalizada', '2024-05-02 17:37:46.000000', 'Ativa', '39ce5eb44845dd293c0bdfb0da3cff73', 'Salvador'),
+(82, '2024-05-10', '11:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'betamerces38@gmail.com', 'Betânia Merces de Araujo', '71985024947', '68248962504', 'Finalizada', '2024-05-09 21:00:51.000000', 'Ativa', '4c06c966eaa2b690e92ecedd5ec11190', 'Lauro de Freitas'),
 (83, '2025-06-18', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Em Andamento', '2024-05-20 16:52:01.000000', 'Ativa', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
-(84, '2024-07-06', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2024-05-25 13:48:41.000000', '1787530313', 'e2bda2fc7ed357be4d725b947c16fe23', 'Lauro de Freitas'),
+(84, '2024-07-06', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2024-05-25 13:48:41.000000', '1787530313', 'e2bda2fc7ed357be4d725b947c16fe23', 'Lauro de Freitas'),
 (85, '2024-09-17', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Em Andamento', '2024-09-17 13:40:36.000000', '5BA070D548', '5cffe3893e04163d642329cee5444152', 'Salvador'),
-(86, '2024-06-20', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'vej2305@gmail.com', 'Vanessa P. de Almeida Silva', '71993993003', '02338999525', 'Confirmada', '2024-06-05 13:12:58.000000', 'Ativa', 'c0e8e8b635b15f8052829dd1ab3e34e0', 'Lauro de Freitas'),
+(86, '2024-06-20', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'vej2305@gmail.com', 'Vanessa P. de Almeida Silva', '71993993003', '02338999525', 'Finalizada', '2024-06-05 13:12:58.000000', 'Ativa', 'c0e8e8b635b15f8052829dd1ab3e34e0', 'Lauro de Freitas'),
 (87, '2024-11-21', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Em Andamento', '2024-10-29 17:03:07.000000', '98BC371581', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(88, '2024-07-30', '13:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71997436147', '85936433536', 'Confirmada', '2024-07-25 17:13:03.000000', 'Ativa', 'da1c2dfd899b9f858ab375724973c9c6', 'Lauro de Freitas'),
-(89, '2024-08-23', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'ldiasamino7@gmail.com', 'Larissa Dias dos Santos ', '71996594751', '10800007557', 'Confirmada', '2024-08-22 10:47:44.000000', 'Ativa', 'e0e681961302cc1a2cde26b672000570', 'Lauro de Freitas'),
+(88, '2024-07-30', '13:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71997436147', '85936433536', 'Finalizada', '2024-07-25 17:13:03.000000', 'Ativa', 'da1c2dfd899b9f858ab375724973c9c6', 'Lauro de Freitas'),
+(89, '2024-08-23', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'ldiasamino7@gmail.com', 'Larissa Dias dos Santos ', '71996594751', '10800007557', 'Finalizada', '2024-08-22 10:47:44.000000', 'Ativa', 'e0e681961302cc1a2cde26b672000570', 'Lauro de Freitas'),
 (90, '2025-06-13', '17:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'ldiasamino7@gmail.com', 'Larissa Dias dos Santos ', '71996594751', '10800007557', 'Confirmada', '2024-08-23 18:45:05.000000', 'Ativa', 'bf8baf49a053229bfcd28b2b94a827f7', 'Lauro de Freitas'),
-(91, '2024-11-05', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'maria.jdr@gmail.com', 'Maria José Reis Dourado ', '71993299792', '15872980582', 'Confirmada', '2024-11-04 17:11:52.000000', 'B3D3B1DEC4', '9d1c9ddc838bb78471d040a2794f45ef', 'Salvador'),
-(92, '2024-11-09', '11:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'elisamaandrade.m@gmail.com', 'Elisama Andrade Miranda Porto', '71991380714', '03958878520', 'Confirmada', '2024-11-09 10:16:04.000000', 'Ativa', '1cb9181ad8c6c577d429a50f4b165e6c', 'Salvador'),
-(93, '2025-04-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Confirmada', '2025-04-15 08:47:32.000000', '55443DEF96', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
-(94, '2024-11-13', '15:00:00.000000', 'Consulta Online', 'Caroline Ferraz', 'lambiasefisica@gmail.com', 'Hebert Lambiase de Matos', '71992719480', '80515550582', 'Confirmada', '2024-11-12 16:40:43.000000', 'Ativa', '53fb8597d6abd1538591650533ae279c', 'Lauro de Freitas'),
-(95, '2025-04-26', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'danyelporto@gmail.com', 'Daniel Porto de Araujo ', '71991380714', '03653591570', 'Confirmada', '2025-04-25 00:15:55.000000', 'FE49D3EB54', 'e2a1dddb3b1dd388a48b55f236c2e623', 'Salvador'),
+(91, '2024-11-05', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'maria.jdr@gmail.com', 'Maria José Reis Dourado ', '71993299792', '15872980582', 'Finalizada', '2024-11-04 17:11:52.000000', 'B3D3B1DEC4', '9d1c9ddc838bb78471d040a2794f45ef', 'Salvador'),
+(92, '2024-11-09', '11:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'elisamaandrade.m@gmail.com', 'Elisama Andrade Miranda Porto', '71991380714', '03958878520', 'Finalizada', '2024-11-09 10:16:04.000000', 'Ativa', '1cb9181ad8c6c577d429a50f4b165e6c', 'Salvador'),
+(93, '2025-04-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Finalizada', '2025-04-15 08:47:32.000000', '55443DEF96', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
+(94, '2024-11-13', '15:00:00.000000', 'Consulta Online', 'Caroline Ferraz', 'lambiasefisica@gmail.com', 'Hebert Lambiase de Matos', '71992719480', '80515550582', 'Finalizada', '2024-11-12 16:40:43.000000', 'Ativa', '53fb8597d6abd1538591650533ae279c', 'Lauro de Freitas'),
+(95, '2025-04-26', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'danyelporto@gmail.com', 'Daniel Porto de Araujo ', '71991380714', '03653591570', 'Finalizada', '2025-04-25 00:15:55.000000', 'FE49D3EB54', 'e2a1dddb3b1dd388a48b55f236c2e623', 'Salvador'),
 (96, '2025-06-18', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Em Andamento', '2024-12-09 18:50:05.000000', 'Ativa', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Lauro de Freitas'),
-(97, '2025-01-15', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'paterson.franco@gmail.com', 'Paterson Franco Costa', '71997370988', '02838678507', 'Confirmada', '2025-01-08 19:22:11.000000', '611EF24801', '311c6352936906eb5398c5f70159997a', 'Salvador'),
+(97, '2025-01-15', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'paterson.franco@gmail.com', 'Paterson Franco Costa', '71997370988', '02838678507', 'Finalizada', '2025-01-08 19:22:11.000000', '611EF24801', '311c6352936906eb5398c5f70159997a', 'Salvador'),
 (98, '2025-06-26', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Confirmada', '2025-01-15 11:08:41.000000', 'Ativa', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
-(99, '2025-02-15', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-02-11 14:52:20.000000', 'BF0118F4C9', 'c3b28b3297b1112928ba9be4cfca9334', 'Salvador'),
+(99, '2025-02-15', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-02-11 14:52:20.000000', 'BF0118F4C9', 'c3b28b3297b1112928ba9be4cfca9334', 'Salvador'),
 (100, '2025-06-13', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'raquel.d.santos110194@gmail.com', 'Raquel dos santos ', '71983200714', '85805935570', 'Confirmada', '2025-01-31 14:01:19.000000', 'Ativa', '0d3cf7ebe223c7ea1a921f66637aaab0', 'Lauro de Freitas'),
 (101, '2025-05-07', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'adrianamagalhaes026@gmail.com', 'Adriana trindade Magalhães Tav', '77999349507', '04038804593', 'Em Andamento', '2025-02-10 10:43:17.000000', 'Ativa', '1de336fa35a32c8cbe6a44a2f4e99ffc', 'Lauro de Freitas'),
-(102, '2025-05-22', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'lucassimas160@hotmail.com', 'Lucas Santos da Silva Simas', '17999441580', '06006415542', 'Confirmada', '2025-02-11 14:53:00.000000', 'Ativa', '8acab63d1d28edde12f1804685e1682a', 'Salvador'),
-(103, '2025-02-22', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'emersonsc1000@gmail.com', 'Emerson Soares Conrado', '71991858286', '07461425508', 'Confirmada', '2025-02-11 15:12:31.000000', 'Ativa', 'a9077c00739034568d636996839b9b65', 'Salvador'),
-(104, '2025-02-21', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'camilacarine@outlook.com', 'Camila Carine Sant\\\\\\\'anna Bar', '71991761438', '07223299541', 'Confirmada', '2025-02-20 18:33:29.000000', '166982F8AA', 'bb11e9c1e11afd5493d7a6315a02c5f1', 'Lauro de Freitas'),
-(105, '2025-02-26', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'email@gmail.com', 'Filipe Nascimento Ferreira ', '71993212303', '00000000000', 'Confirmada', '2025-02-26 09:38:24.000000', '02D4340AFB', 'f2dff5d260b3f3c97844b955273d372e', 'Salvador'),
-(106, '2025-05-03', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'arianedasilvasantos2@gmail.com', 'Ariane da Silva Santos Sampaio', '71997396450', '01699012547', 'Confirmada', '2025-03-06 14:28:52.000000', 'Ativa', 'c963f9313d148bdb5ea79c3ab9a590bb', 'Lauro de Freitas'),
-(107, '2025-04-15', '14:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'leideadrianonogieirasouza@gmail.com', 'Leidinalva Mota Lopes', '71982895653', '85124354534', 'Confirmada', '2025-04-15 08:47:17.000000', 'DE4A4191E8', '37b6264fbbbd936fe7409bfc1f768f6a', 'Salvador'),
+(102, '2025-05-22', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'lucassimas160@hotmail.com', 'Lucas Santos da Silva Simas', '17999441580', '06006415542', 'Finalizada', '2025-02-11 14:53:00.000000', 'Ativa', '8acab63d1d28edde12f1804685e1682a', 'Salvador'),
+(103, '2025-02-22', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'emersonsc1000@gmail.com', 'Emerson Soares Conrado', '71991858286', '07461425508', 'Finalizada', '2025-02-11 15:12:31.000000', 'Ativa', 'a9077c00739034568d636996839b9b65', 'Salvador'),
+(104, '2025-02-21', '15:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'camilacarine@outlook.com', 'Camila Carine Sant\\\\\\\'anna Bar', '71991761438', '07223299541', 'Finalizada', '2025-02-20 18:33:29.000000', '166982F8AA', 'bb11e9c1e11afd5493d7a6315a02c5f1', 'Lauro de Freitas'),
+(105, '2025-02-26', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'email@gmail.com', 'Filipe Nascimento Ferreira ', '71993212303', '00000000000', 'Finalizada', '2025-02-26 09:38:24.000000', '02D4340AFB', 'f2dff5d260b3f3c97844b955273d372e', 'Salvador'),
+(106, '2025-05-03', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'arianedasilvasantos2@gmail.com', 'Ariane da Silva Santos Sampaio', '71997396450', '01699012547', 'Finalizada', '2025-03-06 14:28:52.000000', 'Ativa', 'c963f9313d148bdb5ea79c3ab9a590bb', 'Lauro de Freitas'),
+(107, '2025-04-15', '14:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'leideadrianonogieirasouza@gmail.com', 'Leidinalva Mota Lopes', '71982895653', '85124354534', 'Finalizada', '2025-04-15 08:47:17.000000', 'DE4A4191E8', '37b6264fbbbd936fe7409bfc1f768f6a', 'Salvador'),
 (108, '2025-06-14', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Érico Silva do Nascimento', '71988446597', '83190821534', 'Em Andamento', '2025-04-11 18:01:44.000000', 'Ativa', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas'),
-(109, '2025-04-16', '15:00:00.000000', 'Avaliação Capilar', 'Denis Ferraz', 'denis_ferraz359@hotmail.com', 'Denis Ferraz', '71992604877', '05336888508', 'Confirmada', '2025-04-16 13:00:47.000000', 'F3F7DF9F21', 'ee5d74b65b7789ae850d9e6011af3fab', 'Lauro de Freitas'),
-(110, '2025-06-07', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Em Andamento', '2025-04-30 20:14:14.000000', 'Ativa', 'b16464e42f30538ff5cb3f02ff692de9', 'Lauro de Freitas'),
-(111, '2025-05-06', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'iuryforte15@gmail.com', 'Iury Silva Brandão ', '71999590341', '08787064537', 'Confirmada', '2025-04-30 20:19:34.000000', 'Ativa', 'a1a3710d5fcdf26097f0ee4ca43dbe32', 'Salvador'),
-(112, '2025-05-12', '08:00:00.000000', 'Avaliação Capilar', 'Denis Ferraz', 'denis_ferraz359@hotmail.com', 'Denis Ferraz', '71992604877', '05336888508', 'Confirmada', '2025-05-12 21:55:32.000000', 'Ativa', 'a8aa9a69e17566f1a50348bb1dd7100d', 'Lauro de Freitas'),
-(113, '2025-05-21', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'jecsantos20@gmail.com', 'JESSICA CERQUEIRA DOS SANTOS', '71992281331', '05777092594', 'Confirmada', '2025-05-20 17:31:36.000000', 'Ativa', '610964a7401f29161f4f80dce627a9a5', 'Lauro de Freitas'),
-(114, '2025-05-26', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'weslenvini99@hotmail.com', 'Weslen Vinicius de Souza goes', '71982019397', '07148847583', 'Confirmada', '2025-05-22 17:03:36.000000', 'Ativa', '4d4c4615afb7774514a2361171a5e121', 'Salvador'),
-(115, '2023-04-29', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(117, '2023-05-02', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3d02377849a4ad5b01bc6cbd68ed4dd3', 'Salvador'),
-(118, '2023-05-10', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(120, '2023-05-18', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
-(121, '2023-05-12', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
-(122, '2023-05-13', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'andreacrb03@gmail.com', 'Andrea Cardoso Rabelo Brandao', '71991942348', '03538716560', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2e70f9960d416e58a56fb9ca23f045aa', 'Salvador'),
-(124, '2023-05-20', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(125, '2023-05-17', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(126, '2023-05-17', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
-(127, '2023-05-19', '19:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(128, '2023-05-19', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(129, '2023-05-24', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(130, '2023-06-01', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
-(131, '2023-05-25', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Confirmada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
-(132, '2023-05-25', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Confirmada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
-(133, '2023-05-31', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(134, '2023-06-01', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'amandalgarcez@hotmail.com', 'Amanda Yoshioka ', '71999221500', '84153865591', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'dc697c2a966748a66b57af1a203f1901', 'Salvador'),
-(136, '2023-05-27', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
-(137, '2023-06-01', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Confirmada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
-(139, '2023-06-01', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
-(140, '2023-06-02', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(141, '2023-06-15', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
-(142, '2023-06-08', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Confirmada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
-(143, '2023-06-14', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(144, '2023-06-06', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(145, '2023-06-07', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
-(146, '2023-06-17', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(148, '2023-06-17', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(149, '2023-06-17', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
-(150, '2023-06-29', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
-(152, '2023-06-22', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'elizamatine74@gmail.com', 'Elizama Eglantine e Silva', '71994004607', '000.000.000-00', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'e41a83b0db3e7b68474ea3f4f38f03f3', 'Salvador'),
-(154, '2023-06-28', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(155, '2023-06-23', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(156, '2023-06-27', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
-(157, '2023-06-27', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(159, '2023-07-08', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
-(161, '2023-07-13', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
-(162, '2023-07-04', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'iraesfoliano@gmail.com', 'Iramacia Ramos Ferreira', '71988300494', '03466257506', 'Confirmada', '2025-05-31 00:00:00.000000', '', '69fc936eec40e2ad5510117eb5e379ca', 'Salvador'),
-(164, '2023-07-05', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(165, '2023-07-12', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(167, '2023-07-18', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(168, '2023-07-15', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(169, '2023-07-19', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(170, '2023-08-12', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(171, '2023-07-22', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
-(172, '2023-07-25', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(174, '2023-08-05', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
-(176, '2023-07-27', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Confirmada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
-(177, '2023-08-01', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
-(178, '2023-08-01', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Confirmada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
-(179, '2023-08-02', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(180, '2023-08-08', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Confirmada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
-(181, '2023-08-19', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
-(183, '2023-08-10', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(185, '2023-08-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'teste@gmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c08d39020cea67491777a6fbc079f2a2', 'Salvador'),
-(187, '2023-08-17', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(188, '2023-09-09', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(189, '2023-08-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Confirmada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
-(190, '2023-08-18', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
-(191, '2023-08-23', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(192, '2023-09-01', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
-(194, '2023-08-29', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(195, '2023-09-04', '17:30:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71999538335', '85936433536', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'd9c8da67f6ccd26b54e9c995b3373292', 'Salvador'),
-(197, '2023-09-09', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
-(198, '2023-09-14', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
-(199, '2023-09-08', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(202, '2023-10-03', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(203, '2023-09-20', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(204, '2023-09-29', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
-(205, '2023-09-27', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(206, '2023-09-27', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(207, '2023-10-10', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Confirmada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
-(208, '2023-10-10', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Confirmada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
-(209, '2023-10-06', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
-(210, '2023-10-20', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Confirmada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
-(212, '2023-10-18', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(213, '2023-10-13', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Confirmada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Salvador'),
-(214, '2023-10-14', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
-(215, '2023-10-14', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
-(216, '2023-10-16', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
-(217, '2023-10-27', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Confirmada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Salvador'),
-(218, '2023-10-24', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
-(219, '2023-10-25', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(220, '2023-10-21', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(222, '2023-10-30', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
-(223, '2023-11-01', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(224, '2023-11-07', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
-(225, '2023-11-07', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(226, '2023-11-09', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira ', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '1b5d0ad0e1900d4aae02043845afb6f4', 'Salvador'),
-(227, '2023-11-09', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira ', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '1b5d0ad0e1900d4aae02043845afb6f4', 'Salvador'),
-(229, '2023-11-17', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
-(230, '2023-11-10', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Confirmada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Salvador'),
-(232, '2023-11-30', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(233, '2023-11-30', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(234, '2023-11-21', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Confirmada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
-(235, '2023-11-20', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(236, '2023-11-28', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Confirmada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
-(237, '2023-12-12', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(238, '2023-11-28', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Confirmada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Lauro de Freitas'),
-(239, '2023-11-27', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'fabriciomjpop4321@gmail.com', 'Fabrício dos Santos Batista ', '75998671707', '86626529560', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2908c334334fc56c38f6ded14aa723e7', 'Salvador'),
-(241, '2023-12-05', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Confirmada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
-(242, '2023-12-14', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(243, '2023-12-09', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Lauro de Freitas');
+(109, '2025-04-16', '15:00:00.000000', 'Avaliação Capilar', 'Denis Ferraz', 'denis_ferraz359@hotmail.com', 'Denis Ferraz', '71992604877', '05336888508', 'Finalizada', '2025-04-16 13:00:47.000000', 'F3F7DF9F21', 'ee5d74b65b7789ae850d9e6011af3fab', 'Lauro de Freitas'),
+(110, '2025-06-07', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Finalizada', '2025-04-30 20:14:14.000000', 'Ativa', 'b16464e42f30538ff5cb3f02ff692de9', 'Lauro de Freitas'),
+(111, '2025-05-06', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'iuryforte15@gmail.com', 'Iury Silva Brandão ', '71999590341', '08787064537', 'Finalizada', '2025-04-30 20:19:34.000000', 'Ativa', 'a1a3710d5fcdf26097f0ee4ca43dbe32', 'Salvador'),
+(112, '2025-05-12', '08:00:00.000000', 'Avaliação Capilar', 'Denis Ferraz', 'denis_ferraz359@hotmail.com', 'Denis Ferraz', '71992604877', '05336888508', 'Finalizada', '2025-05-12 21:55:32.000000', 'Ativa', 'a8aa9a69e17566f1a50348bb1dd7100d', 'Lauro de Freitas'),
+(113, '2025-05-21', '16:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'jecsantos20@gmail.com', 'JESSICA CERQUEIRA DOS SANTOS', '71992281331', '05777092594', 'Finalizada', '2025-05-20 17:31:36.000000', 'Ativa', '610964a7401f29161f4f80dce627a9a5', 'Lauro de Freitas'),
+(114, '2025-05-26', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'weslenvini99@hotmail.com', 'Weslen Vinicius de Souza goes', '71982019397', '07148847583', 'Finalizada', '2025-05-22 17:03:36.000000', 'Ativa', '4d4c4615afb7774514a2361171a5e121', 'Salvador'),
+(115, '2023-04-29', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(117, '2023-05-02', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3d02377849a4ad5b01bc6cbd68ed4dd3', 'Salvador'),
+(118, '2023-05-10', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(120, '2023-05-18', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
+(121, '2023-05-12', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
+(122, '2023-05-13', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'andreacrb03@gmail.com', 'Andrea Cardoso Rabelo Brandao', '71991942348', '03538716560', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2e70f9960d416e58a56fb9ca23f045aa', 'Salvador'),
+(124, '2023-05-20', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(125, '2023-05-17', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(126, '2023-05-17', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
+(127, '2023-05-19', '19:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(128, '2023-05-19', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(129, '2023-05-24', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(130, '2023-06-01', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
+(131, '2023-05-25', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Finalizada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
+(132, '2023-05-25', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Finalizada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
+(133, '2023-05-31', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(134, '2023-06-01', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'amandalgarcez@hotmail.com', 'Amanda Yoshioka ', '71999221500', '84153865591', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'dc697c2a966748a66b57af1a203f1901', 'Salvador'),
+(136, '2023-05-27', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
+(137, '2023-06-01', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Finalizada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
+(139, '2023-06-01', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
+(140, '2023-06-02', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(141, '2023-06-15', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
+(142, '2023-06-08', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'henrique.amon@saude.ba.gov.br', 'Henrique Amon Silva Freitas ', '71991884225', '01907688510', 'Finalizada', '2025-05-31 00:00:00.000000', '', '0d8e811e2d60318b12b30ea60b82131e', 'Salvador'),
+(143, '2023-06-14', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(144, '2023-06-06', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(145, '2023-06-07', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
+(146, '2023-06-17', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(148, '2023-06-17', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(149, '2023-06-17', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
+(150, '2023-06-29', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
+(152, '2023-06-22', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'elizamatine74@gmail.com', 'Elizama Eglantine e Silva', '71994004607', '000.000.000-00', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'e41a83b0db3e7b68474ea3f4f38f03f3', 'Salvador'),
+(154, '2023-06-28', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(155, '2023-06-23', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(156, '2023-06-27', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'krinasantana@gmail.com', 'Carina de Santana', '071981189594', '78852692568', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'bc5aba92df6ec3ce34fa06979456bb85', 'Salvador'),
+(157, '2023-06-27', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(159, '2023-07-08', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
+(161, '2023-07-13', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', '888f06fce9e71d050306fb492a98741e', 'Salvador'),
+(162, '2023-07-04', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'iraesfoliano@gmail.com', 'Iramacia Ramos Ferreira', '71988300494', '03466257506', 'Finalizada', '2025-05-31 00:00:00.000000', '', '69fc936eec40e2ad5510117eb5e379ca', 'Salvador'),
+(164, '2023-07-05', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(165, '2023-07-12', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(167, '2023-07-18', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(168, '2023-07-15', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(169, '2023-07-19', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(170, '2023-08-12', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(171, '2023-07-22', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
+(172, '2023-07-25', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(174, '2023-08-05', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
+(176, '2023-07-27', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Finalizada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
+(177, '2023-08-01', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'alinerochas@hotmail.com', 'Aline da Rocha Santos', '71999378888', '79745334553', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'a4aa8d1390b47347aa040a5b58dba564', 'Salvador'),
+(178, '2023-08-01', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Finalizada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
+(179, '2023-08-02', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(180, '2023-08-08', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Finalizada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
+(181, '2023-08-19', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
+(183, '2023-08-10', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(185, '2023-08-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'teste@gmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c08d39020cea67491777a6fbc079f2a2', 'Salvador'),
+(187, '2023-08-17', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(188, '2023-09-09', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(189, '2023-08-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'michel.oliveira2701@gmail.com', 'Michel Oliveira da Silva Souza', '71981901454', '86792200514', 'Finalizada', '2025-05-31 00:00:00.000000', '', '83702a0192922ae7547d0059c5a67cc8', 'Salvador'),
+(190, '2023-08-18', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
+(191, '2023-08-23', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(192, '2023-09-01', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
+(194, '2023-08-29', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(195, '2023-09-04', '17:30:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71999538335', '85936433536', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'd9c8da67f6ccd26b54e9c995b3373292', 'Salvador'),
+(197, '2023-09-09', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'evanilsonsoliveira@gmail.com', 'Evanilson dos Santos Oliveira ', '71991942348', '02535636581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '281a59f024eb983fa8646d4df0b8812a', 'Salvador'),
+(198, '2023-09-14', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
+(199, '2023-09-08', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(202, '2023-10-03', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(203, '2023-09-20', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(204, '2023-09-29', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
+(205, '2023-09-27', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(206, '2023-09-27', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(207, '2023-10-10', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Finalizada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
+(208, '2023-10-10', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Finalizada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
+(209, '2023-10-06', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
+(210, '2023-10-20', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Priscila Albuquerque Adorno', '71991914571', '04523457581', 'Finalizada', '2025-05-31 00:00:00.000000', '', '56ec054dae36e9ce651976ed6b8c085b', 'Salvador'),
+(212, '2023-10-18', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(213, '2023-10-13', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Finalizada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Salvador'),
+(214, '2023-10-14', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
+(215, '2023-10-14', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
+(216, '2023-10-16', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
+(217, '2023-10-27', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Finalizada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Salvador'),
+(218, '2023-10-24', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
+(219, '2023-10-25', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(220, '2023-10-21', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(222, '2023-10-30', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
+(223, '2023-11-01', '18:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(224, '2023-11-07', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Jailson Lopes dos Santos Júnio', '71981638525', '35438798800', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c2fc0c38105e12d101efeae9f96e72aa', 'Salvador'),
+(225, '2023-11-07', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(226, '2023-11-09', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira ', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '1b5d0ad0e1900d4aae02043845afb6f4', 'Salvador'),
+(227, '2023-11-09', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira ', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '1b5d0ad0e1900d4aae02043845afb6f4', 'Salvador'),
+(229, '2023-11-17', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Salvador'),
+(230, '2023-11-10', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Finalizada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Salvador'),
+(232, '2023-11-30', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(233, '2023-11-30', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(234, '2023-11-21', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Finalizada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
+(235, '2023-11-20', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(236, '2023-11-28', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Finalizada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
+(237, '2023-12-12', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(238, '2023-11-28', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Finalizada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Lauro de Freitas'),
+(239, '2023-11-27', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'fabriciomjpop4321@gmail.com', 'Fabrício dos Santos Batista ', '75998671707', '86626529560', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2908c334334fc56c38f6ded14aa723e7', 'Salvador'),
+(241, '2023-12-05', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Kaiqueeecr7@gmail.com', 'Kaique paulo da silva Araújo', '71992380490', '09252854550', 'Finalizada', '2025-05-31 00:00:00.000000', '', '05339a27091486a2ab71abfc55f753a8', 'Salvador'),
+(242, '2023-12-14', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(243, '2023-12-09', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Lauro de Freitas');
 INSERT INTO `consultas` (`id`, `atendimento_dia`, `atendimento_hora`, `tipo_consulta`, `feitapor`, `doc_email`, `doc_nome`, `doc_telefone`, `doc_cpf`, `status_consulta`, `data_cancelamento`, `confirmacao_cancelamento`, `token`, `local_consulta`) VALUES
-(245, '2023-12-11', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Confirmada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Lauro de Freitas'),
-(248, '2024-01-16', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(249, '2024-01-13', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
-(251, '2023-12-18', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'fonseca.mayana@gmail.com', 'Mayana Fonseca Barreto ', '71999486549', '54259550578', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'e1e401ee10788d056c779917b6f802c0', 'Salvador'),
-(253, '2024-01-11', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
-(255, '2024-01-04', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'tiago.manicoba@gmail.com', 'Tiago Amorim', '71988123866', '01642637564', 'Confirmada', '2025-05-31 00:00:00.000000', '', '41b20518d1e6ec22e7ce819d52521500', 'Salvador'),
-(257, '2024-01-12', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luaduques@hotmail.com', 'Luana Gonçalves Duques', '71999547957', '04550738561', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3cb380970ebbbd561a8b658e3bfaaa75', 'Salvador'),
-(259, '2024-01-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(260, '2024-01-13', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Confirmada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Lauro de Freitas'),
-(262, '2024-02-20', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(264, '2024-02-01', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
-(265, '2024-02-03', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camila-pita@hotmail.com', 'Camila da Silva Pita ', '71999078673', '02252751550', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'ffb3fb88d2656d10657cfd26903d4b89', 'Salvador'),
-(267, '2024-02-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'vej2305@gmail.com', 'Vanessa P. de Almeida Silva', '71993993003', '02338999525', 'Confirmada', '2025-05-31 00:00:00.000000', '', '204a606c4ec0cb009becfaad654d8075', 'Salvador'),
-(271, '2024-03-12', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(272, '2024-03-14', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(273, '2024-03-21', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(274, '2024-04-02', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(275, '2024-04-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(276, '2024-03-28', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'emersonsc1000@gmail.com', ' Emerson Soares Conrado ', '71991858286', '07461425508', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'e6d2375430960c4273a152d93b891d8c', 'Salvador'),
-(278, '2024-04-20', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
-(279, '2024-04-19', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(280, '2024-05-17', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(281, '2024-05-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
-(282, '2024-05-02', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Lauro de Freitas'),
-(283, '2024-05-06', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(285, '2024-05-10', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'betamerces38@gmail.com', 'Betânia Merces de Araujo', '71985024947', '68248962504', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4c06c966eaa2b690e92ecedd5ec11190', 'Salvador'),
-(287, '2024-05-25', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
-(288, '2024-06-13', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(289, '2024-06-03', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(290, '2024-05-31', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
-(291, '2024-05-31', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
-(292, '2024-06-07', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(293, '2024-06-05', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
-(295, '2024-06-17', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
-(296, '2024-06-14', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(297, '2024-07-03', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
-(298, '2024-07-05', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(300, '2024-07-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
-(301, '2024-07-08', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(302, '2024-07-11', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(303, '2024-07-13', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
-(304, '2024-07-18', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(305, '2024-08-09', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(306, '2024-08-08', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(307, '2024-07-26', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
-(308, '2024-07-29', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
-(309, '2024-07-30', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(310, '2024-07-23', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
-(311, '2024-07-30', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71997436147', '85936433536', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'da1c2dfd899b9f858ab375724973c9c6', 'Salvador'),
-(313, '2024-08-01', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(314, '2024-08-15', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(315, '2024-08-12', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
-(316, '2024-08-17', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
-(317, '2024-08-29', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
-(318, '2024-09-05', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(319, '2024-08-29', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(320, '2024-08-23', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'ldiasamino7@gmail.com', 'Larissa Dias dos Santos ', '71996594751', '10800007557', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'e0e681961302cc1a2cde26b672000570', 'Salvador'),
-(322, '2024-08-30', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
-(323, '2024-09-12', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(324, '2024-10-29', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(325, '2024-09-10', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(326, '2024-09-30', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(327, '2024-09-26', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(328, '2024-09-28', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
-(329, '2024-09-27', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(330, '2024-11-01', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(331, '2024-10-19', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
-(332, '2024-10-24', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Confirmada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
-(333, '2024-10-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(334, '2024-10-18', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(335, '2024-11-05', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(336, '2024-11-14', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(337, '2024-11-09', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
-(339, '2024-12-07', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
-(340, '2024-11-22', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
-(341, '2024-11-22', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
-(343, '2024-11-13', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'danyelporto@gmail.com', 'Daniel Porto de Araujo ', '71991380714', '03653591570', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'e2a1dddb3b1dd388a48b55f236c2e623', 'Salvador'),
-(344, '2024-11-22', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(345, '2024-12-06', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(346, '2024-12-06', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
-(347, '2024-12-12', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
-(348, '2024-12-12', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
-(349, '2025-01-31', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(350, '2024-12-17', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(351, '2024-12-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Lauro de Freitas'),
-(352, '2025-01-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(353, '2025-01-07', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
-(354, '2025-01-20', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Lauro de Freitas'),
-(355, '2025-02-08', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
-(356, '2025-01-24', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
-(357, '2025-02-21', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(358, '2025-02-17', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
-(359, '2025-02-05', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(360, '2025-02-12', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'raquel.d.santos110194@gmail.com', 'Raquel dos santos ', '71983200714', '85805935570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '0d3cf7ebe223c7ea1a921f66637aaab0', 'Salvador'),
-(361, '2025-02-12', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'raquel.d.santos110194@gmail.com', 'Raquel dos santos ', '71983200714', '85805935570', 'Confirmada', '2025-05-31 00:00:00.000000', '', '0d3cf7ebe223c7ea1a921f66637aaab0', 'Salvador'),
-(362, '2025-02-05', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
-(363, '2025-02-05', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Confirmada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
-(364, '2025-02-05', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Confirmada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
-(365, '2025-02-26', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Confirmada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
-(366, '2025-02-12', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'adrianamagalhaes026@gmail.com', 'Adriana trindade Magalhães Tav', '77999349507', '04038804593', 'Confirmada', '2025-05-31 00:00:00.000000', '', '1de336fa35a32c8cbe6a44a2f4e99ffc', 'Salvador'),
-(367, '2025-02-12', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'adrianamagalhaes026@gmail.com', 'Adriana trindade Magalhães Tav', '77999349507', '04038804593', 'Confirmada', '2025-05-31 00:00:00.000000', '', '1de336fa35a32c8cbe6a44a2f4e99ffc', 'Salvador'),
-(368, '2025-02-13', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'lucassimas160@hotmail.com', 'Lucas Santos da Silva Simas', '17999441580', '06006415542', 'Confirmada', '2025-05-31 00:00:00.000000', '', '8acab63d1d28edde12f1804685e1682a', 'Salvador'),
-(371, '2025-02-22', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'danyelporto@gmail.com', 'Daniel Porto de Araujo ', '71991380714', '03653591570', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'e2a1dddb3b1dd388a48b55f236c2e623', 'Salvador'),
-(372, '2025-03-17', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
-(373, '2025-04-02', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(374, '2025-03-10', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'arianedasilvasantos2@gmail.com', 'Ariane da Silva Santos Sampaio', '71997396450', '01699012547', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c963f9313d148bdb5ea79c3ab9a590bb', 'Salvador'),
-(375, '2025-03-10', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'arianedasilvasantos2@gmail.com', 'Ariane da Silva Santos Sampaio', '71997396450', '01699012547', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c963f9313d148bdb5ea79c3ab9a590bb', 'Salvador'),
-(376, '2025-03-13', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(377, '2025-03-14', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(378, '2025-03-18', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Confirmada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
-(379, '2025-03-18', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(380, '2025-03-18', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(381, '2025-04-16', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
-(383, '2025-05-19', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Confirmada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
-(384, '2025-04-12', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
-(385, '2025-04-16', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
-(386, '2025-05-21', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
-(387, '2025-04-24', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(388, '2025-05-03', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Érico Silva do Nascimento', '71988446597', '83190821534', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas'),
-(389, '2025-05-03', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Érico Silva do Nascimento', '71988446597', '83190821534', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas'),
-(390, '2025-04-24', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Confirmada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
-(391, '2025-04-24', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(392, '2025-05-22', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Confirmada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
-(393, '2025-05-06', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Confirmada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
-(394, '2025-05-06', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(396, '2025-05-03', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'b16464e42f30538ff5cb3f02ff692de9', 'Salvador'),
-(397, '2025-05-03', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'b16464e42f30538ff5cb3f02ff692de9', 'Salvador'),
-(401, '2025-05-22', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Confirmada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
-(402, '2025-05-19', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
-(403, '2025-05-24', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'b16464e42f30538ff5cb3f02ff692de9', 'Salvador'),
-(407, '2025-05-21', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jecsantos20@gmail.com', 'JESSICA CERQUEIRA DOS SANTOS', '71992281331', '05777092594', 'Confirmada', '2025-05-31 00:00:00.000000', '', '610964a7401f29161f4f80dce627a9a5', 'Salvador'),
-(410, '2025-05-29', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Confirmada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
-(413, '2025-05-26', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'weslenvini99@hotmail.com', 'Weslen Vinicius de Souza goes', '71982019397', '07148847583', 'Confirmada', '2025-05-31 00:00:00.000000', '', '4d4c4615afb7774514a2361171a5e121', 'Salvador'),
-(415, '2025-05-24', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Érico Silva do Nascimento', '71988446597', '83190821534', 'Confirmada', '2025-05-31 00:00:00.000000', '', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas');
+(245, '2023-12-11', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Priscila Eve Silva dos Santos ', '71986848704', '81245327534', 'Finalizada', '2025-05-31 00:00:00.000000', '', '037d0457f8cf8d40b48ba71307624e28', 'Lauro de Freitas'),
+(248, '2024-01-16', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(249, '2024-01-13', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
+(251, '2023-12-18', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'fonseca.mayana@gmail.com', 'Mayana Fonseca Barreto ', '71999486549', '54259550578', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'e1e401ee10788d056c779917b6f802c0', 'Salvador'),
+(253, '2024-01-11', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
+(255, '2024-01-04', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'tiago.manicoba@gmail.com', 'Tiago Amorim', '71988123866', '01642637564', 'Finalizada', '2025-05-31 00:00:00.000000', '', '41b20518d1e6ec22e7ce819d52521500', 'Salvador'),
+(257, '2024-01-12', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luaduques@hotmail.com', 'Luana Gonçalves Duques', '71999547957', '04550738561', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3cb380970ebbbd561a8b658e3bfaaa75', 'Salvador'),
+(259, '2024-01-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(260, '2024-01-13', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'manucassia@gmail.com', 'Manuela de Cássia Filgueiras F', '71986092883', '72886757500', 'Finalizada', '2025-05-31 00:00:00.000000', '', '31946ec0f29162557b632db0732d02d7', 'Lauro de Freitas'),
+(262, '2024-02-20', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(264, '2024-02-01', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
+(265, '2024-02-03', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camila-pita@hotmail.com', 'Camila da Silva Pita ', '71999078673', '02252751550', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'ffb3fb88d2656d10657cfd26903d4b89', 'Salvador'),
+(267, '2024-02-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'vej2305@gmail.com', 'Vanessa P. de Almeida Silva', '71993993003', '02338999525', 'Finalizada', '2025-05-31 00:00:00.000000', '', '204a606c4ec0cb009becfaad654d8075', 'Salvador'),
+(271, '2024-03-12', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(272, '2024-03-14', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(273, '2024-03-21', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(274, '2024-04-02', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(275, '2024-04-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(276, '2024-03-28', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'emersonsc1000@gmail.com', ' Emerson Soares Conrado ', '71991858286', '07461425508', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'e6d2375430960c4273a152d93b891d8c', 'Salvador'),
+(278, '2024-04-20', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
+(279, '2024-04-19', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(280, '2024-05-17', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(281, '2024-05-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
+(282, '2024-05-02', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Lauro de Freitas'),
+(283, '2024-05-06', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(285, '2024-05-10', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'betamerces38@gmail.com', 'Betânia Merces de Araujo', '71985024947', '68248962504', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4c06c966eaa2b690e92ecedd5ec11190', 'Salvador'),
+(287, '2024-05-25', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
+(288, '2024-06-13', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(289, '2024-06-03', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(290, '2024-05-31', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
+(291, '2024-05-31', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
+(292, '2024-06-07', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(293, '2024-06-05', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
+(295, '2024-06-17', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
+(296, '2024-06-14', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(297, '2024-07-03', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
+(298, '2024-07-05', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(300, '2024-07-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
+(301, '2024-07-08', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(302, '2024-07-11', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(303, '2024-07-13', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
+(304, '2024-07-18', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(305, '2024-08-09', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(306, '2024-08-08', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(307, '2024-07-26', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
+(308, '2024-07-29', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
+(309, '2024-07-30', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
+(310, '2024-07-23', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
+(311, '2024-07-30', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'andrezaveimrober@gmail.com', 'Gabriela Veimrober', '71997436147', '85936433536', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'da1c2dfd899b9f858ab375724973c9c6', 'Salvador'),
+(313, '2024-08-01', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
+(314, '2024-08-15', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
+(315, '2024-08-12', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'camile.ac@hotmail.com', 'Camile Virgínia Araújo Coelho ', '75999623723', '05159543570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '5cffe3893e04163d642329cee5444152', 'Salvador'),
+(316, '2024-08-17', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
+(317, '2024-08-29', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
+(318, '2024-09-05', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(319, '2024-08-29', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
+(320, '2024-08-23', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'ldiasamino7@gmail.com', 'Larissa Dias dos Santos ', '71996594751', '10800007557', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'e0e681961302cc1a2cde26b672000570', 'Salvador'),
+(322, '2024-08-30', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
+(323, '2024-09-12', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
+(324, '2024-10-29', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(325, '2024-09-10', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(326, '2024-09-30', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(327, '2024-09-26', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
+(328, '2024-09-28', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
+(329, '2024-09-27', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(330, '2024-11-01', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(331, '2024-10-19', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
+(332, '2024-10-24', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'neilsonrabelo@hotmail.com', 'Neilson Bernardo Rabelo', '71992252413', '03384164555', 'Finalizada', '2025-05-31 00:00:00.000000', '', '2ce2b3647d8ed37c96221f2e0fd2ba0f', 'Salvador'),
+(333, '2024-10-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(334, '2024-10-18', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(335, '2024-11-05', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(336, '2024-11-14', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(337, '2024-11-09', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
+(339, '2024-12-07', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Caroline da Cruz Lordelo', '71985049974', '04491118574', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
+(340, '2024-11-22', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
+(341, '2024-11-22', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
+(343, '2024-11-13', '13:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'danyelporto@gmail.com', 'Daniel Porto de Araujo ', '71991380714', '03653591570', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'e2a1dddb3b1dd388a48b55f236c2e623', 'Salvador'),
+(344, '2024-11-22', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(345, '2024-12-06', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(346, '2024-12-06', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
+(347, '2024-12-12', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
+(348, '2024-12-12', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
+(349, '2025-01-31', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(350, '2024-12-17', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(351, '2024-12-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Lauro de Freitas'),
+(352, '2025-01-15', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(353, '2025-01-07', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
+(354, '2025-01-20', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Lauro de Freitas'),
+(355, '2025-02-08', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Lauro de Freitas'),
+(356, '2025-01-24', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
+(357, '2025-02-21', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(358, '2025-02-17', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
+(359, '2025-02-05', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(360, '2025-02-12', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'raquel.d.santos110194@gmail.com', 'Raquel dos santos ', '71983200714', '85805935570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '0d3cf7ebe223c7ea1a921f66637aaab0', 'Salvador'),
+(361, '2025-02-12', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'raquel.d.santos110194@gmail.com', 'Raquel dos santos ', '71983200714', '85805935570', 'Finalizada', '2025-05-31 00:00:00.000000', '', '0d3cf7ebe223c7ea1a921f66637aaab0', 'Salvador'),
+(362, '2025-02-05', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'email@gmail.com', 'Alexandre da Silva Oliveira ', '71988880388', '02486291580', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3abd39f316745cd440cc4e99b0f84f9f', 'Salvador'),
+(363, '2025-02-05', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Finalizada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
+(364, '2025-02-05', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Finalizada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
+(365, '2025-02-26', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Finalizada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
+(366, '2025-02-12', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'adrianamagalhaes026@gmail.com', 'Adriana trindade Magalhães Tav', '77999349507', '04038804593', 'Finalizada', '2025-05-31 00:00:00.000000', '', '1de336fa35a32c8cbe6a44a2f4e99ffc', 'Salvador'),
+(367, '2025-02-12', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'adrianamagalhaes026@gmail.com', 'Adriana trindade Magalhães Tav', '77999349507', '04038804593', 'Finalizada', '2025-05-31 00:00:00.000000', '', '1de336fa35a32c8cbe6a44a2f4e99ffc', 'Salvador'),
+(368, '2025-02-13', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'lucassimas160@hotmail.com', 'Lucas Santos da Silva Simas', '17999441580', '06006415542', 'Finalizada', '2025-05-31 00:00:00.000000', '', '8acab63d1d28edde12f1804685e1682a', 'Salvador'),
+(371, '2025-02-22', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'danyelporto@gmail.com', 'Daniel Porto de Araujo ', '71991380714', '03653591570', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'e2a1dddb3b1dd388a48b55f236c2e623', 'Salvador'),
+(372, '2025-03-17', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
+(373, '2025-04-02', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(374, '2025-03-10', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'arianedasilvasantos2@gmail.com', 'Ariane da Silva Santos Sampaio', '71997396450', '01699012547', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c963f9313d148bdb5ea79c3ab9a590bb', 'Salvador'),
+(375, '2025-03-10', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'arianedasilvasantos2@gmail.com', 'Ariane da Silva Santos Sampaio', '71997396450', '01699012547', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c963f9313d148bdb5ea79c3ab9a590bb', 'Salvador'),
+(376, '2025-03-13', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(377, '2025-03-14', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(378, '2025-03-18', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Finalizada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
+(379, '2025-03-18', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(380, '2025-03-18', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(381, '2025-04-16', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
+(383, '2025-05-19', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Bruno da Hora Ferreira', '71982116819', '03533772527', 'Finalizada', '2025-05-31 00:00:00.000000', '', '227d722f2cda1fff229ff524b3c2fec5', 'Salvador'),
+(384, '2025-04-12', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Finalizada', '2025-05-31 00:00:00.000000', '', '15663d271059bf6aa62640c2cce8d90b', 'Salvador'),
+(385, '2025-04-16', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Salvador'),
+(386, '2025-05-21', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Everton Pinheiro de Santana Sa', '71992066476', '01665943505', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Salvador'),
+(387, '2025-04-24', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(388, '2025-05-03', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Érico Silva do Nascimento', '71988446597', '83190821534', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas'),
+(389, '2025-05-03', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Érico Silva do Nascimento', '71988446597', '83190821534', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas'),
+(390, '2025-04-24', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Finalizada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
+(391, '2025-04-24', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(392, '2025-05-22', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Elisangela Jesus da Silva ', '71999811829', '76515192568', 'Finalizada', '2025-05-31 00:00:00.000000', '', '72b135af9f44da8d3c4d4caeae256383', 'Salvador'),
+(393, '2025-05-06', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'brenoalmeidasantana@gmail.com', 'Breno Almeida Santana', '71981610441', '05617759582', 'Finalizada', '2025-05-31 00:00:00.000000', '', '380e27d06c5ad33b7887a7071e0793c5', 'Salvador'),
+(394, '2025-05-06', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(396, '2025-05-03', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'b16464e42f30538ff5cb3f02ff692de9', 'Salvador'),
+(397, '2025-05-03', '08:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'b16464e42f30538ff5cb3f02ff692de9', 'Salvador'),
+(401, '2025-05-22', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'luciana_gomes@hotmail.com', 'Luciana Gomes', '71988065597', '02853888517', 'Finalizada', '2025-05-31 00:00:00.000000', '', '3e24807a8e40b1b0afaf02c3bb1bcf50', 'Salvador'),
+(402, '2025-05-19', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'sand11cost@gmail.com', 'Sandra Maria de Assis Costa ', '71999756001', '10735100500', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'f90041c8d317b97a99dd9744c59e4972', 'Lauro de Freitas'),
+(403, '2025-05-24', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'b16464e42f30538ff5cb3f02ff692de9', 'Salvador'),
+(407, '2025-05-21', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jecsantos20@gmail.com', 'JESSICA CERQUEIRA DOS SANTOS', '71992281331', '05777092594', 'Finalizada', '2025-05-31 00:00:00.000000', '', '610964a7401f29161f4f80dce627a9a5', 'Salvador'),
+(410, '2025-05-29', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Rosana da silva santos', '71988944423', '03341705597', 'Finalizada', '2025-05-31 00:00:00.000000', '', '6c37362af2ebe7b977ec1dab5fd10233', 'Salvador'),
+(413, '2025-05-26', '11:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'weslenvini99@hotmail.com', 'Weslen Vinicius de Souza goes', '71982019397', '07148847583', 'Finalizada', '2025-05-31 00:00:00.000000', '', '4d4c4615afb7774514a2361171a5e121', 'Salvador'),
+(415, '2025-05-24', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Érico Silva do Nascimento', '71988446597', '83190821534', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas'),
+(421, '2025-07-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Érika Dourado Cardeal', '71983819823', '07707463579', 'Confirmada', '2025-06-01 18:04:55.000000', 'Ativa', '74db49497a1701964020ac19ce14a084', 'Lauro de Freitas'),
+(423, '2025-06-13', '14:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'raquelsinal3@gmail.com', 'Raquel Freire', '71992271212', '88810089553', 'Confirmada', '2025-06-03 13:57:01.000000', 'Ativa', '00b02702852a2bed13f23df1ae2602d9', 'Lauro de Freitas'),
+(424, '2025-06-28', '09:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fauqueiroz@hotmail.com', 'Fabiana Queiroz da Silva', '71991539614', '01411656504', 'Confirmada', '2025-06-06 16:01:56.000000', 'Ativa', '042a5d2f14a981aa9505703838711097', 'Salvador'),
+(425, '2025-07-11', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Livia Oliveira Carvalho ', '71991430889', '01568409524', 'Confirmada', '2025-06-07 10:19:41.000000', 'Ativa', 'cb81022737e3c625f6cc6eace4c62ad4', 'Lauro de Freitas');
 
 -- --------------------------------------------------------
 
@@ -486,46 +466,48 @@ CREATE TABLE `contrato` (
   `procedimento_valor` varchar(150) NOT NULL,
   `aditivo_valor` varchar(150) NOT NULL,
   `aditivo_procedimento` text NOT NULL,
-  `aditivo_status` varchar(30) NOT NULL
+  `aditivo_status` varchar(30) NOT NULL,
+  `token` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `contrato`
 --
 
-INSERT INTO `contrato` (`id`, `email`, `assinado`, `assinado_data`, `assinado_empresa`, `assinado_empresa_data`, `procedimento`, `procedimento_dias`, `procedimento_valor`, `aditivo_valor`, `aditivo_procedimento`, `aditivo_status`) VALUES
-(3, 'erikadourado14@gmail.com', 'Não', '2023-05-12 15:42:49', 'Sim', '2023-05-02 19:17:14', '1 Sessão de Laser<br>1 Sessão de Microagulhamento', 15, 'R$ 590,00 sendo R$127,00 em pix e R$463,00 no cartão de credito dividido em 2x', '-', '-', 'Não'),
-(5, 'alinerochas@hotmail.com', 'Não', '2023-05-07 19:08:43', 'Sim', '2023-05-07 19:08:43', '4 Sessões de Fotobioestimulação com Laser<br>2 Sessões SPA dos Fios<br>2 Sessões de Blend de óleos no couro cabeludo', 15, 'R$ 1380,00 Parcelado em 7x sem juros', '-', '-', 'Não'),
-(6, 'everton.pinheiro@hotmail.com', 'Sim', '2023-05-18 16:31:54', 'Sim', '2023-05-07 19:33:35', '3 Sessões de Microagulhamento<br> 3 Sessões de Fotobioestimulação com Laser<br> 2 Sessões de Terapia ILIB<br> 1 Sessão brinde de Terapia ILIB', 15, 'R$1870,00 parcelado em 10x sem juros ', '-', '-', 'Não'),
-(7, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-07 19:38:15', '3 Sessões de Terapia com Laser<br> 1 Sessão de microagulhamento', 15, 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', '-', '-', 'Não'),
-(8, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-07 19:38:20', '-', 15, '-', 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', '3 Sessões de Terapia com Laser<br> 1 Sessão de microagulhamento', 'Sim'),
-(10, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-23 19:11:26', '-', 15, '-', '3 Sessões de Fotobioestimulação com Laser<br>1 Sessão de Microagulhamento com drug delivery', 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', 'Sim'),
-(11, 'henrique.amon@saude.ba.gov.br', 'Não', '2023-05-23 19:16:46', 'Sim', '2023-05-23 19:16:46', '3 Sessões de Fotobioestimulação com Laser<br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$1050,00 em cartão de débito', '-', '-', 'Não'),
-(12, 'alinerochas@hotmail.com', 'Não', '2023-06-06 19:08:35', 'Sim', '2023-06-06 19:08:35', '3 Sessões de Fotobioestimulação com laser <br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$ 997,00 EM PIX', '-', '-', 'Não'),
-(13, 'denis_ferraz359@hotmail.com', 'Sim', '2025-05-31 18:54:01', 'Sim', '2023-07-02 22:51:30', 'bado viado', 15, 'R$1.000,00 parcelado em 10x de R$100,00', '-', '-', 'Não'),
-(14, 'michel.oliveira2701@gmail.com', 'Não', '2023-07-27 17:51:08', 'Sim', '2023-07-27 17:51:08', '3 Sessões de Fotobiomodulação com Laser <br> 1 Sessão de Microagulhamento', 15, 'R$ 976,00 em espécie', '-', '-', 'Não'),
-(15, 'manucassia@gmail.com', 'Não', '2023-08-02 18:13:01', 'Sim', '2023-08-02 18:13:01', '-', 15, '-', '2 Sessões de Fotobiomodulação com laser<br>2 Sessões de Intradermoterapia Capilar', 'R$ 980,00 EM DÉBITO', 'Sim'),
-(16, 'evanilsonsoliveira@gmail.com', 'Não', '2023-08-05 09:17:48', 'Sim', '2023-08-05 09:17:48', '3 Sessões de Microagulhamento<br>3 Sessões de fotobiomodulação com laser', 15, 'R$1990,00 parcelado em 10x sem juros', '-', '-', 'Não'),
-(17, 'priscila_nutri89@hotmail.com', 'Não', '2023-09-03 17:23:10', 'Sim', '2023-09-03 17:23:10', '3 Sessões de Laser<BR>1 Sessão de Microagulhamento com drug delivery<BR>2 Sessões de Intradermoterapia', 15, 'R$ 1550,00 Parcelado em 6x s/ juros', '-', '-', 'Não'),
-(18, 'manucassia@gmail.com', 'Não', '2023-09-03 17:24:53', 'Sim', '2023-09-03 17:24:53', '-', 15, '-', '2 Sessões de Laserterapia <br> 2 Sessões de Intradermoterapia', 'R$ 980,00 EM DÉBITO', 'Sim'),
-(19, 'erikadourado14@gmail.com', 'Não', '2023-09-03 17:26:15', 'Sim', '2023-09-03 17:26:15', '-', 15, '-', '1 Sessão de Microagulhamento com drug delivery', 'R$ 330,00 em débito', 'Sim'),
-(20, 'jr_losant@hotmail.com', 'Não', '2023-10-11 23:58:20', 'Sim', '2023-10-11 23:58:20', '4 Sessões de laserterapia', 15, 'R$ 960,00 parcelado em 2x sem juros ', '-', '-', 'Não'),
-(21, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:15:38', 'Sim', '2023-10-13 12:15:38', '2 Sessões de Laserterapia>br>2 Sessões de Microagulhamento>br>2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não'),
-(22, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:17:27', 'Sim', '2023-10-13 12:17:27', '2 Sessões de Laserterapia<br>2 Sessões de Microagulhamento<br> 2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não'),
-(23, 'erikadourado14@gmail.com', 'Não', '2023-10-13 12:18:39', 'Sim', '2023-10-13 12:18:39', '-', 15, '-', 'Sessão individual de Intradermoterapia mensal', 'RS 250,000', 'Sim'),
-(24, 'brenoalmeidasantana@gmail.com', 'Não', '2023-10-13 12:19:38', 'Sim', '2023-10-13 12:19:38', 'Sessão intradermoterapia mensal', 15, 'R$ 250,000', '-', '-', 'Não'),
-(25, 'Rosana_silva654@hotmail.com', 'Não', '2023-11-07 18:49:16', 'Sim', '2023-11-07 18:49:16', '6 sessões de tratamento em consultório', 15, 'R$1620,00 pago em 6x por sessão em dinheiro', '-', '-', 'Não'),
-(26, 'Kaiqueeecr7@gmail.com', 'Não', '2023-11-07 19:33:38', 'Sim', '2023-11-07 19:33:38', '4 SESSÕES DE TRATAMENTO EM CONSULTÓRIO', 15, 'R$ 980,00 EM PIX COM 5% DE DESCONTO', '-', '-', 'Não'),
-(27, 'bruno.ferreira88@icloud.com', 'Não', '2023-11-17 16:58:46', 'Sim', '2023-11-17 16:58:46', '6 Sessões com tecnologia em Consultório<br>', 15, 'R$ 1740,00 EM 3X SEM JUROS', '-', '-', 'Não'),
-(28, 'bruno.ferreira88@icloud.com', 'Não', '2024-03-14 17:15:29', 'Sim', '2024-03-14 17:15:29', '-', 15, '-', '6 Sessões programa HaiRecupere', 'R$2310,00 parcelado em 6 vezes sem juros', 'Sim'),
-(29, 'sand11cost@gmail.com', 'Não', '2024-06-04 14:03:46', 'Sim', '2024-06-04 14:03:46', '4 sessões de Laserterapia<br> 1 Sessão de Microagulhamento', 15, 'R$1187,50em débito automàtico', '-', '-', 'Não'),
-(30, 'luciana_gomes@hotmail.com', 'Não', '2024-08-09 19:41:13', 'Sim', '2024-08-09 19:41:13', 'Sessão de intradermoterapia mensal', 15, 'R$ 107,00 em pix mensalmente  referente a mão de obra ', '-', '-', 'Não'),
-(31, 'neilsonrabelo@hotmail.com', 'Não', '2024-08-15 09:06:29', 'Sim', '2024-08-14 17:44:45', '2 SESSÕES DE FOTOBIOMODULAÇÃO COM LASER', 15, 'R$550,00 EM 3X SEM JUROS ', '-', '-', 'Não'),
-(32, 'neilsonrabelo@hotmail.com', 'Não', '2024-09-12 00:43:59', 'Sim', '2024-09-12 00:43:59', '-', 15, '-', '2 sessões de laserterapia', 'R$ 520,00 parcelado em 3x sem juros ', 'Sim'),
-(33, 'everton.pinheiro@hotmail.com', 'Não', '2024-12-14 12:33:15', 'Sim', '2024-12-14 12:33:15', 'PLANO DE TRATAMENTO HAIRCUPERE POR 6 MESES', 15, 'RS1980,00 PARCELADO EM 7X NO CARTÃO DE CRÉDITO', '-', '-', 'Não'),
-(37, 'eli.trevo@gmail.com', 'Não', '2025-04-17 11:16:05', 'Sim', '2025-04-17 11:16:05', 'Programa Haircupere Clinica<br> Sessão mensal de injetáveis associado a laserterapia', 30, 'R$ 2580,00 Parcelado em 6x sem juros ', '-', '-', 'Não'),
-(38, 'erico_nascimento@hotmail.com', 'Não', '2025-05-12 15:21:04', 'Sim', '2025-05-12 15:21:04', 'Programa Haircupere Clinica Personalizado por 3 meses<br>Programa Haircupere Home Care personalizado por 3 meses totalizando 6 meses de tratamento', 30, 'R$ 1500,00 sendoR$ 500,00 abatido referente a credito anterior e  R$1000,00 pago a vista via pix .', '-', '-', 'Não'),
-(39, 'livia.carvalho@msn.com', 'Não', '2025-05-30 11:53:16', 'Sim', '2025-05-30 11:53:16', 'Programa Haircupere Clinica (6 Sessões com laserterapia+ 6 Sessões com aplicação de injetáveis).', 30, 'R$ 2382,00 Parcelado em 6x sem juros ', '-', '-', 'Não');
+INSERT INTO `contrato` (`id`, `email`, `assinado`, `assinado_data`, `assinado_empresa`, `assinado_empresa_data`, `procedimento`, `procedimento_dias`, `procedimento_valor`, `aditivo_valor`, `aditivo_procedimento`, `aditivo_status`, `token`) VALUES
+(3, 'erikadourado14@gmail.com', 'Não', '2023-05-12 15:42:49', 'Sim', '2023-05-02 19:17:14', '1 Sessão de Laser<br>1 Sessão de Microagulhamento', 15, 'R$ 590,00 sendo R$127,00 em pix e R$463,00 no cartão de credito dividido em 2x', '-', '-', 'Não', ''),
+(5, 'alinerochas@hotmail.com', 'Não', '2023-05-07 19:08:43', 'Sim', '2023-05-07 19:08:43', '4 Sessões de Fotobioestimulação com Laser<br>2 Sessões SPA dos Fios<br>2 Sessões de Blend de óleos no couro cabeludo', 15, 'R$ 1380,00 Parcelado em 7x sem juros', '-', '-', 'Não', ''),
+(6, 'everton.pinheiro@hotmail.com', 'Sim', '2023-05-18 16:31:54', 'Sim', '2023-05-07 19:33:35', '3 Sessões de Microagulhamento<br> 3 Sessões de Fotobioestimulação com Laser<br> 2 Sessões de Terapia ILIB<br> 1 Sessão brinde de Terapia ILIB', 15, 'R$1870,00 parcelado em 10x sem juros ', '-', '-', 'Não', ''),
+(7, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-07 19:38:15', '3 Sessões de Terapia com Laser<br> 1 Sessão de microagulhamento', 15, 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', '-', '-', 'Não', ''),
+(8, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-07 19:38:20', '-', 15, '-', 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', '3 Sessões de Terapia com Laser<br> 1 Sessão de microagulhamento', 'Sim', ''),
+(10, 'manucassia@gmail.com', 'Não', '2023-05-24 17:05:06', 'Sim', '2023-05-23 19:11:26', '-', 15, '-', '3 Sessões de Fotobioestimulação com Laser<br>1 Sessão de Microagulhamento com drug delivery', 'R$1050,00 sendo R$ 500,00 em dinheiro e R$ 550,00 em cartão de débito', 'Sim', ''),
+(11, 'henrique.amon@saude.ba.gov.br', 'Não', '2023-05-23 19:16:46', 'Sim', '2023-05-23 19:16:46', '3 Sessões de Fotobioestimulação com Laser<br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$1050,00 em cartão de débito', '-', '-', 'Não', ''),
+(12, 'alinerochas@hotmail.com', 'Não', '2023-06-06 19:08:35', 'Sim', '2023-06-06 19:08:35', '3 Sessões de Fotobioestimulação com laser <br>1 Sessão de Microagulhamento com drug delivery', 15, 'R$ 997,00 EM PIX', '-', '-', 'Não', ''),
+(13, 'denis_ferraz359@hotmail.com', 'Sim', '2025-05-31 18:54:01', 'Sim', '2023-07-02 22:51:30', 'bado viado', 15, 'R$1.000,00 parcelado em 10x de R$100,00', '-', '-', 'Não', ''),
+(14, 'michel.oliveira2701@gmail.com', 'Não', '2023-07-27 17:51:08', 'Sim', '2023-07-27 17:51:08', '3 Sessões de Fotobiomodulação com Laser <br> 1 Sessão de Microagulhamento', 15, 'R$ 976,00 em espécie', '-', '-', 'Não', ''),
+(15, 'manucassia@gmail.com', 'Não', '2023-08-02 18:13:01', 'Sim', '2023-08-02 18:13:01', '-', 15, '-', '2 Sessões de Fotobiomodulação com laser<br>2 Sessões de Intradermoterapia Capilar', 'R$ 980,00 EM DÉBITO', 'Sim', ''),
+(16, 'evanilsonsoliveira@gmail.com', 'Não', '2023-08-05 09:17:48', 'Sim', '2023-08-05 09:17:48', '3 Sessões de Microagulhamento<br>3 Sessões de fotobiomodulação com laser', 15, 'R$1990,00 parcelado em 10x sem juros', '-', '-', 'Não', ''),
+(17, 'priscila_nutri89@hotmail.com', 'Não', '2023-09-03 17:23:10', 'Sim', '2023-09-03 17:23:10', '3 Sessões de Laser<BR>1 Sessão de Microagulhamento com drug delivery<BR>2 Sessões de Intradermoterapia', 15, 'R$ 1550,00 Parcelado em 6x s/ juros', '-', '-', 'Não', ''),
+(18, 'manucassia@gmail.com', 'Não', '2023-09-03 17:24:53', 'Sim', '2023-09-03 17:24:53', '-', 15, '-', '2 Sessões de Laserterapia <br> 2 Sessões de Intradermoterapia', 'R$ 980,00 EM DÉBITO', 'Sim', ''),
+(19, 'erikadourado14@gmail.com', 'Não', '2023-09-03 17:26:15', 'Sim', '2023-09-03 17:26:15', '-', 15, '-', '1 Sessão de Microagulhamento com drug delivery', 'R$ 330,00 em débito', 'Sim', ''),
+(20, 'jr_losant@hotmail.com', 'Não', '2023-10-11 23:58:20', 'Sim', '2023-10-11 23:58:20', '4 Sessões de laserterapia', 15, 'R$ 960,00 parcelado em 2x sem juros ', '-', '-', 'Não', ''),
+(21, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:15:38', 'Sim', '2023-10-13 12:15:38', '2 Sessões de Laserterapia>br>2 Sessões de Microagulhamento>br>2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não', ''),
+(22, 'priscilaeve@hotmail.com', 'Não', '2023-10-13 12:17:27', 'Sim', '2023-10-13 12:17:27', '2 Sessões de Laserterapia<br>2 Sessões de Microagulhamento<br> 2 Sessões de Intradermoterapia', 15, 'R$ 1740,00', '-', '-', 'Não', ''),
+(23, 'erikadourado14@gmail.com', 'Não', '2023-10-13 12:18:39', 'Sim', '2023-10-13 12:18:39', '-', 15, '-', 'Sessão individual de Intradermoterapia mensal', 'RS 250,000', 'Sim', ''),
+(24, 'brenoalmeidasantana@gmail.com', 'Não', '2023-10-13 12:19:38', 'Sim', '2023-10-13 12:19:38', 'Sessão intradermoterapia mensal', 15, 'R$ 250,000', '-', '-', 'Não', ''),
+(25, 'Rosana_silva654@hotmail.com', 'Não', '2023-11-07 18:49:16', 'Sim', '2023-11-07 18:49:16', '6 sessões de tratamento em consultório', 15, 'R$1620,00 pago em 6x por sessão em dinheiro', '-', '-', 'Não', ''),
+(26, 'Kaiqueeecr7@gmail.com', 'Não', '2023-11-07 19:33:38', 'Sim', '2023-11-07 19:33:38', '4 SESSÕES DE TRATAMENTO EM CONSULTÓRIO', 15, 'R$ 980,00 EM PIX COM 5% DE DESCONTO', '-', '-', 'Não', ''),
+(27, 'bruno.ferreira88@icloud.com', 'Não', '2023-11-17 16:58:46', 'Sim', '2023-11-17 16:58:46', '6 Sessões com tecnologia em Consultório<br>', 15, 'R$ 1740,00 EM 3X SEM JUROS', '-', '-', 'Não', ''),
+(28, 'bruno.ferreira88@icloud.com', 'Não', '2024-03-14 17:15:29', 'Sim', '2024-03-14 17:15:29', '-', 15, '-', '6 Sessões programa HaiRecupere', 'R$2310,00 parcelado em 6 vezes sem juros', 'Sim', ''),
+(29, 'sand11cost@gmail.com', 'Não', '2024-06-04 14:03:46', 'Sim', '2024-06-04 14:03:46', '4 sessões de Laserterapia<br> 1 Sessão de Microagulhamento', 15, 'R$1187,50em débito automàtico', '-', '-', 'Não', ''),
+(30, 'luciana_gomes@hotmail.com', 'Não', '2024-08-09 19:41:13', 'Sim', '2024-08-09 19:41:13', 'Sessão de intradermoterapia mensal', 15, 'R$ 107,00 em pix mensalmente  referente a mão de obra ', '-', '-', 'Não', ''),
+(31, 'neilsonrabelo@hotmail.com', 'Não', '2024-08-15 09:06:29', 'Sim', '2024-08-14 17:44:45', '2 SESSÕES DE FOTOBIOMODULAÇÃO COM LASER', 15, 'R$550,00 EM 3X SEM JUROS ', '-', '-', 'Não', ''),
+(32, 'neilsonrabelo@hotmail.com', 'Não', '2024-09-12 00:43:59', 'Sim', '2024-09-12 00:43:59', '-', 15, '-', '2 sessões de laserterapia', 'R$ 520,00 parcelado em 3x sem juros ', 'Sim', ''),
+(33, 'everton.pinheiro@hotmail.com', 'Não', '2024-12-14 12:33:15', 'Sim', '2024-12-14 12:33:15', 'PLANO DE TRATAMENTO HAIRCUPERE POR 6 MESES', 15, 'RS1980,00 PARCELADO EM 7X NO CARTÃO DE CRÉDITO', '-', '-', 'Não', ''),
+(37, 'eli.trevo@gmail.com', 'Não', '2025-04-17 11:16:05', 'Sim', '2025-04-17 11:16:05', 'Programa Haircupere Clinica<br> Sessão mensal de injetáveis associado a laserterapia', 30, 'R$ 2580,00 Parcelado em 6x sem juros ', '-', '-', 'Não', ''),
+(38, 'erico_nascimento@hotmail.com', 'Não', '2025-05-12 15:21:04', 'Sim', '2025-05-12 15:21:04', 'Programa Haircupere Clinica Personalizado por 3 meses<br>Programa Haircupere Home Care personalizado por 3 meses totalizando 6 meses de tratamento', 30, 'R$ 1500,00 sendoR$ 500,00 abatido referente a credito anterior e  R$1000,00 pago a vista via pix .', '-', '-', 'Não', ''),
+(39, 'livia.carvalho@msn.com', 'Não', '2025-05-30 11:53:16', 'Sim', '2025-05-30 11:53:16', 'Programa Haircupere Clinica (6 Sessões com laserterapia+ 6 Sessões com aplicação de injetáveis).', 30, 'R$ 2382,00 Parcelado em 6x sem juros ', '-', '-', 'Não', ''),
+(40, 'pacienteteste@pacienteteste.com', 'Não', '2025-06-01 18:43:35', 'Sim', '2025-06-01 18:43:35', 'TESTE TESTE TESTE', 30, 'R$ 1000 PAGO EM CARTAO', '-', '-', 'Não', '');
 
 -- --------------------------------------------------------
 
@@ -773,7 +755,9 @@ INSERT INTO `disponibilidade` (`id`, `atendimento_dia`, `atendimento_hora`, `dat
 (183, '2025-12-27', '15:00:00', '2025-05-31 21:00:26'),
 (184, '2025-12-27', '16:00:00', '2025-05-31 21:00:26'),
 (185, '2025-12-27', '17:00:00', '2025-05-31 21:00:26'),
-(186, '2025-12-27', '18:00:00', '2025-05-31 21:00:26');
+(186, '2025-12-27', '18:00:00', '2025-05-31 21:00:26'),
+(187, '2025-06-13', '15:00:00', '2025-06-03 16:57:01'),
+(188, '2025-06-28', '10:00:00', '2025-06-06 19:01:56');
 
 -- --------------------------------------------------------
 
@@ -801,6 +785,20 @@ CREATE TABLE `estoque_item` (
   `minimo` int(11) NOT NULL,
   `unidade` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `evolucoes`
+--
+
+CREATE TABLE `evolucoes` (
+  `id` int(11) NOT NULL,
+  `doc_email` varchar(115) DEFAULT NULL,
+  `data` datetime DEFAULT current_timestamp(),
+  `profissional` varchar(115) DEFAULT NULL,
+  `anotacao` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -1583,7 +1581,30 @@ INSERT INTO `historico_atendimento` (`id`, `quando`, `quem`, `unico`, `oque`) VA
 (759, '2025-05-30 11:49:55.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Recomendação micro.pdf na Confirmação CHKLEUJYLT'),
 (760, '2025-05-30 11:50:15.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Recomendação micro.pdf na Confirmação CHKLEUJYLT'),
 (761, '2025-05-30 12:02:40.000000', 'Caroline Ferraz', '03326635583', 'Finalizou a consulta CWOOFMADHT'),
-(762, '2025-05-31 18:00:26.000000', 'Denis Ferraz', '05336888508', 'Fechou disponibilidade entre as datas 31/05/2025 e 31/12/2025');
+(762, '2025-05-31 18:00:26.000000', 'Denis Ferraz', '05336888508', 'Fechou disponibilidade entre as datas 31/05/2025 e 31/12/2025'),
+(763, '2025-06-01 17:41:02.000000', 'Denis Ferraz', '05336888508', 'Lançou  SERVIÇO DE TERAPIA CAPILAR no valor de R$100,00 na Confirmação 78'),
+(764, '2025-06-01 17:41:47.000000', 'Caroline Ferraz', '03326635583', 'Finalizou a consulta 1'),
+(765, '2025-06-01 18:04:55.000000', 'Caroline Ferraz', '03326635583', 'Criou a consulta '),
+(766, '2025-06-01 18:06:25.000000', 'Caroline Ferraz', '03326635583', 'Lançou  Intradermoterapia sessão avulsa no valor de R$250,00 na Confirmação 421'),
+(767, '2025-06-01 18:06:45.000000', 'Caroline Ferraz', '03326635583', 'Lançou  Pagamento em Cartão no valor de R$125,00 na Confirmação 421'),
+(768, '2025-06-01 18:07:01.000000', 'Caroline Ferraz', '03326635583', 'Lançou  Pagamento em Transferencia no valor de R$125,00 na Confirmação 421'),
+(769, '2025-06-01 18:07:30.000000', 'Caroline Ferraz', '03326635583', 'Lançou  Pagamento em Cartão no valor de R$250,00 na Confirmação 421'),
+(770, '2025-06-01 18:09:17.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Ebook Pós Consulta.pdf na Consulta 110'),
+(771, '2025-06-01 18:10:10.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Pós Microagulhamento.pdf na Consulta 110'),
+(772, '2025-06-01 18:16:06.000000', 'Caroline Ferraz', '03326635583', 'Lançou  Pagamento em Transferencia no valor de R$1.000,00 na Confirmação 108'),
+(773, '2025-06-01 18:16:23.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Recomendação micro.pdf na Consulta 108'),
+(774, '2025-06-01 18:17:28.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Ebook Pós Consulta.pdf na Consulta 108'),
+(775, '2025-06-01 18:17:58.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Guia HairCARE.pdf na Consulta 108'),
+(776, '2025-06-01 18:20:11.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Ebook 10 hábitos.pdf na Consulta 108'),
+(777, '2025-06-01 18:40:59.000000', 'Caroline Ferraz', '03326635583', 'Criou a consulta '),
+(778, '2025-06-01 18:45:34.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo EBOOK 10 HABITOS.pdf na Consulta 422'),
+(779, '2025-06-01 18:45:56.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Recomendação micro.pdf na Consulta 422'),
+(780, '2025-06-03 13:57:01.000000', 'Caroline Ferraz', '03326635583', 'Criou a consulta '),
+(781, '2025-06-05 17:28:02.000000', 'Caroline Ferraz', '03326635583', 'Finalizou a consulta 78'),
+(782, '2025-06-06 16:01:56.000000', 'Caroline Ferraz', '03326635583', 'Criou a consulta '),
+(783, '2025-06-07 10:10:39.000000', 'Denis Ferraz', '05336888508', 'Alterou as Configurações'),
+(784, '2025-06-07 10:17:03.000000', 'Caroline Ferraz', '03326635583', 'Finalizou a consulta 110'),
+(785, '2025-06-07 10:19:41.000000', 'Caroline Ferraz', '03326635583', 'Criou a consulta ');
 
 -- --------------------------------------------------------
 
@@ -1734,7 +1755,13 @@ INSERT INTO `lancamentos_atendimento` (`id`, `doc_email`, `produto`, `quantidade
 (124, 'livia.carvalho@msn.com', 'consulta capilar [ Estornado - 30/05/2025 ]', 0, 0, '2025-05-30 11:48:00.000000', 'Produto', 'Caroline Ferraz', 'Livia Oliveira Carvalho '),
 (125, 'livia.carvalho@msn.com', 'consulta capilar', 1, 250, '2025-05-30 11:48:00.000000', 'Produto', 'Caroline Ferraz', 'Livia Oliveira Carvalho '),
 (126, 'livia.carvalho@msn.com', 'Pagamento em Transferencia', 1, -250, '2025-05-30 11:49:00.000000', 'Pagamento', 'Caroline Ferraz', 'Livia Oliveira Carvalho '),
-(127, 'livia.carvalho@msn.com', 'Pagamento em Transferencia', 1, -50, '2025-05-30 11:49:00.000000', 'Pagamento', 'Caroline Ferraz', 'Livia Oliveira Carvalho ');
+(127, 'livia.carvalho@msn.com', 'Pagamento em Transferencia', 1, -50, '2025-05-30 11:49:00.000000', 'Pagamento', 'Caroline Ferraz', 'Livia Oliveira Carvalho '),
+(128, 'luciana_gomes@hotmail.com', 'SERVIÇO DE TERAPIA CAPILAR [ Estornado - 01/0', 0, 0, '2025-06-01 17:41:00.000000', 'Produto', 'Denis Ferraz', 'Luciana Gomes'),
+(129, 'erikadourado14@gmail.com', 'Intradermoterapia sessão avulsa', 1, 250, '2025-06-01 18:06:00.000000', 'Produto', 'Caroline Ferraz', 'Érika Dourado Cardeal'),
+(130, 'erikadourado14@gmail.com', 'Pagamento em Cartão', 1, -125, '2025-06-01 18:06:00.000000', 'Pagamento', 'Caroline Ferraz', 'Érika Dourado Cardeal'),
+(131, 'erikadourado14@gmail.com', 'Pagamento em Transferencia', 1, -125, '2025-06-01 18:07:00.000000', 'Pagamento', 'Caroline Ferraz', 'Érika Dourado Cardeal'),
+(132, 'erikadourado14@gmail.com', 'Pagamento em Cartão', 1, -250, '2025-06-01 18:07:00.000000', 'Pagamento', 'Caroline Ferraz', 'Érika Dourado Cardeal'),
+(133, 'erico_nascimento@hotmail.com', 'Pagamento em Transferencia', 1, -1000, '2025-06-01 18:16:00.000000', 'Pagamento', 'Caroline Ferraz', 'Érico Silva do Nascimento');
 
 -- --------------------------------------------------------
 
@@ -1775,7 +1802,6 @@ CREATE TABLE `painel_users` (
   `cep` int(11) DEFAULT NULL,
   `rua` varchar(50) DEFAULT NULL,
   `numero` varchar(50) DEFAULT NULL,
-  `complemento` varchar(50) DEFAULT NULL,
   `cidade` varchar(50) DEFAULT NULL,
   `bairro` varchar(50) DEFAULT NULL,
   `estado` varchar(50) DEFAULT NULL,
@@ -1791,54 +1817,57 @@ CREATE TABLE `painel_users` (
 -- Dumping data for table `painel_users`
 --
 
-INSERT INTO `painel_users` (`id`, `email`, `tipo`, `senha`, `nome`, `rg`, `nascimento`, `telefone`, `profissao`, `unico`, `cep`, `rua`, `numero`, `complemento`, `cidade`, `bairro`, `estado`, `token`, `codigo`, `tentativas`, `aut_painel`, `origem`, `tema_painel`) VALUES
-(4, 'denis_ferraz359@hotmail.com', 'Admin', 'd753f0b2743ac9a5a0e356a4cc08d072', 'Denis Ferraz', '1368107133', '1989-12-17', '71992604877', 'Hoteleiro', '05336888508', 41500300, 'Avenida Luís Viana Filho', '10', '0', 'Salvador', 'São Cristóvão', 'BA', '24774953ab53456d38dfdd421a995b51', 0, 0, 0, NULL, 'colorido'),
-(5, 'carolineferraz.tricologia@gmail.com', 'Admin', 'cc34136b61ee3dc7f4dd6c37d4a376bd', 'Caroline Ferraz', NULL, '1988-09-15', '71991293370', '', '03326635583', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 0, 0, 0, NULL, 'colorido'),
-(6, 'erikadourado14@gmail.com', 'Paciente', '18c83837a9253d17e3f48dfc42f234b1', 'Érika Dourado Cardeal', '21330267-54', '1989-03-14', '71983819823', '', '07707463579', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '18c83837a9253d17e3f48dfc42f234b1', 0, 0, 1, NULL, 'colorido'),
-(7, 'everton.pinheiro@hotmail.com', 'Paciente', '19efafdc7ebded6e7cd80d80d5938096', 'Everton Pinheiro de Santana Sa', NULL, NULL, '71992066476', '', '01665943505', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '61d9dd04f34a43d526902411cb36abeb', 0, 0, 1, NULL, 'colorido'),
-(8, 'manucassia@gmail.com', 'Paciente', 'c1071cae646cb8d4646468f595cf7d8c', 'Manuela de Cássia Filgueiras F', '0669304131', '1974-07-08', '71986092883', '', '72886757500', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '28aafc457b20de21a14e145645eeee33', 0, 0, 1, NULL, 'colorido'),
-(9, 'alinerochas@hotmail.com', 'Paciente', 'b9c067e9b4df381c65f26d16a065fa7c', 'Aline da Rocha Santos', '778848256', '1978-03-19', '71999378888', '', '79745334553', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '015de2e58d6ba5f5fcacbe6f618cac66', 0, 0, 1, NULL, 'colorido'),
-(12, 'fernandaandradeteixeira@gmail.com', 'Paciente', 'b7ae3b6a661da12b763ca8b4b069421c', 'Fernanda de Andrade  Teixeira', '1393017550', '1993-10-20', '71992577650', '', '01670551512', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1d0decbc35d94ce603d3ab6baedafc90', 0, 0, 1, NULL, 'colorido'),
-(13, 'krinasantana@gmail.com', 'Paciente', '5359eeac047fb26508c48550c99de8db', 'Carina de Santana', '0720450608', '1982-06-06', '71981189594', '', '78852692568', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'e4e2110ce60b6f4e8d8ed0630d04ca2b', 0, 0, 1, NULL, 'colorido'),
-(14, 'andreacrb03@gmail.com', 'Paciente', '4b87f7eb1d1cec915f7a4fba0a6c235b', 'Andrea Cardoso Rabelo Brandao', '1139701371', '1988-08-03', '71991942348', '', '03538716560', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'c078c0b95c22ea5265c68f4a4e6b0d1d', 0, 0, 1, NULL, 'colorido'),
-(16, 'henrique.amon@saude.ba.gov.br', 'Paciente', '081daa8f8185ba472185b47fada5fc37', 'Henrique Amon Silva Freitas ', '0911207309', '1987-02-26', '71991884225', '', '01907688510', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '66b2e479b0eb81a70c9d3d667e8a4393', 0, 0, 1, NULL, 'colorido'),
-(17, 'fernandinhacruz2017@gmail.com', 'Paciente', '034a2a13133c9c665c53659bcd2ec669', 'MARIA FERNANDA DA CRUZ RESENDE', '16.196 309-90', '2001-08-20', '71999390878', '', '07821490571', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '85a27afc5d83a555807752dfa6ef77ff', 0, 0, 1, NULL, 'colorido'),
-(19, 'amandalgarcez@hotmail.com', 'Paciente', '45190921397588326b247ed11036aad4', 'Amanda Yoshioka ', '0987269003', '1987-07-25', '71999221500', '', '84153865591', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '573310ef5270b63eaab96cb062e1a768', 48483685, 0, 1, NULL, 'colorido'),
-(22, 'evanilsonsoliveira@gmail.com', 'Paciente', '47cdf87ed315e5d7c709ac600618f3d5', 'Evanilson dos Santos Oliveira', '0967263506', '1969-12-31', '71991942348', '', '02535636581', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0ef270d79f4f49b740086fd688543fb5', 0, 0, 1, NULL, 'colorido'),
-(23, 'danyelporto@gmail.com', 'Paciente', 'd767bb158cd06e2b3898e563c3be217b', 'Daniel Porto de Araujo ', '983948003', '1985-12-10', '71991380714', '', '03653591570', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4cd1d067c7cfc7b5077857cc2ba4dd1c', 0, 0, 1, NULL, 'colorido'),
-(24, 'michel.oliveira2701@gmail.com', 'Paciente', 'de9606df89f927a2058d207ef08ddad1', 'Michel Oliveira da Silva Souza', '0000000000', '2002-01-27', '71981901454', '', '86792200514', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aba9294ea5e7d225a1961eeb79d411fa', 0, 0, 1, NULL, 'colorido'),
-(25, 'priscila_nutri89@hotmail.com', 'Paciente', 'cc92852aa3a25e11d04148044047aa32', 'Priscila Albuquerque Adorno', '1140571419', '1989-01-20', '71991914571', '', '04523457581', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'c795967694d8ec142be04f9c579b53db', 0, 0, 1, NULL, 'colorido'),
-(26, 'brenoalmeidasantana@gmail.com', 'Paciente', '1587965fb4d4b5afe8428a4a024feb0d', 'Breno Almeida Santana', '1365089363', '1994-02-24', '71981610441', '', '05617759582', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'c8be214375ee44c428774a41041a2183', 0, 0, 1, NULL, 'colorido'),
-(27, 'Rosana_silva654@hotmail.com', 'Paciente', 'b7087e09eaa11e7964b0a66f72fe702d', 'Rosana da silva santos', '0000000000', '1988-04-26', '71988944423', '', '03341705597', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8a4b742494d4bc872c10a7c3beea9a9a', 0, 0, 1, NULL, 'colorido'),
-(28, 'jr_losant@hotmail.com', 'Paciente', 'd779366a15181b5b211485faa4bd2bb3', 'Jailson Lopes dos Santos Júnio', '385471695', '1986-03-20', '5571981638525', '', '35438798800', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8ab02ec3dae28a6166f2a8fa4c0da37a', 0, 0, 1, NULL, 'colorido'),
-(29, 'kaiqueeecr7@gmail.com', 'Paciente', '05591e785743d3ba75dcce9e9d83b4d0', 'Kaique paulo da silva Araújo', '1525655663', '2003-01-12', '71992380490', '', '09252854550', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '921df0e7d92be2ac9be2c561c7ff46a3', 36752908, 0, 1, NULL, 'colorido'),
-(30, 'priscilaeve@hotmail.com', 'Paciente', '5fb9b23e79bd946cf2a5da1cdca4f5f4', ' Priscila Eve Silva dos Santos', '0721638520', '1981-06-04', '71986848704', '', '81245327534', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'd753f0b2743ac9a5a0e356a4cc08d072', 0, 0, 1, NULL, 'colorido'),
-(31, 'bruno.ferreira88@icloud.com', 'Paciente', '15610a4e8cd4351c86df941c84d16de0', 'Bruno da Hora Ferreira', '1145853773', '1988-10-21', '71982116819', '', '03533772527', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '75343cd5002d0cfd5df48b173ef35e8c', 0, 2, 1, NULL, 'colorido'),
-(32, 'camila-pita@hotmail.com', 'Paciente', 'e0fd1a363a8f69d37f8e261eaa0e1867', 'Camila Da Silva Pita', '0000000000', '1988-11-24', '71999078673', '', '02252751550', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '04d5f15a4ec8e8dd24ccf70d17047c0b', 0, 0, 1, 'Google', 'colorido'),
-(33, 'luciana_gomes@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Luciana Gomes', '0882411810', '1986-08-05', '71988065597', '', '02853888517', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '9269af88dfe72d05cf048df977760d51', 0, 0, 1, 'Indicação', 'colorido'),
-(34, 'sand11cost@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Sandra Maria de Assis Costa', '948.937', '1956-12-11', '71999756001', '', '10735100500', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '49ac44749f1a55a8fdf27245e9a64a53', 0, 0, 1, 'Indicação', 'colorido'),
-(35, 'camile.ac@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Camile Virgínia Araújo Coelho ', ' 1358114307', '1995-08-30', '75999623723', '', '05159543570', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '76e5d2a967ab1c3bc353ebeeeb1c9506', 0, 0, 1, 'Instagram', 'colorido'),
-(36, 'neilsonrabelo@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Neilson Bernardo Rabelo', '1205054790', '1989-07-06', '71992252413', '', '03384164555', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '5ea60829e8251e97c3f90e46e181619b', 0, 0, 1, 'Google', 'colorido'),
-(37, 'caroline_lordelo@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Caroline da Cruz Lordelo ', '1323749438', '1989-09-10', '71985049974', '', '04491118574', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '6d8aa8bfc64acfaed633a82f5c719192', 0, 0, 1, 'Indicação', 'colorido'),
-(38, 'ldiasamino7@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Larissa Dias dos Santos ', '202021775', '2006-08-22', '71996594751', '', '10800007557', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'af674abbf6759fa4b33511e826f77077', 0, 0, 1, 'Google', 'colorido'),
-(39, 'vej2305@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Vanessa P. de Almeida Silva', '0000000000', '1969-12-31', '71993993003', '', '02338999525', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '181b26d8d17465d43c1e7e2827aba33c', 0, 0, 1, 'Google', 'colorido'),
-(40, 'maria.jdr@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Maria José Reis Dourado ', '0112323588', '1959-04-13', '71993299792', '', '15872980582', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'cac05ec42bd8026c6af66c608603b036', 0, 0, 1, 'Indicação', 'colorido'),
-(41, 'elisamaandrade.m@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Elisama Andrade Miranda Porto', '0000000000', '1991-02-16', '71991380714', '', '03958878520', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '133e981a3eed8ade1cb631de26a9e746', 0, 0, 1, 'Indicação', 'colorido'),
-(42, 'email@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Alexandre da Silva Oliveira ', '1335228810', '2006-11-11', '71988880388', '', '02486291580', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'cf0ae99ba8ac0e67844aaeaa740fb650', 0, 0, 1, 'Instagram', 'colorido'),
-(43, 'lambiasefisica@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Hebert Lambiase de Matos', '1375832654', '1980-11-02', '71992719480', '', '80515550582', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '759d03f4cbcbc04d472e9b2a2befae1b', 0, 0, 1, 'Indicação', 'colorido'),
-(44, 'paterson.franco@gmail.com', 'Paciente', '25f9e794323b453885f5181f1b624d0b', 'Paterson Franco Costa', '0000000000', '1987-11-10', '71997370988', '', '02838678507', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '40f8006e6149f542df10120d98263bb3', 0, 0, 1, 'Instagram', 'colorido'),
-(45, 'eli.trevo@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Elisangela Jesus da Silva ', '0000000000', '1972-11-09', '71999811829', '', '76515192568', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'c4a8a53832bb4e5a080db691413413c2', 0, 0, 1, 'Instagram', 'colorido'),
-(46, 'raquel.d.santos110194@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Raquel dos santos ', '15257944868', '1994-01-11', '71983200714', '', '85805935570', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '6ee65ee535cec9a9a0dc3155cbab746a', 0, 0, 1, 'Instagram', 'colorido'),
-(47, 'adrianamagalhaes026@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Adriana trindade Magalhães Tav', '1554786053', '1991-04-07', '77999349507', '', '04038804593', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '81e438ec60c7c47af15796f214bfe9c9', 0, 0, 1, 'Instagram', 'colorido'),
-(48, 'lucassimas160@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Lucas Santos da Silva Simas', '1441304835', '1995-05-16', '71999441580', 'estudante', '06006415542', 42700, 'Rua Marta Aguiar da Silva', '391', '0', 'Lauro de Freitas', 'Pitangueiras', 'BA', '940a7aa82e132b3ac471335cf8e2b274', 0, 0, 1, 'Instagram', 'colorido'),
-(49, 'camilacarine@outlook.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Camila Carine Sant\\\'anna Barbo', '1488897514', '1997-06-06', '71991761438', '', '07223299541', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bd31e616f4d23ceea44907ce9eaa0472', 0, 0, 1, 'Indicação', 'colorido'),
-(50, 'arianedasilvasantos2@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Ariane da Silva Santos Sampaio', '0000000000', '1985-09-04', '71997396450', '', '01699012547', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1ad42852dbca823bae51de0a9c1db74a', 0, 0, 1, 'Instagram', 'colorido'),
-(51, 'leideadrianonogieirasouza@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Leidinalva Mota Lopes', '85124354534', '1989-07-13', '71982895653', '', '85124354534', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '993c4db0be3cc7944c33a30d308ff5a1', 0, 0, 1, 'Instagram', 'colorido'),
-(52, 'erico_nascimento@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Érico Silva do Nascimento', '0784096597', '1982-02-17', '71988446597', 'ADMINISTRADOR DE EMPRESAS', '83190821534', 42717, 'Rua Marta Aguiar da Silva', '391', 'BL 08 AP302', 'Lauro de Freitas', 'Vida Nova', 'BA', '44eb38c24c42294397f7929839b5adf4', 0, 0, 1, 'Instagram', 'colorido'),
-(53, 'livia.carvalho@msn.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Livia Oliveira Carvalho ', '0854996680', '1985-10-09', '71991430889', 'ENFERMEIRA ', '01568409524', 42706250, 'Rua Joaquim de Carvalho Campos', '254', '0', 'Lauro de Freitas', 'Ipitanga', 'BA', '2ae5632521831fccc32c9e2d7bea5f43', 0, 0, 1, 'Instagram', 'colorido'),
-(54, 'iuryforte15@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Iury Silva Brandão ', NULL, NULL, '71999590341', NULL, '08787064537', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ab350c24a342ef1325bda7ebe64f7f71', 0, 0, 1, 'Google', 'colorido'),
-(55, 'jecsantos20@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'JESSICA CERQUEIRA DOS SANTOS', NULL, NULL, '71992281331', NULL, '05777092594', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bd626f437e266e2e633760dc17a9d8e4', 0, 0, 1, 'Google', 'colorido'),
-(56, 'weslenvini99@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Weslen Vinicius de Souza goes', '2086236042', '1999-08-20', '71982019397', 'estudante', '07148847583', 40365000, 'Rua Direta do Curuzu', '0', '0', 'Salvador', 'Curuzu', 'BA', 'e7847d60fd0ee81ac60c7c1e5bad83a8', 0, 0, 1, 'Google', 'colorido');
+INSERT INTO `painel_users` (`id`, `email`, `tipo`, `senha`, `nome`, `rg`, `nascimento`, `telefone`, `profissao`, `unico`, `cep`, `rua`, `numero`, `cidade`, `bairro`, `estado`, `token`, `codigo`, `tentativas`, `aut_painel`, `origem`, `tema_painel`) VALUES
+(4, 'denis_ferraz359@hotmail.com', 'Admin', 'd753f0b2743ac9a5a0e356a4cc08d072', 'Denis Ferraz', '1368107133', '1989-12-17', '71992604877', 'Hoteleiro', '05336888508', 41500300, 'Avenida Luís Viana Filho', '10', 'Salvador', 'São Cristóvão', 'BA', '24774953ab53456d38dfdd421a995b51', 0, 0, 0, NULL, 'colorido'),
+(5, 'carolineferraz.tricologia@gmail.com', 'Admin', 'cc34136b61ee3dc7f4dd6c37d4a376bd', 'Caroline Ferraz', NULL, '1988-09-15', '71991293370', '', '03326635583', NULL, NULL, NULL, NULL, NULL, NULL, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 0, 0, 0, NULL, 'colorido'),
+(6, 'erikadourado14@gmail.com', 'Paciente', '18c83837a9253d17e3f48dfc42f234b1', 'Érika Dourado Cardeal', '21330267-54', '1989-03-14', '71983819823', '', '07707463579', NULL, NULL, NULL, NULL, NULL, NULL, '18c83837a9253d17e3f48dfc42f234b1', 0, 0, 1, NULL, 'colorido'),
+(7, 'everton.pinheiro@hotmail.com', 'Paciente', '19efafdc7ebded6e7cd80d80d5938096', 'Everton Pinheiro de Santana Sa', NULL, NULL, '71992066476', '', '01665943505', NULL, NULL, NULL, NULL, NULL, NULL, '61d9dd04f34a43d526902411cb36abeb', 0, 0, 1, NULL, 'colorido'),
+(8, 'manucassia@gmail.com', 'Paciente', 'c1071cae646cb8d4646468f595cf7d8c', 'Manuela de Cássia Filgueiras F', '0669304131', '1974-07-08', '71986092883', '', '72886757500', NULL, NULL, NULL, NULL, NULL, NULL, '28aafc457b20de21a14e145645eeee33', 0, 0, 1, NULL, 'colorido'),
+(9, 'alinerochas@hotmail.com', 'Paciente', 'b9c067e9b4df381c65f26d16a065fa7c', 'Aline da Rocha Santos', '778848256', '1978-03-19', '71999378888', '', '79745334553', NULL, NULL, NULL, NULL, NULL, NULL, '015de2e58d6ba5f5fcacbe6f618cac66', 0, 0, 1, NULL, 'colorido'),
+(12, 'fernandaandradeteixeira@gmail.com', 'Paciente', 'b7ae3b6a661da12b763ca8b4b069421c', 'Fernanda de Andrade  Teixeira', '1393017550', '1993-10-20', '71992577650', '', '01670551512', NULL, NULL, NULL, NULL, NULL, NULL, '1d0decbc35d94ce603d3ab6baedafc90', 0, 0, 1, NULL, 'colorido'),
+(13, 'krinasantana@gmail.com', 'Paciente', '5359eeac047fb26508c48550c99de8db', 'Carina de Santana', '0720450608', '1982-06-06', '71981189594', '', '78852692568', NULL, NULL, NULL, NULL, NULL, NULL, 'e4e2110ce60b6f4e8d8ed0630d04ca2b', 0, 0, 1, NULL, 'colorido'),
+(14, 'andreacrb03@gmail.com', 'Paciente', '4b87f7eb1d1cec915f7a4fba0a6c235b', 'Andrea Cardoso Rabelo Brandao', '1139701371', '1988-08-03', '71991942348', '', '03538716560', NULL, NULL, NULL, NULL, NULL, NULL, 'c078c0b95c22ea5265c68f4a4e6b0d1d', 0, 0, 1, NULL, 'colorido'),
+(16, 'henrique.amon@saude.ba.gov.br', 'Paciente', '081daa8f8185ba472185b47fada5fc37', 'Henrique Amon Silva Freitas ', '0911207309', '1987-02-26', '71991884225', '', '01907688510', NULL, NULL, NULL, NULL, NULL, NULL, '66b2e479b0eb81a70c9d3d667e8a4393', 0, 0, 1, NULL, 'colorido'),
+(17, 'fernandinhacruz2017@gmail.com', 'Paciente', '034a2a13133c9c665c53659bcd2ec669', 'MARIA FERNANDA DA CRUZ RESENDE', '16.196 309-90', '2001-08-20', '71999390878', '', '07821490571', NULL, NULL, NULL, NULL, NULL, NULL, '85a27afc5d83a555807752dfa6ef77ff', 0, 0, 1, NULL, 'colorido'),
+(19, 'amandalgarcez@hotmail.com', 'Paciente', '45190921397588326b247ed11036aad4', 'Amanda Yoshioka ', '0987269003', '1987-07-25', '71999221500', '', '84153865591', NULL, NULL, NULL, NULL, NULL, NULL, '573310ef5270b63eaab96cb062e1a768', 48483685, 0, 1, NULL, 'colorido'),
+(22, 'evanilsonsoliveira@gmail.com', 'Paciente', '47cdf87ed315e5d7c709ac600618f3d5', 'Evanilson dos Santos Oliveira', '0967263506', '1969-12-31', '71991942348', '', '02535636581', NULL, NULL, NULL, NULL, NULL, NULL, '0ef270d79f4f49b740086fd688543fb5', 0, 0, 1, NULL, 'colorido'),
+(23, 'danyelporto@gmail.com', 'Paciente', 'd767bb158cd06e2b3898e563c3be217b', 'Daniel Porto de Araujo ', '983948003', '1985-12-10', '71991380714', '', '03653591570', NULL, NULL, NULL, NULL, NULL, NULL, '4cd1d067c7cfc7b5077857cc2ba4dd1c', 0, 0, 1, NULL, 'colorido'),
+(24, 'michel.oliveira2701@gmail.com', 'Paciente', 'de9606df89f927a2058d207ef08ddad1', 'Michel Oliveira da Silva Souza', '0000000000', '2002-01-27', '71981901454', '', '86792200514', NULL, NULL, NULL, NULL, NULL, NULL, 'aba9294ea5e7d225a1961eeb79d411fa', 0, 0, 1, NULL, 'colorido'),
+(25, 'priscila_nutri89@hotmail.com', 'Paciente', 'cc92852aa3a25e11d04148044047aa32', 'Priscila Albuquerque Adorno', '1140571419', '1989-01-20', '71991914571', '', '04523457581', NULL, NULL, NULL, NULL, NULL, NULL, 'c795967694d8ec142be04f9c579b53db', 0, 0, 1, NULL, 'colorido'),
+(26, 'brenoalmeidasantana@gmail.com', 'Paciente', '1587965fb4d4b5afe8428a4a024feb0d', 'Breno Almeida Santana', '1365089363', '1994-02-24', '71981610441', '', '05617759582', NULL, NULL, NULL, NULL, NULL, NULL, 'c8be214375ee44c428774a41041a2183', 0, 0, 1, NULL, 'colorido'),
+(27, 'Rosana_silva654@hotmail.com', 'Paciente', 'b7087e09eaa11e7964b0a66f72fe702d', 'Rosana da silva santos', '0000000000', '1988-04-26', '71988944423', '', '03341705597', NULL, NULL, NULL, NULL, NULL, NULL, '8a4b742494d4bc872c10a7c3beea9a9a', 0, 0, 1, NULL, 'colorido'),
+(28, 'jr_losant@hotmail.com', 'Paciente', 'd779366a15181b5b211485faa4bd2bb3', 'Jailson Lopes dos Santos Júnio', '385471695', '1986-03-20', '5571981638525', '', '35438798800', NULL, NULL, NULL, NULL, NULL, NULL, '8ab02ec3dae28a6166f2a8fa4c0da37a', 0, 0, 1, NULL, 'colorido'),
+(29, 'kaiqueeecr7@gmail.com', 'Paciente', '05591e785743d3ba75dcce9e9d83b4d0', 'Kaique paulo da silva Araújo', '1525655663', '2003-01-12', '71992380490', '', '09252854550', NULL, NULL, NULL, NULL, NULL, NULL, '921df0e7d92be2ac9be2c561c7ff46a3', 36752908, 0, 1, NULL, 'colorido'),
+(30, 'priscilaeve@hotmail.com', 'Paciente', '5fb9b23e79bd946cf2a5da1cdca4f5f4', ' Priscila Eve Silva dos Santos', '0721638520', '1981-06-04', '71986848704', '', '81245327534', NULL, NULL, NULL, NULL, NULL, NULL, 'd753f0b2743ac9a5a0e356a4cc08d072', 0, 0, 1, NULL, 'colorido'),
+(31, 'bruno.ferreira88@icloud.com', 'Paciente', '15610a4e8cd4351c86df941c84d16de0', 'Bruno da Hora Ferreira', '1145853773', '1988-10-21', '71982116819', '', '03533772527', NULL, NULL, NULL, NULL, NULL, NULL, '75343cd5002d0cfd5df48b173ef35e8c', 0, 2, 1, NULL, 'colorido'),
+(32, 'camila-pita@hotmail.com', 'Paciente', 'e0fd1a363a8f69d37f8e261eaa0e1867', 'Camila Da Silva Pita', '0000000000', '1988-11-24', '71999078673', '', '02252751550', NULL, NULL, NULL, NULL, NULL, NULL, '04d5f15a4ec8e8dd24ccf70d17047c0b', 0, 0, 1, 'Google', 'colorido'),
+(33, 'luciana_gomes@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Luciana Gomes', '0882411810', '1986-08-05', '71988065597', '', '02853888517', NULL, NULL, NULL, NULL, NULL, NULL, '9269af88dfe72d05cf048df977760d51', 0, 0, 1, 'Indicação', 'colorido'),
+(34, 'sand11cost@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Sandra Maria de Assis Costa', '948.937', '1956-12-11', '71999756001', '', '10735100500', NULL, NULL, NULL, NULL, NULL, NULL, '49ac44749f1a55a8fdf27245e9a64a53', 0, 0, 1, 'Indicação', 'colorido'),
+(35, 'camile.ac@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Camile Virgínia Araújo Coelho ', ' 1358114307', '1995-08-30', '75999623723', '', '05159543570', NULL, NULL, NULL, NULL, NULL, NULL, '76e5d2a967ab1c3bc353ebeeeb1c9506', 0, 0, 1, 'Instagram', 'colorido'),
+(36, 'neilsonrabelo@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Neilson Bernardo Rabelo', '1205054790', '1989-07-06', '71992252413', '', '03384164555', NULL, NULL, NULL, NULL, NULL, NULL, '5ea60829e8251e97c3f90e46e181619b', 0, 0, 1, 'Google', 'colorido'),
+(37, 'caroline_lordelo@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Caroline da Cruz Lordelo ', '1323749438', '1989-09-10', '71985049974', '', '04491118574', NULL, NULL, NULL, NULL, NULL, NULL, '6d8aa8bfc64acfaed633a82f5c719192', 0, 0, 1, 'Indicação', 'colorido'),
+(38, 'ldiasamino7@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Larissa Dias dos Santos ', '202021775', '2006-08-22', '71996594751', '', '10800007557', NULL, NULL, NULL, NULL, NULL, NULL, 'af674abbf6759fa4b33511e826f77077', 0, 0, 1, 'Google', 'colorido'),
+(39, 'vej2305@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Vanessa P. de Almeida Silva', '0000000000', '1969-12-31', '71993993003', '', '02338999525', NULL, NULL, NULL, NULL, NULL, NULL, '181b26d8d17465d43c1e7e2827aba33c', 0, 0, 1, 'Google', 'colorido'),
+(40, 'maria.jdr@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Maria José Reis Dourado ', '0112323588', '1959-04-13', '71993299792', '', '15872980582', NULL, NULL, NULL, NULL, NULL, NULL, 'cac05ec42bd8026c6af66c608603b036', 0, 0, 1, 'Indicação', 'colorido'),
+(41, 'elisamaandrade.m@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Elisama Andrade Miranda Porto', '0000000000', '1991-02-16', '71991380714', '', '03958878520', NULL, NULL, NULL, NULL, NULL, NULL, '133e981a3eed8ade1cb631de26a9e746', 0, 0, 1, 'Indicação', 'colorido'),
+(42, 'email@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Alexandre da Silva Oliveira ', '1335228810', '2006-11-11', '71988880388', '', '02486291580', NULL, NULL, NULL, NULL, NULL, NULL, 'cf0ae99ba8ac0e67844aaeaa740fb650', 0, 0, 1, 'Instagram', 'colorido'),
+(43, 'lambiasefisica@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Hebert Lambiase de Matos', '1375832654', '1980-11-02', '71992719480', '', '80515550582', NULL, NULL, NULL, NULL, NULL, NULL, '759d03f4cbcbc04d472e9b2a2befae1b', 0, 0, 1, 'Indicação', 'colorido'),
+(44, 'paterson.franco@gmail.com', 'Paciente', '25f9e794323b453885f5181f1b624d0b', 'Paterson Franco Costa', '0000000000', '1987-11-10', '71997370988', '', '02838678507', NULL, NULL, NULL, NULL, NULL, NULL, '40f8006e6149f542df10120d98263bb3', 0, 0, 1, 'Instagram', 'colorido'),
+(45, 'eli.trevo@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Elisangela Jesus da Silva ', '0000000000', '1972-11-09', '71999811829', '', '76515192568', NULL, NULL, NULL, NULL, NULL, NULL, 'c4a8a53832bb4e5a080db691413413c2', 0, 0, 1, 'Instagram', 'colorido'),
+(46, 'raquel.d.santos110194@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Raquel dos santos ', '15257944868', '1994-01-11', '71983200714', '', '85805935570', NULL, NULL, NULL, NULL, NULL, NULL, '6ee65ee535cec9a9a0dc3155cbab746a', 0, 0, 1, 'Instagram', 'colorido'),
+(47, 'adrianamagalhaes026@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Adriana trindade Magalhães Tav', '1554786053', '1991-04-07', '77999349507', '', '04038804593', NULL, NULL, NULL, NULL, NULL, NULL, '81e438ec60c7c47af15796f214bfe9c9', 0, 0, 1, 'Instagram', 'colorido'),
+(48, 'lucassimas160@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Lucas Santos da Silva Simas', '1441304835', '1995-05-16', '71999441580', 'estudante', '06006415542', 42700, 'Rua Marta Aguiar da Silva', '391', 'Lauro de Freitas', 'Pitangueiras', 'BA', '940a7aa82e132b3ac471335cf8e2b274', 0, 0, 1, 'Instagram', 'colorido'),
+(49, 'camilacarine@outlook.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Camila Carine Sant\\\'anna Barbo', '1488897514', '1997-06-06', '71991761438', '', '07223299541', NULL, NULL, NULL, NULL, NULL, NULL, 'bd31e616f4d23ceea44907ce9eaa0472', 0, 0, 1, 'Indicação', 'colorido'),
+(50, 'arianedasilvasantos2@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Ariane da Silva Santos Sampaio', '0000000000', '1985-09-04', '71997396450', '', '01699012547', NULL, NULL, NULL, NULL, NULL, NULL, '1ad42852dbca823bae51de0a9c1db74a', 0, 0, 1, 'Instagram', 'colorido'),
+(51, 'leideadrianonogieirasouza@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Leidinalva Mota Lopes', '85124354534', '1989-07-13', '71982895653', '', '85124354534', NULL, NULL, NULL, NULL, NULL, NULL, '993c4db0be3cc7944c33a30d308ff5a1', 0, 0, 1, 'Instagram', 'colorido'),
+(52, 'erico_nascimento@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Érico Silva do Nascimento', '0784096597', '1982-02-17', '71988446597', 'ADMINISTRADOR DE EMPRESAS', '83190821534', 42717, 'Rua Marta Aguiar da Silva', '391', 'Lauro de Freitas', 'Vida Nova', 'BA', '44eb38c24c42294397f7929839b5adf4', 0, 0, 1, 'Instagram', 'colorido'),
+(53, 'livia.carvalho@msn.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Livia Oliveira Carvalho ', '0854996680', '1985-10-09', '71991430889', 'ENFERMEIRA ', '01568409524', 42706250, 'Rua Joaquim de Carvalho Campos', '254', 'Lauro de Freitas', 'Ipitanga', 'BA', '2ae5632521831fccc32c9e2d7bea5f43', 0, 0, 1, 'Instagram', 'colorido'),
+(54, 'iuryforte15@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Iury Silva Brandão ', NULL, NULL, '71999590341', NULL, '08787064537', NULL, NULL, NULL, NULL, NULL, NULL, 'ab350c24a342ef1325bda7ebe64f7f71', 0, 0, 1, 'Google', 'colorido'),
+(55, 'jecsantos20@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'JESSICA CERQUEIRA DOS SANTOS', NULL, NULL, '71992281331', NULL, '05777092594', NULL, NULL, NULL, NULL, NULL, NULL, 'bd626f437e266e2e633760dc17a9d8e4', 0, 0, 1, 'Google', 'colorido'),
+(56, 'weslenvini99@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Weslen Vinicius de Souza goes', '2086236042', '1999-08-20', '71982019397', 'estudante', '07148847583', 40365000, 'Rua Direta do Curuzu', '0', 'Salvador', 'Curuzu', 'BA', 'e7847d60fd0ee81ac60c7c1e5bad83a8', 0, 0, 1, 'Google', 'colorido'),
+(57, 'pacienteteste@pacienteteste.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Paciente Teste', '0000000', '1989-12-31', '71999999999', 'Paciente', '00000000000', 42703, 'Rua Lafaeite Francisco dos Santos', '153', 'Lauro de Freitas', 'Centro', 'BA', 'e7847d60fd0ee81ac60c7c1e5bad83a7', 0, 0, 0, 'Instagram', 'colorido'),
+(58, 'raquelsinal3@gmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Raquel Freire', NULL, '1974-04-19', '71992271212', NULL, '88810089553', NULL, NULL, NULL, NULL, NULL, NULL, 'df6bb71cff3520711ac28d362f3b2078', 0, 0, 1, 'Indicação', 'colorido'),
+(59, 'fauqueiroz@hotmail.com', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'Fabiana Queiroz da Silva', NULL, '1984-03-23', '71991539614', NULL, '01411656504', NULL, NULL, NULL, NULL, NULL, NULL, 'cb20fd2d12c61d56b1afa74213bb7baf', 0, 0, 1, 'Instagram', 'colorido');
 
 -- --------------------------------------------------------
 
@@ -2102,7 +2131,7 @@ INSERT INTO `tratamento` (`id`, `email`, `plano_descricao`, `comentario`, `plano
 (232, 'sand11cost@gmail.com', 'Sessão Microagulhamento', '', '2025-01-31 00:00:00', 0, 0, 'Em Andamento', '2cab43adc2e3120ee61a759a5725c7b4'),
 (233, 'eli.trevo@gmail.com', 'Programa HaiRecupere', '6 SESSÕES DE INTRADERMOTERAPIA + 6 SESSÕES DE LASERTERAPIA ', '2025-02-05 00:00:00', 4, 6, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
 (234, 'eli.trevo@gmail.com', 'Programa HaiRecupere', 'Intradermoterapia VEGF+BFGF+IGF+ COPPER LAM11112401S V:11/25 (2ML) + PILL FOOD L:AM17052404S V 05/25 2ML +LIDOCAINA 1% L:AM11112403S V:11/25 (1ML)\\r\\nfOTOBIOESTIMULAÇÃO LASER VERMELHO + LED AZUL 20S 13 J', '2024-02-05 00:00:00', 0, 0, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
-(235, 'erikadourado14@gmail.com', 'Sessão Intradermoterapia', '', '2025-02-08 00:00:00', 1, 5, 'Em Andamento', '6997f1b219643e54836d16ed93b5f7e2'),
+(235, 'erikadourado14@gmail.com', 'Sessão Intradermoterapia', '', '2025-02-08 00:00:00', 2, 5, 'Em Andamento', '6997f1b219643e54836d16ed93b5f7e2'),
 (236, 'erikadourado14@gmail.com', 'Sessão Intradermoterapia', 'LIDOCAINA AM11112403S 11/25 MINOXIDIL  13112407S V 11/25 SILICIO 07112404S 11/25 FINASTERIDA 19112404S V11//25', '2025-02-08 00:00:00', 0, 0, 'Em Andamento', '6997f1b219643e54836d16ed93b5f7e2'),
 (237, 'everton.pinheiro@hotmail.com', 'Programa HaiRecupere', 'Laserterapia 4 joules + Microagulhamento com drug delivery ( Finasterida + minoxidil + zinco + fator de crescimento) ', '2025-02-17 00:00:00', 0, 0, 'Em Andamento', '5ec6d35fcf7ea36856ef5cb17ac376c8'),
 (238, 'bruno.ferreira88@icloud.com', 'Programa HaiRecupere', '', '2025-02-21 00:00:00', 3, 3, 'Em Andamento', '095ee3abc5eb9bcb7ef4ef68e13fa775'),
@@ -2121,13 +2150,13 @@ INSERT INTO `tratamento` (`id`, `email`, `plano_descricao`, `comentario`, `plano
 (257, 'bruno.ferreira88@icloud.com', 'Programa HaiRecupere', 'Licocaina AM11112403S V: 11/25\\r\\nFinasterida L:  AM 19112404S V: 11/25\\r\\nZinco L: AM 01112402S V: 11/25\\r\\nMinoxidil L: AM13112407S V: 11/25', '2025-04-02 00:00:00', 0, 0, 'Em Andamento', '095ee3abc5eb9bcb7ef4ef68e13fa775'),
 (258, 'eli.trevo@gmail.com', 'Programa HaiRecupere', 'copper peptideo + fator de crescimento+pill food + Lidocaina', '2025-04-24 00:00:00', 0, 0, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
 (259, 'Rosana_silva654@hotmail.com', 'Programa HaiRecupere', 'Lidocaina +Silicio +finasterida+Minoxidil', '2025-04-24 00:00:00', 0, 0, 'Em Andamento', '2920cc4141856fb7f56a41b71bf09e97'),
-(260, 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', '', '2025-04-24 00:00:00', 3, 5, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
+(260, 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', '', '2025-04-24 00:00:00', 4, 5, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
 (261, 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', 'Minoxidil + Finasterida + comp vitaminico', '2025-04-24 00:00:00', 0, 0, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
 (262, 'brenoalmeidasantana@gmail.com', 'Sessão Intradermoterapia Mensal', '', '2025-05-06 00:00:00', 1, 4, 'Em Andamento', '0e6b338ff4c27ee2de0aa33524a73922'),
 (263, 'brenoalmeidasantana@gmail.com', 'Sessão Intradermoterapia Mensal', 'minoxidil + finasterida + pil food +  lidocaina', '2025-05-06 00:00:00', 0, 0, 'Em Andamento', '0e6b338ff4c27ee2de0aa33524a73922'),
 (264, 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', 'Biotina+ d pantenol+  silicio ', '2025-05-06 00:00:00', 0, 0, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
 (267, 'erico_nascimento@hotmail.com', 'Programa HaiRecupere Clinica ', '3 SESSÕES DE INJETÁVEIS', '2025-06-01 00:00:00', 0, 3, 'Em Andamento', 'd952169955644106cf2906390fbcd8d9'),
-(268, 'erico_nascimento@hotmail.com', 'Sessão de Fotobioestimulação (BRINDE)', '', '2025-05-24 00:00:00', 0, 1, 'Em Andamento', 'cd1204ce667de509e091177363a78283'),
+(268, 'erico_nascimento@hotmail.com', 'Sessão de Fotobioestimulação (BRINDE)', '', '2025-05-24 00:00:00', 1, 1, 'Em Andamento', 'cd1204ce667de509e091177363a78283'),
 (269, 'bruno.ferreira88@icloud.com', 'Programa HaiRecupere', 'Intradermoterapia com mescla de ativos\\r\\n Minoxidil  Lote: 03062407S VAL: 06/25; Lidocaina  Lote: 05062407S VAL:06/25; Silicio Lote: 07112404S VAL: 11/25 Dutasterida 14012504S VAL: 01/261', '2025-05-19 00:00:00', 0, 0, 'Em Andamento', '095ee3abc5eb9bcb7ef4ef68e13fa775'),
 (270, 'sand11cost@gmail.com', 'Sessão Microagulhamento', '', '2025-05-19 00:00:00', 1, 4, 'Em Andamento', 'f39287dd220069a70fcbfb952957087c'),
 (271, 'sand11cost@gmail.com', 'Sessão Microagulhamento', 'Laserterapia 5 joules  + microagulhamento com drug delivery Fator de crescimento + copper peptideo Lote:  09052401S VAL: 05/25 \\r\\n Complexo Vitaminico L: 18112404S Val: 11/25; Minoxidil L:13112407S Val: 11/25; Finasterida L: 07062403S Val:06/25', '2025-05-19 00:00:00', 0, 0, 'Em Andamento', 'f39287dd220069a70fcbfb952957087c'),
@@ -2138,7 +2167,12 @@ INSERT INTO `tratamento` (`id`, `email`, `plano_descricao`, `comentario`, `plano
 (276, 'livia.carvalho@msn.com', 'Sessão de Fotobioestimulação(Brinde)', '', '2025-05-24 00:00:00', 1, 1, 'Em Andamento', '68fe609933092032d7446d95562ed276'),
 (277, 'livia.carvalho@msn.com', 'Programa HaiRecupere', '', '2025-06-07 00:00:00', 0, 6, 'Em Andamento', '55cc44f0babac3f2144c37c647643f70'),
 (278, 'livia.carvalho@msn.com', 'Sessão de Fotobioestimulação(Brinde)', 'Sessão de Laserterapia ', '2025-05-24 00:00:00', 0, 0, 'Em Andamento', '68fe609933092032d7446d95562ed276'),
-(279, 'luciana_gomes@hotmail.com', 'Sessão Microagulhamento', 'Microagulhamento com drug delivery', '2025-05-22 00:00:00', 0, 0, 'Em Andamento', 'c1777aeca4e59949073b73495644126d');
+(279, 'luciana_gomes@hotmail.com', 'Sessão Microagulhamento', 'Microagulhamento com drug delivery', '2025-05-22 00:00:00', 0, 0, 'Em Andamento', 'c1777aeca4e59949073b73495644126d'),
+(280, 'erikadourado14@gmail.com', 'Sessão Intradermoterapia', 'Intradermoterapia sessão avulsa: Minoxidil + finasterida + Silicio P + Lidocaina', '2025-05-30 00:00:00', 0, 0, 'Em Andamento', '6997f1b219643e54836d16ed93b5f7e2'),
+(281, 'erico_nascimento@hotmail.com', 'Sessão de Fotobioestimulação (BRINDE)', 'Laser de baixa potência Vermelho associado a LED azul por 20s', '2025-05-24 00:00:00', 0, 0, 'Em Andamento', 'cd1204ce667de509e091177363a78283'),
+(282, '', 'Sessão de Fotobioestimulação', '', '2025-06-02 00:00:00', 0, 4, 'Em Andamento', '47a64d1720eafaae5c6be61f1feeb719'),
+(283, '', 'Sessão de Fotobioestimulação', '', '2025-06-02 00:00:00', 0, 5, 'Em Andamento', '40867c13866b5e9a18bfcb8a44394e88'),
+(285, 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', 'Intradermoterapia: Mescla: Finasterida + lidocaina + Minoxidil +Complexo Vitaminico', '2025-06-04 00:00:00', 0, 0, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053');
 
 -- --------------------------------------------------------
 
@@ -2151,14 +2185,6 @@ CREATE TABLE `videos` (
   `link_youtube` mediumtext NOT NULL,
   `descricao` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `videos`
---
-
-INSERT INTO `videos` (`id`, `link_youtube`, `descricao`) VALUES
-(2, 'https://youtu.be/9bZkp7q19f0', 'Teste 2'),
-(3, 'https://youtu.be/9bZkp7q19f0', 'Video Engaçado');
 
 --
 -- Indexes for dumped tables
@@ -2174,7 +2200,7 @@ ALTER TABLE `alteracoes`
 -- Indexes for table `configuracoes`
 --
 ALTER TABLE `configuracoes`
-  ADD PRIMARY KEY (`config_empresa`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `consultas`
@@ -2216,6 +2242,12 @@ ALTER TABLE `estoque`
 -- Indexes for table `estoque_item`
 --
 ALTER TABLE `estoque_item`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `evolucoes`
+--
+ALTER TABLE `evolucoes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2275,19 +2307,25 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `alteracoes`
 --
 ALTER TABLE `alteracoes`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `configuracoes`
+--
+ALTER TABLE `configuracoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `consultas`
 --
 ALTER TABLE `consultas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=421;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=426;
 
 --
 -- AUTO_INCREMENT for table `contrato`
 --
 ALTER TABLE `contrato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `custos`
@@ -2305,7 +2343,7 @@ ALTER TABLE `despesas`
 -- AUTO_INCREMENT for table `disponibilidade`
 --
 ALTER TABLE `disponibilidade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
 
 --
 -- AUTO_INCREMENT for table `estoque`
@@ -2320,16 +2358,22 @@ ALTER TABLE `estoque_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `evolucoes`
+--
+ALTER TABLE `evolucoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `historico_atendimento`
 --
 ALTER TABLE `historico_atendimento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=763;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=786;
 
 --
 -- AUTO_INCREMENT for table `lancamentos_atendimento`
 --
 ALTER TABLE `lancamentos_atendimento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `modelos_anamnese`
@@ -2341,7 +2385,7 @@ ALTER TABLE `modelos_anamnese`
 -- AUTO_INCREMENT for table `painel_users`
 --
 ALTER TABLE `painel_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `perguntas_modelo`
@@ -2359,7 +2403,7 @@ ALTER TABLE `respostas_anamnese`
 -- AUTO_INCREMENT for table `tratamento`
 --
 ALTER TABLE `tratamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=280;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=286;
 
 --
 -- AUTO_INCREMENT for table `videos`

@@ -28,7 +28,7 @@ $config_password = 'Much@ch0';
 
 //Configuração E-mail
 if($local_configuracao == 'Casa'){
-$mail_Host = 'smtp.mailtrap.io';
+$mail_Host = 'sandbox.smtp.mailtrap.io';
 $mail_Username = '9521804de716a8';
 $mail_Password = 'fc24a55905f17e';
 $mail_SMTPSecure = 'PHPMailer::ENCRYPTION_STARTTLS';
@@ -76,10 +76,14 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE id = '-2'") as $row)
     $config_email = $row['config_email'];
     $config_telefone = $row['config_telefone'];
     $config_cnpj = $row['config_cnpj'];
+    $config_limitedia = $row['config_limitedia'];
+    $config_limitepax = $row['config_limitepax'];
     $config_endereco = $row['config_endereco'];
     $config_msg_confirmacao = $row['config_msg_confirmacao'];
     $config_msg_cancelamento = $row['config_msg_cancelamento'];
     $config_msg_finalizar = $row['config_msg_finalizar'];
+    $config_msg_lembrete = $row['config_msg_lembrete'];
+    $config_msg_aniversario = $row['config_msg_aniversario'];
     $config_atendimento_hora_comeco = $row['atendimento_hora_comeco'];
     $config_atendimento_hora_fim = $row['atendimento_hora_fim'];
     $config_atendimento_hora_intervalo = $row['atendimento_hora_intervalo'];
@@ -93,6 +97,14 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE id = '-2'") as $row)
     $config_dia_domingo = $row['config_dia_domingo'];
     $envio_whatsapp = $row['envio_whatsapp'];
     $envio_email = $row['envio_email'];
+    $is_segunda = $row['is_segunda'];
+    $is_terca = $row['is_terca'];
+    $is_quarta = $row['is_quarta'];
+    $is_quinta = $row['is_quinta'];
+    $is_sexta = $row['is_sexta'];
+    $is_sabado = $row['is_sabado'];
+    $is_domingo = $row['is_domingo'];
+    $lembrete_auto_time = $row['lembrete_auto_time'];
 }
 
 // Função para Enviar Mensagem no WhatsApp via API do Facebook

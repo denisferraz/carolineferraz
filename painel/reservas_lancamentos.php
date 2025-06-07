@@ -16,7 +16,6 @@ if($aut_acesso == 1){
 }else{
 
 $doc_email = mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
-$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
 $query = $conexao->prepare("SELECT * FROM consultas WHERE doc_email = :doc_email");
 $query->execute(array('doc_email' => $doc_email));
@@ -61,7 +60,6 @@ $doc_nome = $select['doc_nome'];
             <input minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
             <br>
             <input type="hidden" name="lanc_data" value="<?php echo $hoje ?>" />
-            <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>" />
             <input type="hidden" name="id_job" value="reservas_lancamentos" />
             <div class="card-group btn"><button type="submit">Lançar</button></div>
 

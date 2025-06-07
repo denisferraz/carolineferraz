@@ -60,7 +60,7 @@ $hoje = date('Y-m-d');
         <h2>Buscar uma Consulta</h2>
         </div>
         <div class="card-group">
-                <label>Nome, Confirmação ou E-mail</label>
+                <label>Nome ou E-mail</label>
                 <input type="text" minlength="5" maxlength="35" name="busca" placeholder="Para total, deixe em branco">
                 <label>Atendimento Dia - Início</label>
                 <input type="date" name="busca_inicio" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" required>

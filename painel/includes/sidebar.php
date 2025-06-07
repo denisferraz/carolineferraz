@@ -189,8 +189,14 @@
                 <i class="bi bi-chevron-down small"></i>
             </a>
             <div class="collapse ps-3" id="menuConfiguracoes">
-                <a href="javascript:void(0)" onclick='window.open("configuracoes.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-gear-fill me-2"></i> Configurações
+                <a href="javascript:void(0)" onclick='window.open("config_empresa.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-building-gear me-2"></i> Empresa
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("config_msg.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-database-gear me-2"></i> Mensagens
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("config_agenda.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-journal-bookmark me-2"></i> Agenda
                 </a>
                 <a href="javascript:void(0)" onclick="abrirWhatsapp();" class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-whatsapp me-2"></i> Whatsapp

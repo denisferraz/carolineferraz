@@ -36,35 +36,35 @@ use PHPMailer\PHPMailer\Exception;
     
     <?php
     
-        $query = $conexao->prepare("UPDATE alteracoes SET alt_status = :alt_status, id_job = :id_job WHERE token = :token");
-        $query->execute(array('alt_status' => $alt_status,'id_job' => $id_job, 'token' => $token));
-    
-        $data_email = date('d/m/Y \-\ H:i:s');
-        $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-        $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
-    
+        $query = $conexao->prepare("DELETE FROM alteracoes WHERE token = :token");
+        $query->execute(array('token' => $token));
+
         if($alt_status == 'Aceita'){
-            $query = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = 'Confirmada' WHERE token = :token");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'token' => $token));
+
+        $query = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = 'Confirmada' WHERE token = :token");
+        $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'token' => $token));
         
         if($id_job == 'Consulta Capilar'){
             $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
             $query_4 = $conexao->prepare("DELETE FROM disponibilidade WHERE atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");  
             $query_4->execute(array('atendimento_dia' => $atendimento_dia_anterior, 'atendimento_hora' => $atendimento_hora_anterior_mais));
         }
+
+        }else{
+    
+        $query = $conexao->prepare("UPDATE consultas SET status_consulta = 'Confirmada' WHERE token = :token");
+        $query->execute(array('token' => $token));
+        
+        }
+
+        $data_email = date('d/m/Y \-\ H:i:s');
+        $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
+        $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
     
         //Envio de Email	
         if($envio_email == 'ativado'){
-        
-            $pdf_corpo_00 = 'Olá';
-            $pdf_corpo_01 = 'Alteração Atendimento';
-            $pdf_corpo_03 = 'foi alterado com sucesso';
-            $pdf_corpo_07 = 'Atendimento alterado em';
-            $pdf_corpo_02 = 'o seu atendimento';
-            $pdf_corpo_04 = 'Atenção';
     
-            $link_cancelar = "<a href=\"$site_atual/cancelar.php?token=$token\"'>Clique Aqui</a>";
-            $link_alterar = "<a href=\"$site_atual/alterar.php?token=$token\"'>Clique Aqui</a>";
+        $link_paneil = "<a href=\"$site_atual\"'>Clique Aqui</a>";
         
         $mail = new PHPMailer(true);
         
@@ -81,32 +81,28 @@ use PHPMailer\PHPMailer\Exception;
     
             $mail->setFrom("$config_email", "$config_empresa");
             $mail->addAddress("$doc_email", "$doc_nome");
-            $mail->addBCC("$config_email");
             
             $mail->isHTML(true);                                 
-            $mail->Subject = "$pdf_corpo_01";
+            $mail->Subject = "$config_empresa - Alteração de Consulta $alt_status";
           // INICIO MENSAGEM  
             $mail->Body = "
         
             <fieldset>
-            <legend>$pdf_corpo_01 $confirmacao</legend>
-            <br>
-            $pdf_corpo_00 <b>$doc_nome</b>, $pdf_corpo_02 $pdf_corpo_03.<br>
-            <p>Data: <b>$atendimento_dia_str</b> ás <b>$atendimento_hora_str</b></p>
-            <p>Preencha o formulario, $link_formulario</p>
-            <b>$pdf_corpo_07 $data_email</b>
+            <legend><b><u>Alteração Consulta</u></legend>
+            <p>Sua solicitação foi $alt_status</p>
+            <p>Data: $atendimento_dia_str<br>
+            Hora: $atendimento_hora_str</p>
             </fieldset><br><fieldset>
-            <legend><b><u>$pdf_corpo_04</u></legend>
-            <p>$config_msg_confirmacao</p>
-            </fieldset><br><fieldset>
-            <legend><b><u>Gerenciar seu Atendimento</u></legend>
-            <p>Para Alterar seu Atendimento, $link_alterar</p>
-            <p>Para Cancelar seu Atendimento, $link_cancelar</p>
+            <legend><b><u>Gerencia sua Consulta</u></legend>
+            <p>Acesse o nosso portal, $link_paneil</p>
             </fieldset><br><fieldset>
             <legend><b><u>$config_empresa</u></legend>
             <p>CNPJ: $config_cnpj</p>
             <p>$config_telefone - $config_email</p>
             <p>$config_endereco</p></b>
+            </fieldset><br><fieldset>
+            <legend><b><u>Atenção</u></legend>
+            <p>Este e-mail é automatico. Favor não responder!</p>
             </fieldset>
             
             "; // FIM MENSAGEM
@@ -119,27 +115,21 @@ use PHPMailer\PHPMailer\Exception;
         
         }
         //Fim Envio de Email
-        }else{
-    
-        $query = $conexao->prepare("UPDATE consultas SET status_consulta = 'Confirmada' WHERE token = :token");
-        $query->execute(array('token' => $token));
-    
-        }
     
     //Incio Envio Whatsapp
     if($envio_whatsapp == 'ativado'){
     
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_wahstapp = "Olá $doc_nome. A sua solicitação de alteração foi $alt_status para a Data: $atendimento_dia_str ás $atendimento_hora_str | Solicitação $alt_status em $data_email";
+    $msg_whatsapp = "Olá $doc_nome. A sua solicitação de alteração foi $alt_status para a Data: $atendimento_dia_str ás $atendimento_hora_str | Solicitação $alt_status em $data_email";
     
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_wahstapp);
+    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
     
     }
     //Fim Envio Whatsapp
 
     echo   "<script>
             alert('Alteração $alt_status com Sucesso!')
-            window.location.replace('reserva.php?id_consulta=$id_consulta')
+            window.location.replace('cadastro.php?email=$doc_email&id_job=Consultas')
             </script>";
 
     ?>

@@ -14,7 +14,6 @@ if($aut_acesso == 1){
 }else{
 
 $doc_email = mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
-$id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
 $check = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE doc_email = :doc_email");
 $check->execute(array('doc_email' => $doc_email));
@@ -70,7 +69,6 @@ $doc_nome = $select['doc_nome'];
             <input minlength="1" maxlength="30" type="text" name="lanc_valor" placeholder="<?php echo number_format($valor ,2,".",".") ?>" required>
             <br>
             <input type="hidden" name="lanc_data" value="<?php echo $hoje ?>" />
-            <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>" />
             <input type="hidden" name="lanc_quantidade" value="1">
             <input type="hidden" name="id_job" value="reservas_lancamentos" />
             <div class="card-group-green btn"><button type="submit">Lançar Pagamento</button></div>
