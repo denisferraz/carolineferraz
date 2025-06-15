@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
    
            if ($envio_whatsapp === 'ativado' && $MsgContato = 'MsgContato') {
-               $doc_telefonewhats = "55$config_telefone";
-               $msg_whatsapp = "Olá $config_empresa, alguém mandou uma mensagem pra você pelo seu site.\n\n".
+               $doc_telefonewhats = "5571991293370";
+               $msg_whatsapp = "Olá Carol, alguém mandou uma mensagem pra você pelo seu site.\n\n".
                    "Nome: $doc_nome\n".
                    "Telefone: $doc_telefone\n".
                    "Mensagem: $message\n";
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section id="services" class="section bg-light">
         <div class="container">
             <h2 class="section-title">Programa Haircupere</h2>
-            <p class="section-subtitle">Descubra o Haircupere - O programa que une ciência, acolhimento e resultados reais</p>
+            <p class="section-subtitle">Descubra o Haircupere - O programa que une ciência, acolhimento e resulados reais</p>
             
             <div class="grid grid-3 gap-lg">
                 <!-- Serviço 1 -->

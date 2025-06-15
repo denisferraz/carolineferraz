@@ -17,34 +17,13 @@ if($id_job == 'Cadastro' || $tipo != 'Painel'){
     $email = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['email'] ?? $_SESSION['email']) : $_SESSION['email'];
 
     $query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$email}'");
-    $painel_users_array = [];
-    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
-        $dados_painel_users = $select['dados_painel_users'];
-        $id = $select['id'];
-
-    // Para descriptografar os dados
-    $dados = base64_decode($dados_painel_users);
-    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
-
-    $dados_array = explode(';', $dados_decifrados);
-
-    $painel_users_array[] = [
-        'id' => $id,
-        'email' => $select['email'],
-        'token' => $select['token'],
-        'nome' => $dados_array[0],
-        'cpf' => $dados_array[2],
-        'telefone' => $dados_array[3]
-    ];
-
+    while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $nome = $select_check2['nome'];
+        $telefone = $select_check2['telefone'];
+        $cpf = $select_check2['unico'];
+    }
 }
-    
-foreach ($painel_users_array as $select_check2){
-    $nome = $select_check2['nome'];
-    $telefone = $select_check2['telefone'];
-    $cpf = $select_check2['cpf'];
-}
-}
+
 $error_reserva = isset($_SESSION['error_reserva']) ? $_SESSION['error_reserva'] : null;
 unset($_SESSION['error_reserva']);
 ?>
@@ -107,10 +86,11 @@ unset($_SESSION['error_reserva']);
                 if (data.sucesso) {
                     Swal.fire({
                         title: 'CPF encontrado!',
-                        html: `Cliente: <strong>${data.telefone}</strong><br>Email: <strong>${data.email}</strong><br><br>Deseja importar os dados?`,
+                        html: `Cliente: <strong>${data.nome}</strong><br>Email: <strong>${data.email}</strong><br><br>Deseja importar os dados?`,
                         icon: 'success',
-                        allowOutsideClick: false,
-                        confirmButtonText: 'Importar dados'
+                        showCancelButton: true,
+                        confirmButtonText: 'Importar dados',
+                        cancelButtonText: 'Não importar'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // Aqui você pode preencher os campos automaticamente
@@ -122,12 +102,18 @@ unset($_SESSION['error_reserva']);
                         title: 'CPF não encontrado!',
                         text: 'Deseja cadastrar um novo cliente ou continuar sem cadastro?',
                         icon: 'warning',
-                        allowOutsideClick: false,
-                        confirmButtonText: 'Cadastrar cliente'
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Cadastrar cliente',
+                        denyButtonText: 'Continuar sem cadastrar',
+                        cancelButtonText: 'Cancelar'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // Redireciona ou abre modal para cadastro
                             window.location.href = 'cadastro_registro.php?cpf=' + cpfLimpo;
+                        } else if (result.isDenied) {
+                            // Continuar sem cadastro
+                            Swal.fire('Continuando sem cadastro', '', 'info');
                         }
                     });
                 }
@@ -208,7 +194,7 @@ unset($_SESSION['error_reserva']);
 
             <div class="card-group">
                 <label>Telefone</label>
-                <input type="text" name="doc_telefone" minlength="9" maxlength="18" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
+                <input type="text" name="doc_telefone" minlength="11" maxlength="18" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
             </div>
 
             <?php }else{ ?>

@@ -132,18 +132,15 @@
                 <i class="bi bi-chevron-down small"></i>
             </a>
             <div class="collapse ps-3" id="menuFinanceiro">
-                <!-- <a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bank me-2"></i> Ver Despesas
-                </a> -->
-                <a href="javascript:void(0)" onclick='window.open("controle_financeiro_app/index.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                <a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-bank me-2"></i> Ver Despesas
                 </a>
-                <!-- <a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                <a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-cash-coin me-2"></i> Lançar Despesas
-                </a> -->
-                <!-- <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-coin me-2"></i> Cadastrar Custos
-                </a> -->
+                </a>
             </div>
         </li>
 

@@ -57,6 +57,7 @@ if ($cpf_encontrado == 'sim') {
         'sucesso' => true,
         'email' => $email,
         'nome' => $nome,
+        'doc_cpf' => $doc_cpf,
         'telefone' => $telefone
     ]);
 } else {
