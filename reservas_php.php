@@ -15,10 +15,10 @@ use Dompdf\Dompdf;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-error_reporting(0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+//error_reporting(0);
 
 $limite_dia = 1;
 $atendimento_dia = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia']);
@@ -36,9 +36,40 @@ if($feitapor == 'Painel'){
 $email = $_SESSION['email'];
 $result_historico = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $result_historico->execute(array('email' => $email));
-while($select_historico = $result_historico->fetch(PDO::FETCH_ASSOC)){
+$painel_users_array = [];
+    while($select = $result_historico->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $select['email'],
+        'token' => $select['token'],
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_historico){
 $historico_quem = $select_historico['nome'] ;
-$historico_unico_usuario = $select_historico['unico'] ;
+$historico_unico_usuario = $select_historico['cpf'] ;
 }
 $feitapor = $historico_quem;
 }
@@ -163,8 +194,8 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
     }
 
     if($status_consulta == 'Confirmada'){
-    $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, doc_nome, doc_cpf, doc_telefone, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :doc_nome, :doc_cpf, :doc_telefone, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta, :token_emp)");
-    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_cpf' => $doc_cpf, 'doc_telefone' => $doc_telefone, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta, 'token_emp' => $_SESSION['token_emp']));
+    $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta, :token_emp)");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta, 'token_emp' => $_SESSION['token_emp']));
     }else{
     $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = 'Nova Sessão', local_consulta = :local_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email AND id = :id_consulta");
     $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'token' => $token, 'local_consulta' => $local_consulta));
@@ -180,7 +211,7 @@ if($envio_whatsapp == 'ativado'){
     $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
     
-    $doc_telefonewhats = "5571997417190";
+    $doc_telefonewhats = "55$config_telefone";
     $msg_whastapp = "Olá $config_empresa\n\n".
     "$doc_nome agendou uma $id_job para $local_consulta - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n".
     "Telefone: $doc_telefone\n".

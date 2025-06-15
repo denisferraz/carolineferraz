@@ -30,16 +30,6 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
     exit();
  }
 
- $query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-    $gerador_nome = $select_check['nome'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
-
 //Criar Planilha Excel
 $spreadsheet = new Spreadsheet();
 
@@ -2530,8 +2520,4 @@ header('Location: index.php');
 
 }
 
-?>
-
-<?php
-}
 ?>

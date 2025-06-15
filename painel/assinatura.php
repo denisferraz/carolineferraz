@@ -11,11 +11,7 @@ use Dompdf\Dompdf;
 if (isset($_POST['assinatura'])) {
 
   $email = $_SESSION['email'];
-
-  $query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$email}'");
-  while($select = $query->fetch(PDO::FETCH_ASSOC)){
-      $nome = $select['unico'];
-  }
+  $cpf = mysqli_real_escape_string($conn_msqli, $_GET['cpf']);
   
   $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
   $data_assinatura = date('Y-m-d H:i:s');
@@ -33,7 +29,7 @@ if (isset($_POST['assinatura'])) {
   }
   
   //Deleta assinatura anterior
-  $assinaturaAnteriorPattern = $diretorio . $nome . '-' . $token . '-*.png';
+  $assinaturaAnteriorPattern = $diretorio . $cpf . '-' . $token . '-*.png';
   $assinaturasAnteriores = glob($assinaturaAnteriorPattern);
   if (!empty($assinaturasAnteriores)) {
     foreach ($assinaturasAnteriores as $assinaturaAnterior) {
@@ -42,7 +38,7 @@ if (isset($_POST['assinatura'])) {
   }
   
   // Caminho completo para o arquivo
-  $caminho = $diretorio . $nome . '-' . $token . '-'. $data_assinaturas . '.png';
+  $caminho = $diretorio . $cpf . '-' . $token . '-'. $data_assinaturas . '.png';
   
   // Salvar a imagem
   file_put_contents($caminho, $decodedImage);

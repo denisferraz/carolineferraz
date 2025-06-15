@@ -82,6 +82,39 @@ $font_color = '#fff';
 $font_color = '#222';
 }
 
+$query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= 1");
+
+$painel_users_array = [];
+while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $dados_painel_users = $select['dados_painel_users'];
+    $id = $select['id'];
+    $email = $select['email'];
+
+// Para descriptografar os dados
+$dados = base64_decode($dados_painel_users);
+$dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+$dados_array = explode(';', $dados_decifrados);
+
+$painel_users_array[] = [
+    'id' => $id,
+    'email' => $email,
+    'nome' => $dados_array[0],
+    'rg' => $dados_array[1],
+    'cpf' => $dados_array[2],
+    'telefone' => $dados_array[3],
+    'profissao' => $dados_array[4],
+    'nascimento' => $dados_array[5],
+    'cep' => $dados_array[6],
+    'rua' => $dados_array[7],
+    'numero' => $dados_array[8],
+    'cidade' => $dados_array[9],
+    'bairro' => $dados_array[10],
+    'estado' => $dados_array[11]
+];
+
+}
+
 $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE alt_status = 'Pendente'");
 $alteracao_qtd = $query_alteracao->rowCount();
 
@@ -215,7 +248,7 @@ body {
             $classe_extra = 'hoje';
         }
         
-        $query = $conexao->query("SELECT doc_nome, atendimento_hora FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
+        $query = $conexao->query("SELECT doc_email, atendimento_hora FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
         if($query->rowCount() > 0){
             
             //Veriica se é passado, presente, futuro
@@ -230,8 +263,13 @@ body {
         echo "<a href='home.php?data=$data_atual' style='display: block; color: inherit; text-decoration: none; height: 100%; width: 100%;'>";
         echo "<div class='numero'>$dia_atual</div>";  // Número do dia
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            foreach ($painel_users_array as $item) {
+                if ($item['email'] === $row['doc_email']) {
+                    $doc_nome = $item['nome'];
+                }
+            }
             $hora = substr($row['atendimento_hora'], 0, 5);
-            echo "<span class='evento'>{$hora}h - {$row['doc_nome']}</span>";
+            echo "<span class='evento'>{$hora}h - {$doc_nome}</span>";
         }
 
         echo "</a>";

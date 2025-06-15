@@ -33,7 +33,7 @@ if($id_job =='Tratamento'){
 $qtd_tratamentos = 0;
 ?>
 <fieldset>
-<legend><h2>Plano de Tratamento</h2></legend>
+<legend><h2>Historico de Sessões</h2></legend>
 <center>
 <?php
 $check_tratamento = $conexao->prepare("SELECT plano_descricao, sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
@@ -133,15 +133,13 @@ if($qtd_tratamentos == 0){
 <legend><h2>Arquivos</h2></legend>
 <?php
 $pastas = ['Tratamento', 'Evolucao', 'Orientacao', 'Laudos', 'Contratos', 'Outros'];
-
+$numFilesTotal = 0;
 foreach ($pastas as $pasta) {
     $dir = '../arquivos/' . $token_profile . '/' . $pasta;
     $files = glob($dir . '/*.pdf');
     $numFiles = count($files);
 
-    if ($numFiles < 1) {
-        //echo "<center>Nenhum <b>Arquivo</b> foi localizado na pasta <b>$pasta</b></center>";
-    } else {
+    if ($numFiles >= 1) {
         if($pasta == 'Tratamento'){
             $nome_pasta = 'Plano de Tratamento';
         }else if($pasta == 'Evolucao'){
@@ -153,14 +151,19 @@ foreach ($pastas as $pasta) {
         }else{
             $nome_pasta = 'Outros';
         }
+        $numFilesTotal++;
         echo "<h2 style='margin-top: 15px;'><b>$nome_pasta</b></h2>";
         foreach ($files as $file) {
             $fileName = basename($file);
             echo "<div class=\"card-group-black btn\" onclick=\"window.open('$file', '_blank')\">
             <button>$fileName</button>
             </div>";
-        }
-    }echo "<br>";
+        }echo "<br>";
+    }
+}
+
+if ($numFilesTotal < 1) {
+    echo "<center>Nenhum <b>Arquivo</b> foi localizado no seu <b>Nome</b></center>";
 }
 ?>
 </fieldset>
@@ -189,9 +192,11 @@ $row_check_contratos = $check_contratos->rowCount();
 while($select3 = $check_contratos->fetch(PDO::FETCH_ASSOC)){
     $assinado = $select3['assinado'];
     $assinado_data = $select3['assinado_data'];
+    $token_contrato = $select3['token'];
+    $id_contrato = $select3['id'];
 ?>
     <tr>
-        <td align="center"><a href="paciente_contrato.php"><button class="home-btn">Contrato <?php echo $confirmacao ?></button></a></td>
+        <td align="center"><a href="paciente_contrato.php?token_contrato=<?= $token_contrato ?>"><button class="home-btn">Acessar Contrato</button></a></td>
         <td align="center"><?php echo $assinado ?></td>
         <td align="center"> <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$assinado_data")) ?> </td>
     </tr>

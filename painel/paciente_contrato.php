@@ -7,12 +7,43 @@ require('verifica_login.php');
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $_SESSION['email']));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
+
+$painel_users_array = [];
+    while($select = $query->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+    
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+    
+    $dados_array = explode(';', $dados_decifrados);
+    
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $select['email'],
+        'token' => $select['token'],
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ];
+    }
+  
+  foreach ($painel_users_array as $select){
     $nome = $select['nome'];
     $rg = $select['rg'];
     $nascimento = $select['nascimento'];
-    $cpf = $select['unico'];
-    $cpf_ass = $select['unico'];
+    $cpf = $select['cpf'];
+    $cpf_ass = $select['cpf'];
     $profissao = $select['profissao'];
     $telefone = $select['telefone'];
     $cep = $select['cep'];
@@ -35,8 +66,10 @@ $parte3 = substr($cpf, 6, 3);
 $parte4 = substr($cpf, 9);
 $cpf = "$parte1.$parte2.$parte3-$parte4";
 
-$query2 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Não'");
-$query2->execute(array('email' => $_SESSION['email']));
+$token_contrato = mysqli_real_escape_string($conn_msqli, $_GET['token_contrato']);
+
+$query2 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Não' AND token = :token");
+$query2->execute(array('email' => $_SESSION['email'], 'token' => $token_contrato));
 while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
     $assinado = $select2['assinado'];
     $assinado_data = $select2['assinado_data'];
@@ -157,8 +190,8 @@ ______________________________________________________<br>
 </fieldset>
 <br>
 <?php
-$query3 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Sim'");
-$query3->execute(array('email' => $email));
+$query3 = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Sim' AND token = :token");
+$query3->execute(array('email' => $email, 'token' => $token_contrato));
 $row_check3 = $query3->rowCount();
 if($row_check3 < 1){}else{
 ?>
@@ -439,7 +472,7 @@ if (!hasDrawn) {
   formData.append('dados_completos', JSON.stringify(dadosCompletos));
 
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'assinatura.php?token=<?php echo $token ?>', true);
+  xhr.open('POST', 'assinatura.php?token=<?php echo $token ?>&cpf=<?php echo $cpf_ass ?>', true);
   xhr.onload = function() {
     if (this.status === 200) {
       console.log(this.responseText);

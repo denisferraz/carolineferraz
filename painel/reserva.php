@@ -4,15 +4,6 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
-
 $hoje = date('Y-m-d');
 
 ?>
@@ -36,16 +27,40 @@ $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $confirmacao_cancelamento = $select['confirmacao_cancelamento'];
 $status_consulta = $select['status_consulta'];
-$doc_nome = $select['doc_nome'];
 $doc_email = $select['doc_email'];
-$doc_telefone = $select['doc_telefone'];
-$doc_cpf = $select['doc_cpf'];
 $atendimento_dia = $select['atendimento_dia'];
 $atendimento_hora = $select['atendimento_hora'];
 $data_cancelamento = $select['data_cancelamento'];
 $data_cancelamento = strtotime("$data_cancelamento");
 $tipo_consulta = $select['tipo_consulta'];
 $local_consulta = $select['local_consulta'];
+}
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+  $doc_nome = $select_check2['nome'];
+  $doc_telefone = $select_check2['telefone'];
+  $doc_cpf = $select_check2['cpf'];
 }
 
 //Ajustar CPF
@@ -114,7 +129,3 @@ $origem = $select['origem'];
 </div>
 </body>
 </html>
-
-<?php
-}
-?>

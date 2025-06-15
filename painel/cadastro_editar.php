@@ -3,41 +3,63 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo '<div style="color: red; font-weight: bold; text-align: center; margin-top: 50px;">Você não tem permissão para acessar esta página.</div>';
-    exit;
-}
-
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $email));
+$painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
-        $doc_nome = $select['nome'];
-        $cpf = $select['unico'];
-        $telefone = $select['telefone'];
-        $data_nascimento = $select['nascimento'];
-        $doc_rg = $select['rg'];
-        $profissao = $select['profissao'];
-        $cep = $select['cep'];
-        $rua = $select['rua'];
-        $numero = $select['numero'];
-        $cidade = $select['cidade'];
-        $bairro = $select['bairro'];
-        $estado = $select['estado'];
-    }
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+    
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+    
+    $dados_array = explode(';', $dados_decifrados);
+    
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $email,
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ]; 
+}
+
+foreach ($painel_users_array as $select){
+$paciente_id = $select['id'];
+$doc_nome = $select['nome'];
+$doc_rg = $select['rg'];
+$cpf = $select['cpf'];
+$data_nascimento = $select['nascimento'];
+$telefone = $select['telefone'];
+$token_profile = $select['token'];
+$origem = $select['origem'];
+$profissao = $select['profissao'];
+$cep = $select['cep'];
+$rua = $select['rua'];
+$numero = $select['numero'];
+$cidade = $select['cidade'];
+$bairro = $select['bairro'];
+$estado = $select['estado'];
+}
 
 //Ajustar CPF
 $parte1 = substr($cpf, 0, 3);
 $parte2 = substr($cpf, 3, 3);
 $parte3 = substr($cpf, 6, 3);
 $parte4 = substr($cpf, 9);
-$cpf = "$parte1.$parte2.$parte3-$parte4";
+$doc_cpf = "$parte1.$parte2.$parte3-$parte4";
 
 //Ajustar Telefone
 $ddd = substr($telefone, 0, 2);
@@ -104,7 +126,7 @@ if($data_nascimento == ''){
             </div>
 
             <div class="card-group">
-                <label>CPF</label><?php echo $cpf ?>
+                <label>CPF</label><?php echo $doc_cpf ?>
                 <input type="hidden" name="doc_cpf" value="<?php echo $cpf ?>">
             </div>
 
@@ -130,7 +152,7 @@ if($data_nascimento == ''){
 
             <div class="card-group">
                 <label>Profissão</label>
-                <input type="text" name="profissao" maxlength="25" value="<?php echo $profissao ?>" placeholder="Profissão" required>
+                <input type="text" name="profissao" maxlength="25" value="<?php echo $profissao ?>" placeholder="Profissão">
             </div>
 
             <br>
@@ -140,22 +162,22 @@ if($data_nascimento == ''){
             <br>
             <div class="card-group">
             <label for="endereco_cep">[<b>CEP</b>]</label>
-            <input type="text" id="endereco_cep" name="endereco_cep" value="<?php echo $cep ?>" placeholder="CEP..." required><br>
+            <input type="text" id="endereco_cep" name="endereco_cep" value="<?php echo $cep ?>" placeholder="CEP..."><br>
             </div><div class="card-group">
             <label for="endereco_rua">[<b>Rua</b>]</label>
-            <input type="text" id="endereco_rua" maxlength="50" value="<?php echo $rua ?>" name="endereco_rua" placeholder="Rua..." required><br>
+            <input type="text" id="endereco_rua" maxlength="50" value="<?php echo $rua ?>" name="endereco_rua" placeholder="Rua..."><br>
             </div><div class="card-group">
             <label for="endereco_n">[<b>Numero</b>]</label>
-            <input type="text" id="endereco_n" maxlength="50" value="<?php echo $numero ?>" name="endereco_n" placeholder="Numero..." required><br>
+            <input type="text" id="endereco_n" maxlength="50" value="<?php echo $numero ?>" name="endereco_n" placeholder="Numero..."><br>
             </div><div class="card-group">
             <label for="endereco_bairro">[<b>Bairro</b>]</label>
-            <input type="text" id="endereco_bairro" maxlength="50" value="<?php echo $bairro ?>" name="endereco_bairro" placeholder="Bairro..." required><br>
+            <input type="text" id="endereco_bairro" maxlength="50" value="<?php echo $bairro ?>" name="endereco_bairro" placeholder="Bairro..."><br>
             </div><div class="card-group">
             <label for="endereco_cidade">[<b>Cidade</b>]</label>
-            <input type="text" id="endereco_cidade" maxlength="50" value="<?php echo $cidade ?>" name="endereco_cidade" placeholder="Cidade..." required><br>
+            <input type="text" id="endereco_cidade" maxlength="50" value="<?php echo $cidade ?>" name="endereco_cidade" placeholder="Cidade..."><br>
             </div><div class="card-group">
             <label for="endereco_uf">[<b>Estado</b>]</label>
-            <input type="text" id="endereco_uf" maxlength="50" value="<?php echo $estado ?>" name="endereco_uf" placeholder="Estado..." required><br>
+            <input type="text" id="endereco_uf" maxlength="50" value="<?php echo $estado ?>" name="endereco_uf" placeholder="Estado..."><br>
             </div>
 
             <div class="card-group">
@@ -164,7 +186,7 @@ if($data_nascimento == ''){
             </div>
 
             <div class="card-group btn">
-                <button type="submit">Cadastrar</button>
+                <button type="submit">Confirmar</button>
             </div>
         </div>
     </form>

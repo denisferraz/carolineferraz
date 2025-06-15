@@ -5,41 +5,59 @@ require('verifica_login.php');
 
 $doc_cpf = $_POST['cpf'] ?? '';
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND unico = :cpf");
-$query->execute(['cpf' => $doc_cpf]);
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE id > 0 AND token_emp = :token_emp");
+    $query->execute(array('token_emp' => $_SESSION['token_emp']));
 
-if ($query->rowCount() > 0) {
-    $row = $query->fetch(PDO::FETCH_ASSOC);
+    $painel_users_array = [];
+    while($select = $query->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+        $email = $select['email'];
 
-    // Formatar o telefone
-    $telefone = preg_replace('/[^0-9]/', '', $row['telefone']); // remove qualquer caractere não numérico
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
 
-    if (strlen($telefone) >= 11) {
-        $ddd = substr($telefone, 0, 2);
-        $prefixo = substr($telefone, 2, 5);
-        $sufixo = substr($telefone, 7);
-        $telefoneFormatado = "$ddd-$prefixo-$sufixo";
-    } else {
-        $telefoneFormatado = $telefone; // se não tiver tamanho esperado, retorna como veio
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $email,
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ];
+
     }
+    
+    $cpf_encontrado = 'nao';
+    foreach ($painel_users_array as $usuario) {
+        if (isset($usuario['cpf']) && $usuario['cpf'] === $doc_cpf) {
+            $email = $usuario['email'];
+            $nome = $usuario['nome'];
+            $telefone = $usuario['telefone'];
+            $cpf_encontrado = 'sim';
+            break;
+        }
+    }
+
+if ($cpf_encontrado == 'sim') {
+    $row = $query->fetch(PDO::FETCH_ASSOC);
 
     echo json_encode([
         'sucesso' => true,
-        'email' => $row['email'],
-        'nome' => $row['nome'],
-        'rg' => $row['rg'],
-        'nascimento' => $row['nascimento'],
-        'telefone' => $telefoneFormatado,
-        'profissao' => $row['profissao'],
-        'cep' => $row['cep'],
-        'rua' => $row['rua'],
-        'numero' => $row['numero'],
-        'complemento' => $row['complemento'],
-        'cidade' => $row['cidade'],
-        'bairro' => $row['bairro'],
-        'estado' => $row['estado'],
-        'token' => $row['token'],
-        'origem' => $row['origem'],
+        'email' => $email,
+        'nome' => $nome,
+        'telefone' => $telefone
     ]);
 } else {
     echo json_encode(['sucesso' => false]);

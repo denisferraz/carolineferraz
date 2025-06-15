@@ -4,24 +4,9 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
-
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 $id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
-
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-$query->execute(array('email' => $email));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $nome = $select['nome'];
-}
 
 $token = md5(date("YmdHismm"));
 
@@ -51,7 +36,7 @@ $token = md5(date("YmdHismm"));
 <?php
 if($id_job == 'enviar'){
 ?>
-            <h2>Cadastre o Tratamento de <u><?php echo $nome ?></u></h2>
+            <h2>Cadastrar Plano</u></h2>
             </div>
 
             <div class="card-group">
@@ -89,7 +74,7 @@ while($select_cadastrar = $query_cadastrar->fetch(PDO::FETCH_ASSOC)){
 
 $progress = $sessao_atual/$sessao_total*100;
 ?>
-            <h2>Cadastre Nova Sessão de <u><?php echo $nome ?></u></h2>
+            <h2>Cadastrar Nova Sessão</h2>
             </div>
 
             <div class="card-group">
@@ -141,7 +126,7 @@ $sessao_status = $select_cadastrar['sessao_status'];
 
 $progress = $sessao_atual/$sessao_total*100;
 ?>
-            <h2>Finalize o Tratamento de <u><?php echo $nome ?></u></h2>
+            <h2>Finalizar o Tratamento</h2>
             </div>
 
             <div class="card-group">
@@ -178,7 +163,3 @@ $progress = $sessao_atual/$sessao_total*100;
 
 </body>
 </html>
-
-<?php
-}
-?>

@@ -4,15 +4,6 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
-
 $hoje = date('Y-m-d');
 
 $id_job = isset($_GET['id_job']) ? mysqli_real_escape_string($conn_msqli, $_GET['id_job']) : 'Cadastro';
@@ -20,11 +11,42 @@ $doc_email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $doc_email));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
+
+$painel_users_array = [];
+    while($select = $query->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+    
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+    
+    $dados_array = explode(';', $dados_decifrados);
+    
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $select['email'],
+        'token' => $select['token'],
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ]; 
+}
+
+foreach ($painel_users_array as $select){
 $paciente_id = $select['id'];
 $nome = $select['nome'];
 $rg = $select['rg'];
-$cpf = $select['unico'];
+$cpf = $select['cpf'];
 $nascimento = $select['nascimento'];
 $telefone = $select['telefone'];
 $token_profile = $select['token'];
@@ -75,10 +97,10 @@ $estado = $select['estado'];
     <i class="bi bi-clipboard-heart"></i> <span>Anamnese</span>
   </a>
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Prontuario","iframe-home")'>
-    <i class="bi bi-journal-medical"></i> <span>Prontuário</span>
+    <i class="bi bi-journal-medical"></i> <span>Evolução</span>
   </a>
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Tratamento","iframe-home")'>
-    <i class="bi bi-card-checklist"></i> <span>Plano Tratamento</span>
+    <i class="bi bi-card-checklist"></i> <span>Historico Sessões</span>
   </a>
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Lancamentos","iframe-home")'>
     <i class="bi bi-cash-coin"></i> <span>Lançamentos</span>
@@ -117,24 +139,28 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <legend><h2>Cadastro <u><?php echo $nome ?></u></h2></legend>
 
 <label><b>Nome: </b><?php echo $nome ?></label> <a href="javascript:void(0)" onclick='window.open("cadastro_editar.php?email=<?php echo $doc_email ?>","iframe-home")'><button>Editar</button></a><br>
+<button class="btn-excluir" type="button" onclick="toggleCampos()" id="btn-toggle">Ver Dados</button>
+<div id="camposExtras" style="display: none; margin-top: 10px;">
 <label><b>Email: </b><?php echo $doc_email ?></label><br>
-<label><b>Telefone: </b><?php echo $telefone ?></label><br><br>
+<label><b>Telefone: </b><?php echo $telefone ?></label><br>
 <label><b>RG: </b><?php echo $rg ?></label><br>
 <label><b>CPF: </b><?php echo $cpf ?></label><br>
 <label><b>Data Nascimento: </b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></label><br>
 <label><b>Profissão: </b><?php echo $profissao ?></label><br>
 <label><b>Origem: </b><?php echo $origem ?></label><br>
 <label><b>Endereço: </b><?php echo $endereco ?></label><br>
+</div>
 </fieldset>
 <!-- Plano de Tratamento -->
 <?php
 if($id_job == 'Tratamento'){
 //Plano de Tratamento
-$check_tratamento = $conexao->prepare("SELECT sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
+$check_tratamento = $conexao->prepare("SELECT id, sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $check_tratamento->execute(array('email' => $doc_email));
 while($select_tratamento = $check_tratamento->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select_tratamento['sum(sessao_atual)'];
     $sessao_total = $select_tratamento['sum(sessao_total)'];
+    $id_tratamento = $select_tratamento['id'];
 }
 
 if($sessao_atual == '' && $sessao_total == ''){
@@ -144,9 +170,9 @@ $sessao_total = 1;
 
 $progress = $sessao_atual/$sessao_total*100;
 ?>
-<center><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&id_consulta=<?php echo $id_consulta ?>","iframe-home")' class="btn-black">Cadastrar Plano</a></center>
+<center><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&id=<?php echo $id_tratamento ?>","iframe-home")' class="btn-black">Cadastrar Plano</a></center>
 <fieldset>
-<legend><h2>Plano de Tratamento</h2></legend>
+<legend><h2>Historico Sessões</h2></legend>
 <center>
 <div id="progress-bar">
 <div class="filled" style="width: <?php echo $progress; ?>%;"></div>
@@ -521,7 +547,7 @@ $id = $select_lancamento['id'];
 <?php if($id_job == 'Prontuario'){ ?>
 <!-- Prontuario -->
 <fieldset>
-<legend><h2>Prontuário de <?= $nome ?></h2></legend>
+<legend><h2>Evoluções de <?= $nome ?></h2></legend>
 <?php 
 
 $evolucoes = $conexao->prepare("SELECT * FROM evolucoes WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = ? ORDER BY data DESC");
@@ -551,7 +577,7 @@ $evolucoes->execute([$doc_email]);
 <?php if($id_job == 'Prontuario_Add'){ ?>
 <!-- Prontuario -->
 <fieldset>
-<legend><h2>Prontuário</h2></legend>
+<legend><h2>Evolução</h2></legend>
 <form class="form" action="acao.php" method="POST">
 <div class="card">
 
@@ -568,27 +594,36 @@ $evolucoes->execute([$doc_email]);
 </form>
 </fieldset>
 <?php } ?>
+<script>
+function toggleCampos() {
+    const div = document.getElementById('camposExtras');
+    const btn = document.getElementById('btn-toggle');
 
-
-    <script>
-    function exibirPopup() {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Carregando...',
-            text: 'Aguarde enquanto enviamos o contrato!',
-            showCancelButton: false,
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            willOpen: () => {
-                Swal.showLoading();
-            }
-        });
+    if (div.style.display === 'none') {
+        div.style.display = 'block';
+        btn.innerText = 'Esconder Dados';
+    } else {
+        div.style.display = 'none';
+        btn.innerText = 'Ver Dados';
     }
+}
+</script>
+
+<script>
+function exibirPopup() {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Carregando...',
+        text: 'Aguarde enquanto enviamos o contrato!',
+        showCancelButton: false,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
 </script>
 </div>
 </body>
 </html>
-
-<?php
-}
-?>

@@ -13,15 +13,52 @@ use PHPMailer\PHPMailer\Exception;
 //error_reporting(E_ALL);
 error_reporting(0);
 
-  
+date_default_timezone_set('America/Sao_Paulo');
+
 $aniversario_hoje = date('d/m', strtotime("$hoje"));
 $aniversariante = 'Bom dia!! Veja a lista dos aniversariantes de hoje abaixo:';
-  
-  //Envia Aniversariantes
-  $result_check = $conexao->query("SELECT * FROM painel_users WHERE DATE_FORMAT(nascimento, '%d/%m') = '{$aniversario_hoje}' AND tipo = 'Paciente'");
 
-  if ($result_check->rowCount() > 0) {
-    while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
+$result_check_config = $conexao->query("SELECT * FROM configuracoes WHERE id > -3");
+while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
+    $token_config = $select_check_config['token'];
+    $config_empresa = $row['config_empresa'];
+    $config_email = $row['config_email'];
+    $config_telefone = $row['config_telefone'];
+    $config_msg_aniversario = $row['config_msg_aniversario'];
+    $envio_whatsapp = $row['envio_whatsapp'];
+    $envio_email = $row['envio_email'];
+
+  //Envia Aniversariantes
+  //$result_check = $conexao->query("SELECT * FROM painel_users WHERE DATE_FORMAT(nascimento, '%d/%m') = '{$aniversario_hoje}' AND tipo = 'Paciente'");
+  $result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$token_config}'");
+  $painel_users_array = [];
+    while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'email' => $select['email'],
+        'nome' => $dados_array[0],
+        'telefone' => $dados_array[3],
+        'nascimento' => $dados_array[5]
+    ];
+
+}
+  $aniversariantes = 0;
+    foreach ($painel_users_array as $select_check){
+    $data_nascimento = $item['nascimento'];
+
+    if (!empty($data_nascimento)) {
+      $mes_dia = date('m-d', strtotime($data_nascimento));
+      
+      if ($mes_dia === $aniversario_hoje) {
+
+    $aniversariantes++;
     $doc_nome = $select_check['nome'];
     $doc_email = $select_check['email'];
     $doc_telefone = $select_check['telefone'];
@@ -56,8 +93,6 @@ $aniversariante = 'Bom dia!! Veja a lista dos aniversariantes de hoje abaixo:';
   //Envio de Email	
   if($envio_email == 'ativado'){
   
-    $link_paneil = "<a href=\"$site_atual\"'>CLique Aqui</a>";
-  
     $mail = new PHPMailer(true);
   
   try {
@@ -75,7 +110,7 @@ $aniversariante = 'Bom dia!! Veja a lista dos aniversariantes de hoje abaixo:';
       $mail->addAddress("$doc_email", "$doc_nome");
       
       $mail->isHTML(true);                                 
-      $mail->Subject = "$config_email - Happy Birthday!!";
+      $mail->Subject = "$config_empresa - Happy Birthday $doc_nome!!";
     // INICIO MENSAGEM  
       $mail->Body = "
   
@@ -106,15 +141,15 @@ $aniversariante = 'Bom dia!! Veja a lista dos aniversariantes de hoje abaixo:';
   
     }
       //Fim Envio Whatsapp
-  
-  }
-  
-  if($envio_whatsapp == 'ativado'){
-    $doc_telefonewhats = "5571997417190";
-    $msg_whatsapp = "$aniversariante\n\n".
-    'Verifique se as mensagens automaticas foram enviadas!';
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
-  }
 
-  }
+    }}}
+
+    if($envio_whatsapp == 'ativado' && $aniversariantes > 0){
+      $doc_telefonewhats = "55$config_telefone";
+      $msg_whatsapp = "$aniversariante\n\n".
+      'Verifique se as mensagens automaticas foram enviadas!';
+      $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+    }
+
+}
 ?>

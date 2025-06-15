@@ -11,7 +11,7 @@ try {
     $apikey = 'a7f3d9e1c4b6a2f8e9d4b7c1f2a3e6d0';
     $instance_name = $client_id;
 
-    $webhook_url = 'https://chronoclick.com.br/painel/webhook_qr.php';
+    $webhook_url = $site_atual . '/painel/webhook_crm.php?token_emp=' . $_SESSION['token_emp'];
 
     $data = [
         "instanceName" => $instance_name,
@@ -19,12 +19,12 @@ try {
         "integration" => "WHATSAPP-BAILEYS",
         "webhook" => [
             "url" => $webhook_url,
-            "byEvents" => true,
-            "base64" => true,
+            "byEvents" => false,
+            "base64" => false,
             "events" => [
-                "QRCODE_UPDATED"
+                "MESSAGES_UPSERT"
             ]
-        ]
+            ]
     ];
 
     $headers = [

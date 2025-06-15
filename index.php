@@ -14,10 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['name']);
     $doc_telefone = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['phone']));
     $message = mysqli_real_escape_string($conn_msqli, $_POST['message']);
+    $MsgContato = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 
    
-           if ($envio_whatsapp === 'ativado') {
-               $doc_telefonewhats = "5571997417190";
+           if ($envio_whatsapp === 'ativado' && $MsgContato = 'MsgContato') {
+               $doc_telefonewhats = "5571991293370";
                $msg_whatsapp = "Olá Carol, alguém mandou uma mensagem pra você pelo seu site.\n\n".
                    "Nome: $doc_nome\n".
                    "Telefone: $doc_telefone\n".
@@ -390,14 +391,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         <div class="form-group">
                             <label for="phone" class="form-label">Seu Telefone</label>
-                            <input type="tel" id="phone" name="phone" class="form-control">
+                            <input type="tel" id="phone" name="phone" class="form-control" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="message" class="form-label">Sua Mensagem</label>
                             <textarea id="message" name="message" class="form-control" required></textarea>
                         </div>
-                        
+                        <input type="hidden" id="id_job" name="id_job" value="MsgContato">
                         <button type="submit" class="btn btn-primary btn-block">Enviar Mensagem</button>
                     </form>
                 </div>

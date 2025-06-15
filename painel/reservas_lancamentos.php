@@ -5,16 +5,6 @@ require('../config/database.php');
 require('verifica_login.php');
 
 $hoje = date('Y-m-d');
-
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
-
 $doc_email = mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
 
 $query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email");
@@ -66,12 +56,7 @@ $doc_nome = $select['doc_nome'];
             </div>
         </div>
     </form>
-
-</body>
-</html>
-<?php } ?>
-
-<script>
+    <script>
 document.getElementById("lanc_valor").addEventListener("input", function() {
     // Remove espaços em branco e formata o valor para ter apenas números e até duas casas decimais
     this.value = this.value.replace(/\s/g, "").replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
@@ -82,3 +67,7 @@ document.getElementById("lanc_valor").addEventListener("input", function() {
     }
 });
 </script>
+
+</body>
+</html>
+

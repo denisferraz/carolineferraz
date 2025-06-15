@@ -7,9 +7,40 @@ $email = $_SESSION['email'];
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $email));
+
+$painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+    
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+    
+    $dados_array = explode(';', $dados_decifrados);
+    
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $select['email'],
+        'token' => $select['token'],
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ]; 
+}
+
+foreach ($painel_users_array as $select){
         $doc_nome = $select['nome'];
-        $cpf = $select['unico'];
+        $cpf = $select['cpf'];
         $telefone = $select['telefone'];
         $data_nascimento = $select['nascimento'];
         $doc_rg = $select['rg'];
@@ -28,7 +59,7 @@ $parte1 = substr($cpf, 0, 3);
 $parte2 = substr($cpf, 3, 3);
 $parte3 = substr($cpf, 6, 3);
 $parte4 = substr($cpf, 9);
-$cpf = "$parte1.$parte2.$parte3-$parte4";
+$doc_cpf = "$parte1.$parte2.$parte3-$parte4";
 
 //Ajustar Telefone
 $ddd = substr($telefone, 0, 2);
@@ -103,7 +134,7 @@ $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_
             <?php endif; ?>
 
             <div class="card-group">
-                <label>CPF</label><?php echo $cpf ?>
+                <label>CPF</label><?php echo $doc_cpf ?>
                 <input type="hidden" name="doc_cpf" value="<?php echo $cpf ?>">
             </div>
 
@@ -147,7 +178,7 @@ $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_
         </div>
 
         <div class="card-group">
-            <label>CPF</label><?php echo $cpf ?>
+            <label>CPF</label><?php echo $doc_cpf ?>
             <input type="hidden" name="doc_cpf" value="<?php echo $cpf ?>">
         </div>
 
@@ -196,8 +227,6 @@ $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_
         <label for="endereco_n">[<b>Numero</b>]</label>
         <input type="text" id="endereco_n" maxlength="50" value="<?php echo $numero ?>" name="endereco_n" placeholder="Numero..." required><br>
         </div><div class="card-group">
-        <label for="endereco_comp">[<b>Complemento</b>]</label>
-        <input type="text" id="endereco_comp" maxlength="50" value="<?php echo $complemento ?>" name="endereco_comp" placeholder="Complemento..." required><br>
         </div><div class="card-group">
         <label for="endereco_bairro">[<b>Bairro</b>]</label>
         <input type="text" id="endereco_bairro" maxlength="50" value="<?php echo $bairro ?>" name="endereco_bairro" placeholder="Bairro..." required><br>

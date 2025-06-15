@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
@@ -13,14 +12,7 @@ use PHPMailer\PHPMailer\Exception;
 //error_reporting(E_ALL);
 error_reporting(0);
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
+date_default_timezone_set('America/Sao_Paulo');
 
   $diasemana_numero = date('w', time());
 
@@ -36,7 +28,7 @@ if($aut_acesso == 1){
   } else {
       $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // dia seguinte
   }
-  
+
   $atendimentos_dia = '';
   
   //Envia Consultas
@@ -44,18 +36,40 @@ if($aut_acesso == 1){
   $sql = "SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia IN ($placeholders) AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')";
   $stmt = $conexao->prepare($sql);
   $stmt->execute($datas_envio);
-
+  
   if ($stmt->rowCount() > 0) {
 
   while($select_check = $stmt->fetch(PDO::FETCH_ASSOC)){
   $atendimento_dia= $select_check['atendimento_dia'];
   $atendimento_hora = $select_check['atendimento_hora'];
   $token = $select_check['token'];
-  $doc_nome = $select_check['doc_nome'];
   $doc_email = $select_check['doc_email'];
-  $doc_telefone = $select_check['doc_telefone'];
   $tipo_consulta = $select_check['tipo_consulta'];
-  
+
+  $result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+  $painel_users_array = [];
+    while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'nome' => $dados_array[0],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check){
+$doc_nome = $select_check['nome'];
+$doc_telefone = $select_check['telefone'];
+}
+
   $data_email = date('d/m/Y \-\ H:i:s');
   $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
   $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
@@ -135,20 +149,25 @@ if($aut_acesso == 1){
     }
       //Fim Envio Whatsapp
   
-      //Faz a String pra envio de CAROL
+      //Faz a String pra envio de $config_empresa
       $atendimentos_dia .= "\n\n" . "$doc_nome em $atendimento_dia_str às $atendimento_hora_str";
   
   }
-  
-  $msg_whatsapp = "Bom dia Carol. Seguem seus proximos atendimento:$atendimentos_dia";
+
+  $msg_whatsapp = "Bom dia $config_empresa. Seguem seus proximos atendimento:$atendimentos_dia";
   }else{
-  $msg_whatsapp = "Bom dia Carol. Você não tem nenhum atendimento para amanhã"; 
+
+  $datas_formatadas = implode(', ', array_map(function($data) {
+      return date('d/m/Y', strtotime($data));
+  }, $datas_envio));
+
+  $msg_whatsapp = "Bom dia $config_empresa. Você não tem nenhum atendimento para: $datas_formatadas"; 
   }
 
   //Incio Envio Whatsapp
   if($envio_whatsapp == 'ativado'){
   
-  $doc_telefonewhats = "5571997417190";
+  $doc_telefonewhats = "55$config_telefone";
   
   $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
   
@@ -160,5 +179,4 @@ alert('Lembrete de consultas enviados com Sucesso')
 window.location.replace('agenda.php')
 </script>";
 
-}
 ?>

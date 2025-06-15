@@ -26,9 +26,40 @@ $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $historico_data = date('Y-m-d H:i:s');
 
 $result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $result_check->fetch(PDO::FETCH_ASSOC)){
+$painel_users_array = [];
+    while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $select['email'],
+        'token' => $select['token'],
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check){
 $historico_quem = $select_check['nome'];
-$historico_unico_usuario = $select_check['unico'];
+$historico_unico_usuario = $select_check['cpf'];
 }
 
 if($id_job == 'editar_configuracoes_agenda' || $id_job == 'disponibilidade_fechar' || $id_job == 'disponibilidade_abrir'){
@@ -525,7 +556,7 @@ echo "<script>
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Cadastrou um novo Arquivo $arquivo na Consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
-    alert('Arquivo Cadastrado com Sucesso $id_consulta')
+    alert('Arquivo Cadastrado com Sucesso')
     window.location.replace('cadastro.php?email=$email&id_job=Arquivos')
     </script>";
     exit();
@@ -782,11 +813,19 @@ echo "<script>
         exit();
     }
 
-    $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email OR unico = :cpf");
-    $query->execute(array('email' => $doc_email, 'cpf' => $doc_cpf));
+    $cpf_encontrado = 'nao';
+    foreach ($painel_users_array as $usuario) {
+        if (isset($usuario['cpf']) && $usuario['cpf'] === $doc_cpf) {
+            $cpf_encontrado = 'sim';
+            break;
+        }
+    }
+
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
+    $query->execute(array('email' => $doc_email));
     $row_check = $query->rowCount();
     
-    if($row_check == 1){
+    if($row_check == 1 || $cpf_encontrado == 'sim'){
         echo "<script>
         alert('Email e/ou CPF ja Cadastrado!')
         window.location.replace('cadastro_registro.php')
@@ -794,8 +833,13 @@ echo "<script>
         exit();
     }
 
-    $query = $conexao->prepare("INSERT INTO painel_users (email, tipo, senha, nome, telefone, nascimento, unico, token, codigo, tentativas, aut_painel, origem, token_emp) VALUES (:email, 'Paciente', :senha, :nome, :telefone, :nascimento, :cpf, :token, '0', '0', '1', :origem, :token_emp)");
-    $query->execute(array('email' => $doc_email, 'nome' => $doc_nome, 'cpf' => $doc_cpf, 'token' => $token, 'telefone' => $doc_telefone, 'nascimento' => $nascimento, 'senha' => $crip_senha, 'origem' => $origem, 'token_emp' => $_SESSION['token_emp']));
+    //$dados_painel_users = $nome.';'.$rg.';'.$cpf.';'.$telefone.';'.$profissao.';'.$nascimento.';'.$cep.';'.$rua.';'.$numero.';'.$cidade.';'.$bairro.';'.$estado;
+    $dados_painel_users = $doc_nome.';'.''.';'.$doc_cpf.';'.$doc_telefone.';'.''.';'.$nascimento.';'.''.';'.''.';'.''.';'.''.';'.''.';'.'';
+    $dados_criptografados = openssl_encrypt($dados_painel_users, $metodo, $chave, 0, $iv);
+    $dados_final = base64_encode($dados_criptografados);
+
+    $query = $conexao->prepare("INSERT INTO painel_users (email, dados_painel_users, tipo, senha, token, codigo, tentativas, origem, token_emp) VALUES (:email, :dados_painel_users, 'Paciente', :senha, :token, '0', '1', :origem, :token_emp)");
+    $query->execute(array('email' => $doc_email, 'dados_painel_users' => $dados_final, 'token' => $token, 'senha' => $crip_senha, 'origem' => $origem, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Cliente Cadastrado Sucesso!')
@@ -805,6 +849,7 @@ echo "<script>
 }else if($id_job == 'cadastro_editar'){
 
     $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+    $doc_cpf = mysqli_real_escape_string($conn_msqli, $_POST['doc_cpf']);
     $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
     $doc_telefone = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_telefone']));
     $doc_rg = mysqli_real_escape_string($conn_msqli, $_POST['doc_rg']);
@@ -818,11 +863,12 @@ echo "<script>
     $endereco_uf = mysqli_real_escape_string($conn_msqli, $_POST['endereco_uf']);
     $feitopor = mysqli_real_escape_string($conn_msqli, $_POST['feitopor']);
 
-    $query = $conexao->prepare("UPDATE painel_users SET nome = :doc_nome, telefone = :doc_telefone, rg = :doc_rg, nascimento = :nascimento, profissao = :profissao, cep = :cep, rua = :rua, numero = :numero, cidade = :cidade, bairro = :bairro, estado = :estado WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-    $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone, 'doc_rg' => $doc_rg, 'nascimento' => $nascimento, 'profissao' => $profissao, 'cep' => $endereco_cep, 'rua' => $endereco_rua, 'numero' => $endereco_n, 'cidade' => $endereco_cidade, 'bairro' => $endereco_bairro, 'estado' => $endereco_uf));
+    $dados_painel_users = $doc_nome.';'.$doc_rg.';'.$doc_cpf.';'.$doc_telefone.';'.$profissao.';'.$nascimento.';'.$endereco_cep.';'.$endereco_rua.';'.$endereco_n.';'.$endereco_cidade.';'.$endereco_bairro.';'.$endereco_uf;
+    $dados_criptografados = openssl_encrypt($dados_painel_users, $metodo, $chave, 0, $iv);
+    $dados_final = base64_encode($dados_criptografados);
 
-    $query = $conexao->prepare("UPDATE consultas SET doc_nome = :doc_nome, doc_telefone = :doc_telefone WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :email");
-    $query->execute(array('email' => $doc_email, 'doc_nome' => $doc_nome, 'doc_telefone' => $doc_telefone));
+    $query = $conexao->prepare("UPDATE painel_users SET dados_painel_users = :dados_painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
+    $query->execute(array('email' => $doc_email, 'dados_painel_users' => $dados_final));
 
     if($feitopor == 'Paciente'){
         echo "<script>

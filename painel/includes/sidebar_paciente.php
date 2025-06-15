@@ -14,7 +14,7 @@
                     <i class="bi bi-calendar-check me-2"></i> Agenda
                 </a>
                 <a href="javascript:void(0)" onclick='window.open("reserva_paciente.php?id_job=Tratamento","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-card-checklist me-2"></i> Tratamento
+                    <i class="bi bi-card-checklist me-2"></i> Sessões
                 </a>
                 <a href="javascript:void(0)" onclick='window.open("reserva_paciente.php?id_job=Arquivos","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-archive me-2"></i> Arquivos

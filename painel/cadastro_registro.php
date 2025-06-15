@@ -3,16 +3,6 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo '<div style="color: red; font-weight: bold; text-align: center; margin-top: 50px;">Você não tem permissão para acessar esta página.</div>';
-    exit;
-}
-
 $cpf = mysqli_real_escape_string($conn_msqli, $_GET['cpf']);
 //Ajustar CPF
 $parte1 = substr($cpf, 0, 3);
@@ -86,12 +76,13 @@ $cpf = "$parte1.$parte2.$parte3-$parte4";
                     html: `Cliente: <strong>${data.nome}</strong><br>Email: <strong>${data.email}</strong>`,
                     icon: 'warning',
                 }).then((result) => {
-                    if (result.isConfirmed) {
                         preencherCamposCliente(data);
                         input.setCustomValidity(''); // Limpa erro, pois aceitou importar
                         input.classList.remove('erro-campo');
-                    }
                 });
+            }else{
+                input.setCustomValidity(''); // Limpa erro, pois aceitou importar
+                input.classList.remove('erro-campo');
             }
         })
         .catch(error => {

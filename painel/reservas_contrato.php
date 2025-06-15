@@ -6,27 +6,48 @@ ob_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
-
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 $token_contrato = mysqli_real_escape_string($conn_msqli, $_GET['token_contrato']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
 $query->execute(array('token' => $token));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
+$painel_users_array = [];
+    while($select = $query->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+        $email = $select['email'];
+    
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+    
+    $dados_array = explode(';', $dados_decifrados);
+    
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $email,
+        'nome' => $dados_array[0],
+        'rg' => $dados_array[1],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3],
+        'profissao' => $dados_array[4],
+        'nascimento' => $dados_array[5],
+        'cep' => $dados_array[6],
+        'rua' => $dados_array[7],
+        'numero' => $dados_array[8],
+        'cidade' => $dados_array[9],
+        'bairro' => $dados_array[10],
+        'estado' => $dados_array[11]
+    ];
+    }
+
+    foreach ($painel_users_array as $select){
     $nome = $select['nome'];
     $email = $select['email'];
     $rg = $select['rg'];
     $nascimento = $select['nascimento'];
-    $cpf = $select['unico'];
-    $cpf_ass = $select['unico'];
+    $cpf = $select['cpf'];
+    $cpf_ass = $select['cpf'];
     $profissao = $select['profissao'];
     $telefone = $select['telefone'];
     $cep = $select['cep'];
@@ -304,7 +325,3 @@ ______________________________________________________<br>
 </fieldset>
 </body>
 </html>
-
-<?php
-}
-?>

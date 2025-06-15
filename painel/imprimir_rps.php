@@ -3,20 +3,9 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
-use Dompdf\Dompdf;
 require '../vendor/autoload.php';
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
-while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
-    $aut_acesso = $select_check['aut_painel'];
-}
-
-if($aut_acesso == 1){
-    echo 'Você não tem permissão para acessar esta pagina';
-}else{
-
-//Criando a Instancia
+use Dompdf\Dompdf;
 $dompdf = new DOMPDF();
 
 $data_gerador = date('d/m/Y \-\ H:i:s');
@@ -33,16 +22,37 @@ $tipo = 'portrait';
 $query_reserva = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email");
 $query_reserva->execute(array('doc_email' => $doc_email));
 while($select_reserva = $query_reserva->fetch(PDO::FETCH_ASSOC)){
-    $hospede = $select_reserva['doc_nome'];
     $email = $select_reserva['doc_email'];
-    $telefone = $select_reserva['doc_telefone'];
-    $doc_cpf = $select_reserva['doc_cpf'];
     $rps = $select_reserva['id'] + 1000;
-    $atendimento_dia =$select_reserva['atendimento_dia'];
-    $atendimento_dia = date('d/m/Y', strtotime("$atendimento_dia"));
-    $atendimento_hora =$select_reserva['atendimento_hora'];
-    $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
 }
+
+    $query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+  $doc_nome = $select_check2['nome'];
+  $telefone = $select_check2['telefone'];
+  $doc_cpf = $select_check2['cpf'];
+}
+
 $query_rps = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email ORDER BY quando ASC");
 $query_rps->execute(array('doc_email' => $doc_email));
 $rps_total = $query_rps->rowCount();
@@ -74,12 +84,17 @@ $parte3 = substr($doc_cpf, 6, 3);
 $parte4 = substr($doc_cpf, 9);
 $doc_cpf = "$parte1.$parte2.$parte3-$parte4";
 
+//Ajustar Telefone
+$ddd = substr($telefone, 0, 2);
+$prefixo = substr($telefone, 2, 5);
+$sufixo = substr($telefone, 7);
+$telefone = "($ddd)$prefixo-$sufixo";
+
 //Corpo do PDF
 $gera_body = "
 <fieldset>
 <table width=100%>
-<tr><td align=left><b>Nome: </b>$hospede</td><td align=left></td></tr>
-<tr><td align=left><b>Data: </b>$atendimento_dia</td><td align=left><b>CPF: </b>$doc_cpf</td></tr>
+<tr><td align=left><b>Nome: </b>$doc_nome</td><td align=left><b>CPF: </b>$doc_cpf</td></tr>
 <tr><td align=left><b>Telefone: </b>$telefone</td><td align=left><b>E-mail: </b>$email</td></tr>
 </table>
 </fieldset><br>
@@ -137,8 +152,4 @@ $resultado_rps
 		)
 	);
 
-?>
-
-<?php
-}
 ?>

@@ -1,16 +1,34 @@
 <?php
 
 require('../config/database.php');
+require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require '../vendor/autoload.php';
 
 $diasemana_numero = date('w', time());
 $hora_ = time(); // agora
-$hora_atual = strtotime('+3 hours', $hora_);
+$hora_atual = strtotime('+0 hours', $hora_);
 
 $hoje = date('Y-m-d');
+
+$result_check_config = $conexao->query("SELECT * FROM configuracoes WHERE id > -3");
+while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
+    $token_config = $select_check_config['token'];
+    $config_empresa = $row['config_empresa'];
+    $config_email = $row['config_email'];
+    $config_telefone = $row['config_telefone'];
+    $config_msg_lembrete = $row['config_msg_lembrete'];
+    $envio_whatsapp = $row['envio_whatsapp'];
+    $envio_email = $row['envio_email'];
+    $lembrete_auto_time = $row['lembrete_auto_time'];
+    $is_segunda = $row['is_segunda'];
+    $is_terca = $row['is_terca'];
+    $is_quarta = $row['is_quarta'];
+    $is_quinta = $row['is_quinta'];
+    $is_sexta = $row['is_sexta'];
+    $is_sabado = $row['is_sabado'];
+    $is_domingo = $row['is_domingo'];
 
 if (!$lembrete_auto_time || strtotime($lembrete_auto_time) === false) {
   exit;
@@ -54,12 +72,12 @@ if ($diasemana_numero == 5) { // sexta-feira
 } else {
     $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // dia seguinte
 }
-  
+
   $atendimentos_dia = '';
   
   //Envia Consultas
   $placeholders = implode(',', array_fill(0, count($datas_envio), '?'));
-  $sql = "SELECT * FROM consultas WHERE atendimento_dia IN ($placeholders) AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')";
+  $sql = "SELECT * FROM consultas WHERE token_emp = '{$token_config}' AND atendimento_dia IN ($placeholders) AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')";
   $stmt = $conexao->prepare($sql);
   $stmt->execute($datas_envio);
   
@@ -69,11 +87,33 @@ if ($diasemana_numero == 5) { // sexta-feira
   $atendimento_dia= $select_check['atendimento_dia'];
   $atendimento_hora = $select_check['atendimento_hora'];
   $token = $select_check['token'];
-  $doc_nome = $select_check['doc_nome'];
   $doc_email = $select_check['doc_email'];
-  $doc_telefone = $select_check['doc_telefone'];
   $tipo_consulta = $select_check['tipo_consulta'];
-  
+
+  $result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$token_config}' AND email = '{$doc_email}'");
+  $painel_users_array = [];
+    while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+      'nome' => $dados_array[0],
+      'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check){
+$doc_nome = $select_check['nome'];
+$doc_telefone = $select_check['telefone'];
+}
+
   $data_email = date('d/m/Y \-\ H:i:s');
   $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
   $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
@@ -153,25 +193,32 @@ if ($diasemana_numero == 5) { // sexta-feira
     }
       //Fim Envio Whatsapp
   
-      //Faz a String pra envio de CAROL
+      //Faz a String pra envio de $config_empresa
       $atendimentos_dia .= "\n\n" . "$doc_nome em $atendimento_dia_str às $atendimento_hora_str";
   
   }
   
-  $msg_whatsapp = "Bom dia Carol. Seguem seus proximos atendimento:$atendimentos_dia";
+  $msg_whatsapp = "Bom dia $config_empresa. Seguem seus proximos atendimento:$atendimentos_dia";
   }else{
-  $msg_whatsapp = "Bom dia Carol. Você não tem nenhum atendimento para amanhã"; 
+
+  $datas_formatadas = implode(', ', array_map(function($data) {
+      return date('d/m/Y', strtotime($data));
+  }, $datas_envio));
+
+  $msg_whatsapp = "Bom dia $config_empresa. Você não tem nenhum atendimento para: $datas_formatadas"; 
   }
 
   //Incio Envio Whatsapp
   if($envio_whatsapp == 'ativado'){
   
-  $doc_telefonewhats = "5571997417190";
+  $doc_telefonewhats = "55$config_telefone";
   
   $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
   
 }
   //Fim Envio Whatsapp
+
+}
 
   file_put_contents('cron_log.txt', date('Y-m-d H:i:s') . " - Rodou\n", FILE_APPEND);
 

@@ -43,6 +43,11 @@ $mail_Port = 465;
 
 $site_atual = 'https://carolineferraz.com.br';
 
+// Chave de criptografia
+$chave = 'Accor@123';
+$metodo = 'AES-256-CBC';
+$iv = '8246508246508246';
+
 $hoje = date('Y-m-d');
 $min_dia = date('Y-m-d', strtotime("+1 days",strtotime($hoje))); 
 

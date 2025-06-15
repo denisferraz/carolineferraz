@@ -67,11 +67,50 @@ if($password != $password_conf){
     exit();
 }
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email OR unico = :cpf");
-$query->execute(array('email' => $email, 'cpf' => $doc_cpf));
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE id > 0 AND token_emp = :token_emp");
+$query->execute(array('token_emp' => $_SESSION['token_emp']));
+
+$painel_users_array = [];
+while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $dados_painel_users = $select['dados_painel_users'];
+    $id = $select['id'];
+
+// Para descriptografar os dados
+$dados = base64_decode($dados_painel_users);
+$dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+$dados_array = explode(';', $dados_decifrados);
+
+$painel_users_array[] = [
+    'id' => $id,
+    'nome' => $dados_array[0],
+    'rg' => $dados_array[1],
+    'cpf' => $dados_array[2],
+    'telefone' => $dados_array[3],
+    'profissao' => $dados_array[4],
+    'nascimento' => $dados_array[5],
+    'cep' => $dados_array[6],
+    'rua' => $dados_array[7],
+    'numero' => $dados_array[8],
+    'cidade' => $dados_array[9],
+    'bairro' => $dados_array[10],
+    'estado' => $dados_array[11]
+];
+
+}
+$cpf_encontrado = false;
+foreach ($painel_users_array as $usuario) {
+    if (isset($usuario['cpf']) && $usuario['cpf'] === $doc_cpf) {
+        $cpf_encontrado = true;
+        break;
+    }
+}
+
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
+$query->execute(array('email' => $email));
 $row = $query->rowCount();
 
-if($row == 1){
+if($row == 1 || $cpf_encontrado){
     echo json_encode([
         'success' => false,
         'message' => 'Email/CPF ja Existe em nosso cadastro. Tente recuperar o acesso!'
@@ -82,8 +121,14 @@ if($row == 1){
     
     $token = md5(date("YmdHismm"));
     $crip_senha = md5($password);
-    $query = $conexao->prepare("INSERT INTO painel_users (email, senha, nome, telefone, unico, token, codigo, tentativas, aut_painel, tema_painel, tipo, token_emp) VALUES (:email, :senha, :nome, :telefone, :cpf, :token, :codigo, :tentativas, :aut_painel, :tema_painel, :tipo, :token_emp)");
-    $query->execute(array('email' => $email, 'senha' => $crip_senha, 'nome' => $nome, 'telefone' => $telefone, 'cpf' => $doc_cpf, 'token' => $token, 'codigo' => 0, 'tentativas' => 0, 'aut_painel' => 0, 'tema_painel' => 'colorido', 'tipo' => 'Paciente', 'token_emp' => $_SESSION['token_emp']));
+
+    //$dados_painel_users = $nome.';'.$rg.';'.$cpf.';'.$telefone.';'.$profissao.';'.$nascimento.';'.$cep.';'.$rua.';'.$numero.';'.$cidade.';'.$bairro.';'.$estado;
+    $dados_painel_users = $nome.';'.''.';'.$doc_cpf.';'.$telefone.';'.''.';'.''.';'.''.';'.''.';'.''.';'.''.';'.''.';'.'';
+    $dados_criptografados = openssl_encrypt($dados_painel_users, $metodo, $chave, 0, $iv);
+    $dados_final = base64_encode($dados_criptografados);
+
+    $query = $conexao->prepare("INSERT INTO painel_users (email, dados_painel_users, senha, nome, telefone, unico, token, codigo, tentativas, tema_painel, tipo, token_emp) VALUES (:email, :dados_painel_users, :senha, :nome, :telefone, :cpf, :token, :codigo, :tentativas, :tema_painel, :tipo, :token_emp)");
+    $query->execute(array('email' => $email, 'dados_painel_users' => $dados_final, 'senha' => $crip_senha, 'nome' => $nome, 'telefone' => $telefone, 'cpf' => $doc_cpf, 'token' => $token, 'codigo' => 0, 'tentativas' => 0, 'tema_painel' => 'colorido', 'tipo' => 'Paciente', 'token_emp' => $_SESSION['token_emp']));
     
         $_SESSION['email'] = $email;
         echo json_encode([
