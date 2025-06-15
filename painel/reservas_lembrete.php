@@ -36,12 +36,33 @@ $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 $query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
 $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$doc_nome = $select['doc_nome'];
 $doc_email = $select['doc_email'];
-$doc_telefone = $select['doc_telefone'];
 $atendimento_dia = $select['atendimento_dia'];
 $atendimento_hora = $select['atendimento_hora'];
 $atendimento_hora = strtotime("$atendimento_hora");
+}
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'nome' => $dados_array[0],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+  $doc_nome = $select_check2['nome'];
+  $doc_telefone = $select_check2['telefone'];
+}
 ?>
             <div class="card-group">
             <label>Nome</label>
@@ -67,9 +88,6 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <div class="card-group-green btn"><button type="submit">Enviar</button></div>
 
             </div>
-<?php
-}
-?>
         </div>
     </form>
     <script>

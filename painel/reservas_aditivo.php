@@ -9,8 +9,28 @@ $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
 $query->execute(array('email' => $email));
+$painel_users_array = [];
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $nome = $select['nome'];
+    $dados_painel_users = $select['dados_painel_users'];
+    $id = $select['id'];
+
+// Para descriptografar os dados
+$dados = base64_decode($dados_painel_users);
+$dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+$dados_array = explode(';', $dados_decifrados);
+
+$painel_users_array[] = [
+    'id' => $id,
+    'nome' => $dados_array[0],
+    'cpf' => $dados_array[2],
+    'telefone' => $dados_array[3]
+];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+$nome = $select_check2['nome'];
 }
 
 ?>

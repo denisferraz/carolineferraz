@@ -15,10 +15,10 @@ use Dompdf\Dompdf;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-//error_reporting(0);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
 
 $limite_dia = 1;
 $atendimento_dia = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia']);
@@ -197,8 +197,8 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
     $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta, :token_emp)");
     $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta, 'token_emp' => $_SESSION['token_emp']));
     }else{
-    $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = 'Nova Sessão', local_consulta = :local_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email AND id = :id_consulta");
-    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'token' => $token, 'local_consulta' => $local_consulta));
+    $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = :tipo_consulta, local_consulta = :local_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email AND id = :id_consulta");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'token' => $token, 'tipo_consulta' => $id_job, 'local_consulta' => $local_consulta));
     }
     if($feitapor != 'Paciente'){
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");

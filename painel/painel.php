@@ -16,7 +16,6 @@ $css_path = "css/style_$tema.css";
 $query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $tipo_acesso = $select['tipo'];
-    $usuario = $select['nome'];
 }
 
 ?>

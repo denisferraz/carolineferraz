@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
    
            if ($envio_whatsapp === 'ativado' && $MsgContato = 'MsgContato') {
-               $doc_telefonewhats = "5571991293370";
-               $msg_whatsapp = "Olá Carol, alguém mandou uma mensagem pra você pelo seu site.\n\n".
+               $doc_telefonewhats = "55$config_telefone";
+               $msg_whatsapp = "Olá $config_empresa, alguém mandou uma mensagem pra você pelo seu site.\n\n".
                    "Nome: $doc_nome\n".
                    "Telefone: $doc_telefone\n".
                    "Mensagem: $message\n";

@@ -41,13 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if($row == 1){
 
         while($select = $query->fetch(PDO::FETCH_ASSOC)){
-            $cpf = $select['unico'];
+            $email = $select['email'];
         }
 
         $crip_senha = md5($senha);
 
-        $query = $conexao->prepare("UPDATE painel_users SET codigo = '0', senha = :senha WHERE token = :token AND unico = :cpf");
-        $query->execute(array('senha' => $crip_senha, 'token' => $token, 'cpf' => $cpf));
+        $query = $conexao->prepare("UPDATE painel_users SET codigo = '0', senha = :senha WHERE token = :token AND email = :email");
+        $query->execute(array('senha' => $crip_senha, 'token' => $token, 'email' => $email));
 
         echo "<script>
         alert('Senha alterada com Sucesso!')

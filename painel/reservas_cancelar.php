@@ -4,6 +4,11 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+//error_reporting(0);
+
 $tipo = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['tipo'] ?? 'Painel') : 'Painel';
 
 $error_reserva = isset($_SESSION['error_reserva']) ? $_SESSION['error_reserva'] : null;
@@ -46,11 +51,33 @@ $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 $query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
 $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$doc_nome = $select['doc_nome'];
 $doc_email = $select['doc_email'];
 $atendimento_dia = $select['atendimento_dia'];
 $atendimento_hora = $select['atendimento_hora'];
 $atendimento_hora = strtotime("$atendimento_hora");
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select2['dados_painel_users'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'nome' => $dados_array[0],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+  $doc_nome = $select_check2['nome'];
+  $doc_telefone = $select_check2['telefone'];
+}
 ?>
             <div class="card-group">
 
@@ -68,7 +95,7 @@ $atendimento_hora = strtotime("$atendimento_hora");
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
             <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
             <input type="hidden" name="status_consulta" value="Cancelado">
-            <input type="hidden" name="doc_telefone" value="<?php echo $select['doc_telefone'] ?>">
+            <input type="hidden" name="doc_telefone" value="<?php echo $doc_telefone ?>">
             <input type="hidden" name="id_job" value="<?php echo $select['tipo_consulta'] ?>">
             <input type="hidden" name="feitapor" value="<?php echo $tipo; ?>">
             <br><br>

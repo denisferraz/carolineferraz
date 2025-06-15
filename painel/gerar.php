@@ -389,6 +389,7 @@ $relatorio_fim = date('y-m-d', strtotime("$relatorio_inicio") + 86400);
 $relatorio_fim_outros = date('y-m-d', strtotime("$relatorio_inicio"));
 $relatorio_inicio_str = date('d/m/Y', strtotime("$relatorio_inicio"));
 $data_gerador = date('d/m/Y \- H:i:s\h');
+$gerador_nome = $config_empresa;
 $relatorio = mysqli_real_escape_string($conn_msqli, $_POST['relatorio']);
 $relatorio_tipo = mysqli_real_escape_string($conn_msqli, $_POST['relatorio_tipo']);
 
@@ -1023,20 +1024,46 @@ $query_estorno = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE to
 $estorno_total = $query_estorno->rowCount();
 if($estorno_total > 0){
 while($select_estorno = $query_estorno->fetch(PDO::FETCH_ASSOC)){
-$nome = $select_estorno['doc_nome'];
+$doc_email = $select_estorno['doc_email'];
 $produto = $select_estorno['produto'];
 $feitopor = $select_estorno['feitopor'];
 $quando = $select_estorno['quando'];
 $quando = date('d/m/Y - H:i\h', strtotime("$quando"));
 
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $doc_email,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+    $hospede = $select_check2['nome'];
+}
+
     if($relatorio_tipo == 'pdf'){
 
-$resultado_estorno = "$resultado_estorno<tr><td align=center>$nome</td><td>$produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
+$resultado_estorno = "$resultado_estorno<tr><td align=center>$hospede</td><td>$produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
     
 }else{
 
     $dados_relatorio[] = [
-        'doc_nome' => $select_estorno['doc_nome'],
+        'hospede' => $hospede,
         'produto' => $select_estorno['produto'],
         'feitopor' => $select_estorno['feitopor'],
         'quando' => $select_estorno['quando']
@@ -1105,7 +1132,7 @@ $linha_excel = 9;
 $qtd = 0;
 
 foreach ($dados_relatorio as $select) {
-    $nome = $select['doc_nome'];
+    $hospede = $select['hospede'];
     $produto = $select['produto'];
     $feitopor = $select['feitopor'];
     $quando = $select['quando'];
@@ -1118,7 +1145,7 @@ foreach ($dados_relatorio as $select) {
     }
 
 $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-$activeWorksheet->setCellValue('D'.$linha_excel, $nome);
+$activeWorksheet->setCellValue('D'.$linha_excel, $hospede);
 $activeWorksheet->setCellValue('E'.$linha_excel, $produto);
 $activeWorksheet->setCellValue('F'.$linha_excel, $feitopor);
 $activeWorksheet->setCellValue('G'.$linha_excel, date('d/m/Y', strtotime("$quando")));
@@ -1226,7 +1253,7 @@ $query_lanc = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token
 $lanc_total = $query_lanc->rowCount();
 if($lanc_total > 0){
 while($select_lanc = $query_lanc->fetch(PDO::FETCH_ASSOC)){
-$nome = $select_lanc['doc_nome'];
+$doc_email = $select_lanc['doc_email'];
 $produto = $select_lanc['produto'];
 $feitopor = $select_lanc['feitopor'];
 $quando = $select_lanc['quando'];
@@ -1234,14 +1261,41 @@ $quando = date('d/m/Y - H:i\h', strtotime("$quando"));
 $valor = $select_lanc['valor'];
 $valor = number_format($valor ,2,",",".");
 
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $doc_email,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+    $hospede = $select_check2['nome'];
+}
+
 if($relatorio_tipo == 'pdf'){
 
-    $resultado_lanc = "$resultado_lanc<tr><td align=center>$nome</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
+    $resultado_lanc = "$resultado_lanc<tr><td align=center>$hospede</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
         
     }else{
     
         $dados_relatorio[] = [
-            'doc_nome' => $select_lanc['doc_nome'],
+            'hospede' => $hospede,
             'produto' => $select_lanc['produto'],
             'feitopor' => $select_lanc['feitopor'],
             'quando' => $select_lanc['quando'],
@@ -1311,7 +1365,7 @@ $qtd = 0;
 $valor_total = 0.00;
 
 foreach ($dados_relatorio as $select) {
-    $nome = $select['doc_nome'];
+    $hospede = $select['hospede'];
     $produto = $select['produto'];
     $feitopor = $select['feitopor'];
     $quando = $select['quando'];
@@ -1327,7 +1381,7 @@ foreach ($dados_relatorio as $select) {
     }
 
 $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-$activeWorksheet->setCellValue('D'.$linha_excel, $nome);
+$activeWorksheet->setCellValue('D'.$linha_excel, $hospede);
 $activeWorksheet->setCellValue('E'.$linha_excel, '[ R$'.number_format($valor ,2,",",".").' ]'.$produto);
 $activeWorksheet->setCellValue('F'.$linha_excel, $feitopor);
 $activeWorksheet->setCellValue('G'.$linha_excel, date('d/m/Y', strtotime("$quando")));
@@ -1435,7 +1489,7 @@ $query_pgto = $conexao->query("SELECT * FROM lancamentos_atendimento WHERE token
 $pgto_total = $query_pgto->rowCount();
 if($pgto_total > 0){
 while($select_pgto = $query_pgto->fetch(PDO::FETCH_ASSOC)){
-$nome = $select_pgto['doc_nome'];
+$doc_email = $select_pgto['doc_email'];
 $produto = $select_pgto['produto'];
 $feitopor = $select_pgto['feitopor'];
 $quando = $select_pgto['quando'];
@@ -1443,14 +1497,40 @@ $quando = date('d/m/Y - H:i\h', strtotime("$quando"));
 $valor = $select_pgto['valor'];
 $valor = number_format(($valor * (-1)) ,2,",",".");
 
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $doc_email,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+    $hospede = $select_check2['nome'];
+}
+
 if($relatorio_tipo == 'pdf'){
 
-    $resultado_pgto = "$resultado_pgto<tr><td align=center>$nome</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
+    $resultado_pgto = "$resultado_pgto<tr><td align=center>$hospede</td><td>[ R$$valor ] $produto</td><td>$feitopor</td><td align=center>$quando</td></tr>";
         
     }else{
     
         $dados_relatorio[] = [
-            'doc_nome' => $select_pgto['doc_nome'],
+            'hospede' => $hospede,
             'produto' => $select_pgto['produto'],
             'feitopor' => $select_pgto['feitopor'],
             'quando' => $select_pgto['quando'],
@@ -1520,7 +1600,7 @@ $resultado_pgto
     $valor_total = 0.00;
     
     foreach ($dados_relatorio as $select) {
-        $nome = $select['doc_nome'];
+        $hospede = $select['hospede'];
         $produto = $select['produto'];
         $feitopor = $select['feitopor'];
         $quando = $select['quando'];
@@ -1536,7 +1616,7 @@ $resultado_pgto
         }
     
     $activeWorksheet->setCellValue('C'.$linha_excel, $qtd);
-    $activeWorksheet->setCellValue('D'.$linha_excel, $nome);
+    $activeWorksheet->setCellValue('D'.$linha_excel, $hospede);
     $activeWorksheet->setCellValue('E'.$linha_excel, '[ R$'.number_format($valor ,2,",",".").' ]'.$produto);
     $activeWorksheet->setCellValue('F'.$linha_excel, $feitopor);
     $activeWorksheet->setCellValue('G'.$linha_excel, date('d/m/Y', strtotime("$quando")));
@@ -1650,7 +1730,7 @@ $despesa_quem = $select_despesas['despesa_quem'];
 $despesa_dia = $select_despesas['despesa_dia'];
 $despesa_dia = date('d/m/Y', strtotime("$despesa_dia"));
 $despesa_valor = $select_despesas['despesa_valor'];
-$despesa_valor = number_format($despesa_valor ,2,",",".");
+//$despesa_valor = number_format($despesa_valor ,2,",",".");
 
 if($relatorio_tipo == 'pdf'){
 
@@ -1671,7 +1751,7 @@ $resultado_despesa = "$resultado_despesa<tr><td align=center>$despesa_tipo</td><
 }
 }else{
 $resultado_despesa = '<tr><td align=center>-</td><td align=center>-</td><td align=center>-</td><td align=center>-</td></tr>'; 
-$despesa_total = 0;
+$despesas_total = 0;
 }
 
 if($relatorio_tipo == 'pdf'){
@@ -1679,7 +1759,7 @@ if($relatorio_tipo == 'pdf'){
 $gera_body = "
 <fieldset>
 <b>Data Relatorio</b> - $relatorio_inicio_str<br><br>
-<b>Quantidade de Lançamentos</b>: $despesa_total<br>
+<b>Quantidade de Lançamentos</b>: $despesas_total<br>
 <table width=100% border=1px>
 <tr>
 <td align=center width=15%><b>Tipo</b></td>
@@ -1855,12 +1935,38 @@ $query_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$
 $reservas_total = $query_reservas->rowCount();
 if($reservas_total > 0){
 while($select_reservas = $query_reservas->fetch(PDO::FETCH_ASSOC)){
-$hospede = $select_reservas['doc_nome'];
+$doc_email = $select_reservas['doc_email'];
 $status_consulta = $select_reservas['status_consulta'];
 $atendimento_dia = $select_reservas['atendimento_dia'];
 $atendimento_dia = date('d/m/Y', strtotime("$atendimento_dia"));
 $atendimento_hora = $select_reservas['atendimento_hora'];
 $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $doc_email,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+    $hospede = $select_check2['nome'];
+}
 
 if($relatorio_tipo == 'pdf'){
 
@@ -1869,7 +1975,7 @@ if($relatorio_tipo == 'pdf'){
 }else{
         
     $dados_relatorio[] = [
-        'hospede' => $select_reservas['doc_nome'],
+        'hospede' => $hospede,
         'status_consulta' => $select_reservas['status_consulta'],
         'atendimento_dia' => $select_reservas['atendimento_dia'],
         'atendimento_hora' => $select_reservas['atendimento_hora']
@@ -2060,12 +2166,38 @@ $query_canc_reservas = $conexao->query("SELECT * FROM consultas WHERE token_emp 
 $canc_reservas_total = $query_canc_reservas->rowCount();
 if($canc_reservas_total > 0){
 while($select_canc_reservas = $query_canc_reservas->fetch(PDO::FETCH_ASSOC)){
-$hospede = $select_canc_reservas['doc_nome'];
+$doc_email = $select_canc_reservas['doc_email'];
 $status_consulta = $select_canc_reservas['status_consulta'];
 $atendimento_dia = $select_canc_reservas['atendimento_dia'];
 $atendimento_dia = date('d/m/Y', strtotime("$atendimento_dia"));
 $atendimento_hora = $select_canc_reservas['atendimento_hora'];
 $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $doc_email,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+    $hospede = $select_check2['nome'];
+}
 
 if($relatorio_tipo == 'pdf'){
 
@@ -2074,7 +2206,7 @@ if($relatorio_tipo == 'pdf'){
 }else{
         
     $dados_relatorio[] = [
-        'hospede' => $select_canc_reservas['doc_nome'],
+        'hospede' => $hospede,
         'status_consulta' => $select_canc_reservas['status_consulta'],
         'atendimento_dia' => $select_canc_reservas['atendimento_dia'],
         'atendimento_hora' => $select_canc_reservas['atendimento_hora']
@@ -2264,12 +2396,39 @@ $query_noshows = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_
 $noshows_total = $query_noshows->rowCount();
 if($noshows_total > 0){
 while($select_noshows = $query_noshows->fetch(PDO::FETCH_ASSOC)){
-$hospede = $select_noshows['doc_nome'];
+$doc_email = $select_noshows['doc_email'];
 $status_consulta = $select_noshows['status_consulta'];
 $atendimento_dia = $select_noshows['atendimento_dia'];
 $atendimento_dia = date('d/m/Y', strtotime("$select_noshows->atendimento_dia"));
 $atendimento_hora = $select_noshows['atendimento_hora'];
 $atendimento_hora = date('H:i\h', strtotime("$select_noshows->atendimento_hora"));
+
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'email' => $doc_email,
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+    $hospede = $select_check2['nome'];
+}
 
 if($relatorio_tipo == 'pdf'){
 
@@ -2278,7 +2437,7 @@ if($relatorio_tipo == 'pdf'){
 }else{
         
     $dados_relatorio[] = [
-        'hospede' => $select_noshows['doc_nome'],
+        'hospede' => $hospede,
         'status_consulta' => $select_noshows['status_consulta'],
         'atendimento_dia' => $select_noshows['atendimento_dia'],
         'atendimento_hora' => $select_noshows['atendimento_hora']

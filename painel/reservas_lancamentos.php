@@ -7,10 +7,27 @@ require('verifica_login.php');
 $hoje = date('Y-m-d');
 $doc_email = mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
 
-$query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email");
-$query->execute(array('doc_email' => $doc_email));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$doc_nome = $select['doc_nome'];
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'nome' => $dados_array[0],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select_check2){
+  $doc_nome = $select_check2['nome'];
+  $doc_telefone = $select_check2['telefone'];
 }
 ?>
 

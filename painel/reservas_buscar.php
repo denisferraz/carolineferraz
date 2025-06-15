@@ -47,7 +47,7 @@ require('verifica_login.php');
         $query_select = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim ORDER BY atendimento_dia ASC");
         $query_select->execute(array('busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }else{
-        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_nome LIKE :palavra OR doc_email LIKE :palavra OR confirmacao LIKE :palavra) ORDER BY atendimento_dia ASC");
+        $query_select = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia >= :busca_inicio AND atendimento_dia <= :busca_fim AND (doc_email LIKE :palavra) ORDER BY atendimento_dia ASC");
         $query_select->execute(array('palavra' => "%$palavra%", 'busca_inicio' => $busca_inicio, 'busca_fim' => $busca_fim));    
     }
     $select_qtd = $query_select->rowCount();
@@ -72,11 +72,31 @@ require('verifica_login.php');
 <?php
     while($select = $query_select->fetch(PDO::FETCH_ASSOC)){
         $status_consulta = $select['status_consulta'];
-        $doc_nome = $select['doc_nome'];
         $doc_email = $select['doc_email'];
         $atendimento_dia = strtotime($select['atendimento_dia']);
         $atendimento_hora = strtotime($select['atendimento_hora']);
         $id = $select['id'];
+
+        $query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+        $painel_users_array = [];
+        while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+            $dados_painel_users = $select['dados_painel_users'];
+
+        // Para descriptografar os dados
+        $dados = base64_decode($dados_painel_users);
+        $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+        $dados_array = explode(';', $dados_decifrados);
+
+        $painel_users_array[] = [
+            'nome' => $dados_array[0]
+        ];
+
+    }
+
+    foreach ($painel_users_array as $select_check2){
+    $doc_nome = $select_check2['nome'];
+    }
 ?>
 <tr>
     <td><a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id ?>","iframe-home")'><button>Acessar</button></a></td>
@@ -92,7 +112,7 @@ require('verifica_login.php');
     <?php if($status_consulta == 'Checkedin' || $status_consulta == 'NoShow'){  ?>
     <td>-</td>
     <?php }else{ ?>
-    <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?id_consulta=<?php echo $confirmacao ?>","iframe-home")'><button>Cancelar</button></a></td>
+    <td><a href="javascript:void(0)" onclick='window.open("reservas_cancelar.php?id_consulta=<?php echo $id ?>","iframe-home")'><button>Cancelar</button></a></td>
     <?php }}  ?>
 </tr>
 <?php

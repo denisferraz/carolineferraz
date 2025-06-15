@@ -38,6 +38,30 @@ $query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSIO
 $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $atendimento_hora = $select['atendimento_hora'];
+$doc_email = $select['doc_email'];
+
+$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+$painel_users_array = [];
+    while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'nome' => $dados_array[0],
+        'email' => $doc_email,
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+foreach ($painel_users_array as $select2){
 ?>
 
 <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
@@ -54,15 +78,15 @@ $atendimento_hora = $select['atendimento_hora'];
 
 <div class="card-group">
     <?php if($tipo == 'Painel'){ ?>
-        <label>Nome - <?php echo $select['doc_nome'] ?></label>
-        <label>Telefone - <?php echo $select['doc_telefone'] ?></label>
-        <label>Email - <?php echo $select['doc_email'] ?></label>
+        <label>Nome - <?php echo $select2['nome'] ?></label>
+        <label>Telefone - <?php echo $select2['telefone'] ?></label>
+        <label>Email - <?php echo $select2['email'] ?></label>
         <br>
     <?php } ?>
 
-    <input type="hidden" name="doc_nome" value="<?php echo $select['doc_nome'] ?>">
-    <input type="hidden" name="doc_telefone" value="<?php echo $select['doc_telefone'] ?>">
-    <input type="hidden" name="doc_email" value="<?php echo $select['doc_email'] ?>">
+    <input type="hidden" name="doc_nome" value="<?php echo $select2['nome'] ?>">
+    <input type="hidden" name="doc_telefone" value="<?php echo $select2['telefone'] ?>">
+    <input type="hidden" name="doc_email" value="<?php echo $select2['email'] ?>">
     
     <label>Atendimento Dia (Original)- <?php echo date('d/m/Y', strtotime($select['atendimento_dia'])) ?></label>
     <label>Atendimento Hora (Original) - <?php echo date('H:i\h', strtotime($select['atendimento_hora'])) ?></label>
@@ -114,7 +138,7 @@ $atendimento_hora = $select['atendimento_hora'];
 </form>
 
 <?php
-}
+}}
 ?>
 <script>
     function exibirPopup() {

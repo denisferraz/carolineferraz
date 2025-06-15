@@ -61,19 +61,43 @@ if(validaCPF($doc_cpf) == false){
     exit();
 }
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email AND unico = :cpf");
-$query->execute(array('email' => $email, 'cpf' => $doc_cpf));
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query->execute(array('email' => $email));
 $row = $query->rowCount();
 
-if($row == 1){
-
-    $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email AND unico = :cpf");
-    $query->execute(array('email' => $email, 'cpf' => $doc_cpf));
+    $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
-        $telefone = $select['telefone'];
-        $nome = $select['nome'];
-        $token = $select['token'];
+        $dados_painel_users = $select['dados_painel_users'];
+        $id = $select['id'];
+
+    // Para descriptografar os dados
+    $dados = base64_decode($dados_painel_users);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+    $dados_array = explode(';', $dados_decifrados);
+
+    $painel_users_array[] = [
+        'id' => $id,
+        'token' => $select['token'],
+        'nome' => $dados_array[0],
+        'cpf' => $dados_array[2],
+        'telefone' => $dados_array[3]
+    ];
+
+}
+
+$cpf_encontrado = 'nao';
+    foreach ($painel_users_array as $usuario) {
+        if (isset($usuario['cpf']) && $usuario['cpf'] === $doc_cpf) {
+            $cpf_encontrado = 'sim';
+            $nome = $usuario['nome'];
+            $telefone = $usuario['telefone'];
+            $token = $usuario['token'];
+            break;
+        }
     }
+
+if($row == 1 && $cpf_encontrado == 'sim'){
 
     $id = substr($doc_cpf, 4, 6).substr($doc_cpf, -3);
 
