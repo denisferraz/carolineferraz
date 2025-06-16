@@ -26,7 +26,9 @@ if (!$receita) {
 
 // Preparar HTML
 $data = date('d/m/Y H:i\h', strtotime($receita['criado_em']));
-$conteudo = nl2br(htmlspecialchars($receita['conteudo']));
+$conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $receita['conteudo']);
+$conteudo = nl2br(htmlspecialchars($conteudo));
+$titulo = htmlspecialchars($receita['titulo']);
 
 $html = "
 <html>
@@ -39,7 +41,7 @@ $html = "
     </style>
 </head>
 <body>
-    <h2>Receita Médica</h2>
+    <h2>$titulo</h2>
     <div class='conteudo'>$conteudo</div>
     <div class='rodape'>Emitido em: $data</div>
 </body>
@@ -62,7 +64,9 @@ $html = "
     
     // Preparar HTML
     $data = date('d/m/Y H:i\h', strtotime($atestado['criado_em']));
-    $conteudo = nl2br(htmlspecialchars($atestado['conteudo']));
+    $conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $atestado['conteudo']);
+    $conteudo = nl2br(htmlspecialchars($conteudo));
+    $titulo = htmlspecialchars($atestado['titulo']);
     
     $html = "
     <html>
@@ -75,7 +79,7 @@ $html = "
         </style>
     </head>
     <body>
-        <h2>Atestado Médico</h2>
+        <h2>$titulo</h2>
         <div class='conteudo'>$conteudo</div>
         <div class='rodape'>Emitido em: $data</div>
     </body>

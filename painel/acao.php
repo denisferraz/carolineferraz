@@ -17,10 +17,10 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
     exit();
  }
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-//error_reporting(0);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $historico_data = date('Y-m-d H:i:s');
@@ -1118,14 +1118,16 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
 
 }else if($id_job == 'Receituario'){
 
-    $conteudo = trim($_POST['conteudo']);
-    $email = $_POST['email'];
+    $conteudo = mysqli_real_escape_string($conn_msqli, $_POST['conteudo']);
+    $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
+    $titulo = mysqli_real_escape_string($conn_msqli, $_POST['titulo']);
     $token_emp = $_SESSION['token_emp'];
 
-    $query = $conexao->prepare("INSERT INTO receituarios (doc_email, token_emp, conteudo, criado_em) VALUES (:email, :token_emp, :conteudo, NOW())");
+    $query = $conexao->prepare("INSERT INTO receituarios (doc_email, token_emp, titulo, conteudo, criado_em) VALUES (:email, :token_emp, :titulo, :conteudo, NOW())");
     $query->execute([
         'email' => $email,
         'token_emp' => $token_emp,
+        'titulo' => $titulo,
         'conteudo' => $conteudo
     ]);
 
@@ -1137,14 +1139,16 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     
 }else if($id_job == 'Atestado'){
 
-    $conteudo = trim($_POST['conteudo']);
-    $email = $_POST['email'];
+    $conteudo = mysqli_real_escape_string($conn_msqli, $_POST['conteudo']);
+    $email = mysqli_real_escape_string($conn_msqli, $_POST['email']);
+    $titulo = mysqli_real_escape_string($conn_msqli, $_POST['titulo']);
     $token_emp = $_SESSION['token_emp'];
 
-    $query = $conexao->prepare("INSERT INTO atestados (doc_email, token_emp, conteudo, criado_em) VALUES (:email, :token_emp, :conteudo, NOW())");
+    $query = $conexao->prepare("INSERT INTO atestados (doc_email, token_emp, titulo, conteudo, criado_em) VALUES (:email, :token_emp, :titulo, :conteudo, NOW())");
     $query->execute([
         'email' => $email,
         'token_emp' => $token_emp,
+        'titulo' => $titulo,
         'conteudo' => $conteudo
     ]);
 

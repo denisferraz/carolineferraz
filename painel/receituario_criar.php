@@ -66,6 +66,8 @@ $config_telefone
             <label>Nome [ <?php echo $nome ?> ]</label>
             <label>E-mail [ <?php echo $doc_email ?> ]</label>
             <br>
+            <label>Titulo</label>
+            <input type="text" minlength="5" maxlength="50" name="titulo" placeholder="Receita Médica" required>
             <label>Receita</label>
             <textarea class="textarea-custom" name="conteudo" rows="20" cols="40" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $conteudo)); ?></textarea><br><br>
 

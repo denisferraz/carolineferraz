@@ -619,10 +619,12 @@ $receitas->execute([
     'email' => $doc_email
 ]);
 
-foreach ($receitas as $r): ?>
+foreach ($receitas as $r): 
+$conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $r['conteudo']);?>
 <div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px;">
-    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($r['criado_em'])) ?><br>
-    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($r['conteudo'])) ?><br><br>
+    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($r['criado_em'])); ?><br>
+    <strong>Titulo:</strong> <?= htmlspecialchars($r['titulo']); ?><br>
+    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($conteudo)); ?><br><br>
     <!-- Botão de excluir -->
     <form method="POST" action="receituario_excluir.php" onsubmit="return confirm('Deseja excluir este receituário?');">
         <input type="hidden" name="id" value="<?= $r['id'] ?>">
@@ -655,10 +657,12 @@ $atestados->execute([
     'email' => $doc_email
 ]);
 
-foreach ($atestados as $a): ?>
+foreach ($atestados as $a): 
+$conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $a['conteudo']);?>
 <div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px;">
-    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($a['criado_em'])) ?><br>
-    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($a['conteudo'])) ?><br><br>
+    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($a['criado_em'])); ?><br>
+    <strong>Titulo:</strong> <?= htmlspecialchars($a['titulo']); ?><br>
+    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($conteudo)); ?><br><br>
      <!-- Botão de excluir -->
     <form method="POST" action="atestado_excluir.php" onsubmit="return confirm('Deseja excluir este atestado?');">
         <input type="hidden" name="id" value="<?= $a['id'] ?>">
