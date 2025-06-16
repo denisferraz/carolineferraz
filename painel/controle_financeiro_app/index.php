@@ -15,6 +15,7 @@ try {
         FROM lancamentos l
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
+        WHERE l.token_emp = '{$_SESSION['token_emp']}' 
         GROUP BY t.id, t.nome
     ");
     $resumo = $stmt->fetchAll();
@@ -44,6 +45,7 @@ try {
         FROM lancamentos l
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
+        WHERE l.token_emp = '{$_SESSION['token_emp']}' 
         ORDER BY l.data_lancamento DESC, l.id DESC
         LIMIT 10
     ");
@@ -60,6 +62,7 @@ try {
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
         JOIN grupos_contas g ON c.grupo_id = g.id
+        WHERE l.token_emp = '{$_SESSION['token_emp']}' 
         GROUP BY t.id, t.nome, g.id, g.nome
         ORDER BY t.nome, total DESC
     ");
@@ -124,11 +127,11 @@ try {
                                 <td><?php echo formatDate($lancamento['data_lancamento']); ?></td>
                                 <td><?php echo htmlspecialchars($lancamento['descricao']); ?></td>
                                 <td>
-                                    <span class="badge <?php echo $lancamento['tipo'] == 'Receita' ? 'bg-success' : 'bg-danger'; ?>">
+                                    <span class="badge <?php echo $lancamento['tipo'] == 'Receita' && $lancamento['codigo'] != 'RS2' ? 'bg-success' : 'bg-danger'; ?>">
                                         <?php echo htmlspecialchars($lancamento['codigo']); ?>
                                     </span>
                                 </td>
-                                <td class="<?php echo $lancamento['tipo'] == 'Receita' ? 'text-success' : 'text-danger'; ?>">
+                                <td class="<?php echo $lancamento['tipo'] == 'Receita' && $lancamento['codigo'] != 'RS2' ? 'text-success' : 'text-danger'; ?>">
                                     <?php echo formatMoney($lancamento['valor']); ?>
                                 </td>
                             </tr>

@@ -20,10 +20,10 @@ try {
         FROM lancamentos l
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
-        WHERE l.data_lancamento BETWEEN ? AND ?
+        WHERE l.token_emp = ? AND l.data_lancamento BETWEEN ? AND ?
         GROUP BY t.id, t.nome
     ");
-    $stmt->execute([$dataInicio, $dataFim]);
+    $stmt->execute([$_SESSION['token_emp'], $dataInicio, $dataFim]);
     $resumoGeral = $stmt->fetchAll();
     
     $receitas = 0;
@@ -48,11 +48,11 @@ try {
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
         JOIN grupos_contas g ON c.grupo_id = g.id
-        WHERE l.data_lancamento BETWEEN ? AND ?
+        WHERE l.token_emp = ? AND l.data_lancamento BETWEEN ? AND ?
         GROUP BY t.id, t.nome, g.id, g.nome
         ORDER BY t.nome, total DESC
     ");
-    $stmt->execute([$dataInicio, $dataFim]);
+    $stmt->execute([$_SESSION['token_emp'], $dataInicio, $dataFim]);
     $resumoPorGrupo = $stmt->fetchAll();
     
     // Evolução mensal
@@ -64,11 +64,11 @@ try {
         FROM lancamentos l
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
-        WHERE l.data_lancamento BETWEEN ? AND ?
+        WHERE l.token_emp = ? AND  l.data_lancamento BETWEEN ? AND ?
         GROUP BY DATE_FORMAT(l.data_lancamento, '%Y-%m'), t.id, t.nome
         ORDER BY mes, t.nome
     ");
-    $stmt->execute([$dataInicio, $dataFim]);
+    $stmt->execute([$_SESSION['token_emp'], $dataInicio, $dataFim]);
     $evolucaoMensal = $stmt->fetchAll();
     
     // Maiores lançamentos
@@ -84,11 +84,11 @@ try {
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
         JOIN grupos_contas g ON c.grupo_id = g.id
-        WHERE l.data_lancamento BETWEEN ? AND ?
+        WHERE l.token_emp = ? AND  l.data_lancamento BETWEEN ? AND ?
         ORDER BY l.valor DESC
         LIMIT 10
     ");
-    $stmt->execute([$dataInicio, $dataFim]);
+    $stmt->execute([$_SESSION['token_emp'], $dataInicio, $dataFim]);
     $maioresLancamentos = $stmt->fetchAll();
     
 } catch (Exception $e) {
@@ -214,12 +214,12 @@ try {
                                 <td><?php echo formatDate($lancamento['data_lancamento']); ?></td>
                                 <td><?php echo htmlspecialchars($lancamento['descricao']); ?></td>
                                 <td>
-                                    <span class="badge <?php echo $lancamento['tipo'] == 'Receita' ? 'bg-success' : 'bg-danger'; ?>">
+                                    <span class="badge <?php echo $lancamento['tipo'] == 'Receita' && $lancamento['codigo'] != 'RS2' ? 'bg-success' : 'bg-danger'; ?>">
                                         <?php echo htmlspecialchars($lancamento['codigo']); ?>
                                     </span>
                                     <br><small><?php echo htmlspecialchars($lancamento['grupo']); ?></small>
                                 </td>
-                                <td class="<?php echo $lancamento['tipo'] == 'Receita' ? 'text-success' : 'text-danger'; ?>">
+                                <td class="<?php echo $lancamento['tipo'] == 'Receita' && $lancamento['codigo'] != 'RS2' ? 'text-success' : 'text-danger'; ?>">
                                     <?php echo formatMoney($lancamento['valor']); ?>
                                 </td>
                             </tr>

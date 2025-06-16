@@ -592,6 +592,16 @@ width: 150px;
   color: var(--cor-texto);
 }
 
+.checked-black {
+  background-color: var(--cor-botao-hover); /* cor de fundo ao selecionar */
+  color: var(--cor-texto-inverso);               /* cor do texto */
+  border: 1px solid var(--cor-texto-inverso);
+  font-weight: bold;
+}
+
+.opcoes-horizontal label:hover {
+  background-color: var(--cor-botao-hover);
+}
 
 /* Estilo para o botão Voltar */
 button.voltar {

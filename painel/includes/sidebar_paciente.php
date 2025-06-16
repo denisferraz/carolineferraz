@@ -19,6 +19,12 @@
                 <a href="javascript:void(0)" onclick='window.open("reserva_paciente.php?id_job=Arquivos","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-archive me-2"></i> Arquivos
                 </a>
+                <a href="javascript:void(0)" onclick='window.open("reserva_paciente.php?id_job=Receitas","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-file-earmark-medical me-2"></i> Receitas
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("reserva_paciente.php?id_job=Atestados","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-file-earmark-person me-2"></i> Atestados
+                </a>
                 <a href="javascript:void(0)" onclick='window.open("reserva_paciente.php?id_job=Contratos","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-file-earmark-diff me-2"></i> Contrato
                 </a>
@@ -35,20 +41,6 @@
             <div class="collapse ps-3" id="menuVideo">
                 <a href="javascript:void(0)" onclick='window.open("videos.php?id_job=Ver","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-youtube me-2"></i> Videos
-                </a>
-            </div>
-        </li>
-
-        <!-- CONSULTAS -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuConsultas" role="button" aria-expanded="false" aria-controls="menuConsultas">
-                <span><i class="bi bi-calendar3 me-2"></i> Consultas</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuConsultas">
-                <a href="javascript:void(0)" onclick='window.open("reservas_paciente.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-eye-fill me-2"></i> Historico
                 </a>
             </div>
         </li>

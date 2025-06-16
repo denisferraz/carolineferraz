@@ -21,7 +21,7 @@ $tratamento = $select['tratamento'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <title>Editar Tratamentos</title>
+    <title>Editar Serviços</title>
 
     <link rel="stylesheet" href="<?php echo $css_path ?>">
     <script>
@@ -75,7 +75,7 @@ $tratamento = $select['tratamento'];
 
     <FONT COLOR="white">
                 <fieldset>
-                    <legend align="center"><b>Custos do Tratamento: <?php echo $tratamento; ?></b></legend>
+                    <legend align="center"><b>Custos do Serviço: <?php echo $tratamento; ?></b></legend>
                     <br>
                     <table border="1px" align="center">
                         <tr>

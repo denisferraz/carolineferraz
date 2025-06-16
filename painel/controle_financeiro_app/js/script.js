@@ -67,11 +67,26 @@ function validateForm(formId) {
 
 // Format currency input
 function formatCurrency(input) {
-    let value = input.value.replace(/\D/g, '');
-    value = (value / 100).toFixed(2);
-    value = value.replace('.', ',');
-    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-    input.value = 'R$ ' + value;
+    let original = input.value;
+
+    // Detecta se começa com sinal negativo
+    const isNegative = original.includes('-');
+
+    // Remove tudo que não for dígito
+    let value = original.replace(/[^\d]/g, '');
+
+    if (value === '') {
+        input.value = isNegative ? '-R$ 0,00' : 'R$ 0,00';
+        return;
+    }
+
+    // Converte e formata com 2 casas decimais
+    value = (parseFloat(value) / 100).toFixed(2);
+
+    // Substitui ponto por vírgula e aplica separadores de milhar
+    value = value.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    input.value = (isNegative ? '-R$ ' : 'R$ ') + value;
 }
 
 // Parse currency value
@@ -189,7 +204,7 @@ function filterTable(searchInput, tableId) {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize any components that need setup
     initTooltips();
-    
+
     // Add event listeners for currency inputs
     const currencyInputs = document.querySelectorAll('.currency-input');
     currencyInputs.forEach(input => {
@@ -197,7 +212,18 @@ document.addEventListener('DOMContentLoaded', function() {
             formatCurrency(this);
         });
     });
-    
+
+    // Permitir digitação do sinal de negativo no início
+    currencyInputs.forEach(input => {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === '-' && !this.value.includes('-')) {
+                // Permite colocar o "-" no início
+                this.value = '-' + this.value;
+                e.preventDefault(); // evita que o browser trate isso de forma padrão
+            }
+        });
+    });
+
     // Add event listeners for auto-resize textareas
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => {

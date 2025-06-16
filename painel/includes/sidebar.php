@@ -33,6 +33,9 @@
                 <a href="javascript:void(0)" onclick='window.open("cadastro_registro.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-person-add me-2"></i> Novo Cliente
                 </a>
+                <a href="javascript:void(0)" onclick='window.open("crm.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-person-bounding-box me-2"></i> CRM
+                </a>
             </div>
         </li>
 
@@ -132,18 +135,21 @@
                 <i class="bi bi-chevron-down small"></i>
             </a>
             <div class="collapse ps-3" id="menuFinanceiro">
-                <!-- <a href="javascript:void(0)" onclick='window.open("despesas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bank me-2"></i> Ver Despesas
-                </a> -->
                 <a href="javascript:void(0)" onclick='window.open("controle_financeiro_app/index.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bank me-2"></i> Ver Despesas
+                    <i class="bi bi-bank me-2"></i> Painel Adm
                 </a>
-                <!-- <a href="javascript:void(0)" onclick='window.open("despesas_lancar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-cash-coin me-2"></i> Lançar Despesas
-                </a> -->
-                <!-- <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-coin me-2"></i> Cadastrar Custos
-                </a> -->
+                <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-coin me-2"></i> Custos Fixos
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("tratamentos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-file-earmark-medical me-2"></i> Serviços
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("estoque_produtos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-bag-plus me-2"></i> Produtos
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("ver_valores.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-currency-dollar me-2"></i> Valores
+                </a>
             </div>
         </li>
 
@@ -157,9 +163,6 @@
             <div class="collapse ps-3" id="menuEstoque">
                 <a href="javascript:void(0)" onclick='window.open("estoque_ver.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-bag-dash me-2"></i> Ver Estoque
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("estoque_produtos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bag-plus me-2"></i> Produtos
                 </a>
                 <a href="javascript:void(0)" onclick='window.open("estoque_entradas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-arrow-bar-right me-2"></i> Entradas

@@ -331,6 +331,27 @@ echo "<script>
     $valor = $lanc_quantidade * $lanc_valor;
     $tipo = 'Produto';
     }
+    
+    if($tipo == 'Produto'){
+
+    $query = $conexao->prepare("SELECT produto FROM estoque_item WHERE token_emp = :token_emp AND id = :produto");
+    $query->execute(array('produto' => $lanc_produto, 'token_emp' => $_SESSION['token_emp']));
+    $estoque_item = $query->fetch(PDO::FETCH_ASSOC);
+    $lanc_produto = $estoque_item['produto'];
+
+    $stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor)), 2, '.', ''), '']);
+    
+    $produto = mysqli_real_escape_string($conn_msqli, $_POST['lanc_produto']);
+    $produto_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['lanc_quantidade']);
+    $produto_lote = 'SAIDA_AUTOMATICA';
+    $produto_validade = $hoje;
+
+    $produto_quantidade = $produto_quantidade * -1;
+
+    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, lote, validade, token_emp) VALUES (:produto, :tipo, :quantidade, :lote, :validade, :token_emp)");
+    $query->execute(array('produto' => $produto, 'tipo' => 'Saida', 'quantidade' => $produto_quantidade, 'lote' => $produto_lote, 'validade' => $produto_validade, 'token_emp' => $_SESSION['token_emp']));
+    }
 
     $query = $conexao->prepare("INSERT INTO lancamentos_atendimento (doc_email, produto, quantidade, valor, quando, feitopor, tipo, doc_nome, token_emp) VALUES ('{$doc_email}', :lanc_produto, :lanc_quantidade, :valor, '{$lanc_data}', '{$historico_quem}', '{$tipo}', '{$doc_nome}', :token_emp)");
     $query->execute(array('lanc_produto' => $lanc_produto, 'lanc_quantidade' => $lanc_quantidade, 'valor' => $valor, 'token_emp' => $_SESSION['token_emp']));
@@ -403,7 +424,7 @@ echo "<script>
     $query->execute(array('tratamento_descricao' => $tratamento_descricao, 'tratamento_quem' => $historico_quem, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
-    alert('Tratamento Cadastrado com Sucesso')
+    alert('Serviço Cadastrado com Sucesso')
     window.location.replace('tratamentos.php')
     </script>";
     exit();
@@ -956,9 +977,35 @@ echo "<script>
 
     $produto = mysqli_real_escape_string($conn_msqli, $_POST['produto']);
     $produto_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['produto_quantidade']);
+    $produto_valor = mysqli_real_escape_string($conn_msqli, $_POST['produto_valor']);
+    $produto_lote = mysqli_real_escape_string($conn_msqli, $_POST['produto_lote']);
+    $produto_validade = mysqli_real_escape_string($conn_msqli, $_POST['produto_validade']);
+    $data_lancamento = mysqli_real_escape_string($conn_msqli, $_POST['data_lancamento']);
+    $lancar_despesa = mysqli_real_escape_string($conn_msqli, $_POST['lancar_despesa']);
 
-    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, token_emp) VALUES (:produto, :tipo, :quantidade, :token_emp)");
-    $query->execute(array('produto' => $produto, 'tipo' => 'Entrada', 'quantidade' => $produto_quantidade, 'token_emp' => $_SESSION['token_emp']));
+    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, lote, validade, token_emp) VALUES (:produto, :tipo, :quantidade, :lote, :validade, :token_emp)");
+    $query->execute(array('produto' => $produto, 'tipo' => 'Entrada', 'quantidade' => $produto_quantidade, 'lote' => $produto_lote, 'validade' => $produto_validade, 'token_emp' => $_SESSION['token_emp']));
+
+    if($lancar_despesa == 'Sim'){
+    $query = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :produto");
+    $query->execute(['produto' => $produto]);
+    while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+            $produto = $select['produto'];
+        }
+
+    $stmt = $conexao->prepare("
+                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, valor, observacoes)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([
+                        $_SESSION['token_emp'],
+                        $_POST['data_lancamento'],
+                        16,
+                        $produto,
+                        number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['produto_valor'])), 2, '.', ''),
+                        ''
+                    ]);
+    }
 
     echo "<script>
     alert('Entrada Cadastrada com Sucesso')
@@ -971,11 +1018,13 @@ echo "<script>
 
     $produto = mysqli_real_escape_string($conn_msqli, $_POST['produto']);
     $produto_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['produto_quantidade']);
+    $produto_lote = mysqli_real_escape_string($conn_msqli, $_POST['produto_lote']);
+    $produto_validade = mysqli_real_escape_string($conn_msqli, $_POST['produto_validade']);
 
     $produto_quantidade = $produto_quantidade * -1;
 
-    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, token_emp) VALUES (:produto, :tipo, :quantidade, :token_emp)");
-    $query->execute(array('produto' => $produto, 'tipo' => 'Saida', 'quantidade' => $produto_quantidade, 'token_emp' => $_SESSION['token_emp']));
+    $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, lote, validade, token_emp) VALUES (:produto, :tipo, :quantidade, :lote, :validade, :token_emp)");
+    $query->execute(array('produto' => $produto, 'tipo' => 'Saida', 'quantidade' => $produto_quantidade, 'lote' => $produto_lote, 'validade' => $produto_validade, 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Saida Cadastrada com Sucesso')
@@ -1054,4 +1103,55 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
 
 
 
+}else if($id_job == 'enviar_crm'){
+
+    $id = mysqli_real_escape_string($conn_msqli, $_POST['id']);
+
+    $stmt = $conexao->prepare("INSERT INTO evolucoes (doc_email, profissional, anotacao, token_emp) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$doc_email, $profissional, $anotacao, $_SESSION['token_emp']]);
+
+    echo "<script>
+        alert('Prontuario Registrado com Sucesso');
+        window.location.replace('cadastro.php?email=$doc_email&id_job=Prontuario');
+    </script>";
+    exit();
+
+}else if($id_job == 'Receituario'){
+
+    $conteudo = trim($_POST['conteudo']);
+    $email = $_POST['email'];
+    $token_emp = $_SESSION['token_emp'];
+
+    $query = $conexao->prepare("INSERT INTO receituarios (doc_email, token_emp, conteudo, criado_em) VALUES (:email, :token_emp, :conteudo, NOW())");
+    $query->execute([
+        'email' => $email,
+        'token_emp' => $token_emp,
+        'conteudo' => $conteudo
+    ]);
+
+    echo "<script>
+        alert('Receituario Registrado com Sucesso');
+        window.location.replace('cadastro.php?email=$email&id_job=Receituario');
+    </script>";
+    exit();
+    
+}else if($id_job == 'Atestado'){
+
+    $conteudo = trim($_POST['conteudo']);
+    $email = $_POST['email'];
+    $token_emp = $_SESSION['token_emp'];
+
+    $query = $conexao->prepare("INSERT INTO atestados (doc_email, token_emp, conteudo, criado_em) VALUES (:email, :token_emp, :conteudo, NOW())");
+    $query->execute([
+        'email' => $email,
+        'token_emp' => $token_emp,
+        'conteudo' => $conteudo
+    ]);
+
+    echo "<script>
+        alert('Atestado Registrado com Sucesso');
+        window.location.replace('cadastro.php?email=$email&id_job=Atestado');
+    </script>";
+    exit();
+    
 }

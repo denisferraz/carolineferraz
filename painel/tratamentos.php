@@ -13,7 +13,7 @@ require('verifica_login.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <title>Cadastrar Tratamento</title>
+    <title>Cadastrar Serviços</title>
     <link rel="stylesheet" href="<?php echo $css_path ?>">
     <style>
         .card {
@@ -57,15 +57,15 @@ require('verifica_login.php');
     <form class="form" action="acao.php" method="POST">
         <div class="card">
             <div class="card-top">
-                <h2>Cadastrar Tratamento</h2>
+                <h2>Cadastrar Serviços</h2>
             </div>
 
             <div class="card-group">
-                <label>Descrição Tratamento</label>
+                <label>Descrição Serviços</label>
                 <textarea name="tratamento_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
 
                 <input type="hidden" name="id_job" value="lancar_tratamento" />
-            <div class="card-group btn"><button type="submit">Cadastrar Tratamento</button></div>
+            <div class="card-group btn"><button type="submit">Cadastrar Serviços</button></div>
 
             </div>
     </form>
@@ -73,7 +73,7 @@ require('verifica_login.php');
     <table>
             <thead>
                 <tr>
-                    <th>Tratamento</th>
+                    <th>Serviços</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -88,7 +88,7 @@ require('verifica_login.php');
                     $descricao = $select['tratamento'];
                 ?>
                 <tr>
-                    <td data-label="Tratamento"><?php echo $descricao; ?></td>
+                    <td data-label="Serviços"><?php echo $descricao; ?></td>
                     <td data-label="Editar"><a href="javascript:void(0)" onclick='window.open("tratamentos_editar.php?id=<?php echo $id ?>","iframe-home")'><button>Editar</button></a></td>
                     <td data-label="Excluir"><a href="javascript:void(0)" onclick='window.open("tratamentos_excluir.php?id=<?php echo $id ?>","iframe-home")'><button>Excluir</button></a></td>
                 </tr>

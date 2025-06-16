@@ -70,6 +70,7 @@ $estado = $select['estado'];
     <title>Informações Consulta</title>
     <link rel="stylesheet" href="<?php echo $css_path ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
     .btn-excluir {
         background-color: red;
@@ -93,12 +94,6 @@ $estado = $select['estado'];
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Consultas","iframe-home")'>
     <i class="bi bi-calendar-check"></i> <span>Consultas</span>
   </a>
-  <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Anamnese","iframe-home")'>
-    <i class="bi bi-clipboard-heart"></i> <span>Anamnese</span>
-  </a>
-  <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Prontuario","iframe-home")'>
-    <i class="bi bi-journal-medical"></i> <span>Evolução</span>
-  </a>
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Tratamento","iframe-home")'>
     <i class="bi bi-card-checklist"></i> <span>Historico Sessões</span>
   </a>
@@ -111,6 +106,20 @@ $estado = $select['estado'];
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Contratos","iframe-home")'>
     <i class="bi bi-file-earmark-text"></i> <span>Contratos</span>
   </a>
+</div>
+<div class="top-menu">
+  <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Anamnese","iframe-home")'>
+    <i class="bi bi-clipboard-heart"></i> <span>Anamnese</span>
+  </a>
+  <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Prontuario","iframe-home")'>
+    <i class="bi bi-journal-medical"></i> <span>Evolução</span>
+  </a>
+  <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Receituario","iframe-home")'>
+    <i class="bi bi-file-earmark-medical"></i> <span>Receitas</span>
+    </a>
+    <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Atestado","iframe-home")'>
+        <i class="bi bi-file-earmark-person"></i> <span>Atestados</span>
+    </a>
 </div>
 
 <?php
@@ -151,6 +160,7 @@ $telefone = "($ddd)$prefixo-$sufixo";
 <label><b>Endereço: </b><?php echo $endereco ?></label><br>
 </div>
 </fieldset>
+
 <!-- Plano de Tratamento -->
 <?php
 if($id_job == 'Tratamento'){
@@ -355,7 +365,7 @@ $history_status = $history['status_consulta'];
 $id_consulta = $history['id'];
 ?>
     <tr>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'><button>Ver</button></a></td>
+        <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>&id_job=iframe","iframe-home")'><button>Ver</button></a></td>
         <td align="center"><?php echo date('d/m/Y', strtotime("$history_data")) ?></td>
         <td align="center"><?php echo date('H:i\h', strtotime("$history_hora")) ?></td>
         <td align="center"><?php echo $history_local; ?></td>
@@ -537,7 +547,7 @@ $id = $select_lancamento['id'];
 </table>
 <br><br>
 <center>
-<a href="javascript:void(0)" onclick='window.open("reservas_lancamentos.php?doc_email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Lançar</a>
+<a href="javascript:void(0)" onclick="escolherTipoLancamento()" class="btn-black">Lançar</a>
 <a href="javascript:void(0)" onclick='window.open("lancamentos_pgto.php?doc_email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Pagar</a>
 <a href="javascript:void(0)" onclick='window.open("imprimir_rps.php?doc_email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Extratos</a>
 </center>
@@ -594,6 +604,79 @@ $evolucoes->execute([$doc_email]);
 </form>
 </fieldset>
 <?php } ?>
+<?php if($id_job == 'Receituario'){ ?>
+<!-- Receituario -->
+<fieldset>
+<legend><h2>Receitas</h2></legend>
+<center>
+<a href="javascript:void(0)" onclick='window.open("receituario_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Nova Receita</a>
+</center>
+<br>
+<?php
+$receitas = $conexao->prepare("SELECT * FROM receituarios WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
+$receitas->execute([
+    'token_emp' => $_SESSION['token_emp'],
+    'email' => $doc_email
+]);
+
+foreach ($receitas as $r): ?>
+<div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px;">
+    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($r['criado_em'])) ?><br>
+    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($r['conteudo'])) ?><br><br>
+    <!-- Botão de excluir -->
+    <form method="POST" action="receituario_excluir.php" onsubmit="return confirm('Deseja excluir este receituário?');">
+        <input type="hidden" name="id" value="<?= $r['id'] ?>">
+        <input type="hidden" name="email" value="<?= $doc_email ?>">
+        <button class="btn-excluir">Excluir</button>
+    </form>
+    <!-- Botão de imprimir -->
+    <form method="GET" action="imprimir.php" target="_blank" style="display: inline-block;">
+        <input type="hidden" name="id" value="<?= $r['id'] ?>">
+        <input type="hidden" name="email" value="<?= $doc_email ?>">
+        <input type="hidden" name="id_job" value="Receita">
+        <button type="submit">Imprimir</button>
+    </form>
+</div>
+<?php endforeach; ?>
+</fieldset>
+<?php } ?>
+<?php if($id_job == 'Atestado'){ ?>
+<!-- Atestado -->
+<fieldset>
+<legend><h2>Atestados Médicos</h2></legend>
+<center>
+<a href="javascript:void(0)" onclick='window.open("atestado_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Novo Atestado</a>
+</center>
+<br>
+<?php
+$atestados = $conexao->prepare("SELECT * FROM atestados WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
+$atestados->execute([
+    'token_emp' => $_SESSION['token_emp'],
+    'email' => $doc_email
+]);
+
+foreach ($atestados as $a): ?>
+<div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px;">
+    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($a['criado_em'])) ?><br>
+    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($a['conteudo'])) ?><br><br>
+     <!-- Botão de excluir -->
+    <form method="POST" action="atestado_excluir.php" onsubmit="return confirm('Deseja excluir este atestado?');">
+        <input type="hidden" name="id" value="<?= $a['id'] ?>">
+        <input type="hidden" name="email" value="<?= $doc_email ?>">
+        <button class="btn-excluir">Excluir</button>
+    </form>
+    <!-- Botão de imprimir -->
+    <form method="GET" action="imprimir.php" target="_blank" style="display: inline-block;">
+        <input type="hidden" name="id" value="<?= $a['id'] ?>">
+        <input type="hidden" name="email" value="<?= $doc_email ?>">
+        <input type="hidden" name="id_job" value="Atestado">
+        <button type="submit">Imprimir</button>
+    </form>
+</div>
+<?php endforeach; ?>
+</fieldset>
+<?php } ?>
+
 <script>
 function toggleCampos() {
     const div = document.getElementById('camposExtras');
@@ -625,5 +708,26 @@ function exibirPopup() {
 }
 </script>
 </div>
+
+<script>
+function escolherTipoLancamento() {
+    Swal.fire({
+        title: 'Escolha o tipo de lançamento',
+        icon: 'question',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Produto',
+        denyButtonText: 'Serviço',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        let email = '<?= $doc_email ?>';
+        if (result.isConfirmed) {
+            window.open('reservas_lancamentos.php?doc_email=' + encodeURIComponent(email) + '&id_job=Produto', 'iframe-home');
+        } else if (result.isDenied) {
+            window.open('reservas_lancamentos.php?doc_email=' + encodeURIComponent(email) + '&id_job=Serviço', 'iframe-home');
+        }
+    });
+}
+</script>
 </body>
 </html>

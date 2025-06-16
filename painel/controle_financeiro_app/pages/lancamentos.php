@@ -1,4 +1,6 @@
 <?php
+
+// SET `token_emp` = 'd6b0ab7f1c8ab8f514db9a6d85de160a' WHERE id > 0
 require_once '../includes/config.php';
 
 $pageTitle = 'Lançamentos';
@@ -16,10 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($_POST['action']) {
                 case 'add':
                     $stmt = $pdo->prepare("
-                        INSERT INTO lancamentos (data_lancamento, conta_id, descricao, valor, observacoes)
-                        VALUES (?, ?, ?, ?, ?)
+                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, valor, observacoes)
+                        VALUES (?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
+                        $_SESSION['token_emp'],
                         $_POST['data_lancamento'],
                         $_POST['conta_id'],
                         sanitize($_POST['descricao']),
@@ -82,29 +85,29 @@ try {
     $contas = $stmt->fetchAll();
     
     // Buscar lançamentos com filtros
-    $where = "1=1";
-    $params = [];
-    
+    $where = "l.token_emp = ?";
+    $params = [$_SESSION['token_emp']];
+
     if (!empty($_GET['data_inicio'])) {
         $where .= " AND l.data_lancamento >= ?";
         $params[] = $_GET['data_inicio'];
     }
-    
+
     if (!empty($_GET['data_fim'])) {
         $where .= " AND l.data_lancamento <= ?";
         $params[] = $_GET['data_fim'];
     }
-    
+
     if (!empty($_GET['tipo'])) {
         $where .= " AND t.nome = ?";
         $params[] = $_GET['tipo'];
     }
-    
+
     if (!empty($_GET['conta_id'])) {
         $where .= " AND c.id = ?";
         $params[] = $_GET['conta_id'];
     }
-    
+
     $stmt = $pdo->prepare("
         SELECT 
             l.id,
@@ -136,7 +139,7 @@ try {
     <div class="alert alert-<?php echo $messageType; ?>">
         <?php echo $message; ?>
     </div>
-<?php endif; ?>
+<?php endif;?>
 
 <div class="card mb-4">
     <div class="card-header">
@@ -196,7 +199,7 @@ try {
                     <tr>
                         <th>Data</th>
                         <th>Descrição</th>
-                        <th>Conta</th>
+                        <th>Codigo</th>
                         <th>Grupo</th>
                         <th>Valor</th>
                         <th>Ações</th>
@@ -213,12 +216,12 @@ try {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <span class="badge <?php echo $lancamento['tipo'] == 'Receita' ? 'bg-success' : 'bg-danger'; ?>">
-                                    <?php echo htmlspecialchars($lancamento['codigo']); ?>
+                                <span class="badge <?php echo $lancamento['tipo'] == 'Receita' && $lancamento['codigo'] != 'RS2' ? 'bg-success' : 'bg-danger'; ?>">
+                                    <?php echo $lancamento['codigo']; ?>
                                 </span>
                             </td>
                             <td><?php echo htmlspecialchars($lancamento['grupo']); ?></td>
-                            <td class="<?php echo $lancamento['tipo'] == 'Receita' ? 'text-success' : 'text-danger'; ?>">
+                            <td class="<?php echo $lancamento['tipo'] == 'Receita' && $lancamento['codigo'] != 'RS2' ? 'text-success' : 'text-danger'; ?>">
                                 <?php echo formatMoney($lancamento['valor']); ?>
                             </td>
                             <td>
@@ -312,6 +315,7 @@ try {
 <script src="../js/script.js"></script>
 
 <script>
+
 // Definir data atual como padrão
 document.getElementById('dataLancamento').value = new Date().toISOString().split('T')[0];
 
@@ -336,17 +340,20 @@ function prepararValor() {
     if (valorInput && valorInput.value) {
         let bruto = valorInput.value.trim();
 
-        // Remove símbolo R$ e espaços
-        bruto = bruto.replace(/^R\$\s?/, '');
+        // Mantém sinal de negativo, remove R$ e espaços
+        bruto = bruto.replace(/^(-)?R\$\s?/, '$1');
 
-        // Remove pontos de milhar e troca vírgula decimal por ponto
-        const limpo = bruto.replace(/\./g, '');
+        // Remove pontos de milhar
+        let limpo = bruto.replace(/\./g, '');
 
-        // Se estiver vazio depois da limpeza, considera zero
+        // Troca vírgula por ponto (para float)
+        //limpo = limpo.replace(',', '.');
+
         valorInput.value = limpo || '0';
     }
-    return true; // continuar com envio
+    return true;
 }
+
 
 // Reset form when opening for new entry
 document.querySelector('[onclick="openModal(\'modalLancamento\')"]').addEventListener('click', function() {

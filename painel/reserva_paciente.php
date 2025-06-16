@@ -5,10 +5,11 @@ require('../config/database.php');
 require('verifica_login.php');
 
 $hoje = date('Y-m-d');
+$doc_email = $_SESSION['email'];
 
 $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_job'] ?? 'Tratamento') : 'Tratamento';
 
-$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
+$query_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
 while($select_check = $query_check->fetch(PDO::FETCH_ASSOC)){
     $token_profile = $select_check['token'];
 }
@@ -37,7 +38,7 @@ $qtd_tratamentos = 0;
 <center>
 <?php
 $check_tratamento = $conexao->prepare("SELECT plano_descricao, sum(sessao_atual), sum(sessao_total) FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-$check_tratamento->execute(array('email' => $_SESSION['email']));
+$check_tratamento->execute(array('email' => $doc_email));
 while($select_tratamento = $check_tratamento->fetch(PDO::FETCH_ASSOC)){
     $sessao_atual = $select_tratamento['sum(sessao_atual)'];
     $sessao_total = $select_tratamento['sum(sessao_total)'];
@@ -63,7 +64,7 @@ echo "<b></u>$plano_descricao</u></b>";
     </tr>
 <?php
 $check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email GROUP BY token ORDER BY id DESC");
-$check_tratamento_row->execute(array('email' => $_SESSION['email']));
+$check_tratamento_row->execute(array('email' => $doc_email));
 if($check_tratamento_row->rowCount() < 1){
 ?>
     <tr>
@@ -183,7 +184,7 @@ $qtd_contratos = 0;
 <center>
 <?php
 $check_contratos = $conexao->prepare("SELECT * FROM contrato WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND aditivo_status = 'Nao'");
-$check_contratos->execute(array('email' => $_SESSION['email']));
+$check_contratos->execute(array('email' => $doc_email));
 
 $row_check_contratos = $check_contratos->rowCount();
 
@@ -215,8 +216,68 @@ if($row_check_contratos == 0){
 </table>
 </fieldset>
 <?php
-}
+}else if($id_job =='Receitas'){
 ?>
+<!-- Receituario -->
+<fieldset>
+<legend><h2>Receitas Médicas</h2></legend>
+<br>
+<?php
+$receitas = $conexao->prepare("SELECT * FROM receituarios WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
+$receitas->execute([
+    'token_emp' => $_SESSION['token_emp'],
+    'email' => $doc_email
+]);
+if($receitas->rowcount() == '0'){
+    echo "<center>Nenhuma <b>Receita Médica</b> foi localizada no seu <b>Cadastro</b></center>";
+}
+foreach ($receitas as $r): ?>
+<div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px;">
+    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($r['criado_em'])) ?><br>
+    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($r['conteudo'])) ?><br><br>
+    <!-- Botão de imprimir -->
+    <form method="GET" action="imprimir.php" target="_blank" style="display: inline-block;">
+        <input type="hidden" name="id" value="<?= $r['id'] ?>">
+        <input type="hidden" name="email" value="<?= $doc_email ?>">
+        <input type="hidden" name="id_job" value="Receita">
+        <button type="submit">Imprimir</button>
+    </form>
+</div>
+<?php endforeach; ?>
+</fieldset>
+<?php
+}else if($id_job =='Atestados'){
+?>
+<!-- Atestado -->
+<fieldset>
+<legend><h2>Atestados Médicos</h2></legend>
+<br>
+<?php
+$atestados = $conexao->prepare("SELECT * FROM atestados WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
+$atestados->execute([
+    'token_emp' => $_SESSION['token_emp'],
+    'email' => $doc_email
+]);
+
+if($atestados->rowcount() == '0'){
+    echo "<center>Nenhum <b>Atestado Médico</b> foi localizado no seu <b>Cadastro</b></center>";
+}
+foreach ($atestados as $a): ?>
+<div style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px;">
+    <strong>Data:</strong> <?= date('d/m/Y H:i', strtotime($a['criado_em'])) ?><br>
+    <strong>Comentário:</strong> <?= nl2br(htmlspecialchars($a['conteudo'])) ?><br><br>
+    <!-- Botão de imprimir -->
+    <form method="GET" action="imprimir.php" target="_blank" style="display: inline-block;">
+        <input type="hidden" name="id" value="<?= $a['id'] ?>">
+        <input type="hidden" name="email" value="<?= $doc_email ?>">
+        <input type="hidden" name="id_job" value="Atestado">
+        <button type="submit">Imprimir</button>
+    </form>
+</div>
+<?php endforeach; ?>
+</fieldset>
+<?php
+} ?>
 </div>
 </body>
 </html>

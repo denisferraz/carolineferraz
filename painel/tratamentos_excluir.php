@@ -10,8 +10,11 @@ $tratamento_id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
     $query = $conexao->prepare("DELETE FROM tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :tratamento_id");
     $query->execute(array('tratamento_id' => $tratamento_id));
 
+    $query = $conexao->prepare("DELETE FROM custos_tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND tratamento_id = :tratamento_id");
+    $query->execute(array('tratamento_id' => $tratamento_id));
+
     echo "<script>
-    alert('Tratamento Deletado com Sucesso')
+    alert('Serviço Deletado com Sucesso')
     window.location.replace('tratamentos.php')
     </script>";
     exit();

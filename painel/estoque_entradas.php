@@ -31,10 +31,13 @@ require('verifica_login.php');
 
             <div class="card-group">
 
+            <label>Data Entrada</label>
+            <input type="date" name="data_lancamento" value="<?php echo $hoje; ?>" >
+
             <label>Produto</label>
             <select name="produto" required>
             <?php
-                $query = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY produto DESC");
+                $query = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY produto ASC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -50,8 +53,20 @@ require('verifica_login.php');
                 <label>Quantidade</label>
                 <input type="number" name="produto_quantidade" min="1" max="9999" step="1" required>
 
-                <label>Valor</label>
+                <label>Valor (Total)</label>
                 <input type="number" name="produto_valor" min="0.01" max="9999.00" step="0.01" required>
+
+                <label>Lote</label>
+                <input type="text" name="produto_lote" minlength="1" maxlength="50" >
+
+                <label>Validade</label>
+                <input type="date" name="produto_validade" >
+
+                <label>Lançar em Despesa?</label>
+                <select name="lancar_despesa" required>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+                </select>
                             
             <input type="hidden" name="id_job" value="lancar_entrada" />
             <div class="card-group btn"><button type="submit">Registrar Entrada</button></div>
@@ -65,6 +80,8 @@ require('verifica_login.php');
                     <th>Data</th>
                     <th>Produto</th>
                     <th>Entrada [Unidade]</th>
+                    <th>Lote</th>
+                    <th>Validade</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,6 +93,8 @@ require('verifica_login.php');
                     $produto_id = $select['produto'];
                     $quantidade = $select['quantidade'];
                     $data_entrada = $select['data_entrada'];
+                    $lote = $select['lote'];
+                    $validade = $select['validade'];
 
                     $query2 = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id");
                     $query2->execute(['id' => $produto_id]);
@@ -85,9 +104,11 @@ require('verifica_login.php');
                     }
                 ?>
                 <tr>
-                    <td data-label="Data"><?php echo date('d/m/yy', strtotime("$data_entrada")); ?></td>
+                    <td data-label="Data"><?php echo date('d/m/Y', strtotime("$data_entrada")); ?></td>
                     <td data-label="Produto"><?php echo $produto; ?></td>
-                    <td data-label="Entrada"><?php echo $quantidade; ?> [<?php echo $unidade; ?>]</td>
+                    <td data-label="Entrada [Unidade]"><?php echo $quantidade; ?> [<?php echo $unidade; ?>]</td>
+                    <td data-label="Lote"><?php echo $Lote; ?></td>
+                    <td data-label="Validade"><?php echo date('d/m/Y', strtotime("$validade")); ?></td>
                 </tr>
                 <?php } ?>
             </tbody>

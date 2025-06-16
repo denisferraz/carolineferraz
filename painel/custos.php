@@ -27,7 +27,7 @@ require('verifica_login.php');
     <form class="form" action="acao.php" method="POST">
         <div class="card">
             <div class="card-top">
-                <h2>Cadastrar Custos</h2>
+                <h2>Cadastrar Custos Fixos</h2>
             </div>
 
             <div class="card-group">
@@ -47,10 +47,10 @@ require('verifica_login.php');
                 </select>
 
 
-                <label>Descrição Custo</label>
+                <label>Descrição Custo Fixo</label>
                 <textarea name="custo_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
                 <input type="hidden" name="id_job" value="lancar_custos" />
-            <div class="card-group btn"><button type="submit">Cadastrar Custo</button></div>
+            <div class="card-group btn"><button type="submit">Cadastrar Custo Fixo</button></div>
 
             </div>
     </form>

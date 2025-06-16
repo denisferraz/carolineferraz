@@ -93,7 +93,7 @@ if (isset($_GET['id_modelo'])) {
   </style>
 </head>
 <body>
-  <form id="form-modelo-anamnese" class="card">
+  <form id="form-modelo-anamnese" class="card" enctype="multipart/form-data">
     <h2><?= $modelo_id ? "Editar Modelo de Anamnese" : "Criar Ficha de Anamnese" ?></h2>
 
     <div class="card-group">
@@ -115,6 +115,8 @@ if (isset($_GET['id_modelo'])) {
 
 <script>
   const container = document.getElementById('perguntasContainer');
+  const tokenEmp = <?= json_encode($_SESSION['token_emp']) ?>;
+
   let index = 0;
 
   // Inicializa Sortable para arrastar perguntas e mudar ordem
@@ -128,8 +130,8 @@ if (isset($_GET['id_modelo'])) {
   const tipo = pergunta ? pergunta.tipo : 'text';
   const opcoes = pergunta && pergunta.opcoes ? pergunta.opcoes : '';
   const pergunta_id = pergunta && pergunta.id ? pergunta.id : '';
-
-  const html = `
+  
+  let html = `
     <div class="card-group" draggable="true">
       <input type="hidden" name="perguntas[${index}][id]" value="${pergunta_id}">
       <label>Pergunta:</label>
@@ -143,21 +145,54 @@ if (isset($_GET['id_modelo'])) {
         <option value="select" ${tipo === 'select' ? 'selected' : ''}>Lista</option>
       </select>
       <div id="opcoes-${index}" style="display: ${['radio','checkbox','select'].includes(tipo) ? 'block' : 'none'}">
-        <label>Opções (separadas por ;)</label>
-        <input type="text" name="perguntas[${index}][opcoes]" value="${opcoes.replace(/"/g, '&quot;')}">
-      </div>
-    </div>
+      <label>Opções (separadas por ;)</label>
+      <input type="text" name="perguntas[${index}][opcoes]" value="${opcoes.replace(/"/g, '&quot;')}">
   `;
+
+  // Mostrar campo upload para imagens em radio e checkbox
+  if (tipo === 'radio' || tipo === 'checkbox') {
+    html += `
+      <label>Imagens para as opções (ordem correspondente)</label>
+      <input type="file" name="perguntas[${index}][imagens][]" multiple accept="image/png, image/jpeg">
+      <small>As imagens devem estar na mesma ordem das opções (separadas por ponto e vírgula)</small>
+    `;
+  }
+
+  // Aqui você pode colocar o preview das imagens já existentes (se estiver editando)
+  if (pergunta_id && (tipo === 'radio' || tipo === 'checkbox') && opcoes) {
+    const tokenEmp = <?= json_encode($_SESSION['token_emp']) ?>;
+    const opArray = opcoes.split(';');
+    opArray.forEach(op => {
+      const opTrim = op.trim();
+      const nomeImg = opTrim.toLowerCase().replace(/\s+/g, '_');
+      const path = `../imagens/${tokenEmp}/${pergunta_id}_${nomeImg}.png`;
+
+      html += `
+        <div style="margin: 0.5rem 0;" id="preview-${pergunta_id}-${nomeImg}">
+          <strong>${opTrim}</strong><br>
+          <img src="${path}" alt="${opTrim}" style="max-width: 150px; border: 1px solid #ccc; border-radius: 6px; display:none;" 
+               onload="this.style.display='block';" 
+               onerror="this.parentNode.style.display='none';">
+        </div>
+      `;
+    });
+  }
+
+  html += `</div></div>`;
   container.insertAdjacentHTML('beforeend', html);
   index++;
 }
 
   // Mostra ou esconde campo de opções baseado no tipo da pergunta
   function mostrarOpcoes(select, idx) {
-    const tipo = select.value;
-    const opcoesDiv = document.getElementById(`opcoes-${idx}`);
-    opcoesDiv.style.display = (tipo === 'radio' || tipo === 'checkbox' || tipo === 'select') ? 'block' : 'none';
+  const tipo = select.value;
+  const opcoesDiv = document.getElementById(`opcoes-${idx}`);
+  const uploadDiv = document.getElementById(`upload-${idx}`);
+  opcoesDiv.style.display = (tipo === 'radio' || tipo === 'checkbox' || tipo === 'select') ? 'block' : 'none';
+  if (uploadDiv) {
+    uploadDiv.style.display = tipo === 'radio' ? 'block' : 'none';
   }
+}
 
   // Salvar modelo via fetch para PHP
   function salvarModelo() {
