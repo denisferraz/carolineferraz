@@ -10,7 +10,7 @@ $id_job = isset($_GET['id_job']) ? mysqli_real_escape_string($conn_msqli, $_GET[
 $doc_email = $_SESSION['email'];
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
 $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

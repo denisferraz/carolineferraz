@@ -68,7 +68,7 @@ if($password != $password_conf){
 }
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
-$query->execute(array('%;'.$_SESSION['token_emp'].';%'));
+$query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%'));
 
 $painel_users_array = [];
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
@@ -107,7 +107,7 @@ foreach ($painel_users_array as $usuario) {
 }
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $email));
+$query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $email));
 $row = $query->rowCount();
 
 if($row == 1 || $cpf_encontrado){

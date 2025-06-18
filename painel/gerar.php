@@ -1031,7 +1031,7 @@ $quando = $select_estorno['quando'];
 $quando = date('d/m/Y - H:i\h', strtotime("$quando"));
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -1264,7 +1264,7 @@ $valor = number_format($valor ,2,",",".");
 
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -1500,7 +1500,7 @@ $valor = $select_pgto['valor'];
 $valor = number_format(($valor * (-1)) ,2,",",".");
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -1946,7 +1946,7 @@ $atendimento_hora = $select_reservas['atendimento_hora'];
 $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -2178,7 +2178,7 @@ $atendimento_hora = $select_canc_reservas['atendimento_hora'];
 $atendimento_hora = date('H:i\h', strtotime("$atendimento_hora"));
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -2410,7 +2410,7 @@ $atendimento_hora = date('H:i\h', strtotime("$select_noshows->atendimento_hora")
 
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

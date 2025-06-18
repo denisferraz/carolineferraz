@@ -91,7 +91,7 @@ if ($diasemana_numero == 5) { // sexta-feira
   $tipo_consulta = $select_check['tipo_consulta'];
 
   $result_check = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-  $result_check->execute(array('%;'.$token_config.';%', 'email' => $doc_email));
+  $result_check->execute(array('token_emp' => '%;'.$token_config.';%', 'email' => $doc_email));
   $painel_users_array = [];
     while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

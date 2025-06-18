@@ -229,7 +229,7 @@ body {
             $classe_extra = 'hoje';
         }
         
-        $query = $conexao->query("SELECT doc_email, atendimento_hora FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
+        $query = $conexao->query("SELECT doc_email, atendimento_hora, status_consulta FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
         if($query->rowCount() > 0){
             
             //Veriica se é passado, presente, futuro
@@ -244,13 +244,20 @@ body {
         echo "<a href='home.php?data=$data_atual' style='display: block; color: inherit; text-decoration: none; height: 100%; width: 100%;'>";
         echo "<div class='numero'>$dia_atual</div>";  // Número do dia
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $status_consulta = $row['status_consulta'];
             foreach ($painel_users_array as $item) {
                 if ($item['email'] === $row['doc_email']) {
                     $doc_nome = $item['nome'];
                 }
             }
+
+            if($status_consulta == 'Confirmada' || $status_consulta == 'Em Andamento'){
+                $class_evento = 'evento';
+            }else{
+                $class_evento = 'evento_nao';
+            }
             $hora = substr($row['atendimento_hora'], 0, 5);
-            echo "<span class='evento'>{$hora}h - {$doc_nome}</span>";
+            echo "<span class='{$class_evento}'>{$hora}h - {$doc_nome}</span>";
         }
 
         echo "</a>";

@@ -35,7 +35,7 @@ $historico_data = date('Y-m-d H:i:s');
 if($feitapor == 'Painel'){
 $email = $_SESSION['email'];
 $result_historico = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$result_historico->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$result_historico->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
 $painel_users_array = [];
     while($select = $result_historico->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

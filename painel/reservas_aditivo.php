@@ -8,7 +8,7 @@ $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $email));
+$query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $email));
 $painel_users_array = [];
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $dados_painel_users = $select['dados_painel_users'];

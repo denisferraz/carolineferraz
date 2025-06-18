@@ -133,14 +133,22 @@ body{
   color: var(--cor-texto);
 }
 
-.evento {
-  background: #888;
-  color: white;
+.evento, .evento_nao {
   font-size: 0.75rem;
   padding: 2px 4px;
   margin-top: 4px;
   border-radius: 4px;
   display: block;
+}
+
+.evento {
+  background: #fff;
+  color: black;
+}
+
+.evento_nao {
+  background: darkgrey;
+  color: darkred;
 }
 
 .tabela-eventos {
