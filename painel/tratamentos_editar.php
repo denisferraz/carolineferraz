@@ -48,15 +48,21 @@ $tratamento = $select['tratamento'];
             <label><b>Custo:  
                 <select name="custo_id">
                 <?php
-            $query2 = $conexao->prepare("SELECT * FROM custos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY custo_tipo DESC");
-            $query2->execute(array('id' => '1'));
+            $query2 = $conexao->prepare("SELECT * FROM custos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY custo_descricao ASC");
+            $query2->execute(array('id' =>0));
             while($select2 = $query2->fetch(PDO::FETCH_ASSOC)){
             $id_custo = $select2['id'];
             $custo_valor = $select2['custo_valor'];
             $custo_tipo = $select2['custo_tipo'];
             $custo_descricao = $select2['custo_descricao'];
+
+            if($custo_tipo == 'Taxas' || $custo_tipo == 'Impostos' || $custo_tipo == 'Margem'){
+                $custo_valor = number_format($custo_valor ,2,",",".") . '%';
+            }else{
+                $custo_valor = 'R$' . number_format($custo_valor ,2,",",".");
+            }
                 ?>
-                <option value="<?php echo $id_custo?>"><?php echo $custo_descricao?> | R$<?php echo number_format($custo_valor ,2,",",".") ?></option>
+                <option value="<?php echo $id_custo?>"><?php echo $custo_descricao; ?> | <?php echo $custo_valor; ?></option>
                 <?php } ?>
                 </select></b></label><br>
             <label>Quantidade</label>
@@ -85,8 +91,8 @@ $tratamento = $select['tratamento'];
                             <td align="center"><b>Excluir</b></td>
                         </tr>
 <?php
-$query = $conexao->prepare("SELECT * FROM custos_tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
-$query->execute(array('id' => '1'));
+$query = $conexao->prepare("SELECT * FROM custos_tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND tratamento_id = :tratamento_id ORDER BY id DESC");
+$query->execute(array('tratamento_id' => $tratamento_id));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $id = $select['id'];
 $custo_id = $select['custo_id'];
@@ -97,12 +103,19 @@ $query_custos->execute(array('custo_id' => $custo_id));
 while($select_custos = $query_custos->fetch(PDO::FETCH_ASSOC)){
 $custo_descricao = $select_custos['custo_descricao'];
 $custo_valor = $select_custos['custo_valor'];
+$custo_tipo = $select_custos['custo_tipo'];
+}
+
+if($custo_tipo == 'Taxas' || $custo_tipo == 'Impostos' || $custo_tipo == 'Margem'){
+    $custo_valor = number_format($custo_valor ,2,",",".") . '%';
+}else{
+    $custo_valor = 'R$' . number_format($custo_valor ,2,",",".");
 }
 ?>
                         <tr>
-                            <td align="left"><?php echo $custo_descricao ?></td>
-                            <td align="left">R$<?php echo number_format($custo_valor ,2,",",".") ?></td>
-                            <td align="left"><?php echo $quantidade ?></td>
+                            <td align="left"><?php echo $custo_descricao; ?></td>
+                            <td align="left"><?php echo $custo_valor; ?></td>
+                            <td align="left"><?php echo $quantidade; ?></td>
                             <td align="center"><a href="javascript:void(0)" onclick='window.open("tratamentos_custo_excluir.php?id=<?php echo $id ?>&tratamento_id=<?php echo $tratamento_id ?>","iframe-home")'><button>Excluir</button></a></td>
                         </tr>
                         <?php

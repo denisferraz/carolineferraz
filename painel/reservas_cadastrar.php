@@ -13,10 +13,10 @@ $email = $nome = $telefone = $cpf = '';
 
 if($id_job == 'Cadastro' || $tipo != 'Painel'){
 
-    $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
     $email = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['email'] ?? $_SESSION['email']) : $_SESSION['email'];
 
-    $query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$email}'");
+    $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+    $query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

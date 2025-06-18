@@ -12,7 +12,8 @@ while($total_lanc = $check->fetch(PDO::FETCH_ASSOC)){
 $valor = $total_lanc['sum(valor)'];
 }
 
-$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+    $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+    $query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -76,7 +77,7 @@ foreach ($painel_users_array as $select_check2){
             <option value="Outros">Outros</option>
             </select><br><br>
             <label>Valor</label>
-            <input minlength="1" maxlength="30" type="text" name="lanc_valor" placeholder="<?php echo number_format($valor ,2,".",".") ?>" required>
+            <input minlength="1" maxlength="30" type="text" name="lanc_valor" value="<?php echo number_format($valor ,2,".",".") ?>" required>
             <br>
             <input type="hidden" name="lanc_data" value="<?php echo $hoje ?>" />
             <input type="hidden" name="lanc_quantidade" value="1">

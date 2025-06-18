@@ -5,8 +5,8 @@ ob_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-$query->execute(array('email' => $_SESSION['email']));
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $_SESSION['email']));
 
 $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){

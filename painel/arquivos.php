@@ -9,7 +9,8 @@ require('verifica_login.php');
     
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
-$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$email}'");
+$query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+$query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $email));
 while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
     $token_profile = $select_check2['token'];
 }

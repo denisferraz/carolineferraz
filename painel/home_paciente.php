@@ -5,7 +5,8 @@ require('verifica_login.php');
 
 $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega a data passada via GET
 
-$query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= 1 AND email = '{$_SESSION['email']}'");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $_SESSION['email']));
 $painel_users_array = [];
         while($select = $query->fetch(PDO::FETCH_ASSOC)){
             $dados_painel_users = $select['dados_painel_users'];

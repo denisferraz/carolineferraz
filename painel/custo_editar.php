@@ -41,14 +41,20 @@ $custo_descricao = $select['custo_descricao'];
             <input value="<?php echo $custo_valor ?>" minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
             <br><br><label>Tipo do Custo: 
             <select name="custo_tipo">
+                <option value="Insumos" <?= $custo_tipo == 'Insumos' ? 'selected' : '' ?>>Insumos</option>
+                <option value="Gasolina" <?= $custo_tipo == 'Gasolina' ? 'selected' : '' ?>>Gasolina</option>
+                <option value="Estacionamento" <?= $custo_tipo == 'Estacionamento' ? 'selected' : '' ?>>Estacionamento</option>
+                <option value="Coworking" <?= $custo_tipo == 'Coworking' ? 'selected' : '' ?>>Coworking</option>
+                <option value="Impostos" <?= $custo_tipo == 'Impostos' ? 'selected' : '' ?>>Impostos</option>
+                <option value="Taxas" <?= $custo_tipo == 'Outros' ? 'selected' : '' ?>>Taxas</option>
+                <option value="Hora" <?= $custo_tipo == 'Hora' ? 'selected' : '' ?>>Hora</option>
+                <option value="Margem" <?= $custo_tipo == 'Margem' ? 'selected' : '' ?>>Margem</option>
                 <option value="Aluguel" <?= $custo_tipo == 'Aluguel' ? 'selected' : '' ?>>Aluguel</option>
                 <option value="Luz" <?= $custo_tipo == 'Luz' ? 'selected' : '' ?>>Luz</option>
                 <option value="Internet" <?= $custo_tipo == 'Internet' ? 'selected' : '' ?>>Internet</option>
-                <option value="Insumos" <?= $custo_tipo == 'Insumos' ? 'selected' : '' ?>>Insumos</option>
                 <option value="Mobiliario" <?= $custo_tipo == 'Mobiliario' ? 'selected' : '' ?>>Mobiliario</option>
                 <option value="Aluguel Equipamentos" <?= $custo_tipo == 'Aluguel Equipamentos' ? 'selected' : '' ?>>Equipamentos [Aluguel]</option>
                 <option value="Compra Equipamentos" <?= $custo_tipo == 'Compra Equipamentos' ? 'selected' : '' ?>>Equipamentos [Compra]</option>
-                <option value="Hora" <?= $custo_tipo == 'Hora' ? 'selected' : '' ?>>Valor Hora</option>
                 <option value="Outros" <?= $custo_tipo == 'Outros' ? 'selected' : '' ?>>Outros</option>
             </select></label><br>
             <label>Descrição Custo</label>

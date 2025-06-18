@@ -67,8 +67,8 @@ if($password != $password_conf){
     exit();
 }
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE id > 0 AND token_emp = :token_emp");
-$query->execute(array('token_emp' => $_SESSION['token_emp']));
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
+$query->execute(array('%;'.$_SESSION['token_emp'].';%'));
 
 $painel_users_array = [];
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
@@ -106,8 +106,8 @@ foreach ($painel_users_array as $usuario) {
     }
 }
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-$query->execute(array('email' => $email));
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $email));
 $row = $query->rowCount();
 
 if($row == 1 || $cpf_encontrado){
@@ -127,8 +127,23 @@ if($row == 1 || $cpf_encontrado){
     $dados_criptografados = openssl_encrypt($dados_painel_users, $metodo, $chave, 0, $iv);
     $dados_final = base64_encode($dados_criptografados);
 
-    $query = $conexao->prepare("INSERT INTO painel_users (email, dados_painel_users, senha, nome, telefone, unico, token, codigo, tentativas, tema_painel, tipo, token_emp) VALUES (:email, :dados_painel_users, :senha, :nome, :telefone, :cpf, :token, :codigo, :tentativas, :tema_painel, :tipo, :token_emp)");
-    $query->execute(array('email' => $email, 'dados_painel_users' => $dados_final, 'senha' => $crip_senha, 'nome' => $nome, 'telefone' => $telefone, 'cpf' => $doc_cpf, 'token' => $token, 'codigo' => 0, 'tentativas' => 0, 'tema_painel' => 'colorido', 'tipo' => 'Paciente', 'token_emp' => $_SESSION['token_emp']));
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+    $query->execute(array('email' => $email));
+    $row_check = $query->rowCount();
+
+    if($row_check == 1){
+        
+    while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $token_emp = $select['token_emp'] . ';' . $_SESSION['token_emp'];
+    }
+            
+    $query = $conexao->prepare("UPDATE painel_users SET token_emp = :token_emp WHERE email = :email");
+    $query->execute(array('email' => $doc_email, 'token_emp' => $token_emp));
+        
+    }else{
+    $query = $conexao->prepare("INSERT INTO painel_users (email, dados_painel_users, tipo, senha, token, codigo, tentativas, origem, token_emp) VALUES (:email, :dados_painel_users, 'Paciente', :senha, :token, '0', '1', :origem, :token_emp)");
+    $query->execute(array('email' => $doc_email, 'dados_painel_users' => $dados_final, 'token' => $token, 'senha' => $crip_senha, 'origem' => $origem, 'token_emp' => $_SESSION['token_emp']));  
+    }
     
         $_SESSION['email'] = $email;
         echo json_encode([

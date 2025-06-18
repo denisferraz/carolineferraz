@@ -82,7 +82,8 @@ $font_color = '#fff';
 $font_color = '#222';
 }
 
-$query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= 1");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND id >= :id");
+$query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'id' => 0));
 
 $painel_users_array = [];
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
@@ -115,28 +116,8 @@ $painel_users_array[] = [
 
 }
 
-$query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE alt_status = 'Pendente'");
-$alteracao_qtd = $query_alteracao->rowCount();
+?>
 
-if ($alteracao_qtd > 0): ?>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        Swal.fire({
-            title: 'Alteração pendente',
-            text: 'Existe uma alteração pendente. Deseja visualizar?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ver',
-            cancelButtonText: 'Fechar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = 'autorizacao.php';
-            }
-            // Se clicar fora ou em "Fechar", nada acontece
-        });
-    });
-    </script>
-<?php endif; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>

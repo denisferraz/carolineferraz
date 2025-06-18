@@ -43,7 +43,8 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
                 echo "<legend>Atendimentos do dia $dataSelecionada_formatada [ {$checkin_qtd} ]</legend>";
 
         }
-        $query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= 1");
+        $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
+        $query->execute(array('%;'.$_SESSION['token_emp'].';%'));
         $painel_users_array = [];
         while($select = $query->fetch(PDO::FETCH_ASSOC)){
             $dados_painel_users = $select['dados_painel_users'];

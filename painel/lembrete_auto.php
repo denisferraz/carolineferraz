@@ -14,7 +14,7 @@ $hoje = date('Y-m-d');
 
 $result_check_config = $conexao->query("SELECT * FROM configuracoes WHERE id > -3");
 while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
-    $token_config = $select_check_config['token'];
+    $token_config = $select_check_config['token_emp'];
     $config_empresa = $row['config_empresa'];
     $config_email = $row['config_email'];
     $config_telefone = $row['config_telefone'];
@@ -90,7 +90,8 @@ if ($diasemana_numero == 5) { // sexta-feira
   $doc_email = $select_check['doc_email'];
   $tipo_consulta = $select_check['tipo_consulta'];
 
-  $result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$token_config}' AND email = '{$doc_email}'");
+  $result_check = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+  $result_check->execute(array('%;'.$token_config.';%', 'email' => $doc_email));
   $painel_users_array = [];
     while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

@@ -40,8 +40,10 @@ $proximos_dias = date('Y-m-d', strtotime("$hoje") + (86400 * 7 ));
 if($alteracao_qtd > 0){
   echo "<legend>Solicitações pendentes [ {$alteracao_qtd} ]</legend>";
 
+$stmt_painel = $conexao->prepare("SELECT dados_painel_users, id FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE ?");
+$stmt_painel->execute(['%;'.$_SESSION['token_emp'].';%']);
 $painel_users_array = [];
-    while($select = $query_alteracao->fetch(PDO::FETCH_ASSOC)){
+    while($select = $stmt_painel->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
         $id = $select['id'];
     

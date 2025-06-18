@@ -18,7 +18,8 @@ $hoje = date('Y-m-d');
 <body>
 
 <?php
-$query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= 1 AND tipo = 'Paciente'");
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND tipo = :tipo");
+$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'tipo' => 'Paciente'));
 $query_row = $query->rowCount();
 ?>
 

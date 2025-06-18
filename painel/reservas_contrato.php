@@ -9,8 +9,8 @@ require('verifica_login.php');
 $token = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 $token_contrato = mysqli_real_escape_string($conn_msqli, $_GET['token_contrato']);
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND token = :token");
-$query->execute(array('token' => $token));
+$query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token");
+$query->execute(array('%;'.$_SESSION['token_emp'].';%', 'token' => $token));
 $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

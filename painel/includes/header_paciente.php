@@ -4,7 +4,7 @@ $email = $_SESSION['email'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tema'])) {
     $tema_painel = $_POST['tema'];
-    $query = $conexao->prepare("UPDATE painel_users SET tema_painel = :tema_painel WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
+    $query = $conexao->prepare("UPDATE painel_users SET tema_painel = :tema_painel WHERE token = '{$_SESSION['token']}' AND email = :email");
     $query->execute(array('tema_painel' => $tema_painel, 'email' => $email));
 }
 ?>

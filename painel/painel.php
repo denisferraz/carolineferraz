@@ -5,19 +5,26 @@ require('../config/database.php');
 require('verifica_login.php');
 
 // Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
+$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = :email");
 $query->execute(array('email' => $_SESSION['email']));
 $result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'escuro'; // padrão é escuro
+$tema = $result ? $result['tema_painel'] : 'colorido'; // padrão é colorido
 
 // Define o caminho do CSS
 $css_path = "css/style_$tema.css";
 
-$query = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
+$query = $conexao->query("SELECT * FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = '{$_SESSION['email']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $tipo_acesso = $select['tipo'];
 }
 
+if($tipo_acesso == 'Admin' && $_SESSION['token'] == $_SESSION['token_emp']){
+    $tipo_acesso = 'Admin';
+}else if($tipo_acesso == 'Owner'){
+    $tipo_acesso = 'Owner';
+}else{
+    $tipo_acesso = 'Paciente';
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -34,10 +41,14 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
 <body>
-        <?php if($tipo_acesso == 'Paciente'){
-          include 'includes/sidebar_paciente.php'; 
-        }else{
-          include 'includes/sidebar.php';
+        <?php if($tipo_acesso == 'Paciente' && isset($_SESSION['emp_selecao'])){
+            include 'includes/sidebar_paciente.php';
+        }else if(isset($_SESSION['emp_selecao'])){
+            include 'includes/sidebar.php';
+        }
+        
+        if(!isset($_SESSION['emp_selecao'])){
+            include 'includes/sidebar_selecao.php';
         }
         ?>
 
@@ -45,19 +56,27 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 
 <div class="main-content">
     <div class="header-fixo">
-        <?php if($tipo_acesso == 'Paciente'){
-          include 'includes/header_paciente.php'; 
-        }else{
-          include 'includes/header.php';
+        <?php if($tipo_acesso == 'Paciente' && isset($_SESSION['emp_selecao'])){
+            include 'includes/header_paciente.php'; 
+        }else if(isset($_SESSION['emp_selecao'])){
+            include 'includes/header.php';
+        }
+        
+        if(!isset($_SESSION['emp_selecao'])){
+            include 'includes/header_selecao.php';
         }
         ?>
     </div>
     
     <div class="container-conteudo">
-        <?php if($tipo_acesso == 'Paciente'){
-          ?><iframe name="iframe-home" id="iframe-home" src="agenda_paciente.php"></iframe><?php
-        }else{
-          ?><iframe name="iframe-home" id="iframe-home" src="agenda.php"></iframe><?php
+        <?php if($tipo_acesso == 'Paciente' && isset($_SESSION['emp_selecao'])){
+            ?><iframe name="iframe-home" id="iframe-home" src="agenda_paciente.php"></iframe><?php
+        }else if(isset($_SESSION['emp_selecao'])){
+            ?><iframe name="iframe-home" id="iframe-home" src="agenda.php"></iframe><?php
+        }
+        
+        if(!isset($_SESSION['emp_selecao'])){
+            ?><iframe name="iframe-home" id="iframe-home" src="selecao.php"></iframe><?php
         }
         ?>
     </div>

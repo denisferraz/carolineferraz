@@ -29,8 +29,8 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
     $envio_email = $row['envio_email'];
 
   //Envia Aniversariantes
-  //$result_check = $conexao->query("SELECT * FROM painel_users WHERE DATE_FORMAT(nascimento, '%d/%m') = '{$aniversario_hoje}' AND tipo = 'Paciente'");
-  $result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$token_config}'");
+  $result_check = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
+  $result_check->execute(array('token_emp' => '%;'.$token_config.';%'));
   $painel_users_array = [];
     while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

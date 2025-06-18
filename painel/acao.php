@@ -25,7 +25,7 @@ error_reporting(0);
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $historico_data = date('Y-m-d H:i:s');
 
-$result_check = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$_SESSION['email']}'");
+$result_check = $conexao->query("SELECT * FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = '{$_SESSION['email']}'");
 $painel_users_array = [];
     while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -38,21 +38,8 @@ $painel_users_array = [];
     $dados_array = explode(';', $dados_decifrados);
 
     $painel_users_array[] = [
-        'id' => $id,
-        'email' => $select['email'],
-        'token' => $select['token'],
         'nome' => $dados_array[0],
-        'rg' => $dados_array[1],
-        'cpf' => $dados_array[2],
-        'telefone' => $dados_array[3],
-        'profissao' => $dados_array[4],
-        'nascimento' => $dados_array[5],
-        'cep' => $dados_array[6],
-        'rua' => $dados_array[7],
-        'numero' => $dados_array[8],
-        'cidade' => $dados_array[9],
-        'bairro' => $dados_array[10],
-        'estado' => $dados_array[11]
+        'cpf' => $dados_array[2]
     ];
 
 }
@@ -102,7 +89,7 @@ if(isset($_POST['dia_segunda'])){
 
 if($id_job == 'editar_configuracoes_agenda'){
 
-    $config_limitedia = mysqli_real_escape_string($conn_msqli, $_POST['config_limitedia']);
+    $config_limitedia = '1';
     $atendimento_hora_comeco = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_comeco']);
     $atendimento_hora_fim = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_fim']);
     $atendimento_hora_intervalo = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_intervalo']);
@@ -834,33 +821,41 @@ echo "<script>
         exit();
     }
 
-    $cpf_encontrado = 'nao';
-    foreach ($painel_users_array as $usuario) {
-        if (isset($usuario['cpf']) && $usuario['cpf'] === $doc_cpf) {
-            $cpf_encontrado = 'sim';
-            break;
-        }
-    }
-
-    $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-    $query->execute(array('email' => $doc_email));
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+    $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $row_check = $query->rowCount();
     
-    if($row_check == 1 || $cpf_encontrado == 'sim'){
+    if($row_check == 1){
         echo "<script>
-        alert('Email e/ou CPF ja Cadastrado!')
+        alert('Email Cadastrado!')
         window.location.replace('cadastro_registro.php')
         </script>";
         exit();
     }
+    
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+    $query->execute(array('email' => $doc_email));
+    $row_check = $query->rowCount();
+    
 
     //$dados_painel_users = $nome.';'.$rg.';'.$cpf.';'.$telefone.';'.$profissao.';'.$nascimento.';'.$cep.';'.$rua.';'.$numero.';'.$cidade.';'.$bairro.';'.$estado;
     $dados_painel_users = $doc_nome.';'.''.';'.$doc_cpf.';'.$doc_telefone.';'.''.';'.$nascimento.';'.''.';'.''.';'.''.';'.''.';'.''.';'.'';
     $dados_criptografados = openssl_encrypt($dados_painel_users, $metodo, $chave, 0, $iv);
     $dados_final = base64_encode($dados_criptografados);
 
+    if($row_check == 1){
+        
+    while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $token_emp = $select['token_emp'] . ';' . $_SESSION['token_emp'];
+    }
+        
+    $query = $conexao->prepare("UPDATE painel_users SET token_emp = :token_emp WHERE email = :email");
+    $query->execute(array('email' => $doc_email, 'token_emp' => $token_emp));
+    
+    }else{
     $query = $conexao->prepare("INSERT INTO painel_users (email, dados_painel_users, tipo, senha, token, codigo, tentativas, origem, token_emp) VALUES (:email, :dados_painel_users, 'Paciente', :senha, :token, '0', '1', :origem, :token_emp)");
-    $query->execute(array('email' => $doc_email, 'dados_painel_users' => $dados_final, 'token' => $token, 'senha' => $crip_senha, 'origem' => $origem, 'token_emp' => $_SESSION['token_emp']));
+    $query->execute(array('email' => $doc_email, 'dados_painel_users' => $dados_final, 'token' => $token, 'senha' => $crip_senha, 'origem' => $origem, 'token_emp' => $_SESSION['token_emp']));  
+    }
 
     echo "<script>
     alert('Cliente Cadastrado Sucesso!')
@@ -888,8 +883,8 @@ echo "<script>
     $dados_criptografados = openssl_encrypt($dados_painel_users, $metodo, $chave, 0, $iv);
     $dados_final = base64_encode($dados_criptografados);
 
-    $query = $conexao->prepare("UPDATE painel_users SET dados_painel_users = :dados_painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-    $query->execute(array('email' => $doc_email, 'dados_painel_users' => $dados_final));
+    $query = $conexao->prepare("UPDATE painel_users SET dados_painel_users = :dados_painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+    $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email, 'dados_painel_users' => $dados_final));
 
     if($feitopor == 'Paciente'){
         echo "<script>
@@ -920,14 +915,14 @@ echo "<script>
     $crip_senha = md5($senha_antes);
     $crip_senha_nova = md5($senha_nova);
     
-    $query = $conexao->prepare("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email AND senha = :senha");
-    $query->execute(array('email' => $doc_email, 'senha' => $crip_senha));
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email AND senha = :senha");
+    $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email, 'senha' => $crip_senha));
     $row = $query->rowCount();
     
     if($row == 1){
 
-    $query = $conexao->prepare("UPDATE painel_users SET senha = :senha WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
-    $query->execute(array('email' => $doc_email, 'senha' => $crip_senha_nova));
+    $query = $conexao->prepare("UPDATE painel_users SET senha = :senha WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+    $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email, 'senha' => $crip_senha_nova));
 
     echo "<script>
     alert('Senha Alterada com Sucesso')

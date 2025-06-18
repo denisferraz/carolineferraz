@@ -23,8 +23,8 @@ $stmt = $conexao->prepare("SELECT pergunta_id, resposta FROM respostas_anamnese 
 $stmt->execute([$modelo_id, $paciente_id]);
 $respostas_salvas = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-$stmt_painel = $conexao->prepare("SELECT dados_painel_users, email FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
-$stmt_painel->execute([$paciente_id]);
+$stmt_painel = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND id = :id");
+$stmt_painel->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'id' => $paciente_id));
 $painel = $stmt_painel->fetch(PDO::FETCH_ASSOC);
 
 // Para descriptografar os dados

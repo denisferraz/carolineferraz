@@ -80,7 +80,7 @@ require('verifica_login.php');
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY tratamento DESC");
+                $query = $conexao->prepare("SELECT * FROM tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY tratamento ASC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {

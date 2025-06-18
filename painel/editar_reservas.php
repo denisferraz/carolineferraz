@@ -40,7 +40,8 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $atendimento_hora = $select['atendimento_hora'];
 $doc_email = $select['doc_email'];
 
-$query_check2 = $conexao->query("SELECT * FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = '{$doc_email}'");
+$query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+$query_check2->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
 $painel_users_array = [];
     while($select = $query_check2->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];

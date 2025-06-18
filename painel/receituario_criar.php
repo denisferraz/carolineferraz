@@ -6,8 +6,8 @@ require('verifica_login.php');
 
 $doc_email = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['email'] ?? NULL) : NULL;
 
-$stmt_painel = $conexao->prepare("SELECT dados_painel_users, email FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND email = ?");
-$stmt_painel->execute([$doc_email]);
+$stmt_painel = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+$stmt_painel->execute(array('%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
 $painel = $stmt_painel->fetch(PDO::FETCH_ASSOC);
 // Para descriptografar os dados
 $dados_painel_users = $painel['dados_painel_users'];

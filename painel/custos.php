@@ -35,14 +35,20 @@ require('verifica_login.php');
             <input minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
             <label>Tipo do Custo</label>
             <select name="custo_tipo" required>
+                <option value="Insumos">Insumos</option>
+                <option value="Gasolina">Gasolina</option>
+                <option value="Estacionamento">Estacionamento</option>
+                <option value="Coworking">Coworking</option>
+                <option value="Impostos">Impostos</option>
+                <option value="Taxas">Taxas</option>
+                <option value="Hora">Hora</option>
+                <option value="Margem">Margem</option>
                 <option value="Aluguel">Aluguel</option>
                 <option value="Luz">Luz</option>
                 <option value="Internet">Internet</option>
-                <option value="Insumos">Insumos</option>
                 <option value="Mobiliario">Mobiliario</option>
                 <option value="Aluguel Equipamentos">Equipamentos [Aluguel]</option>
                 <option value="Compra Equipamentos">Equipamentos [Compra]</option>
-                <option value="Hora">Valor Hora</option>
                 <option value="Outros">Outros</option>
                 </select>
 
@@ -73,8 +79,14 @@ require('verifica_login.php');
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
                     $id = $select['id'];
                     $tipo = $select['custo_tipo'];
-                    $valor = 'R$' . number_format($select['custo_valor'], 2, ',', '.');
+                    $valor = $select['custo_valor'];
                     $descricao = $select['custo_descricao'];
+                    
+                    if($tipo == 'Taxas' || $tipo == 'Impostos' || $tipo == 'Margem'){
+                        $valor = number_format($valor ,2,",",".") . '%';
+                    }else{
+                        $valor = 'R$' . number_format($valor ,2,",",".");
+                    }
                 ?>
                 <tr>
                     <td data-label="Tipo"><?php echo $tipo; ?></td>

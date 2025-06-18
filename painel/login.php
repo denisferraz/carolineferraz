@@ -26,6 +26,7 @@ $row = $query->rowCount();
 if($row == 1){
     while($select_check = $query->fetch(PDO::FETCH_ASSOC)){
     $_SESSION['token_emp']  = $select_check['token_emp'];
+    $_SESSION['token']  = $select_check['token'];
     }
     $_SESSION['email'] = $email;
     echo json_encode([
