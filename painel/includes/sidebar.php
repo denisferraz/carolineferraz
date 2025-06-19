@@ -1,3 +1,7 @@
+<?php
+$empresas = explode(';', $_SESSION['empresas']);
+?>
+
 <div class="sidebar bg-dark text-white p-3">
     <h4 class="text-center">Painel</h4>
     <ul class="nav flex-column small">
@@ -144,9 +148,6 @@
                 <a href="javascript:void(0)" onclick='window.open("tratamentos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-file-earmark-medical me-2"></i> Serviços
                 </a>
-                <a href="javascript:void(0)" onclick='window.open("estoque_produtos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bag-plus me-2"></i> Produtos
-                </a>
                 <a href="javascript:void(0)" onclick='window.open("ver_valores.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-currency-dollar me-2"></i> Valores
                 </a>
@@ -163,6 +164,9 @@
             <div class="collapse ps-3" id="menuEstoque">
                 <a href="javascript:void(0)" onclick='window.open("estoque_ver.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-bag-dash me-2"></i> Ver Estoque
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("estoque_produtos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-bag-plus me-2"></i> Produtos
                 </a>
                 <a href="javascript:void(0)" onclick='window.open("estoque_entradas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-arrow-bar-right me-2"></i> Entradas
@@ -209,6 +213,22 @@
                 </a>
             </div>
         </li>
+        
+        <?php if (count($empresas) > 1){ ?>
+        <!-- Seleção -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuSelecao" role="button" aria-expanded="false" aria-controls="menuSelecao">
+                <span><i class="bi bi-check2-circle me-2"></i> Empresas</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuSelecao">
+                <a href="javascript:void(0)" onclick='window.open("selecao.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-check2-square me-2"></i> Selecionar
+                </a>
+            </div>
+        </li>
+        <?php } ?>
 
     </ul>
 </div>

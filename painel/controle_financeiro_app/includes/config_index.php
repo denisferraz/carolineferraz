@@ -11,7 +11,7 @@ define('DB_USER', $config_user);
 define('DB_PASS', $config_password);
 
 // Configurações da aplicação
-define('APP_NAME', 'Sistema de Controle Financeiro');
+define('APP_NAME', 'Financeiro');
 define('APP_VERSION', '1.0.0');
 
 // Timezone

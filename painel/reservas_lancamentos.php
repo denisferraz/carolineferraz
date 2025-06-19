@@ -91,9 +91,10 @@ foreach ($painel_users_array as $select_check2){
             <?php } ?>
             </select>
             <label>Quantidade</label>
-            <input min="1" max="1" type="number" name="lanc_quantidade" id="lanc_quantidade" placeholder="000" required>
+            <input min="1" max="999" type="number" name="lanc_quantidade" id="lanc_quantidade" placeholder="000" required>
             <label>Valor</label>
             <input minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
+            <input type="hidden" name="tipo_lanc" value="produto">
             <?php }else{ ?>
             <label>Serviço</label>
             <select name="lanc_produto" id="lanc_servico" required onchange="atualizaValorServico()">
@@ -157,6 +158,7 @@ foreach ($painel_users_array as $select_check2){
             <input type="hidden" name="lanc_quantidade" value="1" required>
             <label>Valor</label>
             <input minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
+            <input type="hidden" name="tipo_lanc" value="servico">
             <?php } ?>
             <br>
             <input type="hidden" name="lanc_data" value="<?php echo $hoje ?>" />

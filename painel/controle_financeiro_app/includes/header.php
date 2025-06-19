@@ -35,6 +35,11 @@ $espacador = '../' ;
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?php echo $espacador; ?>pages/recorrentes.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'recorrentes.php' ? 'active' : ''; ?>">
+                        <i class="fas fa-sync-alt"></i> Recorrentes
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?php echo $espacador; ?>pages/relatorios.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'relatorios.php' ? 'active' : ''; ?>">
                         <i class="fas fa-chart-bar"></i> Relatórios
                     </a>

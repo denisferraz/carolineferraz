@@ -107,7 +107,7 @@ require('verifica_login.php');
                     <td data-label="Data"><?php echo date('d/m/Y', strtotime("$data_entrada")); ?></td>
                     <td data-label="Produto"><?php echo $produto; ?></td>
                     <td data-label="Entrada [Unidade]"><?php echo $quantidade; ?> [<?php echo $unidade; ?>]</td>
-                    <td data-label="Lote"><?php echo $Lote; ?></td>
+                    <td data-label="Lote"><?php echo $lote; ?></td>
                     <td data-label="Validade"><?php echo date('d/m/Y', strtotime("$validade")); ?></td>
                 </tr>
                 <?php } ?>

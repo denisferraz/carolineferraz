@@ -303,6 +303,7 @@ echo "<script>
     $lanc_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['lanc_quantidade']);
     $lanc_valor = mysqli_real_escape_string($conn_msqli, $_POST['lanc_valor']);
     $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+    $tipo_lanc = mysqli_real_escape_string($conn_msqli, $_POST['tipo_lanc']);
     $lanc_data = date('Y-m-d H:i');
 
     if($lanc_produto == 'Cartão' || $lanc_produto == 'Dinheiro' || $lanc_produto == 'Transferencia' || $lanc_produto == 'Outros'){
@@ -324,14 +325,17 @@ echo "<script>
     $query = $conexao->prepare("SELECT produto FROM estoque_item WHERE token_emp = :token_emp AND id = :produto");
     $query->execute(array('produto' => $lanc_produto, 'token_emp' => $_SESSION['token_emp']));
     $estoque_item = $query->fetch(PDO::FETCH_ASSOC);
-    $lanc_produto = $estoque_item['produto'];
+    
+    if($tipo_lanc == 'produto'){
+        $lanc_produto = $estoque_item['produto'];
+    }
 
     $stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor)), 2, '.', ''), '']);
     
     $produto = mysqli_real_escape_string($conn_msqli, $_POST['lanc_produto']);
     $produto_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['lanc_quantidade']);
-    $produto_lote = 'SAIDA_AUTOMATICA';
+    $produto_lote = 'Painel';
     $produto_validade = $hoje;
 
     $produto_quantidade = $produto_quantidade * -1;
@@ -344,7 +348,7 @@ echo "<script>
     $query->execute(array('lanc_produto' => $lanc_produto, 'lanc_quantidade' => $lanc_quantidade, 'valor' => $valor, 'token_emp' => $_SESSION['token_emp']));
     $lanc_valor = number_format($lanc_valor ,2,",",".");
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
-    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Lançou $lanc_quantiade $lanc_produto no valor de R$$lanc_valor no Cadastro $doc_email", 'token_emp' => $_SESSION['token_emp']));
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Lançou $lanc_quantidade $lanc_produto no valor de R$$lanc_valor no Cadastro $doc_email", 'token_emp' => $_SESSION['token_emp']));
 
     echo "<script>
     alert('Produto Lançado com Sucesso!')

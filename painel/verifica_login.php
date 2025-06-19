@@ -18,14 +18,8 @@ if(!$_SESSION['email']){
     exit();
 }
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'colorido'; // padrão é colorido
-
 // Define o caminho do CSS
-$css_path = "css/style_$tema.css";
+$css_path = "css/style_colorido.css";
 
 foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESSION['token_emp']}'") as $row) {
     $config_empresa = $row['config_empresa'];

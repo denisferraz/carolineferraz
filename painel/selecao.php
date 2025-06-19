@@ -8,7 +8,7 @@ if (!isset($_SESSION['token_emp'])) {
 }
 
 // Quebra a string em array de empresas
-$empresas = explode(';', $_SESSION['token_emp']);
+$empresas = explode(';', $_SESSION['empresas']);
 
 // Se só tem uma empresa, seleciona automaticamente
 if (count($empresas) === 1) {

@@ -1,9 +1,8 @@
 <?php
 
-// SET `token_emp` = 'd6b0ab7f1c8ab8f514db9a6d85de160a' WHERE id > 0
 require_once '../includes/config.php';
 
-$pageTitle = 'Lançamentos';
+$pageTitle = 'Lançamentos Recorrentes';
 include '../includes/header.php';
 
 $message = '';
@@ -18,44 +17,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($_POST['action']) {
                 case 'add':
                     $stmt = $pdo->prepare("
-                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO lancamentos_recorrentes (token_emp, data_lancamento, repeticoes, periodo, conta_id, descricao, valor, observacoes)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
                         $_SESSION['token_emp'],
                         $_POST['data_lancamento'],
+                        $_POST['repeticoes'],
+                        $_POST['periodo'],
                         $_POST['conta_id'],
                         sanitize($_POST['descricao']),
-                        'nao',
                         number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['valor'])), 2, '.', ''),
                         sanitize($_POST['observacoes'])
                     ]);
-                    $message = 'Lançamento adicionado com sucesso!';
+                    $message = 'Recorrente adicionado com sucesso!';
                     $messageType = 'success';
                     break;
                     
                 case 'edit':
                     $stmt = $pdo->prepare("
-                        UPDATE lancamentos 
-                        SET data_lancamento = ?, conta_id = ?, descricao = ?, valor = ?, observacoes = ?
+                        UPDATE lancamentos_recorrentes 
+                        SET data_lancamento = ?, repeticoes = ?, periodo = ?, conta_id = ?, descricao = ?, valor = ?, observacoes = ?
                         WHERE id = ?
                     ");
                     $stmt->execute([
                         $_POST['data_lancamento'],
+                        $_POST['repeticoes'],
+                        $_POST['periodo'],
                         $_POST['conta_id'],
                         sanitize($_POST['descricao']),
                         number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['valor'])), 2, '.', ''),
                         sanitize($_POST['observacoes']),
                         $_POST['id']
                     ]);
-                    $message = 'Lançamento atualizado com sucesso!';
+                    $message = 'Recorrente atualizado com sucesso!';
                     $messageType = 'success';
                     break;
                     
                 case 'delete':
-                    $stmt = $pdo->prepare("DELETE FROM lancamentos WHERE id = ?");
+                    $stmt = $pdo->prepare("DELETE FROM lancamentos_recorrentes WHERE id = ?");
                     $stmt->execute([$_POST['id']]);
-                    $message = 'Lançamento excluído com sucesso!';
+                    $message = 'Recorrente excluído com sucesso!';
                     $messageType = 'success';
                     break;
             }
@@ -113,16 +115,17 @@ try {
         SELECT 
             l.id,
             l.data_lancamento,
+            l.repeticoes,
+            l.periodo,
             l.conta_id,
             l.descricao,
-            l.recorrente,
             l.valor,
             l.observacoes,
             c.codigo,
             c.descricao as conta_descricao,
             t.nome as tipo,
             g.nome as grupo
-        FROM lancamentos l
+        FROM lancamentos_recorrentes l
         JOIN contas c ON l.conta_id = c.id
         JOIN tipos t ON c.tipo_id = t.id
         JOIN grupos_contas g ON c.grupo_id = g.id
@@ -188,9 +191,9 @@ try {
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Lançamentos</h3>
+        <h3 class="card-title">Lançamentos Recorrentes</h3>
         <button onclick="openModal('modalLancamento')" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Novo Lançamento
+            <i class="fas fa-plus"></i> Novo Lançamento Recorrente
         </button>
     </div>
     
@@ -200,6 +203,7 @@ try {
                 <thead>
                     <tr>
                         <th>Data</th>
+                        <th>Recorrencia</th>
                         <th>Descrição</th>
                         <th>Codigo</th>
                         <th>Grupo</th>
@@ -208,16 +212,12 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($lancamentos as $lancamento):
-                        if($lancamento['recorrente'] == 'sim'){
-                            $class_rept = '<i class="fas fa-sync-alt"></i> ';
-                        }else{
-                            $class_rept = '';
-                        }?>
+                    <?php foreach ($lancamentos as $lancamento): ?>
                         <tr>
                             <td><?php echo formatDate($lancamento['data_lancamento']); ?></td>
+                            <td><?php echo htmlspecialchars($lancamento['repeticoes']); ?>x - <?php echo htmlspecialchars($lancamento['periodo']); ?></td>
                             <td>
-                            <?php echo $class_rept; ?></i><?php echo htmlspecialchars($lancamento['descricao']); ?>
+                                <?php echo htmlspecialchars($lancamento['descricao']); ?>
                                 <?php if ($lancamento['observacoes']): ?>
                                     <br><small class="text-muted"><?php echo htmlspecialchars($lancamento['observacoes']); ?></small>
                                 <?php endif; ?>
@@ -250,7 +250,7 @@ try {
             </table>
         </div>
     <?php else: ?>
-        <p class="text-muted text-center">Nenhum lançamento encontrado.</p>
+        <p class="text-muted text-center">Nenhum lançamento recorrente registrado.</p>
     <?php endif; ?>
 </div>
 
@@ -258,7 +258,7 @@ try {
 <div id="modalLancamento" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title" id="modalTitle">Novo Lançamento</h3>
+            <h3 class="modal-title" id="modalTitle">Novo Lançamento Recorrente</h3>
             <span class="close" onclick="closeModal('modalLancamento')">&times;</span>
         </div>
         <form id="formLancamento" method="POST" onsubmit="return prepararValor();">
@@ -266,14 +266,30 @@ try {
             <input type="hidden" name="id" id="lancamentoId">
             
             <div class="form-group">
-                <label class="form-label">Data *</label>
+                <label class="form-label">Data Inicio</label>
                 <input type="date" name="data_lancamento" id="dataLancamento" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Repetições *</label>
+                <input type="text" name="repeticoes" id="repeticoes" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Periodo *</label>
+                <select name="periodo" id="periodo" class="form-control" required>
+                    <option value="" disabled selected>Selecione um Periodo</option>
+                    <option value="Diario">Diário</option>
+                    <option value="Mensal">Mensal</option>
+                    <option value="Anual">Anual</option>
+                    </optgroup>
+                </select>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Conta *</label>
                 <select name="conta_id" id="contaId" class="form-control" required>
-                    <option value="" disabled selected>Selecione uma conta</option>
+                    <option value="" disabled selected>Selecione uma Conta</option>
                     <?php 
                     $tipoAtual = '';
                     foreach ($contas as $conta): 
@@ -336,6 +352,8 @@ function editarLancamento(lancamento) {
     document.getElementById('contaId').value = String(lancamento.conta_id);
 
     document.getElementById('descricao').value = lancamento.descricao;
+    document.getElementById('repeticoes').value = lancamento.repeticoes;
+    document.getElementById('periodo').value = lancamento.periodo;
     document.getElementById('valor').value = formatMoney(parseFloat(lancamento.valor));
     document.getElementById('observacoes').value = lancamento.observacoes || '';
     

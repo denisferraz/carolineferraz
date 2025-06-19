@@ -4,14 +4,8 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
-// Pega o tema atual do usuário
-$query = $conexao->prepare("SELECT tema_painel FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = :email");
-$query->execute(array('email' => $_SESSION['email']));
-$result = $query->fetch(PDO::FETCH_ASSOC);
-$tema = $result ? $result['tema_painel'] : 'colorido'; // padrão é colorido
-
 // Define o caminho do CSS
-$css_path = "css/style_$tema.css";
+$css_path = "css/style_colorido.css";
 
 $query = $conexao->query("SELECT * FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = '{$_SESSION['email']}'");
 while($select = $query->fetch(PDO::FETCH_ASSOC)){

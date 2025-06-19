@@ -119,7 +119,7 @@ if ($http_code === 200) {
 }
 }
 
-foreach ($conexao->query("SELECT * FROM configuracoes WHERE id = '1'") as $row) {
+foreach ($conexao->query("SELECT * FROM configuracoes WHERE id = '-2'") as $row) {
     $config_empresa = $row['config_empresa'];
     $config_email = $row['config_email'];
     $config_telefone = $row['config_telefone'];

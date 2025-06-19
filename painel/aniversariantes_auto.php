@@ -1,26 +1,18 @@
 <?php
-
-session_start();
 require('../config/database.php');
-require('verifica_login.php');
 require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-error_reporting(0);
-
 date_default_timezone_set('America/Sao_Paulo');
 
-$aniversario_hoje = date('d/m', strtotime("$hoje"));
+$aniversario_hoje = date('m-d', strtotime("$hoje"));
 $aniversariante = 'Bom dia!! Veja a lista dos aniversariantes de hoje abaixo:';
 
 $result_check_config = $conexao->query("SELECT * FROM configuracoes WHERE id > -3");
 while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
-    $token_config = $select_check_config['token'];
+    $token_config = $select_check_config['token_emp'];
     $config_empresa = $row['config_empresa'];
     $config_email = $row['config_email'];
     $config_telefone = $row['config_telefone'];

@@ -39,6 +39,7 @@ try {
             l.id,
             l.data_lancamento,
             l.descricao,
+            l.recorrente,
             l.valor,
             c.codigo,
             t.nome as tipo
@@ -122,10 +123,15 @@ try {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($ultimosLancamentos as $lancamento): ?>
+                        <?php foreach ($ultimosLancamentos as $lancamento):
+                            if($lancamento['recorrente'] == 'sim'){
+                                $class_rept = '<i class="fas fa-sync-alt"></i> ';
+                            }else{
+                                $class_rept = '';
+                            }?>
                             <tr>
                                 <td><?php echo formatDate($lancamento['data_lancamento']); ?></td>
-                                <td><?php echo htmlspecialchars($lancamento['descricao']); ?></td>
+                                <td><?php echo $class_rept; ?></i><?php echo htmlspecialchars($lancamento['descricao']); ?></td>
                                 <td>
                                     <span class="badge <?php echo $lancamento['tipo'] == 'Receita' && $lancamento['codigo'] != 'RS2' ? 'bg-success' : 'bg-danger'; ?>">
                                         <?php echo htmlspecialchars($lancamento['codigo']); ?>
