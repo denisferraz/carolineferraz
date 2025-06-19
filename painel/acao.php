@@ -330,9 +330,10 @@ echo "<script>
         $lanc_produto = $estoque_item['produto'];
     }
 
-    $stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor)), 2, '.', ''), '']);
+    $stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, 'nao', number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor)), 2, '.', ''), '']);
     
+    if($tipo_lanc == 'produto'){
     $produto = mysqli_real_escape_string($conn_msqli, $_POST['lanc_produto']);
     $produto_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['lanc_quantidade']);
     $produto_lote = 'Painel';
@@ -342,7 +343,7 @@ echo "<script>
 
     $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, lote, validade, token_emp) VALUES (:produto, :tipo, :quantidade, :lote, :validade, :token_emp)");
     $query->execute(array('produto' => $produto, 'tipo' => 'Saida', 'quantidade' => $produto_quantidade, 'lote' => $produto_lote, 'validade' => $produto_validade, 'token_emp' => $_SESSION['token_emp']));
-    }
+    }}
 
     $query = $conexao->prepare("INSERT INTO lancamentos_atendimento (doc_email, produto, quantidade, valor, quando, feitopor, tipo, doc_nome, token_emp) VALUES ('{$doc_email}', :lanc_produto, :lanc_quantidade, :valor, '{$lanc_data}', '{$historico_quem}', '{$tipo}', '{$doc_nome}', :token_emp)");
     $query->execute(array('lanc_produto' => $lanc_produto, 'lanc_quantidade' => $lanc_quantidade, 'valor' => $valor, 'token_emp' => $_SESSION['token_emp']));

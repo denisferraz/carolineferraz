@@ -144,4 +144,6 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
     }
 
 }
+
+file_put_contents('cron_log.txt', date('Y-m-d H:i:s') . " - Rodou (Aniversariantes Auto)\n", FILE_APPEND);
 ?>

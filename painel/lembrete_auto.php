@@ -220,6 +220,6 @@ $doc_telefone = $select_check['telefone'];
 
 }
 
-  file_put_contents('cron_log.txt', date('Y-m-d H:i:s') . " - Rodou\n", FILE_APPEND);
+  file_put_contents('cron_log.txt', date('Y-m-d H:i:s') . " - Rodou (Lembrete Auto)\n", FILE_APPEND);
 
 ?>
