@@ -5,8 +5,8 @@ require('verifica_login.php');
 
 $doc_cpf = $_POST['cpf'] ?? '';
 
-    $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-    $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $email));
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
+    $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%'));
 
     $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){

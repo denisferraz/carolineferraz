@@ -117,8 +117,8 @@ foreach ($painel_users_array as $select2){
     <br>
     <label><b>Local Consulta: 
         <select name="atendimento_local">
-        <option value="Lauro de Freitas" <?php echo ($select['local_reserva'] == 'Lauro de Freitas') ? 'selected' : ''; ?>>Lauro de Freitas</option>
-        <option value="Salvador" <?php echo ($select['local_reserva'] == 'Salvador') ? 'selected' : ''; ?>>Salvador</option>
+        <option value="Lauro de Freitas" <?php echo ($select['local_consulta'] == 'Lauro de Freitas') ? 'selected' : ''; ?>>Lauro de Freitas</option>
+        <option value="Salvador" <?php echo ($select['local_consulta'] == 'Salvador') ? 'selected' : ''; ?>>Salvador</option>
     </select></b></label><br>
     <?php if($tipo == 'Painel'){ ?>
     <input id="overbook" type="checkbox" name="overbook">
