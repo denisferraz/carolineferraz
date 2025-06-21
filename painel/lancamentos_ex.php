@@ -59,8 +59,8 @@ $produto_validade = $hoje;
 
 $produto_quantidade = $quantidade * -1;
 
-$stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->execute([$_SESSION['token_emp'], $lanc_data, 69, $produto, 'nao', number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor * (-1))), 2, '.', ''), '']);
+$stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt->execute([$_SESSION['token_emp'], $lanc_data, 69, $produto, 'nao', number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor * (-1))), 2, '.', ''), '', $feitopor]);
 
 if($query_produto->rowcount() >= 1){
 $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, lote, validade, token_emp) VALUES (:produto, :tipo, :quantidade, :lote, :validade, :token_emp)");

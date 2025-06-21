@@ -330,8 +330,8 @@ echo "<script>
         $lanc_produto = $estoque_item['produto'];
     }
 
-    $stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, 'nao', number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor)), 2, '.', ''), '']);
+    $stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, 'nao', number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor)), 2, '.', ''), '', $historico_quem]);
     
     if($tipo_lanc == 'produto'){
     $produto = mysqli_real_escape_string($conn_msqli, $_POST['lanc_produto']);
@@ -994,8 +994,8 @@ echo "<script>
         }
 
     $stmt = $conexao->prepare("
-                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, valor, observacoes)
-                        VALUES (?, ?, ?, ?, ?, ?)
+                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, valor, observacoes, feitopor)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
                         $_SESSION['token_emp'],
@@ -1003,7 +1003,8 @@ echo "<script>
                         16,
                         $produto,
                         number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['produto_valor'])), 2, '.', ''),
-                        ''
+                        '',
+                        $historico_quem
                     ]);
     }
 

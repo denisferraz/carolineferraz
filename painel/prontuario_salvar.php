@@ -18,20 +18,20 @@ foreach ($respostas as $pergunta_id => $resposta) {
     }
 
     // Verifica se já existe resposta
-    $stmt_check = $conexao->prepare("SELECT id FROM respostas_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? AND paciente_id = ? AND pergunta_id = ?");
+    $stmt_check = $conexao->prepare("SELECT id FROM respostas_prontuario WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? AND paciente_id = ? AND pergunta_id = ?");
     $stmt_check->execute([$modelo_id, $paciente_id, $pergunta_id]);
     $existe = $stmt_check->fetchColumn();
 
     if ($existe) {
         // Atualiza resposta
-        $stmt_update = $conexao->prepare("UPDATE respostas_anamnese SET resposta = ? WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
+        $stmt_update = $conexao->prepare("UPDATE respostas_prontuario SET resposta = ? WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
         $stmt_update->execute([$resposta, $existe]);
     } else {
         // Insere nova resposta
-        $stmt_insert = $conexao->prepare("INSERT INTO respostas_anamnese (modelo_id, paciente_id, pergunta_id, resposta, token_emp) VALUES (?, ?, ?, ?, ?)");
+        $stmt_insert = $conexao->prepare("INSERT INTO respostas_prontuario (modelo_id, paciente_id, pergunta_id, resposta, token_emp) VALUES (?, ?, ?, ?, ?)");
         $stmt_insert->execute([$modelo_id, $paciente_id, $pergunta_id, $resposta, $_SESSION['token_emp']]);
     }
 }
 
-header("Location: anamnese_preencher.php?modelo_id=$modelo_id&paciente_id=$paciente_id&salvo=1");
+header("Location: prontuario_preencher.php?modelo_id=$modelo_id&paciente_id=$paciente_id&salvo=1");
 exit;

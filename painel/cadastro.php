@@ -112,10 +112,13 @@ $estado = $select['estado'];
     <i class="bi bi-clipboard-heart"></i> <span>Anamnese</span>
   </a>
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Prontuario","iframe-home")'>
+    <i class="bi bi-file-earmark-medical"></i> <span>Prontuario</span>
+  </a>
+  <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Evolucao","iframe-home")'>
     <i class="bi bi-journal-medical"></i> <span>Evolução</span>
   </a>
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Receituario","iframe-home")'>
-    <i class="bi bi-file-earmark-medical"></i> <span>Receitas</span>
+    <i class="bi bi-capsule"></i> <span>Receitas</span>
     </a>
     <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Atestado","iframe-home")'>
         <i class="bi bi-file-earmark-person"></i> <span>Atestados</span>
@@ -487,6 +490,38 @@ if($row_check_contratos == 0){
     </tbody>
 </table>
 <?php } ?>
+<?php if($id_job == 'Prontuario'){ ?>
+<!-- Prontuario -->
+<h2>Selecione o Prontuario</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Data Criado</th>
+            <th>Nome</th>
+            <th>Ver</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $query = $conexao->prepare("SELECT * FROM modelos_prontuario WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
+        $query->execute(['id' => 1]);
+
+        while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+            $criado_em = date('d/m/Y', strtotime($select['criado_em']));
+            $titulo = $select['titulo'];
+            $id = $select['id'];
+        ?>
+        <tr>
+            <td data-label="Data Criado"><?php echo $criado_em; ?></td>
+            <td data-label="Nome"><?php echo $titulo; ?></td>
+            <td data-label="Ver"><a href="javascript:void(0)" onclick='window.open("prontuario_preencher.php?paciente_id=<?php echo $paciente_id ?>&modelo_id=<?php echo $id ?>","iframe-home")' class="btn-black">Ver</td>
+
+        </tr>
+        <?php } ?>
+    </tbody>
+</table>
+<?php } ?>
 <?php if($id_job == 'Lancamentos'){ ?>
 <!-- Lançamentos -->
 <fieldset>
@@ -554,8 +589,8 @@ $id = $select_lancamento['id'];
 </fieldset>
 <?php } ?>
 
-<?php if($id_job == 'Prontuario'){ ?>
-<!-- Prontuario -->
+<?php if($id_job == 'Evolucao'){ ?>
+<!-- Evolucao -->
 <fieldset>
 <legend><h2>Evoluções de <?= $nome ?></h2></legend>
 <?php 
@@ -564,7 +599,7 @@ $evolucoes = $conexao->prepare("SELECT * FROM evolucoes WHERE token_emp = '{$_SE
 $evolucoes->execute([$doc_email]);
 ?>
 <center>
-<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?= $doc_email ?>&id_job=Prontuario_Add","iframe-home")' class="btn-black">+ Nova Evolução</a>
+<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?= $doc_email ?>&id_job=Evolucao_Add","iframe-home")' class="btn-black">+ Nova Evolução</a>
 </center>
 <br>
 <?php foreach ($evolucoes as $ev): ?>
@@ -584,7 +619,7 @@ $evolucoes->execute([$doc_email]);
 <?php endforeach; ?>
 </fieldset>
 <?php } ?>
-<?php if($id_job == 'Prontuario_Add'){ ?>
+<?php if($id_job == 'Evolucao_Add'){ ?>
 <!-- Prontuario -->
 <fieldset>
 <legend><h2>Evolução</h2></legend>

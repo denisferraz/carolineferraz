@@ -30,7 +30,7 @@ $paciente_id = $_GET['paciente_id'] ?? 0;
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM modelos_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
+                $query = $conexao->prepare("SELECT * FROM modelos_prontuario WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -41,7 +41,7 @@ $paciente_id = $_GET['paciente_id'] ?? 0;
                 <tr>
                     <td data-label="Data Criado"><?php echo $criado_em; ?></td>
                     <td data-label="Nome"><?php echo $titulo; ?></td>
-                    <td data-label="Preencher"><a href="javascript:void(0)" onclick='window.open("anamnese_preencher.php?paciente_id=<?php echo $paciente_id ?>&modelo_id=<?php echo $id ?>","iframe-home")' class="btn-black">Preencher</td>
+                    <td data-label="Preencher"><a href="javascript:void(0)" onclick='window.open("prontuario_preencher.php?paciente_id=<?php echo $paciente_id ?>&modelo_id=<?php echo $id ?>","iframe-home")' class="btn-black">Preencher</td>
 
                 </tr>
                 <?php } ?>

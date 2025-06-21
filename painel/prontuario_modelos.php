@@ -17,7 +17,7 @@ require('verifica_login.php');
 <body>
 
     <div class="container">
-        <h2>Minhas Anamneses</h2>
+        <h2>Meus Prontuários</h2>
 
         <table>
             <thead>
@@ -30,7 +30,7 @@ require('verifica_login.php');
             </thead>
             <tbody>
                 <?php
-                $query = $conexao->prepare("SELECT * FROM modelos_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
+                $query = $conexao->prepare("SELECT * FROM modelos_prontuario WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY id DESC");
                 $query->execute(['id' => 1]);
 
                 while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -41,7 +41,7 @@ require('verifica_login.php');
                 <tr>
                     <td data-label="Data Criado"><?php echo $criado_em; ?></td>
                     <td data-label="Nome"><?php echo $titulo; ?></td>
-                    <td data-label="Editar"><a href="javascript:void(0)" onclick='window.open("anamnese_criar_modelo.php?id_modelo=<?php echo $id_modelo ?>","iframe-home")' class="btn-black">Editar</td>
+                    <td data-label="Editar"><a href="javascript:void(0)" onclick='window.open("prontuario_criar_modelo.php?id_modelo=<?php echo $id_modelo ?>","iframe-home")' class="btn-black">Editar</td>
                     <td data-label="Excluir">
                     <a href="javascript:void(0)" onclick="confirmarExclusao(<?php echo $id_modelo ?>)" class="btn-red">Excluir</a>
                     </td>
@@ -55,7 +55,7 @@ require('verifica_login.php');
   function confirmarExclusao(id) {
     Swal.fire({
       title: 'Tem certeza?',
-      text: "Esta ação tambem ira apagar as anameses preenchidas com este modelo de todos os paciente! Você não poderá desfazer isso depois!",
+      text: "Esta ação tambem ira apagar os prontuarios preenchidos com este modelo de todos os paciente! Você não poderá desfazer isso depois!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -64,7 +64,7 @@ require('verifica_login.php');
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        window.open("anamnese_excluir.php?id=" + id, "iframe-home");
+        window.open("prontuario_excluir.php?id=" + id, "iframe-home");
       }
     });
   }

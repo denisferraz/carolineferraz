@@ -125,7 +125,7 @@ $nome = $dados_array[0];
         <label><?php echo htmlspecialchars($p['pergunta']); ?></label>
 
         <?php if ($p['tipo'] === 'text' || $p['tipo'] === 'number'): ?>
-          <input type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>" required>
+          <input type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>">
 
           <?php elseif ($p['tipo'] === 'radio'): ?>
           <div class="opcoes-horizontal">
@@ -134,7 +134,7 @@ $nome = $dados_array[0];
               $imgPath = "../imagens/{$_SESSION['token_emp']}/{$p['id']}_".strtolower(preg_replace('/\s+/', '_', $opTrim)).".png";
             ?>
               <label>
-                <input type="radio" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($opTrim); ?>" <?php if ($resposta_salva === $opTrim) echo 'checked'; ?> required>
+                <input type="radio" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($opTrim); ?>" <?php if ($resposta_salva === $opTrim) echo 'checked'; ?>>
                 <?php echo htmlspecialchars($opTrim); ?>
                 <?php if (file_exists($imgPath)): ?>
                   <br>
@@ -145,7 +145,7 @@ $nome = $dados_array[0];
           </div>
 
         <?php elseif ($p['tipo'] === 'select'): ?>
-          <select name="respostas[<?php echo $p['id']; ?>][]" multiple required>
+          <select name="respostas[<?php echo $p['id']; ?>][]" multiple>
             <?php $respostas_array = explode(';', $resposta_salva); ?>
             <?php foreach (explode(';', $p['opcoes']) as $op): 
               $opTrim = trim($op); ?>

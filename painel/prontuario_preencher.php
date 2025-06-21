@@ -3,31 +3,43 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+//error_reporting(0);
+
 $modelo_id = $_GET['modelo_id'] ?? 0;
 $paciente_id = $_GET['paciente_id'] ?? 0;
 
-$stmt = $conexao->prepare("SELECT titulo FROM modelos_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
+$stmt = $conexao->prepare("SELECT titulo FROM modelos_prontuario WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
 $stmt->execute([$modelo_id]);
 $modelo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $conexao->prepare("SELECT * FROM perguntas_modelo WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? ORDER BY ordem ASC");
+$stmt = $conexao->prepare("SELECT * FROM perguntas_modelo_prontuario WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? ORDER BY ordem ASC");
 $stmt->execute([$modelo_id]);
 $perguntas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $conexao->prepare("SELECT pergunta_id, resposta FROM respostas_anamnese WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? AND paciente_id = ?");
+$stmt = $conexao->prepare("SELECT pergunta_id, resposta FROM respostas_prontuario WHERE token_emp = '{$_SESSION['token_emp']}' AND modelo_id = ? AND paciente_id = ?");
 $stmt->execute([$modelo_id, $paciente_id]);
 $respostas_salvas = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-$stmt = $conexao->prepare("SELECT nome, email FROM painel_users WHERE token_emp = '{$_SESSION['token_emp']}' AND id = ?");
-$stmt->execute([$paciente_id]);
-$painel = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt_painel = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND id = :id");
+$stmt_painel->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'id' => $paciente_id));
+$painel = $stmt_painel->fetch(PDO::FETCH_ASSOC);
+
+// Para descriptografar os dados
+$dados_painel_users = $painel['dados_painel_users'];
+$dados = base64_decode($dados_painel_users);
+$dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+$dados_array = explode(';', $dados_decifrados);
+$nome = $dados_array[0];
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Ficha de Anamnese <?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($painel['nome']); ?></title>
+  <title>Ficha de Anamnese <?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($nome); ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <link rel="stylesheet" href="<?php echo $css_path ?>">
@@ -73,6 +85,7 @@ $painel = $stmt->fetch(PDO::FETCH_ASSOC);
     white-space: nowrap;
     font-size: 0.95rem;
     width: auto; /* IMPORTANTE: não deixar ocupar 100% */
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .opcoes-horizontal input[type="radio"] {
@@ -96,10 +109,10 @@ $painel = $stmt->fetch(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-<form class="form" action="anamnese_salvar.php" method="POST">
+<form class="form" action="prontuario_salvar.php" method="POST">
   <div class="card">
     <div class="card-top">
-      <h2><?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($painel['nome']); ?></h2>
+      <h2><?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($nome); ?></h2>
     </div>
 
     <input type="hidden" name="modelo_id" value="<?php echo $modelo_id; ?>">
@@ -112,21 +125,27 @@ $painel = $stmt->fetch(PDO::FETCH_ASSOC);
         <label><?php echo htmlspecialchars($p['pergunta']); ?></label>
 
         <?php if ($p['tipo'] === 'text' || $p['tipo'] === 'number'): ?>
-          <input type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>" required>
+          <input type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>">
 
-        <?php elseif ($p['tipo'] === 'radio'): ?>
+          <?php elseif ($p['tipo'] === 'radio'): ?>
           <div class="opcoes-horizontal">
             <?php foreach (explode(';', $p['opcoes']) as $op): 
-              $opTrim = trim($op); ?>
+              $opTrim = trim($op);
+              $imgPath = "../imagens/{$_SESSION['token_emp']}/{$p['id']}_".strtolower(preg_replace('/\s+/', '_', $opTrim)).".png";
+            ?>
               <label>
-                <input type="radio" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($opTrim); ?>" <?php if ($resposta_salva === $opTrim) echo 'checked'; ?> required>
+                <input type="radio" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($opTrim); ?>" <?php if ($resposta_salva === $opTrim) echo 'checked'; ?>>
                 <?php echo htmlspecialchars($opTrim); ?>
+                <?php if (file_exists($imgPath)): ?>
+                  <br>
+                  <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($opTrim); ?>" style="max-width:100px; height:auto; margin-top:5px;">
+                <?php endif; ?>
               </label>
             <?php endforeach; ?>
           </div>
 
         <?php elseif ($p['tipo'] === 'select'): ?>
-          <select name="respostas[<?php echo $p['id']; ?>][]" multiple required>
+          <select name="respostas[<?php echo $p['id']; ?>][]" multiple>
             <?php $respostas_array = explode(';', $resposta_salva); ?>
             <?php foreach (explode(';', $p['opcoes']) as $op): 
               $opTrim = trim($op); ?>
@@ -141,9 +160,16 @@ $painel = $stmt->fetch(PDO::FETCH_ASSOC);
             <?php $respostas_array = explode(';', $resposta_salva); ?>
             <?php foreach (explode(';', $p['opcoes']) as $op): 
               $opTrim = trim($op); ?>
+              <?php
+                $imgPath = "../imagens/{$_SESSION['token_emp']}/{$p['id']}_".strtolower(preg_replace('/\s+/', '_', $opTrim)).".png";
+              ?>
               <label>
                 <input type="checkbox" name="respostas[<?php echo $p['id']; ?>][]" value="<?php echo htmlspecialchars($opTrim); ?>" <?php if (in_array($opTrim, $respostas_array)) echo 'checked'; ?>>
                 <?php echo htmlspecialchars($opTrim); ?>
+                <?php if (file_exists($imgPath)): ?>
+                  <br>
+                  <img src="<?php echo $imgPath; ?>" alt="<?php echo htmlspecialchars($opTrim); ?>" style="max-width:100px; height:auto; margin-top:5px;">
+                <?php endif; ?>
               </label>
             <?php endforeach; ?>
           </div>
@@ -182,6 +208,22 @@ document.querySelectorAll('.opcoes-horizontal input[type="checkbox"]').forEach(c
     // Aplica a classe já marcada no carregamento
     if (checkbox.checked) {
         checkbox.closest('label').classList.add('checked-black');
+    }
+});
+
+document.querySelectorAll('.opcoes-horizontal input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function () {
+        const name = this.name;
+        document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+            r.closest('label').classList.remove('checked-black');
+        });
+        if (this.checked) {
+            this.closest('label').classList.add('checked-black');
+        }
+    });
+
+    if (radio.checked) {
+        radio.closest('label').classList.add('checked-black');
     }
 });
 </script>

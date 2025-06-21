@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($_POST['action']) {
                 case 'add':
                     $stmt = $pdo->prepare("
-                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
                         $_SESSION['token_emp'],
@@ -28,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         sanitize($_POST['descricao']),
                         'nao',
                         number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['valor'])), 2, '.', ''),
-                        sanitize($_POST['observacoes'])
+                        sanitize($_POST['observacoes']),
+                        $feitopor
                     ]);
                     $message = 'Lançamento adicionado com sucesso!';
                     $messageType = 'success';
@@ -37,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 case 'edit':
                     $stmt = $pdo->prepare("
                         UPDATE lancamentos 
-                        SET data_lancamento = ?, conta_id = ?, descricao = ?, valor = ?, observacoes = ?
+                        SET data_lancamento = ?, conta_id = ?, descricao = ?, valor = ?, observacoes = ?, feitopor = ?
                         WHERE id = ?
                     ");
                     $stmt->execute([
@@ -46,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         sanitize($_POST['descricao']),
                         number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['valor'])), 2, '.', ''),
                         sanitize($_POST['observacoes']),
+                        $feitopor,
                         $_POST['id']
                     ]);
                     $message = 'Lançamento atualizado com sucesso!';

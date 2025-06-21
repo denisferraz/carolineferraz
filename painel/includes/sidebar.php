@@ -80,6 +80,23 @@ $empresas = explode(';', $_SESSION['empresas']);
             </div>
         </li>
 
+        <!-- PRONTUARIO -->
+        <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuProntuario" role="button" aria-expanded="false" aria-controls="menuProntuario">
+                <span><i class="bi bi-clipboard2-pulse me-2"></i> Prontuário</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-2" id="menuProntuario">
+                <a href="javascript:void(0)" onclick='window.open("prontuario_criar_modelo.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-file-earmark-medical me-2"></i> Criar Modelo
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("prontuario_modelos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-file-medical me-2"></i> Modelos
+                </a>
+            </div>
+        </li>
+
         <!-- VIDEOS -->
         <li class="nav-item">
             <a class="nav-link text-white d-flex justify-content-between align-items-center"

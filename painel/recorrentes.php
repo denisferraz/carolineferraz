@@ -22,6 +22,7 @@ while ($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)) {
         $descricao = $select['descricao'];
         $valor = $select['valor'];
         $observacoes = $select['observacoes'];
+        $feitopor = $select['feitopor'];
 
         // Dia original do lançamento (usado para tratar meses com menos dias)
         $dia_original = (int)$data_lancamento->format('d');
@@ -63,19 +64,21 @@ while ($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)) {
                     AND data_lancamento = ? 
                     AND conta_id = ? 
                     AND descricao = ? 
+                    AND feitopor = 'sim'
                     AND recorrente = 'sim'
                 ");
                 $verifica->execute([
                     $token_config,
                     $hoje->format('Y-m-d'),
                     $conta_id,
-                    $descricao
+                    $descricao,
+                    $feitopor
                 ]);
             
                 if ($verifica->rowCount() == 0) {
                     $stmt = $conexao->prepare("
-                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
                         $token_config,
@@ -84,7 +87,8 @@ while ($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)) {
                         $descricao,
                         'sim',
                         $valor,
-                        $observacoes
+                        $observacoes,
+                        $feitopor
                     ]);
                 }
             }            

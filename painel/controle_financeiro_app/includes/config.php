@@ -56,6 +56,17 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
+$result_check = $conexao->query("SELECT * FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = '{$_SESSION['email']}'");
+
+$feitopor = 'Painel';
+if ($select = $result_check->fetch(PDO::FETCH_ASSOC)) {
+    $dados = base64_decode($select['dados_painel_users']);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+    $dados_array = explode(';', $dados_decifrados);
+    $feitopor = $dados_array[0] ?? 'Painel';
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }

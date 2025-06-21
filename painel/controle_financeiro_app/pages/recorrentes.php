@@ -17,18 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($_POST['action']) {
                 case 'add':
                     $stmt = $pdo->prepare("
-                        INSERT INTO lancamentos_recorrentes (token_emp, data_lancamento, repeticoes, periodo, conta_id, descricao, valor, observacoes)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO lancamentos_recorrentes (token_emp, data_lancamento, repeticoes, periodo, conta_id, descricao, valor, observacoes, feitopor)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt->execute([
                         $_SESSION['token_emp'],
                         $_POST['data_lancamento'],
-                        $_POST['repeticoes'],
+                        $_POST['repeticoes'] + 1,
                         $_POST['periodo'],
                         $_POST['conta_id'],
                         sanitize($_POST['descricao']),
                         number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['valor'])), 2, '.', ''),
-                        sanitize($_POST['observacoes'])
+                        sanitize($_POST['observacoes']),
+                        $feitopor
                     ]);
                     $message = 'Recorrente adicionado com sucesso!';
                     $messageType = 'success';
@@ -37,17 +38,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 case 'edit':
                     $stmt = $pdo->prepare("
                         UPDATE lancamentos_recorrentes 
-                        SET data_lancamento = ?, repeticoes = ?, periodo = ?, conta_id = ?, descricao = ?, valor = ?, observacoes = ?
+                        SET data_lancamento = ?, repeticoes = ?, periodo = ?, conta_id = ?, descricao = ?, valor = ?, observacoes = ?, feitopor = ?
                         WHERE id = ?
                     ");
                     $stmt->execute([
                         $_POST['data_lancamento'],
-                        $_POST['repeticoes'],
+                        $_POST['repeticoes'] + 1,
                         $_POST['periodo'],
                         $_POST['conta_id'],
                         sanitize($_POST['descricao']),
                         number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['valor'])), 2, '.', ''),
                         sanitize($_POST['observacoes']),
+                        $feitopor,
                         $_POST['id']
                     ]);
                     $message = 'Recorrente atualizado com sucesso!';
@@ -215,7 +217,7 @@ try {
                     <?php foreach ($lancamentos as $lancamento): ?>
                         <tr>
                             <td><?php echo formatDate($lancamento['data_lancamento']); ?></td>
-                            <td><?php echo htmlspecialchars($lancamento['repeticoes']); ?>x - <?php echo htmlspecialchars($lancamento['periodo']); ?></td>
+                            <td><?php echo $lancamento['repeticoes'] - 1; ?>x - <?php echo htmlspecialchars($lancamento['periodo']); ?></td>
                             <td>
                                 <?php echo htmlspecialchars($lancamento['descricao']); ?>
                                 <?php if ($lancamento['observacoes']): ?>
@@ -352,7 +354,7 @@ function editarLancamento(lancamento) {
     document.getElementById('contaId').value = String(lancamento.conta_id);
 
     document.getElementById('descricao').value = lancamento.descricao;
-    document.getElementById('repeticoes').value = lancamento.repeticoes;
+    document.getElementById('repeticoes').value = lancamento.repeticoes - 1;
     document.getElementById('periodo').value = lancamento.periodo;
     document.getElementById('valor').value = formatMoney(parseFloat(lancamento.valor));
     document.getElementById('observacoes').value = lancamento.observacoes || '';

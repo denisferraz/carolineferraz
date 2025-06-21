@@ -21,20 +21,20 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
     $envio_email = $row['envio_email'];
 
   //Envia Aniversariantes
-  $result_check = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
+  $result_check = $conexao->prepare("SELECT dados_painel_users, email FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
   $result_check->execute(array('token_emp' => '%;'.$token_config.';%'));
   $painel_users_array = [];
     while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
+        $email = $select['email'];
 
     // Para descriptografar os dados
     $dados = base64_decode($dados_painel_users);
     $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
-
     $dados_array = explode(';', $dados_decifrados);
 
     $painel_users_array[] = [
-        'email' => $select['email'],
+        'email' => $email,
         'nome' => $dados_array[0],
         'telefone' => $dados_array[3],
         'nascimento' => $dados_array[5]
@@ -43,7 +43,7 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
 }
   $aniversariantes = 0;
     foreach ($painel_users_array as $select_check){
-    $data_nascimento = $item['nascimento'];
+    $data_nascimento = $select_check['nascimento'];
 
     if (!empty($data_nascimento)) {
       $mes_dia = date('m-d', strtotime($data_nascimento));
@@ -67,14 +67,9 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
     "E-mail: $doc_email\n".
     "Telefone: $doc_telefone_ajustado";
 
-  
-  $data_email = date('d/m/Y \-\ H:i:s');
-  $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
-  $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
-
   $msg_aniversario = str_replace(
-      ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}'],    // o que procurar
-      [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta],  // o que colocar no lugar
+      ['{NOME}', '{TELEFONE}', '{EMAIL}'],    // o que procurar
+      [$doc_nome, $doc_telefone, $doc_email],  // o que colocar no lugar
       $config_msg_aniversario
   );
 
@@ -142,6 +137,8 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
       'Verifique se as mensagens automaticas foram enviadas!';
       $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
     }
+
+    //echo "$aniversariante <br>[$doc_telefone - $msg_texto]<br>";
 
 }
 
