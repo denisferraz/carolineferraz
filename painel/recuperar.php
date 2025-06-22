@@ -163,8 +163,8 @@ if($row == 1 && $cpf_encontrado == 'sim'){
     
     }//Fim Envio de Email
 
-    $query = $conexao->prepare("UPDATE painel_users SET codigo = '1' WHERE email = :email AND unico = :cpf");
-    $query->execute(array('email' => $email, 'cpf' => $doc_cpf));
+    $query = $conexao->prepare("UPDATE painel_users SET codigo = '1' WHERE email = :email");
+    $query->execute(array('email' => $email));
 
     echo json_encode([
         'success' => true,

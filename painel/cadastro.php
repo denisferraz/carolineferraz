@@ -183,7 +183,7 @@ $sessao_total = 1;
 
 $progress = $sessao_atual/$sessao_total*100;
 ?>
-<center><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&id=<?php echo $id_tratamento ?>","iframe-home")' class="btn-black">Cadastrar Plano</a></center>
+<center><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&id=<?php echo $id_tratamento ?>","iframe-home")' class="btn-black">+ Nova Sessão</a></center>
 <fieldset>
 <legend><h2>Historico Sessões</h2></legend>
 <center>
@@ -335,6 +335,9 @@ foreach ($pastas as $pasta) {
 <?php } ?>
 <?php if($id_job == 'Consultas'){ ?>
 <!-- Consultas -->
+<center>
+<a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Nova Consulta</a>
+</center>
 <fieldset>
 <legend><h2>Historico de Consultas</h2></legend>
 <center>
@@ -382,6 +385,14 @@ $id_consulta = $history['id'];
 <?php } ?>
 <?php if($id_job == 'Contrato'){ ?>
 <!-- Contrato -->
+<?php
+if($nascimento == '' || $profissao == '' || $cep == '' || $rua == '' || $numero == '' || $cidade == '' || $bairro == '' || $estado == ''){
+    echo "<script>
+    alert('Complete o Cadastro de $nome antes de fazer um Contrato')
+    window.location.replace('cadastro_editar.php?email=$doc_email')
+    </script>";
+}
+?>
 <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
         <div class="card">
             <div class="card-top">
@@ -390,13 +401,13 @@ $id_consulta = $history['id'];
 
             <div class="card-group">
             <br>
-            <label><b>Valor</b></label>
-            <input type="text" name="procedimento_valor" minlength="10" maxlength="155" placeholder="R$ parcelado em x de R$ sem juros" required>
+            <label><b>Termos de Pagamento</b></label>
+            <input type="text" name="procedimento_valor" minlength="10" maxlength="155" placeholder="R$0.00 parcelado em x de R$0.00 sem juros" required>
             <br>
             <label><b>Intervalo entre Sessões</b></label>
             <input type="number" name="procedimento_dias" min="1" max="365" placeholder="15" required>
             <br>
-            <label><b>Procedimento</b></label>
+            <label><b>Descrição do Procedimento</b></label>
             <textarea class="textarea-custom" name="procedimentos" rows="5" cols="44" minlength="10" maxlength="300" placeholder="Procedimentos... (utilize o <br> para pular linha)" required></textarea>
             <br><br>
             <input type="hidden" name="nome" value="<?php echo $nome ?>">
@@ -410,6 +421,9 @@ $id_consulta = $history['id'];
 <?php } ?>
 <?php if($id_job == 'Contratos'){ ?>
 <!-- Contratos -->
+<center>
+<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Contrato","iframe-home")' class="btn-black">+ Novo Contrato</a>
+</center>
 <fieldset>
 <legend><h2>Contratos</h2></legend>
 <table>
@@ -454,20 +468,20 @@ if($row_check_contratos == 0){
 ?>
 </table>
 </fieldset>
-<center>
-<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Contrato","iframe-home")' class="btn-black">Novo Contrato</a>
-</center>
 <?php } ?>
 <?php if($id_job == 'Anamnese'){ ?>
 <!-- Anamnese -->
-<h2>Selecione a Anamese</h2>
-
+<center>
+<a href="javascript:void(0)" onclick='window.open("anamnese_criar_modelo.php","iframe-home")' class="btn-black">+ Nova Anamnese</a>
+</center>
+<fieldset>
+<legend><h2>Selecione a Anamese</h2></legend>
 <table>
     <thead>
         <tr>
             <th>Data Criado</th>
             <th>Nome</th>
-            <th>Ver</th>
+            <th>Ver/Preencher</th>
         </tr>
     </thead>
     <tbody>
@@ -483,17 +497,21 @@ if($row_check_contratos == 0){
         <tr>
             <td data-label="Data Criado"><?php echo $criado_em; ?></td>
             <td data-label="Nome"><?php echo $titulo; ?></td>
-            <td data-label="Ver"><a href="javascript:void(0)" onclick='window.open("anamnese_preencher.php?paciente_id=<?php echo $paciente_id ?>&modelo_id=<?php echo $id ?>","iframe-home")' class="btn-black">Ver</td>
+            <td data-label="Ver"><a href="javascript:void(0)" onclick='window.open("anamnese_preencher.php?paciente_id=<?php echo $paciente_id ?>&modelo_id=<?php echo $id ?>","iframe-home")' class="btn-black">Ver/Preencher</td>
 
         </tr>
         <?php } ?>
     </tbody>
 </table>
+</fieldset>
 <?php } ?>
 <?php if($id_job == 'Prontuario'){ ?>
 <!-- Prontuario -->
-<h2>Selecione o Prontuario</h2>
-
+<center>
+<a href="javascript:void(0)" onclick='window.open("prontuario_criar_modelo.php","iframe-home")' class="btn-black">+ Novo Prontuário</a>
+</center>
+<fieldset>
+<legend><h2>Selecione o Prontuario</h2></legend>
 <table>
     <thead>
         <tr>
@@ -521,6 +539,7 @@ if($row_check_contratos == 0){
         <?php } ?>
     </tbody>
 </table>
+</fieldset>
 <?php } ?>
 <?php if($id_job == 'Lancamentos'){ ?>
 <!-- Lançamentos -->
@@ -591,6 +610,9 @@ $id = $select_lancamento['id'];
 
 <?php if($id_job == 'Evolucao'){ ?>
 <!-- Evolucao -->
+<center>
+<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?= $doc_email ?>&id_job=Evolucao_Add","iframe-home")' class="btn-black">+ Nova Evolução</a>
+</center>
 <fieldset>
 <legend><h2>Evoluções de <?= $nome ?></h2></legend>
 <?php 
@@ -598,10 +620,6 @@ $id = $select_lancamento['id'];
 $evolucoes = $conexao->prepare("SELECT * FROM evolucoes WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = ? ORDER BY data DESC");
 $evolucoes->execute([$doc_email]);
 ?>
-<center>
-<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?= $doc_email ?>&id_job=Evolucao_Add","iframe-home")' class="btn-black">+ Nova Evolução</a>
-</center>
-<br>
 <?php foreach ($evolucoes as $ev): ?>
     <div style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; position: relative;">
         <strong>Data:</strong> <?= date('d/m/Y H:i\h', strtotime($ev['data'])) ?><br>
@@ -641,12 +659,11 @@ $evolucoes->execute([$doc_email]);
 <?php } ?>
 <?php if($id_job == 'Receituario'){ ?>
 <!-- Receituario -->
-<fieldset>
-<legend><h2>Receitas</h2></legend>
 <center>
 <a href="javascript:void(0)" onclick='window.open("receituario_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Nova Receita</a>
 </center>
-<br>
+<fieldset>
+<legend><h2>Receitas</h2></legend>
 <?php
 $receitas = $conexao->prepare("SELECT * FROM receituarios WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
 $receitas->execute([
@@ -679,12 +696,11 @@ $conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $r['conteudo']);?>
 <?php } ?>
 <?php if($id_job == 'Atestado'){ ?>
 <!-- Atestado -->
-<fieldset>
-<legend><h2>Atestados Médicos</h2></legend>
 <center>
 <a href="javascript:void(0)" onclick='window.open("atestado_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Novo Atestado</a>
 </center>
-<br>
+<fieldset>
+<legend><h2>Atestados Médicos</h2></legend>
 <?php
 $atestados = $conexao->prepare("SELECT * FROM atestados WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
 $atestados->execute([
