@@ -30,19 +30,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         SELECT * FROM painel_users 
         WHERE token = :token 
         AND codigo = 1 
-        AND CONCAT(SUBSTRING(unico, 5, 6), RIGHT(unico, 3)) = :cpf_recorte
     ");
     $query->bindParam(':token', $token);
-    $query->bindParam(':cpf_recorte', $id);
     $query->execute();
 
     $row = $query->rowCount();
     
     if($row == 1){
 
+        $painel_users_array = [];
         while($select = $query->fetch(PDO::FETCH_ASSOC)){
             $email = $select['email'];
+            $dados_painel_users = $select['dados_painel_users'];
+
+        // Para descriptografar os dados
+        $dados = base64_decode($dados_painel_users);
+        $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+
+        $dados_array = explode(';', $dados_decifrados);
+
+        $painel_users_array[] = [
+            'cpf' => $dados_array[2]
+        ];
+
+    }
+
+    $cpf_encontrado = 'nao';
+    foreach ($painel_users_array as $usuario) {
+        $cpf_parcial = substr($usuario['cpf'], 4, 6) . substr($usuario['cpf'], -3);
+        echo "$cpf_parcial<br>";
+        if ($id === $cpf_parcial) {
+            $cpf_encontrado = 'sim';
+            break;
         }
+    }
+
 
         $crip_senha = md5($senha);
 
@@ -100,8 +122,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
 
     <!-- Contato -->
+    <br>
     <section id="recuperar" class="section bg-light">
-        <div class="container">
+        <div class="container"><br>
             <h2 class="section-title">Recuperar Senha</h2><br>
             <p class="section-subtitle"><?php echo $erro_cadastro; ?></p>
             
@@ -170,23 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- JavaScript -->
     <script src="js/script.js"></script>
-
-    <script>
-    document.querySelector('form').addEventListener('submit', function (e) {
-        // Exibir alerta de carregamento
-        Swal.fire({
-            title: 'Enviando...',
-            text: 'Aguarde enquanto sua mensagem está sendo enviada.',
-            icon: 'warning',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            showConfirmButton: false,
-            didOpen: () => {
-                Swal.showLoading(); // Mostra o spinner
-            }
-        });
-    });
-    </script>
 
 </body>
 </html>

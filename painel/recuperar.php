@@ -68,7 +68,7 @@ $row = $query->rowCount();
     $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
-        $id = $select['id'];
+        $token = $select['token'];
 
     // Para descriptografar os dados
     $dados = base64_decode($dados_painel_users);
@@ -77,8 +77,7 @@ $row = $query->rowCount();
     $dados_array = explode(';', $dados_decifrados);
 
     $painel_users_array[] = [
-        'id' => $id,
-        'token' => $select['token'],
+        'token' => $token,
         'nome' => $dados_array[0],
         'cpf' => $dados_array[2],
         'telefone' => $dados_array[3]

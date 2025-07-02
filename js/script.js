@@ -406,7 +406,13 @@ RecForm.addEventListener('submit', async (e) => {
         const resultRec = await responseRec.json();
 
         if (resultRec.success) {
-            window.location.href = resultRec.redirect || 'index.php';
+            Swal.fire({
+                title: 'Sucesso',
+                text: resultRec.message || 'Você ira receber em seu E-mail/Whatsapp o link para recuperar!',
+                icon: 'success'
+            }).then(() => {
+                window.location.href = resultRec.redirect || 'index.php';
+            });
         } else {
             Swal.fire({
                 title: 'Erro!',

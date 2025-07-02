@@ -230,6 +230,23 @@ $empresas = explode(';', $_SESSION['empresas']);
                 </a>
             </div>
         </li>
+
+        <!-- PROFILE -->
+        <li class="nav-item mt-2">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" href="#menuProfile" role="button" aria-expanded="false" aria-controls="menuProfile">
+                <span><i class="bi bi-person-square me-2"></i> Profile</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse ps-3" id="menuProfile">
+                <a href="javascript:void(0)" onclick='window.open("profile.php?id_job=Profile","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-person-check me-2"></i> Profile
+                </a>
+                <a href="javascript:void(0)" onclick='window.open("profile.php?id_job=Senha","iframe-home");' class="nav-link text-white d-flex align-items-center">
+                    <i class="bi bi-lock me-2"></i> Senha
+                </a>
+            </div>
+        </li>
         
         <?php if (count($empresas) > 1){ ?>
         <!-- Seleção -->

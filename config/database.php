@@ -125,6 +125,8 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE id = '-2'") as $row)
     $config_telefone = $row['config_telefone'];
     $config_cnpj = $row['config_cnpj'];
     $config_endereco = $row['config_endereco'];
+    $envio_whatsapp = $row['envio_whatsapp'];
+    $envio_email = $row['envio_email'];
 }
 
 ?>
