@@ -164,7 +164,7 @@ $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_
             </div>
 
             <div class="card-group btn">
-                <button type="submit">Cadastrar</button>
+                <button type="submit">Confirmar</button>
             </div>
         </div>
     </form>
@@ -244,7 +244,7 @@ $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_
         </div>
 
         <div class="card-group btn">
-            <button type="submit">Cadastrar</button>
+            <button type="submit">Confirmar</button>
         </div>
     </div>
     </form>

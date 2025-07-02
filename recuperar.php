@@ -5,42 +5,52 @@ session_start();
 $erro_cadastro = isset($_SESSION['erro_cadastro']) ? $_SESSION['erro_cadastro'] : null;
 unset($_SESSION['erro_cadastro']);
 
-if(empty($_GET['id']) || empty($_GET['token'])){
+if(empty($_GET['token'])){
     header('Location: index.php');
     exit();
 }
 
-$token = $_GET['token'];
-$id = $_GET['id'];
+$token_get = $_GET['token'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $senha = mysqli_real_escape_string($conn_msqli, $_POST['senha']);
     $senha_conf = mysqli_real_escape_string($conn_msqli, $_POST['senha_conf']);
-    $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
-    $id = mysqli_real_escape_string($conn_msqli, $_POST['id']);
+    $token_post = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 
     if($senha != $senha_conf || empty($senha) || empty($senha_conf)){
         $_SESSION['erro_cadastro'] = '<b>Senhas não conferem uma com a outra!</b>';
-        header("Location: recuperar.php?id=$id&token=$token");
+        header("Location: recuperar.php?token=$token_post");
         exit();
     }
+
+    $dados = base64_decode($token_post);
+    $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
+    $dados_array = explode(';', $dados_decifrados);
+
+    $id = $dados_array[0];
+    $cpf = $dados_array[1];
+    $email = $dados_array[2];
+    $token = $dados_array[3];
 
     $query = $conexao->prepare("
         SELECT * FROM painel_users 
         WHERE token = :token 
+        AND id = :id 
+        AND email = :email
         AND codigo = 1 
     ");
-    $query->bindParam(':token', $token);
-    $query->execute();
-
+    $query->execute([
+        ':token' => $token,
+        ':id' => $id,
+        ':email' => $email
+    ]);
     $row = $query->rowCount();
     
     if($row == 1){
 
         $painel_users_array = [];
         while($select = $query->fetch(PDO::FETCH_ASSOC)){
-            $email = $select['email'];
             $dados_painel_users = $select['dados_painel_users'];
 
         // Para descriptografar os dados
@@ -59,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($painel_users_array as $usuario) {
         $cpf_parcial = substr($usuario['cpf'], 4, 6) . substr($usuario['cpf'], -3);
         echo "$cpf_parcial<br>";
-        if ($id === $cpf_parcial) {
+        if ($cpf === $cpf_parcial) {
             $cpf_encontrado = 'sim';
             break;
         }
@@ -68,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $crip_senha = md5($senha);
 
-        $query = $conexao->prepare("UPDATE painel_users SET codigo = '0', senha = :senha WHERE token = :token AND email = :email");
-        $query->execute(array('senha' => $crip_senha, 'token' => $token, 'email' => $email));
+        $query = $conexao->prepare("UPDATE painel_users SET codigo = '0', senha = :senha WHERE token = :token AND email = :email AND id = :id");
+        $query->execute(array('senha' => $crip_senha, 'token' => $token, 'email' => $email, 'id' => $id));
 
         echo "<script>
         alert('Senha alterada com Sucesso!')
@@ -79,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     }else{
         $_SESSION['erro_cadastro'] = '<b>Este Link ja Expirou ou ja foi Utilizado!</b>';
-        header("Location: recuperar.php?id=$id&token=$token");
+        header("Location: recuperar.php?token=$token_post");
         exit();
     }
 }
@@ -142,8 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="password" id="senha_conf" name="senha_conf" class="form-control">
                         </div>
 
-                        <input type="hidden" name="token" value="<?php echo $token; ?>">
-                        <input type="hidden" name="id" value="<?php echo $id; ?>">
+                        <input type="hidden" name="token" value="<?php echo $token_get; ?>">
                         
                         <button type="submit" class="btn btn-primary btn-block">Confirmar</button>
                     </form>

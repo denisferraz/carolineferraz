@@ -69,6 +69,7 @@ $row = $query->rowCount();
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
         $token = $select['token'];
+        $id = $select['id'];
 
     // Para descriptografar os dados
     $dados = base64_decode($dados_painel_users);
@@ -77,6 +78,7 @@ $row = $query->rowCount();
     $dados_array = explode(';', $dados_decifrados);
 
     $painel_users_array[] = [
+        'id' => $id,
         'token' => $token,
         'nome' => $dados_array[0],
         'cpf' => $dados_array[2],
@@ -92,13 +94,19 @@ $cpf_encontrado = 'nao';
             $nome = $usuario['nome'];
             $telefone = $usuario['telefone'];
             $token = $usuario['token'];
+            $id = $usuario['id'];
             break;
         }
     }
 
 if($row == 1 && $cpf_encontrado == 'sim'){
 
-    $id = substr($doc_cpf, 4, 6).substr($doc_cpf, -3);
+    $cpf = substr($doc_cpf, 4, 6).substr($doc_cpf, -3);
+
+    $dados_token = "$id;$cpf;$email;$token";
+
+    $dados_criptografados = openssl_encrypt($dados_token, $metodo, $chave, 0, $iv);
+    $dados_final = base64_encode($dados_criptografados);
 
     //Incio Envio Whatsapp
     if($envio_whatsapp == 'ativado'){
@@ -107,7 +115,7 @@ if($row == 1 && $cpf_encontrado == 'sim'){
         $msg_whastapp = "Olá $nome\n\n".
         "Você solicitou a recuperação de senha.\n\n".
         "Caso tenha sido você, clique abaixo:\n\n".
-        "$site_atual/recuperar.php?id=$id&token=$token\n\n".
+        "$site_atual/recuperar.php?token=$dados_final\n\n".
         "Caso contrario, certifique-se de proteger sua conta!";
 
         $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
@@ -116,7 +124,7 @@ if($row == 1 && $cpf_encontrado == 'sim'){
 
     if($envio_email == 'ativado'){
 
-    $link_alterar = "<a href=\"$site_atual/recuperar.php?id=$id&token=$token\"'>Recuperar</a>";
+    $link_alterar = "<a href=\"$site_atual/recuperar.php?token=$dados_final\"'>Recuperar</a>";
     
     $mail = new PHPMailer(true);
     
