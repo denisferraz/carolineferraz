@@ -388,7 +388,7 @@ RecForm.addEventListener('submit', async (e) => {
     document.body.style.overflow = '';
 
     Swal.fire({
-        title: 'Entrando...',
+        title: 'Enviando...',
         text: 'Aguarde enquanto verificamos seus dados.',
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading()
