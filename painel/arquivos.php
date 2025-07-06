@@ -1,11 +1,8 @@
 <?php
-
-//ini_set('display_errors', 0 );
-//error_reporting(0);
-
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
     
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
@@ -35,18 +32,18 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
 <body>
 
     <form class="form" action="acao.php" method="POST" enctype="multipart/form-data">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Salve um Novo Arquivo</h2>
+                <h2>Salve um Novo Arquivo <i class="bi bi-question-square-fill"onclick="ajudaArquivoAdd()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
                 <label>Selecionar um Arquivo PDF</label>
-                <FONT COLOR="white"><input type="file" name="arquivos" id="arquivo" onchange="updateFileName()" required></font><br><br>
+                <FONT COLOR="white"><input data-step="2" type="file" name="arquivos" id="arquivo" onchange="updateFileName()" required></font><br><br>
                 <label>Nome do Arquivo</label>
-                <input type="text" name="arquivo" minlength="5" maxlength="20" required><br>
+                <input data-step="3" type="text" name="arquivo" minlength="5" maxlength="20" required><br>
                 <label>Tipo do Arquivo</label>
-                <select name="arquivo_tipo">
+                <select data-step="4" name="arquivo_tipo">
                     <option value="Tratamento">Plano de Tratamento</option>
                     <option value="Evolucao">Evolução</option>
                     <option value="Orientacao">Orientações</option>
@@ -58,7 +55,7 @@ while($select_check2 = $query_check2->fetch(PDO::FETCH_ASSOC)){
                 <input type="hidden" name="email" value="<?php echo $email ?>" />
                 <input type="hidden" name="token_profile" value="<?php echo $token_profile ?>" />
                 <br>
-                <div class="card-group btn"><button type="submit">Salvar PDF</button></div>
+                <div data-step="5" class="card-group btn"><button type="submit">Salvar PDF</button></div>
 
             </div>
         </div>

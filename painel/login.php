@@ -11,7 +11,7 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
  }
 
 if(empty($_POST['email']) || empty($_POST['password'])){
-    header('Location: ../index.php');
+    header('Location: ../index.html');
     exit();
 }
 
@@ -26,13 +26,30 @@ $row = $query->rowCount();
 if($row == 1){
     while($select_check = $query->fetch(PDO::FETCH_ASSOC)){
     $_SESSION['empresas'] = $select_check['token_emp'];
-    $_SESSION['token_emp']  = $select_check['token_emp'];
-    $_SESSION['token']  = $select_check['token'];
+    $_SESSION['token'] = $select_check['token'];
+    $_SESSION['configuracao'] = $select_check['configuracao'];
+    $empresas = array_filter(explode(';', $_SESSION['empresas'])); // remove entradas vazias
     }
-    $_SESSION['email'] = $email;
+    foreach ($empresas as $empresa) {
+        $query2 = $conexao->prepare("SELECT * FROM profissionais WHERE token_emp = :token_emp AND is_painel = 1");
+        $query2->execute(['token_emp' => $empresa]);
+    
+        if ($query2->rowCount() > 0 || $_SESSION['token'] == $empresa) {
+            // Seta sessão com base na primeira empresa válida
+            $_SESSION['token_emp'] = $empresa;
+            $_SESSION['vencido'] = false;
+            $_SESSION['email'] = $email;
+            $_SESSION['site_puro'] = $site_puro;
+            echo json_encode([
+                'success' => true,
+                'redirect' => 'painel/painel.php'
+            ]);
+            exit();
+        }
+    }
     echo json_encode([
-        'success' => true,
-        'redirect' => 'painel/painel.php'
+        'success' => false,
+        'message' => 'Sem empresas com acesso liberado ao painel!'
     ]);
     exit();
 }else{

@@ -109,11 +109,19 @@ if($id_job == 'editar_configuracoes_agenda'){
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações', 'token_emp' => $_SESSION['token_emp']));   
 
-    echo "<script>
-    alert('Configurações Editadas com sucesso')
-    window.location.replace('config_agenda.php');
-    </script>";
-    exit();
+    if($_SESSION['configuracao'] == 0){
+        echo "<script>
+        alert('Configurações Editadas com sucesso. Continue com sua configuração!')
+        window.location.replace('config_landing.php')
+        </script>";
+        exit();
+    }else{
+        echo "<script>
+        alert('Configurações Editadas com sucesso')
+        window.location.replace('config_agenda.php')
+        </script>";
+        exit();  
+    }
 
 }else if($id_job == 'editar_configuracoes_empresa'){
 
@@ -129,11 +137,19 @@ if($id_job == 'editar_configuracoes_agenda'){
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações', 'token_emp' => $_SESSION['token_emp']));   
 
+    if($_SESSION['configuracao'] == 0){
+    echo "<script>
+    alert('Configurações Editadas com sucesso. Continue com sua configuração!')
+    window.location.replace('config_msg.php')
+    </script>";
+    exit();
+    }else{
     echo "<script>
     alert('Configurações Editadas com sucesso')
     window.location.replace('config_empresa.php')
     </script>";
-    exit();
+    exit();  
+    }
 
 }else if($id_job == 'editar_configuracoes_msg'){
 
@@ -188,11 +204,114 @@ if($id_job == 'editar_configuracoes_agenda'){
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações', 'token_emp' => $_SESSION['token_emp']));   
 
-    echo "<script>
-    alert('Configurações Editadas com sucesso')
-    window.location.replace('config_msg.php')
-    </script>";
-    exit();
+    if($_SESSION['configuracao'] == 0){
+        echo "<script>
+        alert('Configurações Editadas com sucesso. Continue com sua configuração!')
+        window.location.replace('config_agenda.php')
+        </script>";
+        exit();
+        }else{
+        echo "<script>
+        alert('Configurações Editadas com sucesso')
+        window.location.replace('config_msg.php')
+        </script>";
+        exit();  
+        }
+
+}else if($id_job == 'editar_configuracoes_landing'){
+
+    $config_nome = mysqli_real_escape_string($conn_msqli, $_POST['config_nome']);
+    $config_landing = mysqli_real_escape_string($conn_msqli, $_POST['config_landing']);
+    $config_especialidade = mysqli_real_escape_string($conn_msqli, $_POST['config_especialidade']);
+    $config_descricao = mysqli_real_escape_string($conn_msqli, $_POST['config_descricao']);
+    $config_instagram = mysqli_real_escape_string($conn_msqli, $_POST['config_instagram']);
+    $config_facebook = mysqli_real_escape_string($conn_msqli, $_POST['config_facebook']);
+    $config_email = mysqli_real_escape_string($conn_msqli, $_POST['config_email']);
+    $config_telefone = mysqli_real_escape_string($conn_msqli, $_POST['config_telefone']);
+    $config_endereco = mysqli_real_escape_string($conn_msqli, $_POST['config_endereco']);
+    $token_emp = mysqli_real_escape_string($conn_msqli, $_POST['token_emp']);
+
+    $verifica = $conexao->prepare("SELECT COUNT(*) FROM profissionais WHERE id = :id AND token_emp != :token_emp");
+    $verifica->execute(array('id' => $config_landing, 'token_emp' => $token_emp));
+    $existe = $verifica->fetchColumn();
+
+    if ($existe > 0) {
+        echo "<script>
+            alert('Já existe um profissional com esse nome de página externa!');
+            window.location.replace('config_landing.php');
+        </script>";
+        exit;
+    }
+
+    if(isset($_POST['landing'])){
+    $is_landing = 1;
+    }else{
+    $is_landing = 0;
+    }
+
+    if(isset($_POST['agendamento_externo'])){
+    $is_externo = 1;
+    }else{
+    $is_externo = 0;
+    }
+
+    if(isset($_POST['painel_externo'])){
+    $is_painel = 1;
+    }else{
+    $is_painel = 0;
+    }
+
+    $query = $conexao->prepare("UPDATE profissionais SET id = :id, nome = :nome, especialidade = :especialidade, descricao = :descricao, email = :email, whatsapp = :whatsapp, instagram = :instagram, facebook = :facebook, endereco = :endereco, is_landing = :is_landing, is_externo = :is_externo, is_painel = :is_painel WHERE token_emp = :token_emp");
+    $query->execute(array('id' => $config_landing, 'nome' => $config_nome, 'especialidade' => $config_especialidade, 'descricao' => $config_descricao, 'email' => $config_email, 'whatsapp' => $config_telefone, 'instagram' => $config_instagram, 'facebook' => $config_facebook, 'endereco' => $config_endereco, 'is_landing' => $is_landing, 'is_externo' => $is_externo, 'is_painel' => $is_painel, 'token_emp' => $token_emp));
+        
+    $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, '{$_SESSION['token']}')");
+    $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações'));   
+
+    $query = $conexao->prepare("UPDATE painel_users SET configuracao = :configuracao WHERE token = :token_emp AND tipo != 'Paciente'");
+    $query->execute(array('configuracao' => '3', 'token_emp' => $token_emp));
+
+    $nomeArquivo = $_FILES['config_foto']['name'];
+    $caminhoTemporario = $_FILES['config_foto']['tmp_name'];
+    $extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
+
+    // Verifica se é JPG
+    if (isset($_FILES['config_foto']) && $_FILES['config_foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+
+        $nomeArquivo = $_FILES['config_foto']['name'];
+        $caminhoTemporario = $_FILES['config_foto']['tmp_name'];
+        $extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
+    
+        if ($extensao === 'jpg' || $extensao === 'jpeg') {
+            $novoNome = $token_emp . '.jpg';
+            $destino = '../profissionais/fotos/' . $novoNome;
+    
+            if (move_uploaded_file($caminhoTemporario, $destino)) {
+                // Arquivo movido com sucesso
+            } else {
+                echo "Erro ao mover o arquivo.";
+                exit;
+            }
+        } else {
+            echo "Apenas arquivos JPG são permitidos.";
+            exit;
+        }
+    }
+    
+    // Depois de tudo, continue normalmente:
+    if($_SESSION['configuracao'] == 0){
+        $_SESSION['configuracao'] = 1;
+        echo "<script>
+        alert('Configurações Editadas com sucesso!')
+        window.top.location.replace('painel.php')
+        </script>";
+        exit();
+    }else{
+        echo "<script>
+        alert('Configurações Editadas com sucesso')
+        window.location.replace('config_landing.php')
+        </script>";
+        exit();  
+    }   
 
 }else if($id_job == 'disponibilidade_fechar'){
 
@@ -326,14 +445,18 @@ echo "<script>
     $query->execute(array('produto' => $lanc_produto, 'token_emp' => $_SESSION['token_emp']));
     $estoque_item = $query->fetch(PDO::FETCH_ASSOC);
     
-    if($tipo_lanc == 'produto'){
+    if($tipo_lanc != 'servico'){
         $lanc_produto = $estoque_item['produto'];
     }
 
+    if($tipo_lanc != 'estoque'){
     $stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, 'nao', number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor)), 2, '.', ''), '', $historico_quem]);
+    $stmt->execute([$_SESSION['token_emp'], $lanc_data, 1, $lanc_produto, 'nao', $valor, '', $historico_quem]);
+    }else{
+    $tipo = 'Estoque';  
+    }
     
-    if($tipo_lanc == 'produto'){
+    if($tipo_lanc != 'servico'){
     $produto = mysqli_real_escape_string($conn_msqli, $_POST['lanc_produto']);
     $produto_quantidade = mysqli_real_escape_string($conn_msqli, $_POST['lanc_quantidade']);
     $produto_lote = 'Painel';
@@ -541,7 +664,7 @@ echo "<script>
     $arquivo = mysqli_real_escape_string($conn_msqli, $_POST['arquivo']).'.pdf';
     
     $arquivos = $_FILES['arquivos'];
-    $dirAtual = '../arquivos/'.$token_profile.'/'.$arquivo_tipo.'/';
+    $dirAtual = '../arquivos/'.$_SESSION['token_emp'].'/'.$token_profile.'/'.$arquivo_tipo.'/';
 
     if($arquivos['type'] != 'application/pdf'){
         echo "<script>
@@ -1002,7 +1125,7 @@ echo "<script>
                         $_POST['data_lancamento'],
                         16,
                         $produto,
-                        number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['produto_valor'])), 2, '.', ''),
+                        $_POST['produto_valor'],
                         '',
                         $historico_quem
                     ]);
@@ -1098,7 +1221,7 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
 
     echo "<script>
         alert('Prontuario Registrado com Sucesso');
-        window.location.replace('cadastro.php?email=$doc_email&id_job=Prontuario');
+        window.location.replace('cadastro.php?email=$doc_email&id_job=Evolucao');
     </script>";
     exit();
 
@@ -1159,4 +1282,18 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     </script>";
     exit();
     
+}else if($id_job == 'cadastro_editar_owner'){
+
+    $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
+    $token_profile = mysqli_real_escape_string($conn_msqli, $_POST['token_profile']);
+    $plano_validade = mysqli_real_escape_string($conn_msqli, $_POST['plano_validade']);
+
+    $query = $conexao->prepare("UPDATE painel_users SET plano_validade = :plano_validade WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
+    $query->execute(array('token_emp' => '%;'.$token_profile.';%', 'email' => $doc_email, 'plano_validade' => $plano_validade));
+
+        echo "<script>
+        alert('Cadastro Alterado com Sucesso')
+        window.location.replace('owner_cadastro_editar.php?email=$doc_email')
+        </script>";
+
 }

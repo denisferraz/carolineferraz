@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -55,27 +55,27 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Cadastrar Serviços</h2>
+                <h2>Cadastrar Serviços <i class="bi bi-question-square-fill"onclick="ajudaServicosCadastrar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
                 <label>Descrição Serviços</label>
-                <textarea name="tratamento_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
+                <textarea data-step="2" name="tratamento_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
 
                 <input type="hidden" name="id_job" value="lancar_tratamento" />
-            <div class="card-group btn"><button type="submit">Cadastrar Serviços</button></div>
+            <div data-step="3" class="card-group btn"><button type="submit">Cadastrar Serviços</button></div>
 
             </div>
     </form>
     <br><br>
-    <table>
+    <table data-step="4">
             <thead>
                 <tr>
                     <th>Serviços</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th data-step="5">Editar</th>
+                    <th data-step="6">Excluir</th>
                 </tr>
             </thead>
             <tbody>

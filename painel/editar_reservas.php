@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $hoje = date('Y-m-d');
 $token = md5(date("YmdHismm"));
@@ -38,7 +39,9 @@ $query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSIO
 $query->execute(array('id_consulta' => $id_consulta));
 while($select = $query->fetch(PDO::FETCH_ASSOC)){
 $atendimento_hora = $select['atendimento_hora'];
+$atendimento_dia = $select['atendimento_dia'];
 $doc_email = $select['doc_email'];
+$local_reserva = $select['local_consulta'];
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
 $query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
@@ -66,9 +69,9 @@ foreach ($painel_users_array as $select2){
 ?>
 
 <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
-<div class="card">
+<div data-step="1" class="card">
             <div class="card-top">
-                <h2>Alterar Consulta</h2>
+                <h2>Alterar Consulta <i class="bi bi-question-square-fill"onclick="ajudaConsultaAlterar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <?php if ($error_reserva): ?>
@@ -79,9 +82,11 @@ foreach ($painel_users_array as $select2){
 
 <div class="card-group">
     <?php if($tipo == 'Painel'){ ?>
+        <div data-step="2">
         <label>Nome - <?php echo $select2['nome'] ?></label>
         <label>Telefone - <?php echo $select2['telefone'] ?></label>
         <label>Email - <?php echo $select2['email'] ?></label>
+        </div>
         <br>
     <?php } ?>
 
@@ -89,14 +94,16 @@ foreach ($painel_users_array as $select2){
     <input type="hidden" name="doc_telefone" value="<?php echo $select2['telefone'] ?>">
     <input type="hidden" name="doc_email" value="<?php echo $select2['email'] ?>">
     
-    <label>Atendimento Dia (Original)- <?php echo date('d/m/Y', strtotime($select['atendimento_dia'])) ?></label>
-    <label>Atendimento Hora (Original) - <?php echo date('H:i\h', strtotime($select['atendimento_hora'])) ?></label>
+    <div data-step="3">
+    <label>Atendimento Dia (Original)- <?php echo date('d/m/Y', strtotime($atendimento_dia)) ?></label>
+    <label>Atendimento Hora (Original) - <?php echo date('H:i\h', strtotime($atendimento_hora)) ?></label>
+    </div>
 
     <br>
     <label>Atendimento Dia (Novo)</label>
-    <input value="<?php echo $select['atendimento_dia'] ?>" min="<?php echo $hoje ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
+    <input data-step="4" value="<?php echo $atendimento_dia ?>" min="<?php echo $hoje ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
     <label>Atendimento Hora (Novo)</label>
-    <select name="atendimento_hora">
+    <select data-step="5" name="atendimento_hora">
     <?php
         $atendimento_hora_comeco = strtotime($config_atendimento_hora_comeco);
         $atendimento_hora_fim = strtotime($config_atendimento_hora_fim);
@@ -115,17 +122,15 @@ foreach ($painel_users_array as $select2){
     <input type="hidden" name="status_consulta" value="Alterado">
     <input type="hidden" name="feitapor" value="<?php echo $tipo; ?>">
     <br>
-    <label><b>Local Consulta: 
-        <select name="atendimento_local">
-        <option value="Lauro de Freitas" <?php echo ($select['local_consulta'] == 'Lauro de Freitas') ? 'selected' : ''; ?>>Lauro de Freitas</option>
-        <option value="Salvador" <?php echo ($select['local_consulta'] == 'Salvador') ? 'selected' : ''; ?>>Salvador</option>
-    </select></b></label><br>
+    <label><b>Local Consulta: </label>
+    <input data-step="6" type="text" name="atendimento_local" value="<?php echo $local_reserva; ?>" maxlength="50" placeholder="Local Atendimento">
+    <br><br>
     <?php if($tipo == 'Painel'){ ?>
     <input id="overbook" type="checkbox" name="overbook">
-    <label for="overbook">Forçar Overbook</label>
+    <label data-step="7" for="overbook">Forçar Overbook</label>
     <br>
     <input id="overbook_data" type="checkbox" name="overbook_data">
-    <label for="overbook_data">Forçar Data/Horario</label>
+    <label data-step="8" for="overbook_data">Forçar Data/Horario</label>
     <br>
     <?php } ?>
     <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
@@ -133,7 +138,7 @@ foreach ($painel_users_array as $select2){
     <input type="hidden" name="atendimento_hora_anterior" value="<?php echo $atendimento_hora ?>">
     <input type="hidden" name="id_job" value="<?php echo $select['tipo_consulta'] ?>">
     <input type="hidden" name="new_token" value="<?php echo $token ?>">
-    <div class="card-group btn"><button type="submit">Alterar Consulta</button></div>
+    <div data-step="9" class="card-group btn"><button type="submit">Alterar Consulta</button></div>
 </div>
 </div>
 </form>

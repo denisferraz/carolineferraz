@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $hoje = date('Y-m-d');
 $doc_email = mysqli_real_escape_string($conn_msqli, $_GET['doc_email']);
@@ -31,6 +32,14 @@ foreach ($painel_users_array as $select_check2){
   $doc_nome = $select_check2['nome'];
   $doc_telefone = $select_check2['telefone'];
 }
+
+if($id_job == 'Produto'){
+    $tutorial = 'ajudaLancamentoProduto()';
+}else if($id_job == 'Serviço'){
+    $tutorial = 'ajudaLancamentoServico()';
+}else if($id_job == 'BaixaEstoque'){
+    $tutorial = 'ajudaLancamentoEstoque()';
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,19 +60,20 @@ foreach ($painel_users_array as $select_check2){
 </head>
 <body>
 <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Confirmar o Lançamento</h2>
+                <h2>Confirmar o Lançamento <i class="bi bi-question-square-fill"onclick="<?php echo $tutorial; ?>"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
-            <label>Nome  [ <b><u><?php echo $doc_nome ?></u></b> ]</label>
+            <label data-step="2">Nome  [ <b><u><?php echo $doc_nome ?></u></b> ]</label>
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
             <br>
             <?php if($id_job == 'Produto'){ ?>
             <label>Produto</label>
-            <select name="lanc_produto" id="lanc_produto" required onchange="atualizaMaxEstoque()">
+            <select data-step="3" name="lanc_produto" id="lanc_produto" required onchange="atualizaMaxEstoque()">
+            <option value="" disabled selected>-- Escolha um Produto --</option>
             <?php
             // Consulta o saldo atual do produto
             $query = $conexao->prepare("
@@ -91,13 +101,14 @@ foreach ($painel_users_array as $select_check2){
             <?php } ?>
             </select>
             <label>Quantidade</label>
-            <input min="1" max="999" type="number" name="lanc_quantidade" id="lanc_quantidade" placeholder="000" required>
+            <input data-step="4" min="1" max="999" type="number" name="lanc_quantidade" id="lanc_quantidade" placeholder="000" required>
             <label>Valor</label>
-            <input minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
+            <input data-step="5" minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
             <input type="hidden" name="tipo_lanc" value="produto">
-            <?php }else{ ?>
+            <?php }else if($id_job == 'Serviço'){ ?>
             <label>Serviço</label>
-            <select name="lanc_produto" id="lanc_servico" required onchange="atualizaValorServico()">
+            <select data-step="1.3" name="lanc_produto" id="lanc_servico" required onchange="atualizaValorServico()">
+            <option value="" disabled selected>-- Escolha um Serviço --</option>
             <?php
             $query_tratamentos = $conexao->prepare("SELECT * FROM tratamentos WHERE token_emp = :token_emp AND id >= :id ORDER BY tratamento DESC");
             $query_tratamentos->execute(['token_emp' => $_SESSION['token_emp'], 'id' => 1]);
@@ -157,13 +168,48 @@ foreach ($painel_users_array as $select_check2){
             </select>
             <input type="hidden" name="lanc_quantidade" value="1" required>
             <label>Valor</label>
-            <input minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
+            <input data-step="1.4" minlength="1" maxlength="9999" type="text" id="lanc_valor" name="lanc_valor" placeholder="000.00" required>
             <input type="hidden" name="tipo_lanc" value="servico">
+            <?php }else if($id_job == 'BaixaEstoque'){ ?>
+            <label>Produto (Baixa Direta de Estoque)</label>
+            <select data-step="2.3" name="lanc_produto" id="lanc_produto" required onchange="atualizaMaxEstoque()">
+            <option value="" disabled selected>-- Escolha um Produto --</option>
+            <?php
+            // Consulta o saldo atual do produto
+            $query = $conexao->prepare("
+                SELECT ei.id, ei.produto, COALESCE(SUM(e.quantidade), 0) as saldo
+                FROM estoque_item ei
+                LEFT JOIN estoque e ON ei.id = e.produto AND e.token_emp = :token_emp
+                WHERE ei.token_emp = :token_emp2 AND ei.id >= :id
+                GROUP BY ei.id
+                ORDER BY ei.produto ASC
+            ");
+            $query->execute([
+                'token_emp' => $_SESSION['token_emp'],
+                'token_emp2' => $_SESSION['token_emp'],
+                'id' => 1
+            ]);
+            
+            while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+                $produto = $select['produto'];
+                $produto_id = $select['id'];
+                $saldo = (int) $select['saldo'];
+            ?>
+                <option value="<?php echo $produto_id; ?>" data-estoque="<?php echo $saldo; ?>">
+                    <?php echo $produto; ?> [Saldo: <?php echo $saldo; ?>]
+                </option>
             <?php } ?>
+            </select>
+            <label>Quantidade</label>
+            <input data-step="2.4" min="1" max="999" type="number" name="lanc_quantidade" id="lanc_quantidade" placeholder="000" required>
+            <input type="hidden" id="lanc_valor" name="lanc_valor" value="0">
+            <input type="hidden" name="tipo_lanc" value="estoque">
+            <?php } ?>
+            
             <br>
             <input type="hidden" name="lanc_data" value="<?php echo $hoje ?>" />
             <input type="hidden" name="id_job" value="reservas_lancamentos" />
-            <div class="card-group btn"><button type="submit">Lançar</button></div>
+            <div data-step="6" class="card-group btn"><button type="submit">Lançar</button></div>
 
             </div>
         </div>

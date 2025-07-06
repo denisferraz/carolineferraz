@@ -2,7 +2,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -47,19 +47,19 @@ require('verifica_login.php');
 </head>
 <body>
 
-    <div class="container">
-        <h2>Valores dos Serviços</h2>
+    <div data-step="1" class="container">
+        <h2>Valores dos Serviços <i class="bi bi-question-square-fill"onclick="ajudaServicos()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
 
         <table>
                 <thead>
                     <tr>
-                        <th>Serviço</th>
-                        <th>Custos</th>
-                        <th>Total</th>
-                        <th>Margem</th>
-                        <th>Taxas</th>
-                        <th>Impostos</th>
-                        <th>Sugestão Valor</th>
+                        <th data-step="2">Serviço</th>
+                        <th data-step="3">Custos</th>
+                        <th data-step="4">Total</th>
+                        <th data-step="5">Margem</th>
+                        <th data-step="6">Taxas</th>
+                        <th data-step="7">Impostos</th>
+                        <th data-step="8">Sugestão Valor</th>
                     </tr>
                 </thead>
                 <tbody>

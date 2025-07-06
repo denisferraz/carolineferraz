@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -25,9 +25,9 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="../reservas_php.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Confirmar o No-Show</h2>
+                <h2>Confirmar o No-Show <i class="bi bi-question-square-fill"onclick="ajudaConsultaNoShow()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 <?php
 $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
@@ -63,19 +63,24 @@ foreach ($painel_users_array as $select_check2){
 }
 ?>
             <div class="card-group">
-            <label>Nome</label>
-            <input type="text" minlength="8" maxlength="30" name="doc_nome" value="<?php echo $doc_nome ?>" required>
-            <label>Data Atendimento</label>
-            <input value="<?php echo $atendimento_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
-            <label>Atendimento Hora</label>
-            <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="time" name="atendimento_hora" required>
-            <label>E-mail</label>
-            <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $doc_email ?>" required>
+            <div data-step="2">
+            <label>Nome: <?php echo $doc_nome ?></label>
+            <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
+            <label>E-mail: <?php echo $doc_email ?></label>
+            <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
+            </div>
+            <br>
+            <div data-step="3">
+            <label>Data Atendimento: <?php echo date('d/m/Y', strtotime($atendimento_dia)); ?></label>
+            <input value="<?php echo $atendimento_dia ?>" type="hidden" name="atendimento_dia">
+            <label>Atendimento Hora: <?php echo date('H:i\h', $atendimento_hora); ?></label>
+            <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="hidden" name="atendimento_hora">
+            </div>
             <input type="hidden" name="status_consulta" value="NoShow">
             <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
             <input type="hidden" name="feitapor" value="Painel">
             <br><br>
-            <div class="card-group btn"><button type="submit">No-Show</button></div>
+            <div data-step="4" class="card-group btn"><button type="submit">No-Show</button></div>
 
             </div>
         </div>

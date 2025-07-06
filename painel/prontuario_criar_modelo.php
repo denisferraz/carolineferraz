@@ -2,6 +2,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $titulo = '';
 $perguntas = [];
@@ -93,23 +94,23 @@ if (isset($_GET['id_modelo'])) {
   </style>
 </head>
 <body>
-  <form id="form-modelo-prontuario" class="card" enctype="multipart/form-data">
-    <h2><?= $modelo_id ? "Editar Modelo de Prontuario" : "Criar Prontuario" ?></h2>
+  <form data-step="1" id="form-modelo-prontuario" class="card" enctype="multipart/form-data">
+    <h2><?= $modelo_id ? "Editar Modelo de Prontuario" : "Criar Prontuario" ?> <i class="bi bi-question-square-fill"onclick="ajudaProntuario()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
 
     <div class="card-group">
       <label for="titulo_modelo">Título do Modelo:</label>
-      <input type="text" name="titulo_modelo" id="titulo_modelo" required value="<?= htmlspecialchars($titulo) ?>" />
+      <input data-step="2" type="text" name="titulo_modelo" id="titulo_modelo" required value="<?= htmlspecialchars($titulo) ?>" />
     </div>
 
-    <div id="perguntasContainer"></div>
+    <div data-step="3" id="perguntasContainer"></div>
 
     <?php if ($modelo_id): ?>
       <input type="hidden" name="modelo_id" value="<?= $modelo_id ?>" />
     <?php endif; ?>
 
     <div class="card-group btn_2">
-      <button type="button" onclick="adicionarCampo()">Adicionar Pergunta</button>
-      <button type="button" onclick="salvarModelo()">Salvar Modelo</button>
+      <button data-step="6" type="button" onclick="adicionarCampo()">Adicionar Pergunta</button>
+      <button data-step="7" type="button" onclick="salvarModelo()">Salvar Modelo</button>
     </div>
   </form>
 
@@ -135,9 +136,9 @@ if (isset($_GET['id_modelo'])) {
     <div class="card-group" draggable="true">
       <input type="hidden" name="perguntas[${index}][id]" value="${pergunta_id}">
       <label>Pergunta:</label>
-      <input type="text" name="perguntas[${index}][texto]" required value="${texto.replace(/"/g, '&quot;')}">
+      <input data-step="4" type="text" name="perguntas[${index}][texto]" required value="${texto.replace(/"/g, '&quot;')}">
       <label>Tipo:</label>
-      <select name="perguntas[${index}][tipo]" onchange="mostrarOpcoes(this, ${index})">
+      <select data-step="5" name="perguntas[${index}][tipo]" onchange="mostrarOpcoes(this, ${index})">
         <option value="text" ${tipo === 'text' ? 'selected' : ''}>Texto</option>
         <option value="number" ${tipo === 'number' ? 'selected' : ''}>Número</option>
         <option value="radio" ${tipo === 'radio' ? 'selected' : ''}>Escolha Única</option>

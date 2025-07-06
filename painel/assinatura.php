@@ -21,7 +21,7 @@ if (isset($_POST['assinatura'])) {
   $decodedImage = base64_decode(substr($image, strpos($image, ',') + 1));
   
   // Caminho para o diretório de armazenamento
-  $diretorio = '../assinaturas/';
+  $diretorio = '../assinaturas/' . $_SESSION['token_emp'] . '/';
   
   // Verificar se o diretório existe ou criar se necessário
   if (!is_dir($diretorio)) {
@@ -29,7 +29,11 @@ if (isset($_POST['assinatura'])) {
   }
   
   //Deleta assinatura anterior
-  $assinaturaAnteriorPattern = $diretorio . $cpf . '-' . $token . '-*.png';
+  if($cpf == '123'){
+    $assinaturaAnteriorPattern = $diretorio . $token . '-*.png';
+  }else{
+    $assinaturaAnteriorPattern = $diretorio . $cpf . '-' . $token . '-*.png';
+  }
   $assinaturasAnteriores = glob($assinaturaAnteriorPattern);
   if (!empty($assinaturasAnteriores)) {
     foreach ($assinaturasAnteriores as $assinaturaAnterior) {
@@ -38,21 +42,26 @@ if (isset($_POST['assinatura'])) {
   }
   
   // Caminho completo para o arquivo
+if($cpf == '123'){
+  $caminho = $diretorio . $token . '.png';
+}else{
   $caminho = $diretorio . $cpf . '-' . $token . '-'. $data_assinaturas . '.png';
-  
+}
   // Salvar a imagem
   file_put_contents($caminho, $decodedImage);
   
   // Definir as permissões
   chmod($caminho, 0755);
   
+if($cpf != '123'){
   $query = $conexao->prepare("UPDATE contrato SET assinado = 'Sim', assinado_data = :assinado_data WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email");
   $query->execute(array('assinado_data' => $data_assinatura, 'email' => $email));
+}
 
 }else if (isset($_FILES['pdf']) && isset($_POST['token'])) {
   $pdf = $_FILES['pdf'];
   $token = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_POST['token']); // Sanitiza o token
-  $dir = '../arquivos/' . $token . '/Contratos/';
+  $dir = '../arquivos/' . $_SESSION['token_emp'] . '/' . $token . '/Contratos/';
 
   if (!is_dir($dir)) {
       mkdir($dir, 0755, true);

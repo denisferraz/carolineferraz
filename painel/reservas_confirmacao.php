@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -26,9 +26,9 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Enviar Confirmação</h2>
+                <h2>Enviar Confirmação <i class="bi bi-question-square-fill"onclick="ajudaConsultaConfirmacao()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 <?php
 $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
@@ -71,28 +71,34 @@ foreach ($painel_users_array as $select_check2){
 }
 ?>
             <div class="card-group">
-            <label>Nome</label>
-            <input type="text" minlength="8" maxlength="30" name="doc_nome" value="<?php echo $doc_nome ?>" required>
-            <label>Data Atendimento</label>
-            <input value="<?php echo $atendimento_dia ?>" max="<?php echo $config_atendimento_dia_max ?>" type="date" name="atendimento_dia" required>
-            <label>Atendimento Hora</label>
-            <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="time" name="atendimento_hora" required>
-            <label>E-mail</label>
-            <input minlength="10" maxlength="35" type="email" name="doc_email" value="<?php echo $doc_email ?>" required>
+            <div data-step="2">
+            <label>Nome: <?php echo $doc_nome ?></label>
+            <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
+            <label>E-mail: <?php echo $doc_email ?></label>
+            <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
+            </div>
+            <br>
+            <div data-step="3">
+            <label>Data Atendimento: <?php echo date('d/m/Y', strtotime($atendimento_dia)); ?></label>
+            <input value="<?php echo $atendimento_dia ?>" type="hidden" name="atendimento_dia">
+            <label>Atendimento Hora: <?php echo date('H:i\h', $atendimento_hora) ?></label>
+            <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="hidden" name="atendimento_hora">
+            </div>
+            <br>
             <label>Telefone</label>
-            <input minlength="11" maxlength="18" type="text" name="doc_telefone" value="<?php echo $doc_telefone ?>" required>
+            <input data-step="4" minlength="11" maxlength="18" type="text" name="doc_telefone" value="<?php echo $doc_telefone ?>" required>
             <br><br>
             <input id="whatsapp" type="checkbox" name="whatsapp" checked>
-            <label for="whatsapp">Enviar para Whatsapp</label>
+            <label data-step="5" for="whatsapp">Enviar para Whatsapp</label>
             <br>
             <input id="email" type="checkbox" name="email" checked>
-            <label for="email">Enviar para E-mail</label>
+            <label data-step="6" for="email">Enviar para E-mail</label>
             <br><br>
             <input type="hidden" name="id_job" value="EnvioConfirmacao">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_consulta" value="<?php echo $id_consulta ?>">
             <input type="hidden" name="tipo_consulta" value="<?php echo $tipo_consulta ?>">
-            <div class="card-group-green btn"><button type="submit">Enviar</button></div>
+            <div data-step="7" class="card-group-green btn"><button type="submit">Enviar</button></div>
 
             </div>
         </div>

@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -24,18 +25,18 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Entradas de Estoque</h2>
+                <h2>Entradas de Estoque <i class="bi bi-question-square-fill"onclick="ajudaEstoqueProdutosEntradas()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
 
             <label>Data Entrada</label>
-            <input type="date" name="data_lancamento" value="<?php echo $hoje; ?>" >
+            <input data-step="2" type="date" name="data_lancamento" value="<?php echo $hoje; ?>" >
 
             <label>Produto</label>
-            <select name="produto" required>
+            <select data-step="3" name="produto" required>
             <?php
                 $query = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY produto ASC");
                 $query->execute(['id' => 1]);
@@ -51,30 +52,30 @@ require('verifica_login.php');
                 </select>
 
                 <label>Quantidade</label>
-                <input type="number" name="produto_quantidade" min="1" max="9999" step="1" required>
+                <input data-step="4" type="number" name="produto_quantidade" min="1" max="9999" step="1" required>
 
                 <label>Valor (Total)</label>
-                <input type="number" name="produto_valor" min="0.01" max="9999.00" step="0.01" required>
+                <input data-step="5" type="number" name="produto_valor" min="0.01" max="9999.00" step="0.01" required>
 
                 <label>Lote</label>
-                <input type="text" name="produto_lote" minlength="1" maxlength="50" >
+                <input data-step="6" type="text" name="produto_lote" minlength="1" maxlength="50" >
 
                 <label>Validade</label>
-                <input type="date" name="produto_validade" >
+                <input data-step="7" type="date" name="produto_validade" value="<?php echo $hoje; ?>">
 
                 <label>Lançar em Despesa?</label>
-                <select name="lancar_despesa" required>
+                <select data-step="8" name="lancar_despesa" required>
                 <option value="Sim">Sim</option>
                 <option value="Não">Não</option>
                 </select>
                             
             <input type="hidden" name="id_job" value="lancar_entrada" />
-            <div class="card-group btn"><button type="submit">Registrar Entrada</button></div>
+            <div data-step="9" class="card-group btn"><button type="submit">Registrar Entrada</button></div>
 
             </div>
     </form>
     <br><br>
-    <table>
+    <table data-step="10">
             <thead>
                 <tr>
                     <th>Data</th>

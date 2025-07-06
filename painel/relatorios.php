@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -25,14 +25,14 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="gerar.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Selecione o Relatorio Abaixo</h2>
+                <h2>Selecione o Relatorio Abaixo <i class="bi bi-question-square-fill"onclick="ajudaRelatorios()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
                 <label><b>Selecione: 
-                <select name="relatorio">
+                <select data-step="2" name="relatorio">
                 <option value="Gerencial">Gerencial</option>
                 <option value="Estornos Dia">Estornos Dia</option>
                 <option value="Estornos Mes">Estornos Mês</option>
@@ -57,14 +57,14 @@ require('verifica_login.php');
                 <option value="No-Shows Ano">No-Shows Ano</option>
                 </select></b></label><br>
                 <label><b>Tipo Relatório: 
-                <select name="relatorio_tipo">
+                <select data-step="3" name="relatorio_tipo">
                 <option value="pdf">PDF</option>
                 <option value="excel">Excel</option>
                 </select></b></label><br>
                 <label>Data Relatorio</label>
-                <input type="date" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" name="relatorio_inicio" required>
+                <input data-step="4" type="date" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" name="relatorio_inicio" required>
                 <br>
-                <div class="card-group btn"><button type="submit">Gerar Relatorio</button></div>
+                <div data-step="5" class="card-group btn"><button type="submit">Gerar Relatorio</button></div>
 
             </div>
         </div>

@@ -407,8 +407,8 @@ RecForm.addEventListener('submit', async (e) => {
 
         if (resultRec.success) {
             Swal.fire({
-                title: 'Sucesso',
-                text: resultRec.message || 'Você ira receber em seu E-mail/Whatsapp o link para recuperar!',
+                title: 'Sucesso!',
+                text: resultRec.message || 'Você ira receber em seu e-mail/Whatsapp o link para recuperar!',
                 icon: 'success'
             }).then(() => {
                 window.location.href = resultRec.redirect || 'index.php';

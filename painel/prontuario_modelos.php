@@ -2,7 +2,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -16,16 +16,16 @@ require('verifica_login.php');
 </head>
 <body>
 
-    <div class="container">
-        <h2>Meus Prontuários</h2>
+    <div data-step="1" class="container">
+        <h2>Meus Prontuários <i class="bi bi-question-square-fill"onclick="ajudaProntuarios()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
 
-        <table>
+        <table data-step="2">
             <thead>
                 <tr>
                     <th>Data Criado</th>
                     <th>Nome</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th data-step="3">Editar</th>
+                    <th data-step="4">Excluir</th>
                 </tr>
             </thead>
             <tbody>

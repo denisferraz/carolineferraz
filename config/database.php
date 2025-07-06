@@ -41,7 +41,8 @@ $mail_SMTPSecure = 'PHPMailer::ENCRYPTION_SMTPS';
 $mail_Port = 465;
 }
 
-$site_atual = 'https://carolineferraz.com.br';
+$site_puro = 'carolineferraz';
+$site_atual = 'https://' . $site_puro . '.com.br';
 
 // Chave de criptografia
 $chave = 'Accor@123';
@@ -77,14 +78,21 @@ define('DB', "$config_db");
 $conn_msqli = mysqli_connect(Host, Usuario, Senha, DB) or die ('Não foi possivel conectar');
 
 // Função para Enviar Mensagem no WhatsApp via API do Facebook
-function enviarWhatsapp($telefone, $mensagem) {
+function enviarWhatsapp($telefone, $mensagem, $client_id) {
 
     // Normaliza o telefone: remove espaços, traços, parênteses
     $telefone = preg_replace('/[^0-9]/', '', $telefone);
 
     // Dados da instância e da API
+if($site_puro == 'chronoclick'){
+$client_id = 'client_id_' . $client_id;
+}else{
+$client_id = 'carolineferraz';
+}
+
 $token = 'a7f3d9e1c4b6a2f8e9d4b7c1f2a3e6d0';   // Adicione o token se necessário
-$url = 'https://evolution-evolution.0rvbug.easypanel.host/message/sendText/carolineferraz';
+$url_api = 'https://evolution-evolution.0rvbug.easypanel.host';
+$url = $url_api .'/message/sendText/'. $client_id;
 
 // Dados da mensagem
 $data = [
@@ -95,7 +103,7 @@ $data = [
 // Headers (adicione Authorization se sua API exigir)
 $headers = [
     "Content-Type: application/json; charset=UTF-8",
-    "apikey: a7f3d9e1c4b6a2f8e9d4b7c1f2a3e6d0", // Descomente se a API exigir autenticação
+    "apikey: $token", // Descomente se a API exigir autenticação
 ];
 
 // Enviando com cURL
@@ -119,14 +127,14 @@ if ($http_code === 200) {
 }
 }
 
-foreach ($conexao->query("SELECT * FROM configuracoes WHERE id = '-2'") as $row) {
-    $config_empresa = $row['config_empresa'];
-    $config_email = $row['config_email'];
-    $config_telefone = $row['config_telefone'];
-    $config_cnpj = $row['config_cnpj'];
-    $config_endereco = $row['config_endereco'];
-    $envio_whatsapp = $row['envio_whatsapp'];
-    $envio_email = $row['envio_email'];
+foreach ($conexao->query("SELECT * FROM configuracoes WHERE id = '1'") as $row) {
+    $config_empresa_chronoclick = $row['config_empresa'];
+    $config_email_chronoclick = $row['config_email'];
+    $config_telefone_chronoclick = $row['config_telefone'];
+    $config_cnpj_chronoclick = $row['config_cnpj'];
+    $config_endereco_chronoclick = $row['config_endereco'];
+    $envio_whatsapp_chronoclick = $row['envio_whatsapp'];
+    $envio_email_chronoclick = $row['envio_email'];
 }
 
 ?>

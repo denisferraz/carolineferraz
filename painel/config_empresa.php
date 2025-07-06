@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <html lang="pt-br">
@@ -24,24 +24,24 @@ require('verifica_login.php');
 <body>
 
 <form class="form" action="acao.php" method="POST">
-<div class="card">
+<div data-step="1" class="card">
 <div class="card-top">
-                <h2>Edite abaixo as Configurações do Profissional</h2>
+                <h2>Edite abaixo as Configurações da Empresa <i class="bi bi-question-square-fill"onclick="ajudaConfigEmpresa()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
-<div class="card-group">
+<div data-step="1" class="card-group">
     <label>Profissional</label>
-    <input type="text" minlength="5" maxlength="30" name="config_empresa" value="<?php echo $config_empresa; ?>" required>
+    <input data-step="2" type="text" minlength="5" maxlength="30" name="config_empresa" value="<?php echo $config_empresa; ?>" required>
     <label>Email</label>
-    <input type="text" minlength="10" maxlength="35" name="config_email" value="<?php echo $config_email; ?>" required>
+    <input data-step="3" type="text" minlength="10" maxlength="35" name="config_email" value="<?php echo $config_email; ?>" required>
     <label>Telefone</label>
-    <input type="text" minlength="8" maxlength="18" name="config_telefone" value="<?php echo $config_telefone; ?>" required>
+    <input data-step="4" type="text" minlength="8" maxlength="18" name="config_telefone" value="<?php echo $config_telefone; ?>" required>
     <label>CNPJ/CPF</label>
-    <input type="text" minlength="2" maxlength="18" name="config_cnpj" value="<?php echo $config_cnpj; ?>" required>
+    <input data-step="5" type="text" minlength="2" maxlength="18" name="config_cnpj" value="<?php echo $config_cnpj; ?>" required>
     <label>Endereco</label>
-    <textarea class="textarea-custom" name="config_endereco" rows="5" cols="43" required><?php echo $config_endereco ?></textarea><br><br>
+    <textarea data-step="6" class="textarea-custom" name="config_endereco" rows="5" cols="43" required><?php echo $config_endereco ?></textarea><br><br>
     <br>
     <input type="hidden" name="id_job" value="editar_configuracoes_empresa">
-    <div class="card-group btn"><button type="submit">Atualizar Dados</button></div>
+    <div data-step="7" class="card-group btn"><button type="submit">Atualizar Dados</button></div>
 </div>
 </div>
 </form>

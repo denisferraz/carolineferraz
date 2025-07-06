@@ -15,7 +15,7 @@ require('verifica_login.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="<?php echo $css_path ?>">
 </head>
-<body>
+<body><br>
 <fieldset>
 <?php
     $palavra = mysqli_real_escape_string($conn_msqli, $_POST['busca']);

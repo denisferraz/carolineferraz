@@ -2,6 +2,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $hoje = date('Y-m-d');
 ?>
@@ -47,18 +48,18 @@ $hoje = date('Y-m-d');
 </head>
 <body>
 <form class="form" action="reservas_buscar.php" method="POST">
-<div class="card">
+<div data-step="1" class="card">
 <div class="card-top">
-        <h2>Buscar uma Consulta</h2>
+        <h2>Buscar uma Consulta <i class="bi bi-question-square-fill"onclick="ajudaConsultaBuscar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
         </div>
         <div class="card-group">
                 <label>E-mail</label>
-                <input type="text" minlength="5" maxlength="35" name="busca" placeholder="Para total, deixe em branco">
+                <input data-step="2" type="text" minlength="5" maxlength="35" name="busca" placeholder="Para total, deixe em branco">
                 <label>Atendimento Dia - Início</label>
-                <input type="date" name="busca_inicio" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" required>
+                <input data-step="3" type="date" name="busca_inicio" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" required>
                 <label>Atendimento Dia - Fim</label>
-                <input type="date" name="busca_fim" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" required>
-                <div class="card-group btn"><button type="submit">Buscar</button></div>
+                <input data-step="4" type="date" name="busca_fim" max="<?php echo $config_atendimento_dia_max ?>" value="<?php echo $hoje ?>" required>
+                <div data-step="5" class="card-group btn"><button type="submit">Buscar</button></div>
         </div>
     </div>
     </form>

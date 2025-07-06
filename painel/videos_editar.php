@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php'); 
+require_once('tutorial.php');
 
 $id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
 
@@ -29,19 +30,19 @@ $descricao = $select['descricao'];
 <body>
 
 <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Edite abaixo seu Link</h2>
+                <h2>Edite abaixo seu Link <i class="bi bi-question-square-fill"onclick="ajudaVideosEditar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <label>Titulo do Video</label>
-            <input minlength="5" maxlength="150" type="text" name="video_titulo" value="<?php echo $descricao; ?>" required>
+            <input data-step="2" minlength="5" maxlength="150" type="text" name="video_titulo" value="<?php echo $descricao; ?>" required>
             <label>Link do Video</label>
-            <input minlength="5" maxlength="1500" type="text" name="video_link" value="<?php echo $link_youtube; ?>" required>
+            <input data-step="3" minlength="5" maxlength="1500" type="text" name="video_link" value="<?php echo $link_youtube; ?>" required>
                 <input type="hidden" name="video_id" value="<?php echo $id; ?>" />
                 <input type="hidden" name="id_job" value="editar_link" />
-            <div class="card-group btn"><button type="submit">Editar Link</button></div>
+            <div data-step="4" class="card-group btn"><button type="submit">Editar Link</button></div>
 
             </div>
         </div>

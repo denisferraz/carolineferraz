@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
@@ -36,27 +37,25 @@ $token = md5(date("YmdHismm"));
 <?php
 if($id_job == 'enviar'){
 ?>
-            <h2>Cadastrar Plano</u></h2>
+            <h2>Cadastrar Nova Sessão <i class="bi bi-question-square-fill"onclick="ajudaNovaSessao()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></u></h2>
             </div>
 
-            <div class="card-group">
+            <div data-step="1" class="card-group">
             <br>
-            <label><b>Tratamento</b></label>
-            <input type="text" name="tratamento" minlength="5" maxlength="155" placeholder="Descrição do Tratamento" required>
+            <label><b>Descrição da Sessão</b></label>
+            <input data-step="2" type="text" name="tratamento" minlength="5" maxlength="155" placeholder="Descrição da Sessão" required>
             <br><br>
             <label><b>Total de Sessões</b></label>
-            <input type="number" name="tratamento_sessao" min="1" max="99" required>
+            <input data-step="3" type="number" name="tratamento_sessao" min="1" max="99" required>
             <br><br>
             <label><b>Data Inicio</b></label>
-            <input type="date" name="tratamento_data" required>
-            <br><br>
-            <label><b>Descrição</b></label>
-            <textarea class="textarea-custom" name="comentario" cols="45" rows="5"></textarea>
+            <input data-step="4" type="date" name="tratamento_data" required>
+            <input type="hidden" name="comentario" value="comentario">
             <br>
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_enviar" />
-            <div class="card-group btn"><button type="submit">Enviar Tratamento</button></div>
+            <div data-step="5" class="card-group btn"><button type="submit">Cadastrar</button></div>
 
 <?php
 }else if($id_job == 'cadastrar'){
@@ -74,12 +73,12 @@ while($select_cadastrar = $query_cadastrar->fetch(PDO::FETCH_ASSOC)){
 
 $progress = $sessao_atual/$sessao_total*100;
 ?>
-            <h2>Cadastrar Nova Sessão</h2>
+            <h2>Cadastrar Sessão <i class="bi bi-question-square-fill"onclick="ajudaNovaSessaoAdd()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
-            <div class="card-group">
-            <label><b>Tratamento</b>: <?php echo $plano_descricao ?></label>
-            <label><div id="progress-bar">
+            <div data-step="1.1" class="card-group">
+            <label data-step="1.2"><b>Sessão</b>: <?php echo $plano_descricao ?></label>
+            <label data-step="1.3"><div id="progress-bar">
                 <div class="filled" style="width: <?php echo $progress; ?>%;"></div>
                 <div class="text"><b>Sessões:</b> <?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
                 </div></label>
@@ -88,25 +87,25 @@ $progress = $sessao_atual/$sessao_total*100;
             <?php
             if($sessao_atual == $sessao_total){
             ?>
-            <label><b>Este tratamento ja atingiu o Maximo de Sessões</b></label>
+            <label><b>Esta sessão ja atingiu o Maximo de Sessões</b></label>
             <?php
             }else if($sessao_atual != $sessao_total){
             ?>
             <label><b>Data Sessão</b></label>
-            <input type="date" min="<?php echo $plano_data; ?>" max="<?php echo date('Y-m-d'); ?>" name="tratamento_data" required>
+            <input data-step="1.4" type="date" min="<?php echo $plano_data; ?>" max="<?php echo date('Y-m-d'); ?>" name="tratamento_data" required>
             <br><br>
             <label><b>Cadastrar Sessão</b></label>
-            <input type="number" name="tratamento_sessao" min="<?php echo ($sessao_atual + 1) ?>" max="<?php echo $sessao_total ?>" value="<?php echo ($sessao_atual + 1) ?>" required>
+            <input data-step="1.5" type="number" name="tratamento_sessao" min="<?php echo ($sessao_atual + 1) ?>" max="<?php echo $sessao_total ?>" value="<?php echo ($sessao_atual + 1) ?>" required>
             <br><br>
             <label><b>Descrição</b></label>
-            <textarea class="textarea-custom" name="comentario" cols="45" rows="5"></textarea>
+            <textarea data-step="1.6" class="textarea-custom" name="comentario" cols="45" rows="5"></textarea>
             <br>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="tratamento" value="<?php echo $plano_descricao ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_cadastrar" />
-            <div class="card-group btn"><button type="submit">Cadastrar Sessão</button></div>
+            <div data-step="1.7" class="card-group btn"><button type="submit">Cadastrar Sessão</button></div>
             <?php
             }
             ?>
@@ -126,29 +125,29 @@ $sessao_status = $select_cadastrar['sessao_status'];
 
 $progress = $sessao_atual/$sessao_total*100;
 ?>
-            <h2>Finalizar o Tratamento</h2>
+            <h2>Finalizar a Sessão <i class="bi bi-question-square-fill"onclick="ajudaNovaSessaoFinalizar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
-            <div class="card-group">
-            <label><b>Tratamento</b>: <?php echo $plano_descricao ?></label>
-            <label><div id="progress-bar">
+            <div data-step="2.1" class="card-group">
+            <label data-step="2.2"><b>Sessão</b>: <?php echo $plano_descricao ?></label>
+            <label data-step="2.3"><div id="progress-bar">
                 <div class="filled" style="width: <?php echo $progress; ?>%;"></div>
                 <div class="text"><b>Sessões:</b> <?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
                 </div></label>
-            <label><b>Inicio</b>: <?php echo date('d/m/Y', strtotime("$plano_data")) ?></label>
+            <label data-step="2.4"><b>Inicio</b>: <?php echo date('d/m/Y', strtotime("$plano_data")) ?></label>
             <br>
             <?php
             if($sessao_atual == $sessao_total){
             ?>
-            <label><b>Para Finalizar o tratamento, clique abaixo</b></label><br>
+            <label><b>Para Finalizar a sessão, clique abaixo</b></label><br>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="email" value="<?php echo $email ?>">
             <input type="hidden" name="id_job" value="cadastro_tratamento_finalizar" />
-            <div class="card-group btn"><button type="submit">Finalizar Tratamento</button></div>
+            <div data-step="2.5" class="card-group btn"><button type="submit">Finalizar Sessão</button></div>
             <?php
             }else{
             ?>
-            <label><b>Para Finalizar o tratamento, você precisa realizar todas as sessões</b></label><br>
+            <label><b>Para Finalizar, você precisa realizar todas as sessões</b></label><br>
             <?php
             }
             ?>

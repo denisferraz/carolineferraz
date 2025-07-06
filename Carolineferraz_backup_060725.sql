@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 21, 2025 at 02:26 PM
+-- Generation Time: Jul 06, 2025 at 10:45 PM
 -- Server version: 10.11.10-MariaDB-log
 -- PHP Version: 7.2.34
 
@@ -164,7 +164,7 @@ INSERT INTO `consultas` (`id`, `token_emp`, `atendimento_dia`, `atendimento_hora
 (54, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2024-01-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'priscilaeve@hotmail.com', 'Finalizada', '2023-10-11 23:53:06.000000', 'Ativa', '037d0457f8cf8d40b48ba71307624e28', 'Lauro de Freitas'),
 (55, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-01-18', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'caroline_lordelo@hotmail.com', 'Em Andamento', '2025-01-17 15:40:37.000000', '410A553324', '4845502fbfbafb6e39255cc3a2396b61', 'Salvador'),
 (56, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2023-11-16', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'jr_losant@hotmail.com', 'Em Andamento', '2023-10-11 23:57:40.000000', 'Ativa', 'c2fc0c38105e12d101efeae9f96e72aa', ''),
-(57, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Confirmada', '2025-01-17 15:40:19.000000', 'A746E9DF53', '6dcc8c58b1b3609b19b9da773c0837b7', 'Salvador'),
+(57, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'Rosana_silva654@hotmail.com', 'Finalizada', '2025-01-17 15:40:19.000000', 'A746E9DF53', '6dcc8c58b1b3609b19b9da773c0837b7', 'Salvador'),
 (58, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2023-11-11', '09:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fernandinhacruz2017@gmail.com', 'Finalizada', '2023-11-09 14:15:15.000000', '8D10B961B8', '1ecf6daa75c97badcb965b78af493f68', ''),
 (59, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2023-11-16', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Em Andamento', '2023-11-06 15:53:19.000000', 'Ativa', '1b5d0ad0e1900d4aae02043845afb6f4', ''),
 (62, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-09', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'bruno.ferreira88@icloud.com', 'Em Andamento', '2023-11-16 15:09:46.000000', 'Ativa', '227d722f2cda1fff229ff524b3c2fec5', 'Lauro de Freitas'),
@@ -202,7 +202,7 @@ INSERT INTO `consultas` (`id`, `token_emp`, `atendimento_dia`, `atendimento_hora
 (95, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-04-26', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'danyelporto@gmail.com', 'Finalizada', '2025-04-25 00:15:55.000000', 'FE49D3EB54', 'e2a1dddb3b1dd388a48b55f236c2e623', 'Salvador'),
 (96, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'everton.pinheiro@hotmail.com', 'Cancelada', '2025-06-17 11:01:39.000000', '565405E129', 'aeacd4fdcab20ad5460ef4ac73caaed6', 'Lauro de Freitas'),
 (97, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-01-15', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'paterson.franco@gmail.com', 'Finalizada', '2025-01-08 19:22:11.000000', '611EF24801', '311c6352936906eb5398c5f70159997a', 'Salvador'),
-(98, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'eli.trevo@gmail.com', 'Confirmada', '2025-01-15 11:08:41.000000', 'Ativa', '37ba673f2703e981be31d39df6ffdd39', 'Salvador'),
+(98, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-03', '14:00:00.000000', 'Nova Sessão', 'Elisangela Jesus da Silva ', 'eli.trevo@gmail.com', 'Finalizada', '2025-01-15 11:08:41.000000', 'Ativa', 'b79e7b43746aa5a519396337f77969fe', 'Salvador'),
 (99, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-02-15', '10:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'priscila_nutri89@hotmail.com', 'Finalizada', '2025-02-11 14:52:20.000000', 'BF0118F4C9', 'c3b28b3297b1112928ba9be4cfca9334', 'Salvador'),
 (100, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-13', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'raquel.d.santos110194@gmail.com', 'Finalizada', '2025-01-31 14:01:19.000000', 'Ativa', '0d3cf7ebe223c7ea1a921f66637aaab0', 'Lauro de Freitas'),
 (101, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-05-07', '14:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'adrianamagalhaes026@gmail.com', 'Em Andamento', '2025-02-10 10:43:17.000000', 'Ativa', '1de336fa35a32c8cbe6a44a2f4e99ffc', 'Lauro de Freitas'),
@@ -212,7 +212,7 @@ INSERT INTO `consultas` (`id`, `token_emp`, `atendimento_dia`, `atendimento_hora
 (105, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-02-26', '15:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'email@gmail.com', 'Finalizada', '2025-02-26 09:38:24.000000', '02D4340AFB', 'f2dff5d260b3f3c97844b955273d372e', 'Salvador'),
 (106, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-05-03', '12:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'arianedasilvasantos2@gmail.com', 'Finalizada', '2025-03-06 14:28:52.000000', 'Ativa', 'c963f9313d148bdb5ea79c3ab9a590bb', 'Lauro de Freitas'),
 (107, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-04-15', '14:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'leideadrianonogieirasouza@gmail.com', 'Finalizada', '2025-04-15 08:47:17.000000', 'DE4A4191E8', '37b6264fbbbd936fe7409bfc1f768f6a', 'Salvador'),
-(108, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-05', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Confirmada', '2025-04-11 18:01:44.000000', 'Ativa', 'd8b70a0d3030e823d5207e023101ba24', 'Lauro de Freitas'),
+(108, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-19', '10:00:00.000000', 'Nova Sessão', 'Érico Silva do Nascimento', 'erico_nascimento@hotmail.com', 'Confirmada', '2025-04-11 18:01:44.000000', 'Ativa', 'c6327cf4390110ee4ce75e28deb53aa9', 'Salvador'),
 (109, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-04-16', '15:00:00.000000', 'Avaliação Capilar', 'Denis Ferraz', 'denis_ferraz359@hotmail.com', 'Finalizada', '2025-04-16 13:00:47.000000', 'F3F7DF9F21', 'ee5d74b65b7789ae850d9e6011af3fab', 'Lauro de Freitas'),
 (110, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-07', '09:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Finalizada', '2025-04-30 20:14:14.000000', 'Ativa', 'b16464e42f30538ff5cb3f02ff692de9', 'Lauro de Freitas'),
 (111, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-05-06', '16:00:00.000000', 'Avaliação Capilar', 'Caroline Ferraz', 'iuryforte15@gmail.com', 'Finalizada', '2025-04-30 20:19:34.000000', 'Ativa', 'a1a3710d5fcdf26097f0ee4ca43dbe32', 'Salvador'),
@@ -459,15 +459,21 @@ INSERT INTO `consultas` (`id`, `token_emp`, `atendimento_dia`, `atendimento_hora
 (415, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-05-24', '10:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erico_nascimento@hotmail.com', 'Finalizada', '2025-05-31 00:00:00.000000', '', 'c1dc038d5705e33d5d7594c23261db6b', 'Lauro de Freitas'),
 (421, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-11', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'erikadourado14@gmail.com', 'Confirmada', '2025-06-01 18:04:55.000000', 'Ativa', '74db49497a1701964020ac19ce14a084', 'Lauro de Freitas'),
 (423, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', '13:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'raquelsinal3@gmail.com', 'Finalizada', '2025-06-03 13:57:01.000000', 'Ativa', 'e838399ebf6f5823cf7df353477c0b1e', 'Lauro de Freitas'),
-(424, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', '18:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fauqueiroz@hotmail.com', 'Confirmada', '2025-06-06 16:01:56.000000', 'Ativa', 'aee67b35af36e3e5a6b56dba7749c679', 'Salvador'),
+(424, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', '18:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'fauqueiroz@hotmail.com', 'Finalizada', '2025-06-06 16:01:56.000000', 'Ativa', 'aee67b35af36e3e5a6b56dba7749c679', 'Salvador'),
 (425, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-11', '15:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'livia.carvalho@msn.com', 'Confirmada', '2025-06-07 10:19:41.000000', 'Ativa', 'cb81022737e3c625f6cc6eace4c62ad4', 'Lauro de Freitas'),
-(426, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', '12:00:00.000000', 'Nova Sessão', 'Luciana Gomes', 'luciana_gomes@hotmail.com', 'Confirmada', '2025-06-09 12:08:24.000000', 'Ativa', '174b7e8666c1ff3f5be918bf88631c3e', 'Salvador'),
+(426, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', '12:00:00.000000', 'Nova Sessão', 'Luciana Gomes', 'luciana_gomes@hotmail.com', 'Finalizada', '2025-06-09 12:08:24.000000', 'Ativa', '174b7e8666c1ff3f5be918bf88631c3e', 'Salvador'),
 (427, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-09-12', '16:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'raquel.d.santos110194@gmail.com', 'Confirmada', '2025-06-13 16:55:43.000000', 'Ativa', '8d67ccf7349b1889f982b1261a20043e', 'Lauro de Freitas'),
 (428, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', '17:00:00.000000', 'Nova Sessão', 'Caroline Ferraz', 'ldiasamino7@gmail.com', 'Finalizada', '2025-06-13 18:06:27.000000', 'Ativa', '935876568be52b45f6a431e1ddcae0ef', 'Lauro de Freitas'),
 (429, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', '10:00:00.000000', 'Consulta Capilar', 'Caroline Ferraz', 'karla.amorim@gmail.com', 'Finalizada', '2025-06-16 11:17:15.000000', 'Ativa', 'b21855ee335e31b78ac798128f8fcd6a', 'Lauro de Freitas'),
 (430, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-16', '14:00:00.000000', 'Nova Sessão', 'Sandra Maria de Assis Costa', 'sand11cost@gmail.com', 'Confirmada', '2025-06-18 12:50:10.000000', 'Ativa', 'f25ea0d911b19701b0fe4887527ca8fd', 'Lauro de Freitas'),
-(431, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', '17:00:00.000000', 'Nova Sessão', 'Larissa Dias dos Santos ', 'ldiasamino7@gmail.com', 'Confirmada', '2025-06-18 18:19:38.000000', 'Ativa', '19092131c5ca814b00c1a06aefbd82a7', 'Lauro de Freitas'),
-(432, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-08-26', '14:00:00.000000', 'Avaliação Capilar', 'Weslen Vinicius de Souza goes', 'weslenvini99@hotmail.com', 'Confirmada', '2025-06-20 13:49:57.000000', 'Ativa', 'd4da5ad40c9213bb9620d9c988d68779', 'Salvador');
+(431, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-11', '17:00:00.000000', 'Nova Sessão', 'Larissa Dias dos Santos ', 'ldiasamino7@gmail.com', 'Confirmada', '2025-06-18 18:19:38.000000', 'Ativa', '4bd712594fff2d1e2659806846886d90', 'Lauro de Freitas'),
+(432, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-08-26', '14:00:00.000000', 'Avaliação Capilar', 'Weslen Vinicius de Souza goes', 'weslenvini99@hotmail.com', 'Confirmada', '2025-06-20 13:49:57.000000', 'Ativa', 'd4da5ad40c9213bb9620d9c988d68779', 'Salvador'),
+(433, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-24', '17:00:00.000000', 'Nova Sessão', 'Rosana da silva santos', 'Rosana_silva654@hotmail.com', 'Confirmada', '2025-06-25 17:53:24.000000', 'Ativa', '5c8deda7218f8173d74aa569097124a2', 'Salvador'),
+(434, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-09', '14:00:00.000000', 'Nova Sessão', 'Raquel Freire', 'raquelsinal3@gmail.com', 'Confirmada', '2025-07-01 11:10:18.000000', 'Ativa', '68d16b177522ed5a9a144c39fb7a298a', 'Lauro de Freitas'),
+(435, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-08', '12:00:00.000000', 'Nova Sessão', 'Luciana Gomes', 'luciana_gomes@hotmail.com', 'Confirmada', '2025-07-01 19:02:24.000000', 'Ativa', 'bfffff6107c34007048bd29a76398fde', 'Salvador'),
+(436, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-09', '17:00:00.000000', 'Avaliação Capilar', 'Adriano Souza Nunes Santos', 'adrianosett@hotmail.com', 'Confirmada', '2025-07-01 19:07:27.000000', 'Ativa', '046d67092e838d32d335a6f2ca250402', 'Lauro de Freitas'),
+(437, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-05', '11:00:00.000000', 'Consulta Capilar', 'Maria de Lourdes Barbosa dos S', 'mariadelourdes@gmail.com', 'Finalizada', '2025-07-03 20:12:45.000000', 'Ativa', '6518414d4b4b9c548b552b35cb6c5afa', 'Lauro de Freitas'),
+(438, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-26', '09:00:00.000000', 'Nova Sessão', 'Maria de Lourdes Barbosa dos S', 'mariadelourdes@gmail.com', 'Confirmada', '2025-07-05 11:03:50.000000', 'Ativa', '3882b3edb9e07293ca32d2b31ad1f329', 'Lauro de Freitas');
 
 -- --------------------------------------------------------
 
@@ -719,7 +725,8 @@ INSERT INTO `custos_tratamentos` (`id`, `token_emp`, `tratamento_id`, `custo_id`
 (96, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 17, 13, 1),
 (97, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 17, 12, 1),
 (98, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 17, 4, 62),
-(99, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 16, 3, 2);
+(99, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 16, 3, 2),
+(100, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 20, 10, 1);
 
 -- --------------------------------------------------------
 
@@ -959,7 +966,8 @@ INSERT INTO `disponibilidade` (`id`, `token_emp`, `atendimento_dia`, `atendiment
 (186, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-12-27', '18:00:00', '2025-05-31 21:00:26'),
 (188, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-28', '10:00:00', '2025-06-06 19:01:56'),
 (189, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', '14:00:00', '2025-06-13 13:44:55'),
-(190, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', '11:00:00', '2025-06-16 14:17:15');
+(190, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', '11:00:00', '2025-06-16 14:17:15'),
+(191, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-05', '12:00:00', '2025-07-03 23:12:45');
 
 -- --------------------------------------------------------
 
@@ -998,7 +1006,30 @@ INSERT INTO `estoque` (`id`, `token_emp`, `produto`, `tipo`, `quantidade`, `data
 (13, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 23, 'Entrada', 50, '2025-06-21 01:42:05', 'TPPHX014', '2029-03-30 00:00:00'),
 (14, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 21, 'Entrada', 5, '2025-06-21 01:43:51', 'PR11296', '2027-11-30 00:00:00'),
 (15, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 22, 'Entrada', 10, '2025-06-21 01:44:55', 'BSA0556/24', '2029-05-30 00:00:00'),
-(16, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 26, 'Entrada', 26, '2025-06-21 01:46:58', 'PR267', '2025-09-30 00:00:00');
+(16, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 26, 'Entrada', 26, '2025-06-21 01:46:58', 'PR267', '2025-09-30 00:00:00'),
+(17, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 20, 'Saida', -1, '2025-06-26 01:58:35', '', '0000-00-00 00:00:00'),
+(18, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 15, 'Saida', -1, '2025-06-26 02:00:07', '', '0000-00-00 00:00:00'),
+(19, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 13, 'Saida', -1, '2025-06-26 02:00:35', '', '0000-00-00 00:00:00'),
+(20, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 12, 'Saida', -1, '2025-06-26 02:00:52', '', '0000-00-00 00:00:00'),
+(21, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 19, 'Saida', -1, '2025-06-26 02:01:13', '', '0000-00-00 00:00:00'),
+(22, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 9, 'Saida', -1, '2025-06-26 02:01:57', '', '0000-00-00 00:00:00'),
+(23, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 4, 'Entrada', 10, '2025-07-04 15:36:37', '24042505S', '2026-04-30 00:00:00'),
+(24, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 5, 'Entrada', 10, '2025-07-04 15:37:42', '23052505S', '2026-05-31 00:00:00'),
+(25, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 7, 'Entrada', 10, '2025-07-04 15:38:49', '09052505S', '2026-05-31 00:00:00'),
+(26, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 'Entrada', 10, '2025-07-04 15:56:04', '05052503S', '2026-05-31 00:00:00'),
+(27, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 2, 'Entrada', 10, '2025-07-04 15:57:28', '09042503S', '2026-04-30 00:00:00'),
+(28, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 10, 'Entrada', 5, '2025-07-04 15:58:43', '15052501S', '2026-05-31 00:00:00'),
+(29, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 10, 'Saida', -1, '2025-07-04 16:02:25', 'Painel', '2025-07-04 00:00:00'),
+(30, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 10, 'Saida', -1, '2025-07-04 16:07:28', '15052501S', '2026-05-31 00:00:00'),
+(31, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 'Saida', -1, '2025-07-04 16:08:21', '05052503S', '2026-05-31 00:00:00'),
+(32, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 7, 'Saida', -1, '2025-07-04 16:09:30', '09052505S', '2026-05-31 00:00:00'),
+(33, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 20, 'Saida', -1, '2025-07-04 16:10:15', '', '0000-00-00 00:00:00'),
+(34, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 12, 'Saida', -1, '2025-07-04 16:10:31', '', '0000-00-00 00:00:00'),
+(35, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 13, 'Saida', -1, '2025-07-04 16:10:43', '', '0000-00-00 00:00:00'),
+(36, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 15, 'Saida', -1, '2025-07-04 16:10:54', '', '0000-00-00 00:00:00'),
+(37, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 14, 'Saida', -1, '2025-07-04 16:11:07', '', '0000-00-00 00:00:00'),
+(38, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 23, 'Saida', -1, '2025-07-04 16:11:51', '', '0000-00-00 00:00:00'),
+(39, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 26, 'Saida', -2, '2025-07-04 16:12:10', '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1050,7 @@ CREATE TABLE `estoque_item` (
 --
 
 INSERT INTO `estoque_item` (`id`, `token_emp`, `produto`, `minimo`, `unidade`) VALUES
-(1, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Lidocaina 1% 2ml cx com 10un', 10, 'UN'),
+(1, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Lidocaina 1% 2ml cx com 10un', 5, 'UN'),
 (2, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Zinco 0,04% cx 10un', 2, 'UN'),
 (3, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Silicio P 3% cx cm 10un', 3, 'UN'),
 (4, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Minoxidil 0,5% cx com 10', 5, 'UN'),
@@ -1070,7 +1101,8 @@ INSERT INTO `evolucoes` (`id`, `token_emp`, `doc_email`, `data`, `profissional`,
 (2, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'raquel.d.santos110194@gmail.com', '2025-06-15 22:30:40', 'Caroline Ferraz', 'Paciente retorna para consulta de reavaliação relata melhora da queda, ainda com um pouco de fios caindo mas não apresenta intensidade como antes. Conseguiu seguir o tratamento corretamente.\\r\\nMelhorou o estresse diminuiu a rotisna de trabalho, segue fazendo terapia.\\r\\nPercebe melhora do sono.\\r\\nAlimentação em melhora devido ao acompanhamento com nutricionista.\\r\\nRealizando suplementação com whey + creatina prescrito pela nutricionista.\\r\\nRealizando musculação sente que esta com outra energia. melhora da coceira e descamação. Realizou progressiva recentemente sem queixas.\\r\\nOriento retorno em 3 meses, ajusto formulação e mantenho acompanhamento para suspeita de AAG levantada por imagem global.\\r\\n\\r\\n'),
 (3, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'ldiasamino7@gmail.com', '2025-06-15 22:37:00', 'Caroline Ferraz', 'Paciente retorna para consulta de retorno em atraso, relata que devido a dificuldade de aceitar diagnostico seguiu apenas o uso do tônico por 1 mês. Passou pro problemas familiares que levou a um processo de depressão hoje está se sentindo melhor.Mantém queixa de cansaço excessivo. Não estuda mais apenas trabalha de 8 as 17hs. Começou academia esse mes. MMantém habitos aimentares ruins.Mantém habitos capilares de lavagem 2x por semana.Senti desconforto ao comer. Não realiza acompanhamento com psicologo. Ajusto formulações de home care, oriento acompanhamento com psicologo, endocrinologista e indico tratamento em consultório'),
 (4, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'sand11cost@gmail.com', '2025-06-18 15:53:09', 'Caroline Ferraz', 'Paciente comparece para sessão de microagulhamento associado a laserterapia. Relata percepção de queda continuada, nega outras queixas. Relata não estar fazendo uso do tônico com frequência, oriento quanto a importância do uso diário. Realizo microagulhamento com drug delivery (minoxidil + finasterida + pilfood ) associado a laser vermelho 4 joules por ponto. Procedimento concluido sem intercorrências paciente orientada quanto aos cuidados pós procedimento.'),
-(5, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'ldiasamino7@gmail.com', '2025-06-20 14:19:43', 'Caroline Ferraz', '18/06/25-Paciente compatrece para 1ª Sessão de laserterapia (brinde), nega queixas, ainda não iniciou uso da formulação. Realizo sessão de laser vermelho associado a LED azul 20s + LED ambar 10s, realizo higienização de couro cabeludo e finalizo com fatores de crescimento.Sessão realizada sem intercorrências.');
+(5, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'ldiasamino7@gmail.com', '2025-06-20 14:19:43', 'Caroline Ferraz', '18/06/25-Paciente compatrece para 1ª Sessão de laserterapia (brinde), nega queixas, ainda não iniciou uso da formulação. Realizo sessão de laser vermelho associado a LED azul 20s + LED ambar 10s, realizo higienização de couro cabeludo e finalizo com fatores de crescimento.Sessão realizada sem intercorrências.'),
+(6, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', '2025-07-04 15:10:46', 'Caroline Ferraz', 'Paciente comparece para 6º sessão de tratamento, relata diminuição da queda consideravelmente, fez uso de progressiva sem queixas na aplicação, nega queixas no couro cabeludo. Obteve um resultado satisfatório com o tratamento. Realizado última sessão com aplicação de LED ambar 20s + intradermoterapia com ativos: 1ml de lidocaina + 2ml de fator de crescimento +2ml de complexo vitaminico.Finalizo sessão sem queixas, envio orientação com os próximos passos em whatsapp');
 
 -- --------------------------------------------------------
 
@@ -1980,7 +2012,31 @@ INSERT INTO `historico_atendimento` (`id`, `token_emp`, `quando`, `quem`, `unico
 (853, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20 11:16:16.000000', 'Caroline Ferraz', '03326635583', 'Lançou 1 Pagamento em Transferencia no valor de R$270,00 no Cadastro raquelsinal3@gmail.com'),
 (854, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20 11:16:44.000000', 'Raquel Freire', '88810089553', 'Finalizou a consulta 423'),
 (855, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20 11:27:25.000000', 'Luciana Gomes', '02853888517', 'Alterou a consulta 426'),
-(856, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20 13:49:57.000000', 'Weslen Vinicius de Souza goes', '07148847583', 'Criou a consulta ');
+(856, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20 13:49:57.000000', 'Weslen Vinicius de Souza goes', '07148847583', 'Criou a consulta '),
+(857, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-24 17:03:01.000000', 'Elisangela Jesus da Silva ', '76515192568', 'Alterou a consulta 98'),
+(858, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 15:09:34.000000', 'Luciana Gomes', '02853888517', 'Finalizou a consulta 426'),
+(859, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 17:51:46.000000', 'Rosana da silva santos', '03341705597', 'Finalizou a consulta 57'),
+(860, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 17:53:24.000000', 'Rosana da silva santos', '03341705597', 'Criou a consulta '),
+(861, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 22:56:06.000000', 'Caroline Ferraz', '03326635583', 'Lançou 1 Mesoterapia SSA no valor de R$250,00 no Cadastro Rosana_silva654@hotmail.com'),
+(862, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 22:56:16.000000', 'Caroline Ferraz', '03326635583', 'Lançou 1 Pagamento em Transferencia [ Estornado ] no valor de R$-250,00 no Cadastro Rosana_silva654@hotmail.com'),
+(863, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 22:56:49.000000', 'Caroline Ferraz', '03326635583', 'Lançou 1 Consulta Capilar SSA no valor de R$300,00 no Cadastro fauqueiroz@hotmail.com'),
+(864, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 22:56:56.000000', 'Caroline Ferraz', '03326635583', 'Lançou 1 Pagamento em Transferencia no valor de R$300,00 no Cadastro fauqueiroz@hotmail.com'),
+(865, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25 23:03:09.000000', 'Fabiana Queiroz da Silva', '01411656504', 'Finalizou a consulta 424'),
+(866, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-01 11:10:18.000000', 'Raquel Freire', '88810089553', 'Criou a consulta '),
+(867, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-01 19:02:24.000000', 'Luciana Gomes', '02853888517', 'Criou a consulta '),
+(868, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-01 19:07:27.000000', 'Adriano Souza Nunes Santos', '04868503588', 'Criou a consulta '),
+(869, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-01 19:18:50.000000', 'Denis Ferraz', '05336888508', 'Lançou 1 Avaliação Capilar Presencial no valor de R$50,00 no Cadastro adrianosett@hotmail.com'),
+(870, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-01 19:18:58.000000', 'Denis Ferraz', '05336888508', 'Lançou 1 Pagamento em Transferencia no valor de R$50,00 no Cadastro adrianosett@hotmail.com'),
+(871, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-03 16:11:14.000000', 'Adriano Souza Nunes Santos', '04868503588', 'Alterou a consulta 436'),
+(872, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-03 20:12:45.000000', 'Maria de Lourdes Barbosa dos S', '13615904591', 'Criou a consulta '),
+(873, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04 12:07:39.000000', 'Érico Silva do Nascimento', '83190821534', 'Alterou a consulta 108'),
+(874, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04 12:13:08.000000', 'Elisangela Jesus da Silva ', '76515192568', 'Finalizou a consulta 98'),
+(875, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04 13:02:25.000000', 'Caroline Ferraz', '03326635583', 'Lançou 01 Copper peptideo + fator de cresc 1,20% cx cm 5un no valor de R$16,20 no Cadastro eli.trevo@gmail.com'),
+(876, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04 13:50:06.000000', 'Caroline Ferraz', '03326635583', 'Lançou 1 Consulta Capilar Lauro no valor de R$50,00 no Cadastro mariadelourdes@gmail.com'),
+(877, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04 13:50:18.000000', 'Caroline Ferraz', '03326635583', 'Lançou 1 Pagamento em Transferencia no valor de R$50,00 no Cadastro mariadelourdes@gmail.com'),
+(878, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04 17:39:06.000000', 'Caroline Ferraz', '03326635583', 'Cadastrou um novo Arquivo Ebook Pós Consulta.pdf na Consulta '),
+(879, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-05 11:03:21.000000', 'Maria de Lourdes Barbosa dos S', '13615904591', 'Finalizou a consulta 437'),
+(880, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-05 11:03:50.000000', 'Maria de Lourdes Barbosa dos S', '13615904591', 'Criou a consulta ');
 
 -- --------------------------------------------------------
 
@@ -2072,16 +2128,28 @@ INSERT INTO `lancamentos` (`id`, `token_emp`, `data_lancamento`, `conta_id`, `de
 (65, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 24, 'Tráfego Google Ads', 'nao', 31.00, '', 'Caroline Ferraz', '2025-06-18 16:05:03', '2025-06-21 01:29:04'),
 (66, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 36, 'Gasolina', 'nao', 300.00, '', 'Caroline Ferraz', '2025-06-18 16:05:17', '2025-06-21 01:29:04'),
 (67, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 38, 'Software', 'nao', 359.88, '', 'Caroline Ferraz', '2025-06-18 16:05:30', '2025-06-21 01:29:04'),
-(68, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 39, 'Estacionamento', 'nao', 166.00, '', 'Caroline Ferraz', '2025-06-18 16:05:39', '2025-06-21 01:29:04'),
+(68, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 39, 'Estacionamento', 'nao', 194.00, '', 'Caroline Ferraz', '2025-06-18 16:05:39', '2025-07-04 16:47:28'),
 (69, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 40, 'Alimentacao', 'nao', 54.78, '', 'Caroline Ferraz', '2025-06-18 16:05:48', '2025-06-21 01:29:04'),
 (70, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 58, 'Cursos e Materiais de Estudo', 'nao', 514.42, '', 'Caroline Ferraz', '2025-06-18 16:06:06', '2025-06-21 01:29:04'),
 (71, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 59, 'Máquinas e Equipamentos', 'nao', 211.41, '', 'Caroline Ferraz', '2025-06-18 16:06:18', '2025-06-21 01:29:04'),
 (119, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20', 1, 'Microagulhamento Lauro', 'nao', 264.00, '', 'Caroline Ferraz', '2025-06-20 14:14:10', '2025-06-21 01:29:04'),
-(120, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20', 69, '[Estornado] Microagulhamento Lauro', 'nao', -264.00, '', 'Caroline Ferraz', '2025-06-20 14:14:25', '2025-06-21 01:29:04'),
 (121, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20', 1, 'Consulta Capilar Lauro', 'nao', 270.00, '', 'Caroline Ferraz', '2025-06-20 14:14:52', '2025-06-21 01:29:04'),
 (122, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20', 1, 'Consulta Capilar Lauro', 'nao', 270.00, '', 'Caroline Ferraz', '2025-06-20 14:16:08', '2025-06-21 01:29:04'),
-(123, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 32, 'Pagamento mensal', 'nao', 443.00, '', 'Caroline Ferraz', '2025-06-20 14:22:08', '2025-06-21 01:29:04'),
-(124, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-20', 16, 'Máscara descartável cx com 50un', '', 1300.00, '', 'Caroline Ferraz', '2025-06-21 01:42:05', '2025-06-21 01:42:05');
+(123, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-18', 32, 'Coworking Lauro', 'nao', 443.00, '', 'Caroline Ferraz', '2025-06-20 14:22:08', '2025-07-04 16:39:25'),
+(125, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', 1, 'Mesoterapia SSA', 'nao', 250.00, '', 'Caroline Ferraz', '2025-06-26 01:56:06', '2025-06-26 01:56:06'),
+(126, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-25', 1, 'Consulta Capilar SSA', 'nao', 300.00, '', 'Caroline Ferraz', '2025-06-26 01:56:49', '2025-06-26 01:56:49'),
+(127, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-01', 1, 'Avaliação Capilar Presencial', 'nao', 50.00, '', 'Denis Ferraz', '2025-07-01 22:18:50', '2025-07-01 22:18:50'),
+(129, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-09', 14, 'Parceria com Luciana', 'nao', 107.00, '', 'Caroline Ferraz', '2025-07-04 16:30:30', '2025-07-04 16:30:30'),
+(130, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-03', 1, 'Pagamento Erica', 'nao', 118.93, '', 'Caroline Ferraz', '2025-07-04 16:33:13', '2025-07-04 16:33:13'),
+(131, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-21', 33, 'Tim S.A', 'nao', 39.99, '', 'Caroline Ferraz', '2025-07-04 16:38:34', '2025-07-04 16:38:34'),
+(132, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-06-22', 38, 'software', 'nao', 57.05, '', 'Caroline Ferraz', '2025-07-04 16:45:03', '2025-07-04 16:45:03'),
+(133, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 1, 'Consulta Capilar Lauro', 'nao', 50.00, '', 'Caroline Ferraz', '2025-07-04 16:50:06', '2025-07-04 16:50:06'),
+(134, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 39, 'Estacionamento', 'nao', 32.00, '', 'Caroline Ferraz', '2025-07-04 16:53:57', '2025-07-04 16:53:57'),
+(135, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 36, 'Gasolina', 'nao', 200.00, '', 'Caroline Ferraz', '2025-07-04 16:54:41', '2025-07-04 16:54:41'),
+(136, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 40, 'Alimentação', 'nao', 34.97, '', 'Caroline Ferraz', '2025-07-04 16:55:31', '2025-07-04 16:55:31'),
+(137, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 24, 'Trafego pago', 'nao', 192.32, '', 'Caroline Ferraz', '2025-07-04 16:57:22', '2025-07-04 16:57:22'),
+(138, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 58, 'curso', 'nao', 169.68, '', 'Caroline Ferraz', '2025-07-04 17:04:56', '2025-07-04 17:04:56'),
+(139, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 16, 'Ativos + descartáveis', 'nao', 512.31, '', 'Caroline Ferraz', '2025-07-04 17:06:07', '2025-07-04 17:06:07');
 
 -- --------------------------------------------------------
 
@@ -2249,7 +2317,16 @@ INSERT INTO `lancamentos_atendimento` (`id`, `token_emp`, `doc_email`, `produto`
 (153, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'karla.amorim@gmail.com', 'Pagamento em Dinheiro', 1, -50, '2025-06-20 11:15:00.000000', 'Pagamento', 'Caroline Ferraz', 'Karla Malta Amorim Soares '),
 (154, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'karla.amorim@gmail.com', 'Pagamento em Cartão', 1, -220, '2025-06-20 11:15:00.000000', 'Pagamento', 'Caroline Ferraz', 'Karla Malta Amorim Soares '),
 (155, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'raquelsinal3@gmail.com', 'Consulta Capilar Lauro', 1, 270, '2025-06-20 11:16:00.000000', 'Produto', 'Caroline Ferraz', 'Raquel Freire'),
-(156, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'raquelsinal3@gmail.com', 'Pagamento em Transferencia', 1, -270, '2025-06-20 11:16:00.000000', 'Pagamento', 'Caroline Ferraz', 'Raquel Freire');
+(156, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'raquelsinal3@gmail.com', 'Pagamento em Transferencia', 1, -270, '2025-06-20 11:16:00.000000', 'Pagamento', 'Caroline Ferraz', 'Raquel Freire'),
+(157, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Rosana_silva654@hotmail.com', 'Mesoterapia SSA', 1, 250, '2025-06-25 22:56:00.000000', 'Produto', 'Caroline Ferraz', 'Rosana da silva santos'),
+(158, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Rosana_silva654@hotmail.com', 'Pagamento em Transferencia [ Estornado ]', 1, 250, '2025-06-25 22:56:00.000000', 'Estorno', 'Caroline Ferraz', 'Rosana da silva santos'),
+(159, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'fauqueiroz@hotmail.com', 'Consulta Capilar SSA', 1, 300, '2025-06-25 22:56:00.000000', 'Produto', 'Caroline Ferraz', 'Fabiana Queiroz da Silva'),
+(160, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'fauqueiroz@hotmail.com', 'Pagamento em Transferencia', 1, -300, '2025-06-25 22:56:00.000000', 'Pagamento', 'Caroline Ferraz', 'Fabiana Queiroz da Silva'),
+(161, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'adrianosett@hotmail.com', 'Avaliação Capilar Presencial', 1, 50, '2025-07-01 19:18:00.000000', 'Produto', 'Denis Ferraz', 'Adriano Souza Nunes Santos'),
+(162, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'adrianosett@hotmail.com', 'Pagamento em Transferencia', 1, -50, '2025-07-01 19:18:00.000000', 'Pagamento', 'Denis Ferraz', 'Adriano Souza Nunes Santos'),
+(163, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', '[Estornado] Copper peptideo + fator de cresc 1,20% cx cm 5un', 0, 0, '2025-07-04 13:02:00.000000', 'Produto', 'Caroline Ferraz', 'Elisangela Jesus da Silva '),
+(164, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'mariadelourdes@gmail.com', 'Consulta Capilar Lauro', 1, 50, '2025-07-04 13:50:00.000000', 'Produto', 'Caroline Ferraz', 'Maria de Lourdes Barbosa dos S'),
+(165, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'mariadelourdes@gmail.com', 'Pagamento em Transferencia', 1, -50, '2025-07-04 13:50:00.000000', 'Pagamento', 'Caroline Ferraz', 'Maria de Lourdes Barbosa dos S');
 
 -- --------------------------------------------------------
 
@@ -2271,6 +2348,17 @@ CREATE TABLE `lancamentos_recorrentes` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lancamentos_recorrentes`
+--
+
+INSERT INTO `lancamentos_recorrentes` (`id`, `token_emp`, `data_lancamento`, `repeticoes`, `periodo`, `conta_id`, `descricao`, `valor`, `observacoes`, `feitopor`, `created_at`, `updated_at`) VALUES
+(1, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 7, 'Mensal', 28, 'Gestor de Trafego', 800.00, '', 'Caroline Ferraz', '2025-07-04 16:58:13', '2025-07-04 16:58:13'),
+(2, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 3, 'Mensal', 58, 'Passagem aérea congresso', 242.26, '', 'Caroline Ferraz', '2025-07-04 16:59:13', '2025-07-04 16:59:13'),
+(3, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 9, 'Mensal', 58, 'Curso Analise +suplementação', 194.86, '', 'Caroline Ferraz', '2025-07-04 17:01:54', '2025-07-04 17:01:54'),
+(4, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 6, 'Mensal', 58, 'Inscrição congresso', 149.83, '', 'Caroline Ferraz', '2025-07-04 17:03:08', '2025-07-04 17:03:08'),
+(5, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '2025-07-04', 7, 'Mensal', 59, 'caneta de microagulhamento', 211.41, '', 'Caroline Ferraz', '2025-07-04 17:04:00', '2025-07-04 17:04:00');
 
 -- --------------------------------------------------------
 
@@ -2294,23 +2382,38 @@ CREATE TABLE `mensagens` (
 INSERT INTO `mensagens` (`id`, `token_emp`, `numero`, `nome`, `mensagem`, `data_recebida`) VALUES
 (6, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992604877', 'Denis Ferraz', 'Ola Mundo!', '2025-06-15 02:53:41'),
 (17, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992110787', 'Karla Malta', 'Obrigada!', '2025-06-18 15:46:54'),
-(19, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71996244528', 'Pharmapele Vilas', '* 😉 É um prazer poder lhe atender através do nosso canal WhatsApp*. Aguardamos um próximo contato.', '2025-06-17 18:54:30'),
-(20, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71996025222', 'Magispharma Salvador', '*Caroline*, Queremos seguir *evoluindo* e oferecendo um *atendimento cada vez melhor pra você*.\r\nPor isso, posso te pedir *um minutinho* pra responder uma pesquisa rápida sobre o atendimento que recebeu por aqui?\r\n\r\nSua opinião é muito importante pra gente! 😊 https://s22.chatguru.app/nps/6852ea85d9bff1f086c2c03d', '2025-06-18 16:34:21'),
+(19, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71996244528', 'Pharmapele Vilas', '*Luis:*\nIrei verificar a previsão com o nosso setor responsável para um retorno completo', '2025-07-01 18:03:53'),
+(20, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71996025222', 'Magispharma Salvador', '*Jéssica:* \nBom dia, Caroline não trabalhamos com manipulados para pets.', '2025-07-03 14:05:00'),
 (49, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71983200714', 'Raquel Santos', 'Obrigada', '2025-06-16 17:27:03'),
 (51, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71982019397', 'Weslen', 'Obrigado', '2025-06-20 17:13:32'),
 (54, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71996500462', 'Magispharma Salvador', '*Jéssica:* \nOlá Caroline, vamos dar tratativa a seu pedido?', '2025-06-17 12:49:13'),
-(67, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992796862', 'Bárbara Nicole', 'Obrigada!', '2025-06-17 14:31:24'),
-(69, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71996594751', 'lari', 'Estou aguardando Uber', '2025-06-18 20:10:19'),
-(72, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '90916953106', 'Sandra', 'Cheguei', '2025-06-18 11:44:04'),
-(76, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992271212', 'Raquel Freire', 'Qual a sala?', '2025-06-18 15:59:39'),
+(67, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992796862', 'Bárbara Nicole', 'Quando entrar em julho eu entro em contato , porque não estarei dia 3 em Salvador ,só em meado do mês de julho . Vou salvar o contato .', '2025-06-24 17:50:35'),
+(69, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71996594751', 'lari', 'Ainda bem', '2025-07-04 17:19:18'),
+(72, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '90916953106', 'Sandra', 'Ok', '2025-07-01 17:12:07'),
+(76, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992271212', 'Raquel Freire', 'Ok', '2025-07-01 14:11:16'),
 (84, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992066476', 'Everton Pinheiro🔴⚫', 'Certo.🫱🏾‍🫲🏾', '2025-06-17 14:16:04'),
-(90, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71988944423', 'Rosana', 'Bom diaaaa minha amada!', '2025-06-17 14:15:34'),
-(97, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71999811829', 'Elisângela', 'Certo', '2025-06-17 15:27:32'),
-(98, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71988446597', 'Érico', 'Sei qual é', '2025-06-18 18:20:45'),
+(90, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71988944423', 'Rosana', 'Como foi a viagem?', '2025-07-01 14:04:16'),
+(97, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71999811829', 'Elisângela', 'Bom dia!\nTudo bem graça à Deus\nConfirmado', '2025-07-02 12:23:30'),
+(98, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71988446597', 'Érico', 'Deixa para daqui a 15 dias em Salvador', '2025-07-04 14:20:43'),
 (102, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71988433613', 'Fabiana', 'Obrigada', '2025-06-17 15:54:47'),
 (181, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71999471575', 'magis club', '*CAROLINE*, Sua opinião é muito importante para nós. \r\n\r\nResponda nossa pesquisa de satisfação clicando no link abaixo ou envie uma nota de 1 a 10 por aqui: 🗣️ \r\n\r\nParticipar: https://magispharma.fidelimax.com.br/Consumidor?pIdPesquisa=PwwBAA2 \r\n\r\nPara tirar dúvidas, consultar seu saldo ou realizar resgates, fale com nossa equipe pelo WhatsApp principal: 👉 https://wa.link/nysu3g\r\n', '2025-06-18 21:48:21'),
-(206, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71997396450', 'Ariane 💞', 'Eu trouxe todos', '2025-06-21 13:20:36'),
-(229, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71981668883', 'OLHA O DRICO AI👨🏾‍🦱', 'Queria saber o motivo', '2025-06-21 14:25:25');
+(206, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71997396450', 'Ariane 💞', 'Vegetal puro de pracaxi', '2025-07-05 20:28:09'),
+(229, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71981668883', 'OLHA O DRICO AI👨🏾‍🦱', 'Logo logo envio', '2025-06-21 17:12:32'),
+(245, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71991539614', 'Fabiana', 'Tá ok\nObrigada', '2025-06-26 13:23:23'),
+(256, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71988065597', 'Luciana', 'Oi, Carol', '2025-06-25 10:14:11'),
+(257, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71983389812', 'Farmácia Erva Doce', '*#Erva Doce:* *Mensagem automática*\r\n\r\nOlá, Bem vindo a Farmácia Erva Doce!\r\nFicamos felizes em poder cuidar da sua saúde! \r\n\r\nEstamos te conectando a um de nossos colaboradores. Para agilizar o atendimento nos envie:\r\n- Seu pedido/receita\r\n- Seu nome\r\n- Se prefere delivery ou retirada na loja\r\n\r\nEnquanto isso, que tal conhecer melhor a gente através do instagram?\r\n\r\nhttps://instagram.com/fervadoce?igshid=YTQwZjQ0NmI0OA%3D%3D&utm_source=qr\r\n\r\n*Esse canal é apenas para troca de mensagens, não funciona para ligações, caso queira ligar (71) 3240-0307*', '2025-06-25 11:18:49'),
+(260, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71991759053', 'Shirley', 'Obrigada!', '2025-06-26 20:42:59'),
+(277, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71983652727', 'Kelvyn Lucas', 'Olá!Vim da página @carolferraz.tricologia e gostaria de saber como Recuperar meus cabelos.', '2025-06-25 20:27:46'),
+(283, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71997417190', 'Carol', 'https://drive.google.com/drive/folders/130DPUEf3vlDOfuqtpoOWJtmZNIkPgcFv?usp=sharing', '2025-06-26 17:25:02'),
+(292, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71987959734', 'Caio Costa', 'Gostaria de saber o valor do primeiro encontro contigo? Você trabalha com plano de saúde?', '2025-06-27 17:50:25'),
+(300, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71986203155', 'O Senhor É Meu Pastor 🙏🏻', 'Olá', '2025-06-28 20:15:40'),
+(304, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71982756594', 'Amanda Carvalho 🐱', 'Bom dia!\nEu procuro principalmente um diagnóstico. Estou com queda de cabelo e desejo saber se é algo reversível e como tratar.', '2025-07-01 14:50:28'),
+(306, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71991688080', 'Lourdes', 'ok obrigada', '2025-07-05 15:02:15'),
+(344, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '75982121095', 'Maria do Rosário', 'Obrigada', '2025-07-02 13:55:48'),
+(347, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71985116201', 'Adriano', 'Obrigado 👍🏾', '2025-07-03 18:55:56'),
+(382, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71993630011', 'Liniquer Jóias', 'Gostaria de agendar para Salvador', '2025-07-05 15:04:42'),
+(406, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71988919259', 'Karine', 'Sim', '2025-07-05 16:42:31'),
+(418, 'd6b0ab7f1c8ab8f514db9a6d85de160a', '71992252413', 'Rabêlo', 'Oi, Carol! Bom dia! Obrigado pelos votos! Forte abraço!', '2025-07-06 11:41:58');
 
 -- --------------------------------------------------------
 
@@ -2346,6 +2449,13 @@ CREATE TABLE `modelos_prontuario` (
   `criado_em` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `modelos_prontuario`
+--
+
+INSERT INTO `modelos_prontuario` (`id`, `token_emp`, `titulo`, `criado_em`) VALUES
+(1, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'PLANO DE TRATAMENTO', '2025-06-24 20:14:07');
+
 -- --------------------------------------------------------
 
 --
@@ -2372,7 +2482,7 @@ CREATE TABLE `painel_users` (
 
 INSERT INTO `painel_users` (`id`, `token_emp`, `email`, `dados_painel_users`, `tipo`, `senha`, `token`, `codigo`, `tentativas`, `origem`, `tema_painel`) VALUES
 (4, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'denis_ferraz359@hotmail.com', 'RHNDZ2wzS3RELytWT25CNndPQnhhaEFMZGxWQUczVzd5UCtndktOOXNzcE1MUUpwSjloSUw2di9abjEzbmhiV3ltd0wxVU53Zy84NGdkRWNvQVpWMXJQQnl2bHFGTnB3R2hqMWdES2dIaTlhWjE2cEEyV2VIZnRQVmFRb3NyLzF4dkxZZGQ2OEgzMEsrRDJaQmZMRkdRK2M4S1pwbjFRcFVqN0l3UkxQQUZHcVFPZ1dTRVRJdmtZRHF2THN4TklX', 'Owner', 'd753f0b2743ac9a5a0e356a4cc08d072', '24774953ab53456d38dfdd421a995b51', 0, 0, NULL, 'colorido'),
-(5, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'carolineferraz.tricologia@gmail.com', 'YkxTZndyWENiVWlNTG00RkNTblV3MWpPcS9JODVYYk5FV095SkprUU1oNDJEeEZYMGROSWVHTSt4Nk1mM3kxSTJoNGZmYnZ6VzVDamd4MHlqVmZGNVE9PQ==', 'Admin', 'cc34136b61ee3dc7f4dd6c37d4a376bd', 'd6b0ab7f1c8ab8f514db9a6d85de160a', 0, 0, NULL, 'colorido'),
+(5, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'carolineferraz.tricologia@gmail.com', 'YkxTZndyWENiVWlNTG00RkNTblV3MWpPcS9JODVYYk5FV095SkprUU1oNDJEeEZYMGROSWVHTSt4Nk1mM3kxSTJoNGZmYnZ6VzVDamd4MHlqVmZGNVE9PQ==', 'Admin', '25b1a2c1f7956a614e2aa0ad3e788326', 'd6b0ab7f1c8ab8f514db9a6d85de160a', 0, 0, NULL, 'colorido'),
 (6, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'erikadourado14@gmail.com', 'bEgycDJXWkMrOUR6Y043S3pyeXFZWS94L3E3MTdweVJ4NnM5ck1TSDVZNHlrUkNMTGxveXJPLzhjRzBlSnlBZncwbU9UQmhMWU1Dc24zSlhZN1FoeXE5UHlRSTVoUFgzK1hlN0JUTkZLcEU9', 'Paciente', '18c83837a9253d17e3f48dfc42f234b1', '18c83837a9253d17e3f48dfc42f234b1', 0, 0, NULL, 'colorido'),
 (7, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'everton.pinheiro@hotmail.com', 'bU5aYkxVRHB6NGZyWHVHTXc0RTJvblVuQXJwbkZWaHlmM1VMTzlySHBWSHptdkQwT3NwcTkyU2hua3U2RWJmVVBXeitPTENvUkFUNnRjTEVzc3VqYXc9PQ==', 'Paciente', '19efafdc7ebded6e7cd80d80d5938096', '61d9dd04f34a43d526902411cb36abeb', 0, 0, NULL, 'colorido'),
 (8, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'manucassia@gmail.com', 'N2FvZEtFRFBUMDJPTFlHREYrS1BnYmxRMkYwclNIdlhFV1p3V0ZjK2c1OG1Nc2xHTnpVNEtMbzRsRndQMGpiaFdBbzJ5MHRLM0s3RWZaK2laNWxNVlkxdVIwVklkR2toSEFtWDB1Rzh1YmJrejhKRFp0UmxHcXBmMmJtQ0dlVFQ=', 'Paciente', 'c1071cae646cb8d4646468f595cf7d8c', '28aafc457b20de21a14e145645eeee33', 0, 0, NULL, 'colorido'),
@@ -2422,7 +2532,9 @@ INSERT INTO `painel_users` (`id`, `token_emp`, `email`, `dados_painel_users`, `t
 (58, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'raquelsinal3@gmail.com', 'QTVpVStWV3VZQ1gwV0paQmRtWjFZMlU4dHJ1VU5Ecit4SHVaNTBYeC9RUkI1ellLQVlQMmVMYXZuTVVoTEhaaG9zOWtLemhHVUxacEZFMTd4V2ZydlE9PQ==', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'df6bb71cff3520711ac28d362f3b2078', 0, 0, 'Indicação', 'colorido'),
 (59, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'fauqueiroz@hotmail.com', 'UFBoMWNtVEpuak53SUlXbVpPUUNaVVNpMkQ2TFlnSUlzN1lQNzZkVnVGTUlUYTNvYkZ0WWdzQ053UCttclRGUEFNaXdSM0ROVEp3dlhBWHh5bkNPTERqeUlDL2Z2VVhJbk1MV3g1L2ZNb289', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', 'cb20fd2d12c61d56b1afa74213bb7baf', 0, 0, 'Instagram', 'colorido'),
 (60, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'lene-chagas@hotmail.com', 'anJnTTltWFRkYUhONFZhWEhNRTRHOGU1emxBWlZDL2dBdWdudHluNkhsVit2YWt3dVphT29yd0p4dVp3WE5FenpkQktMTFVVY2llZkt3RjhZd2N4T3c9PQ==', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', '305933169d6aecd561cd50c83dc010e3', 0, 0, 'Indicação', 'colorido'),
-(61, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'karla.amorim@gmail.com', 'Z1BQVi82S2xsTTQ4Yit2dGg3YXhPWmdYazBhT1BhZmVUaFY0SzU4MHdEbkFUUEJIUXQvV1pZVU1tdEhsbUx3S05rUytvdXg0WmxtaklSKzRuMndUMUhRc3IwSHJCTzRMMk9PMnUyZ21ML0U9', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', '57e391e33e3b427c04b4dd53fb394d61', 0, 1, 'Indicação', 'colorido');
+(61, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'karla.amorim@gmail.com', 'Z1BQVi82S2xsTTQ4Yit2dGg3YXhPWmdYazBhT1BhZmVUaFY0SzU4MHdEbkFUUEJIUXQvV1pZVU1tdEhsbUx3S05rUytvdXg0WmxtaklSKzRuMndUMUhRc3IwSHJCTzRMMk9PMnUyZ21ML0U9', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', '57e391e33e3b427c04b4dd53fb394d61', 0, 1, 'Indicação', 'colorido'),
+(62, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'adrianosett@hotmail.com', 'UnFNdXh3MGpjaGhUTEV6b2ZNaFA4ZEpSWm9BdFMvQWhUeEJHUFFRNVU0ZW0yeFJmV21weHprVXFTL01IenJDMjhtTSsvVUhDOURrTnFiMlhXbm1QUWx6Ly9oY0ZuVjVCOEJyWlh0K1RubWc9', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', '144c94875d20d6747c9c7eaa25e53aef', 0, 1, 'Instagram', 'colorido'),
+(63, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'mariadelourdes@gmail.com', 'djZpUzlrVU5FSGJkNU5jZWdWQTJQRDJTOWhkTlhldG82K001TkF1dXNBNjMxd0h4S1lycWFWdVpZK1YzaGVtNGFCQUpoMXdtV0ZkSEVHdTVJYS9lNFoxK1k2RUNBWFlNVldtc3lwaXh3MTQ9', 'Paciente', 'e10adc3949ba59abbe56e057f20f883e', '4a41be59ac635ace8aef2baaa5c4821b', 0, 1, 'Google', 'colorido');
 
 -- --------------------------------------------------------
 
@@ -2520,6 +2632,31 @@ CREATE TABLE `perguntas_modelo_prontuario` (
   `opcoes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `perguntas_modelo_prontuario`
+--
+
+INSERT INTO `perguntas_modelo_prontuario` (`id`, `token_emp`, `modelo_id`, `ordem`, `tipo`, `pergunta`, `opcoes`) VALUES
+(1, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 0, 'text', 'Queixa principal', ''),
+(2, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 1, 'text', 'Data da primeira Consulta: ', ''),
+(3, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 2, 'text', 'Histórico Saúde', ''),
+(4, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 3, 'text', 'Peso e Altura:', ''),
+(5, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 4, 'text', 'Medicamentos em uso: ', ''),
+(6, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 5, 'text', 'Suplementação: ', ''),
+(7, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 6, 'text', 'Hábitos de vida:', ''),
+(8, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 7, 'text', ' Histórico Capilar:.', ''),
+(9, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 8, 'text', 'Exames laboratoriais alterados', ''),
+(10, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 9, 'text', 'Análise física: ', ''),
+(11, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 10, 'text', 'Análise Tricoscopica:', ''),
+(12, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 11, 'text', 'Diagnóstico mais provável: ', ''),
+(13, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 12, 'text', 'Causas prováveis: ', ''),
+(14, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 13, 'text', 'Objetivo geral: ', ''),
+(15, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 14, 'text', 'Necessidades Pessoais: ', ''),
+(16, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 15, 'text', 'Plano de tratamento em Consultório', ''),
+(17, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 16, 'text', 'Plano de tratamento Home Care', ''),
+(18, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 17, 'text', 'Encaminhamentos / Solicitações', ''),
+(19, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 18, 'text', 'Acompanhamento / Condutas / Jornada', '');
+
 -- --------------------------------------------------------
 
 --
@@ -2548,6 +2685,14 @@ CREATE TABLE `receituarios` (
   `titulo` varchar(50) NOT NULL,
   `criado_em` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `receituarios`
+--
+
+INSERT INTO `receituarios` (`id`, `token_emp`, `doc_email`, `conteudo`, `titulo`, `criado_em`) VALUES
+(1, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'raquelsinal3@gmail.com', 'Paciente: Raquel Freire\\r\\nIdade: 51 anos\\r\\nData: 24/06/2025\\r\\n\\r\\nPrescrição: \\r\\nShampoo: Ciclopirox olamina 1% + Piritionato de zinco 2% +Vitamina B6 2% +Niacinamina 2% + Ácido Salicílico 2% shampoo base qsp 100ml \\r\\n\\r\\nLoção Tópica:Adenosina 0,75%+ Follicusan 3% + Auxina Tricogena 15% + VEGF 1% +Alfa bisobolol 1% +Defenscalp 1% qsp loção capilar 100ml\\r\\n\\r\\n\\r\\nInstruções:\\r\\n\\r\\n\\r\\n___________________________\\r\\nCaroline Ferraz  \\r\\nCRF- 7087\\r\\n71991293370\\r\\n', 'Receituário', '2025-06-24 21:04:05'),
+(2, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'fauqueiroz@hotmail.com', 'Paciente: Fabiana Queiroz da Silva\\r\\nIdade: 41 anos\\r\\nData: 04/07/2025\\r\\n\\r\\nPrescrição:\\r\\nFormulação Tópica\\r\\n VEGF 1%\\r\\n Capilia Longa 2%\\r\\n Espironolactona 2%\\r\\n Copper Peptídeo 1%\\r\\n L-Carnitina 2%\\r\\n Extrato glicólico de Chá Verde 5%\\r\\n Base TrichoSol q.s.p. 100ml\\r\\n Posologia:  Aplicar 1x ao dia, preferencialmente à noite, com\\r\\n massagem suave no couro cabeludo seco.\\r\\n\\r\\n Formulação Oral  \\r\\nMSM 250 mg\\r\\n NAC  600 mg\\r\\n Biotina 5 mg\\r\\n Pantotenato de Cálcio 100 mg\\r\\n Zinco quelado 10mg\\r\\n Magnésio quelado 200 mg\\r\\n Nutricolin 100 mg\\r\\n Saw Palmetto  320 mg\\r\\n Extrato seco de Chá Verde 100 mg\\r\\n Astaxantina 4 mg\\r\\n Maca peruana  300 mg\\r\\n Selênio quelado 100 mcg\\r\\n Cápsulas qsp suficientes para 30 dias \\r\\nPosologia: Tomar 1 dose ao dia, preferencialmente pela manhã, após\\r\\n café da manhã.\\r\\n Obs: Manipular por mais 60 dias caso tenha boa adaptação.\\r\\n\\r\\n\\r\\nInstruções:\\r\\n\\r\\n\\r\\n___________________________\\r\\nCaroline Ferraz  \\r\\nCRF-Ba 7087 \\r\\n71991293370\\r\\n', 'Receituário', '2025-07-04 20:41:01');
 
 -- --------------------------------------------------------
 
@@ -2643,6 +2788,31 @@ CREATE TABLE `respostas_prontuario` (
   `resposta` text DEFAULT NULL,
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `respostas_prontuario`
+--
+
+INSERT INTO `respostas_prontuario` (`id`, `token_emp`, `modelo_id`, `paciente_id`, `pergunta_id`, `resposta`, `criado_em`) VALUES
+(1, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 1, 'Queda de cabelo, aparecimento de verrugas no couro cabeludo (sem dor ou coceira), e descamação intensa.', '2025-06-24 21:00:57'),
+(2, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 2, '18/06/2025', '2025-06-24 21:00:57'),
+(3, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 3, 'Nega doenças pré-existentes.  Sintomas gastrointestinais (gases, estufamento com leite), sem diagnóstico formal.  Intestino com funcionamento dia sim, dia não; fezes normais.  Relata baixa memória e esquecimentos.  Provável entrada no climatério: ausência de menstruação em abril, retorno em maio e junho; ciclos curtos, calores e fluxo moderado.  Unhas fracas, quebradiças nas pontas.  Azia e queimação em momentos de ansiedade, sem acompanhamento médico.  Nega uso de medicamentos contínuos', '2025-06-24 21:00:57'),
+(4, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 4, '65   Kgs                    Altura:    161     Cm', '2025-06-24 21:00:57'),
+(5, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 5, 'nenhum', '2025-06-24 21:00:57'),
+(6, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 6, 'nenhum', '2025-06-24 21:00:57'),
+(7, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 7, 'Alimentação \"meio termo\", sem açúcar e gorduras, alimentação até 19h devido a refluxo.  Atividade física diária: esteira, bicicleta, corrida na praia.  Sono: 6 a 7 horas por noite, com interrupções noturnas para urinar e dificuldade para voltar a dormir.  Relata ansiedade, mas sem acompanhamento psicológico ou psiquiátrico.Ingere 2 a 3 litros/dia de água por dia', '2025-06-24 21:00:57'),
+(8, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 8, 'Calvície na família (mãe e avó com falhas).  Nunca realizou tratamento capilar.  Queda maior ao pentear no banho.  Couro cabeludo oleoso com coceira eventual.  Nega dor ou descamação em outras áreas do corpo.  Lavagens em dias alternados ou diariamente.  Tintura da raiz a cada 20 dias; no cabelo todo a cada 2 meses.  Não utiliza secador, chapinha ou alisamentos.  Máscara de hidratação com tempo prolongado de pausa.  Rotina capilar básica.', '2025-06-24 21:00:57'),
+(9, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 9, 'sem exames atuais', '2025-06-24 21:00:57'),
+(10, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 10, 'Couro cabeludo extremamente descamativo com presença de inflamação.  Teste de tração positivo.  Presença de casca marrom recorrente na região das costeletas.  Pequenas verrugas no couro cabeludo.  Risca central levemente alargada.  Linha de implantação levemente retraída na região frontal.  Oleosidade visível (paciente relatou estar há dois dias sem lavar).', '2025-06-24 21:00:57'),
+(11, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 11, 'Descamação intensa com crostas amareladas.  Rubor subjacente à descamação, com dificuldade de visualização.  Região da linha de implantação: fios distróficos e finos, muitos fios únicos por folículo.  Verrugas com aparência de crosta marrom e pontos pretos, padrão visual semelhante à lesão.  Variabilidade no calibre dos fios na linha de implantação.  Presença de óstios quenógenos (folículos vazios).  Impossibilidade de confirmar sinais clássicos de AAG na risca central devido à intensa descamação.', '2025-06-24 21:00:57'),
+(12, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 12, 'Dermatite seborreica moderada a intensa, com suspeita de lesão verrucosa inflamatória (necessário avaliação dermatológica).  Possível alopecia de padrão feminino incipiente, mas difícil confirmação diante da condição inflamatória intensa.Eflúvio Telógeno', '2025-06-24 21:00:57'),
+(13, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 13, 'Disbiose do couro cabeludo.  Disfunção hormonal associada ao climatério.  Hipovitaminose ou alterações nutricionais não avaliadas.  Inflamação crônica no couro cabeludo interferindo no ciclo capilar.', '2025-06-24 21:00:57'),
+(14, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 14, 'Reduzir processo inflamatório e descamação do couro cabeludo.  Controlar oleosidade.  Avaliar e tratar a possível alopecia.  Investigar verrugas e descartar patologias associadas.  Regular hábitos de sono e saúde emocional.  Melhorar qualidade de vida e função capilar.', '2025-06-24 21:00:57'),
+(15, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 15, 'Controle da queda e coceira.  Redução de crostas e melhora estética do couro cabeludo.  Retorno da saúde dos fios e melhora da autoestima.', '2025-06-24 21:00:57'),
+(16, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 16, 'Procedimento: Laserterpia Programação terapêutica: •	Limpeza profunda do couro cabeludo com pelling físico 1x por mês + alta frequência a cada 15 dias associado a laser azul e vermelho a cada 15 dias; •	 Frequência: a cada 15 dias por 3 meses •	Total de 6 sessões', '2025-06-24 21:00:57'),
+(17, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 17, 'shampoo: Ciclopirox olamina 1% + Piritionato de zinco 2% +Vitamina B6 2% +Niacinamina 2% + Ácido Salicílico 2% Loção tópica:Adenosina 0,75%+ Follicusan 3% + Auxina Tricogena 15% + VEGF 1% +Alfa bisobolol 1% +Defenscalp 1% qsp loção capilar 100ml', '2025-06-24 21:00:57'),
+(18, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 18, 'Encaminhamento para dermatologista (avaliação de verrugas e confirmação de possível lesão verrucosa benigna).  Solicitação de exames laboratoriais completos (painel hormonal, vitamínico, inflamatório e metabólico).  Recomendação de acompanhamento ginecológico para avaliação do climatério.  Sugestão de iniciar acompanhamento psicológico.', '2025-06-24 21:00:57'),
+(19, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 1, 58, 19, 'Monitorar evolução da descamação e sensibilidade local.  Reavaliar após início do home care.  Programar início de protocolo capilar em consultório após estabilização da inflamação.  Reforçar rotina de cuidados e registrar resposta terapêutica em até 30 dias.  Acolher paciente no processo de climatério e investigar fatores relacionados à saúde sistêmica.', '2025-06-24 21:00:57');
 
 -- --------------------------------------------------------
 
@@ -2913,7 +3083,7 @@ INSERT INTO `tratamento` (`id`, `token_emp`, `email`, `plano_descricao`, `coment
 (215, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'email@gmail.com', 'Programa HaiRecupere', '', '2024-12-06 00:00:00', 3, 5, 'Em Andamento', '2d3de4bba2fb659e32fc83b2f9fce354'),
 (216, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'email@gmail.com', 'Programa HaiRecupere', 'Microagulhamento com ativos ', '2024-12-06 00:00:00', 0, 0, 'Em Andamento', '2d3de4bba2fb659e32fc83b2f9fce354'),
 (217, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'brenoalmeidasantana@gmail.com', 'Sessão Intradermoterapia Mensal', ' finasterida + Minoxidil + pill food+ lidocaína  aplicado 5 ml', '2024-12-06 00:00:00', 0, 0, 'Em Andamento', 'fcdcf7d8c49d4878c582fcbdf68b60d3'),
-(218, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Rosana_silva654@hotmail.com', 'Programa HaiRecupere', '', '2024-11-14 00:00:00', 5, 6, 'Em Andamento', '2920cc4141856fb7f56a41b71bf09e97'),
+(218, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Rosana_silva654@hotmail.com', 'Programa HaiRecupere', '', '2024-11-14 00:00:00', 6, 6, 'Em Andamento', '2920cc4141856fb7f56a41b71bf09e97'),
 (219, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Rosana_silva654@hotmail.com', 'Programa HaiRecupere', 'Intradermoterapia ', '2024-11-14 00:00:00', 0, 0, 'Em Andamento', '2920cc4141856fb7f56a41b71bf09e97'),
 (220, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'sand11cost@gmail.com', 'Sessão Microagulhamento', 'Sessao de microagulhamento com ativos ', '2024-12-12 00:00:00', 0, 0, 'Em Andamento', '2cab43adc2e3120ee61a759a5725c7b4'),
 (221, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'everton.pinheiro@hotmail.com', 'Programa HaiRecupere', 'PROGRAMAÇÃO :\\r\\n3-4 SESSÕES DE MICROAGULHAMENTO \\r\\n2-3 SESSÕES DE INTRADERMOTERAPIA ', '2024-12-16 00:00:00', 6, 6, 'Em Andamento', '5ec6d35fcf7ea36856ef5cb17ac376c8'),
@@ -2928,7 +3098,7 @@ INSERT INTO `tratamento` (`id`, `token_emp`, `email`, `plano_descricao`, `coment
 (230, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'everton.pinheiro@hotmail.com', 'Programa HaiRecupere', ' Laserterapia 4 joules + microagulhamento com drug delivery ]', '2025-01-20 00:00:00', 0, 0, 'Em Andamento', '5ec6d35fcf7ea36856ef5cb17ac376c8'),
 (231, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'sand11cost@gmail.com', 'Sessão Microagulhamento', '', '2024-11-01 00:00:00', 0, 0, 'Em Andamento', '2cab43adc2e3120ee61a759a5725c7b4'),
 (232, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'sand11cost@gmail.com', 'Sessão Microagulhamento', '', '2025-01-31 00:00:00', 0, 0, 'Em Andamento', '2cab43adc2e3120ee61a759a5725c7b4'),
-(233, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', 'Programa HaiRecupere', '6 SESSÕES DE INTRADERMOTERAPIA + 6 SESSÕES DE LASERTERAPIA ', '2025-02-05 00:00:00', 4, 6, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
+(233, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', 'Programa HaiRecupere', '6 SESSÕES DE INTRADERMOTERAPIA + 6 SESSÕES DE LASERTERAPIA ', '2025-02-05 00:00:00', 6, 6, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
 (234, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', 'Programa HaiRecupere', 'Intradermoterapia VEGF+BFGF+IGF+ COPPER LAM11112401S V:11/25 (2ML) + PILL FOOD L:AM17052404S V 05/25 2ML +LIDOCAINA 1% L:AM11112403S V:11/25 (1ML)\\r\\nfOTOBIOESTIMULAÇÃO LASER VERMELHO + LED AZUL 20S 13 J', '2024-02-05 00:00:00', 0, 0, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
 (235, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'erikadourado14@gmail.com', 'Sessão Intradermoterapia', '', '2025-02-08 00:00:00', 2, 5, 'Em Andamento', '6997f1b219643e54836d16ed93b5f7e2'),
 (236, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'erikadourado14@gmail.com', 'Sessão Intradermoterapia', 'LIDOCAINA AM11112403S 11/25 MINOXIDIL  13112407S V 11/25 SILICIO 07112404S 11/25 FINASTERIDA 19112404S V11//25', '2025-02-08 00:00:00', 0, 0, 'Em Andamento', '6997f1b219643e54836d16ed93b5f7e2'),
@@ -2949,7 +3119,7 @@ INSERT INTO `tratamento` (`id`, `token_emp`, `email`, `plano_descricao`, `coment
 (257, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'bruno.ferreira88@icloud.com', 'Programa HaiRecupere', 'Licocaina AM11112403S V: 11/25\\r\\nFinasterida L:  AM 19112404S V: 11/25\\r\\nZinco L: AM 01112402S V: 11/25\\r\\nMinoxidil L: AM13112407S V: 11/25', '2025-04-02 00:00:00', 0, 0, 'Em Andamento', '095ee3abc5eb9bcb7ef4ef68e13fa775'),
 (258, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', 'Programa HaiRecupere', 'copper peptideo + fator de crescimento+pill food + Lidocaina', '2025-04-24 00:00:00', 0, 0, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
 (259, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Rosana_silva654@hotmail.com', 'Programa HaiRecupere', 'Lidocaina +Silicio +finasterida+Minoxidil', '2025-04-24 00:00:00', 0, 0, 'Em Andamento', '2920cc4141856fb7f56a41b71bf09e97'),
-(260, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', '', '2025-04-24 00:00:00', 4, 5, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
+(260, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', '', '2025-04-24 00:00:00', 5, 5, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
 (261, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', 'Minoxidil + Finasterida + comp vitaminico', '2025-04-24 00:00:00', 0, 0, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
 (262, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'brenoalmeidasantana@gmail.com', 'Sessão Intradermoterapia Mensal', '', '2025-05-06 00:00:00', 1, 4, 'Em Andamento', '0e6b338ff4c27ee2de0aa33524a73922'),
 (263, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'brenoalmeidasantana@gmail.com', 'Sessão Intradermoterapia Mensal', 'minoxidil + finasterida + pil food +  lidocaina', '2025-05-06 00:00:00', 0, 0, 'Em Andamento', '0e6b338ff4c27ee2de0aa33524a73922'),
@@ -2976,7 +3146,11 @@ INSERT INTO `tratamento` (`id`, `token_emp`, `email`, `plano_descricao`, `coment
 (286, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'livia.carvalho@msn.com', 'Programa HaiRecupere', 'Fotobiomodulação com Laser vermelho 5 joules/cm + Intradermoterapia com aplicação de minoxidil + Pill food + Silicio + Lidocaina', '2025-06-07 00:00:00', 0, 0, 'Em Andamento', '55cc44f0babac3f2144c37c647643f70'),
 (287, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'sand11cost@gmail.com', 'Sessão Microagulhamento', 'Sessão de microagulhamento com drug delivery + Fotobioestimulação com Laser vermelho ', '2025-06-18 00:00:00', 0, 0, 'Em Andamento', 'f39287dd220069a70fcbfb952957087c'),
 (288, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'ldiasamino7@gmail.com', 'Programa HaiRecupere', '', '2025-06-18 00:00:00', 1, 7, 'Em Andamento', '424111d0fb8195ecbe27a05dfc1700d8'),
-(289, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'ldiasamino7@gmail.com', 'Programa HaiRecupere', 'Sessão de laserterapia (Brinde) ', '2025-06-18 00:00:00', 0, 0, 'Em Andamento', '424111d0fb8195ecbe27a05dfc1700d8');
+(289, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'ldiasamino7@gmail.com', 'Programa HaiRecupere', 'Sessão de laserterapia (Brinde) ', '2025-06-18 00:00:00', 0, 0, 'Em Andamento', '424111d0fb8195ecbe27a05dfc1700d8'),
+(290, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'luciana_gomes@hotmail.com', 'Sessão Intradermoterapia', 'Microagulhamento com drug delivery (Silicio + Biotina + Finasterida + Minoxidil)', '2025-06-25 00:00:00', 0, 0, 'Em Andamento', '9b2e42eb4b0c80139282254bc32ec053'),
+(291, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Rosana_silva654@hotmail.com', 'Programa HaiRecupere', 'Intradermoterapia: Minoxidil + finasterida+ pill food + lidocaina', '2025-06-25 00:00:00', 0, 0, 'Em Andamento', '2920cc4141856fb7f56a41b71bf09e97'),
+(292, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', 'Programa HaiRecupere', 'Laserterapia + intradermoterapia', '2025-05-22 00:00:00', 0, 0, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f'),
+(293, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'eli.trevo@gmail.com', 'Programa HaiRecupere', 'Sessão com led ambar + intradermoterapia', '2025-07-03 00:00:00', 0, 0, 'Em Andamento', 'dce3f608d84516fbd1d2625080824c5f');
 
 -- --------------------------------------------------------
 
@@ -3009,7 +3183,9 @@ INSERT INTO `tratamentos` (`id`, `token_emp`, `tratamento`, `tratamento_quem`) V
 (15, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Fototerapia Lauro', 'Denis Ferraz'),
 (16, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Consulta Capilar SSA', 'Denis Ferraz'),
 (17, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Consulta Capilar Lauro', 'Denis Ferraz'),
-(18, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Consulta Online', 'Denis Ferraz');
+(18, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Consulta Online', 'Denis Ferraz'),
+(19, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Avaliação Capilar Presencial', 'Denis Ferraz'),
+(20, 'd6b0ab7f1c8ab8f514db9a6d85de160a', 'Sinal Consulta Capilar', 'Denis Ferraz');
 
 -- --------------------------------------------------------
 
@@ -3226,7 +3402,7 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `alteracoes`
 --
 ALTER TABLE `alteracoes`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `atestados`
@@ -3244,7 +3420,7 @@ ALTER TABLE `configuracoes`
 -- AUTO_INCREMENT for table `consultas`
 --
 ALTER TABLE `consultas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=433;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
 
 --
 -- AUTO_INCREMENT for table `contas`
@@ -3268,7 +3444,7 @@ ALTER TABLE `custos`
 -- AUTO_INCREMENT for table `custos_tratamentos`
 --
 ALTER TABLE `custos_tratamentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `despesas`
@@ -3280,13 +3456,13 @@ ALTER TABLE `despesas`
 -- AUTO_INCREMENT for table `disponibilidade`
 --
 ALTER TABLE `disponibilidade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
 
 --
 -- AUTO_INCREMENT for table `estoque`
 --
 ALTER TABLE `estoque`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `estoque_item`
@@ -3298,7 +3474,7 @@ ALTER TABLE `estoque_item`
 -- AUTO_INCREMENT for table `evolucoes`
 --
 ALTER TABLE `evolucoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `grupos_contas`
@@ -3310,31 +3486,31 @@ ALTER TABLE `grupos_contas`
 -- AUTO_INCREMENT for table `historico_atendimento`
 --
 ALTER TABLE `historico_atendimento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=857;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=881;
 
 --
 -- AUTO_INCREMENT for table `lancamentos`
 --
 ALTER TABLE `lancamentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `lancamentos_atendimento`
 --
 ALTER TABLE `lancamentos_atendimento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- AUTO_INCREMENT for table `lancamentos_recorrentes`
 --
 ALTER TABLE `lancamentos_recorrentes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `mensagens`
 --
 ALTER TABLE `mensagens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=232;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=419;
 
 --
 -- AUTO_INCREMENT for table `modelos_anamnese`
@@ -3346,13 +3522,13 @@ ALTER TABLE `modelos_anamnese`
 -- AUTO_INCREMENT for table `modelos_prontuario`
 --
 ALTER TABLE `modelos_prontuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `painel_users`
 --
 ALTER TABLE `painel_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `perguntas_modelo`
@@ -3364,13 +3540,13 @@ ALTER TABLE `perguntas_modelo`
 -- AUTO_INCREMENT for table `perguntas_modelo_prontuario`
 --
 ALTER TABLE `perguntas_modelo_prontuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `receituarios`
 --
 ALTER TABLE `receituarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `respostas_anamnese`
@@ -3382,7 +3558,7 @@ ALTER TABLE `respostas_anamnese`
 -- AUTO_INCREMENT for table `respostas_prontuario`
 --
 ALTER TABLE `respostas_prontuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tipos`
@@ -3394,13 +3570,13 @@ ALTER TABLE `tipos`
 -- AUTO_INCREMENT for table `tratamento`
 --
 ALTER TABLE `tratamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=290;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=294;
 
 --
 -- AUTO_INCREMENT for table `tratamentos`
 --
 ALTER TABLE `tratamentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `videos`

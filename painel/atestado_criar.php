@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $doc_email = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['email'] ?? NULL) : NULL;
 
@@ -60,23 +61,25 @@ $config_telefone
 <body>
 
     <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Cadastrar Atestado</h2>
+                <h2>Cadastrar Atestado <i class="bi bi-question-square-fill"onclick="ajudaAtestadoAdd()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
             <div class="card-group">
 
+            <div data-step="2">
             <label>Nome [ <?php echo $nome ?> ]</label>
             <label>E-mail [ <?php echo $doc_email ?> ]</label>
+            </div>
             <br>
             <label>Titulo</label>
-            <input type="text" minlength="5" maxlength="50" name="titulo" placeholder="Atestado Médico" required>
+            <input data-step="3" type="text" minlength="5" maxlength="50" name="titulo" placeholder="Atestado Médico" required>
             <label>Atestado</label>
-            <textarea class="textarea-custom" name="conteudo" rows="20" cols="40" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $conteudo)); ?></textarea><br><br>
+            <textarea data-step="4" class="textarea-custom" name="conteudo" rows="20" cols="40" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $conteudo)); ?></textarea><br><br>
 
             <input type="hidden" name="email" value="<?= $doc_email ?>">
             <input type="hidden" name="id_job" value="Atestado" />
-            <div class="card-group-red btn"><button type="submit">Registrar Atestado</button></div>
+            <div data-step="5" class="card-group-red btn"><button type="submit">Registrar Atestado</button></div>
             </div>
         </div>
     </form>

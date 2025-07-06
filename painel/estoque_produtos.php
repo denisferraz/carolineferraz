@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -24,18 +25,18 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Produtos</h2>
+                <h2>Cadastrar Produtos <i class="bi bi-question-square-fill"onclick="ajudaEstoqueProdutos()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <label>Produto</label>
-            <input minlength="5" maxlength="100" type="text" name="produto" placeholder="Produto" required>
+            <input data-step="2" minlength="5" maxlength="100" type="text" name="produto" placeholder="Produto" required>
             <label>Estoque Minimo</label>
-            <input min="1" max="9999" type="number" name="produto_minimo"  required>
+            <input data-step="3" min="1" max="9999" type="number" name="produto_minimo"  required>
             <label>Unidade de Medida</label>
-            <select name="produto_unidade" required>
+            <select data-step="4" name="produto_unidade" required>
                 <option value="UN">Unidade</option>
                 <option value="Kg">Kilo</option>
                 <option value="G">Grama</option>
@@ -44,19 +45,19 @@ require('verifica_login.php');
                 </select>
             
             <input type="hidden" name="id_job" value="lancar_produto" />
-            <div class="card-group btn"><button type="submit">Cadastrar Produto</button></div>
+            <div data-step="5" class="card-group btn"><button type="submit">Cadastrar Produto</button></div>
 
             </div>
     </form>
     <br><br>
-    <table>
+    <table data-step="6">
             <thead>
                 <tr>
                     <th>Produto</th>
                     <th>Unidade</th>
                     <th>Estoque Minimo</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th data-step="7">Editar</th>
+                    <th data-step="8">Excluir</th>
                 </tr>
             </thead>
             <tbody>

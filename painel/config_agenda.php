@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <html lang="pt-br">
@@ -24,21 +24,23 @@ require('verifica_login.php');
 <body>
 
 <form class="form" action="acao.php" method="POST">
-<div class="card">
+<div data-step="1" class="card">
 <div class="card-top">
-                <h2>Edite abaixo as Configurações da Agenda</h2>
+                <h2>Edite abaixo as Configurações da Agenda <i class="bi bi-question-square-fill"onclick="ajudaConfigAgenda()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 <div class="card-group">
     <label>Hora Inicial de Atendimento</label>
-    <input type="time" name="atendimento_hora_comeco" value="<?php echo date('H:i', strtotime("$config_atendimento_hora_comeco")) ?>" required>
+    <input data-step="2" type="time" name="atendimento_hora_comeco" value="<?php echo date('H:i', strtotime("$config_atendimento_hora_comeco")) ?>" required>
     <label>Hora Final de Atendimento</label>
-    <input type="time" name="atendimento_hora_fim" value="<?php echo date('H:i', strtotime("$config_atendimento_hora_fim")) ?>" required>
+    <input data-step="3" type="time" name="atendimento_hora_fim" value="<?php echo date('H:i', strtotime("$config_atendimento_hora_fim")) ?>" required>
     <label>Intervalo entre Atendimentos (em minutos)</label>
-    <input type="number" min="1" max="999" name="atendimento_hora_intervalo" value="<?php echo $config_atendimento_hora_intervalo; ?>" required>
+    <input data-step="4" type="number" min="1" max="999" name="atendimento_hora_intervalo" value="<?php echo $config_atendimento_hora_intervalo; ?>" required>
     <label>Data Maxima de Agendamento</label>
-    <input type="date" name="atendimento_dia_max" value="<?php echo $config_atendimento_dia_max; ?>" required>
+    <input data-step="5" type="date" name="atendimento_dia_max" min="<?php echo $hoje; ?>" value="<?php echo $config_atendimento_dia_max; ?>" required>
     <br><br>
-    <br><label>Dias da Semana</label><br>
+    <br>
+    <div data-step="6">
+    <label>Dias da Semana</label><br>
     <input id="dia_segunda" type="checkbox" name=dia_segunda <?php if($config_dia_segunda == 1){?>checked<?php } ?>>
     <label for="dia_segunda">Segunda-Feira</label>
     <br>
@@ -59,9 +61,10 @@ require('verifica_login.php');
     <br>
     <input id="dia_domingo" type="checkbox" name=dia_domingo <?php if($config_dia_domingo == 0){?>checked<?php } ?>>
     <label for="dia_domingo">Domingo</label>
+    </div>
     <br>
     <input type="hidden" name="id_job" value="editar_configuracoes_agenda">
-    <div class="card-group btn"><button type="submit">Atualizar Dados</button></div>
+    <div data-step="7" class="card-group btn"><button type="submit">Atualizar Dados</button></div>
 </div>
 </div>
 </form>

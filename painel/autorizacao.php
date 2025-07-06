@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $hoje = date('Y-m-d');
 $proximos_dias_amanha = date('Y-m-d', strtotime("$hoje") + (86400 * 1 ));
@@ -33,12 +34,17 @@ $proximos_dias = date('Y-m-d', strtotime("$hoje") + (86400 * 7 ));
 
 <!-- Solicitações Pendentes -->
 <fieldset>
+  <span data-step="1"></span>
+  <span data-step="2"></span>
+  <span data-step="3"></span>
+  <span data-step="4"></span>
 <?php
     $query_alteracao = $conexao->query("SELECT * FROM alteracoes WHERE token_emp = '{$_SESSION['token_emp']}' AND alt_status = 'Pendente'");
     $alteracao_qtd = $query_alteracao->rowCount();
 
 if($alteracao_qtd > 0){
-  echo "<legend>Solicitações pendentes [ {$alteracao_qtd} ]</legend>";
+  echo '<legend>Solicitações pendentes [ ' . $alteracao_qtd . ' ] <i class="bi bi-question-square-fill"onclick="ajudaAutorizacao()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></legend>';
+
 
 $stmt_painel = $conexao->prepare("SELECT dados_painel_users, id FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE ?");
 $stmt_painel->execute(['%;'.$_SESSION['token_emp'].';%']);
@@ -86,7 +92,7 @@ while($select_alteracao = $query_alteracao->fetch(PDO::FETCH_ASSOC)){
 <?php } ?>
 
 <?php }else{
-      echo "<legend>Sem Solicitações pendentes</legend>";
+      echo '<legend>Sem solicitações pendentes <i class="bi bi-question-square-fill"onclick="ajudaAutorizacao()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></legend>';
 } ?>
 </fieldset>
 </div>

@@ -3,7 +3,8 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-    
+require_once('tutorial.php');
+
 $hoje = date('Y-m-d');
 
 ?>
@@ -56,20 +57,20 @@ $hoje = date('Y-m-d');
 <body>
 
     <form class="form" action="buscar.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Buscar Historico de Alterações</h2>
+                <h2>Buscar Historico de Alterações <i class="bi bi-question-square-fill"onclick="ajudaHistoricoBuscar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
-                <label>Nome Ou Confirmação ou Ação</label>
-                <input type="text" minlength="5" maxlength="30" name="busca" placeholder="Para total, deixe em branco">
+                <label>Nome Ou Email ou Ação</label>
+                <input data-step="2" type="text" minlength="5" maxlength="30" name="busca" placeholder="Para total, deixe em branco">
                 <label>Inicio</label>
-                <input type="date" max="<?php echo $hoje ?>" value="<?php echo $hoje ?>" name="historico_inicio" required>
+                <input data-step="3" type="date" max="<?php echo $hoje ?>" value="<?php echo $hoje ?>" name="historico_inicio" required>
                 <label>Fim</label>
-                <input type="date" max="<?php echo $hoje ?>" value="<?php echo $hoje ?>" name="historico_fim" required>
+                <input data-step="4" type="date" max="<?php echo $hoje ?>" value="<?php echo $hoje ?>" name="historico_fim" required>
                 <br>
-                <div class="card-group btn"><button type="submit">Buscar</button></div>
+                <div data-step="5" class="card-group btn"><button type="submit">Buscar</button></div>
 
             </div>
         </div>

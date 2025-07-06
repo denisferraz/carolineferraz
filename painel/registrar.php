@@ -84,17 +84,7 @@ $dados_array = explode(';', $dados_decifrados);
 $painel_users_array[] = [
     'id' => $id,
     'nome' => $dados_array[0],
-    'rg' => $dados_array[1],
-    'cpf' => $dados_array[2],
-    'telefone' => $dados_array[3],
-    'profissao' => $dados_array[4],
-    'nascimento' => $dados_array[5],
-    'cep' => $dados_array[6],
-    'rua' => $dados_array[7],
-    'numero' => $dados_array[8],
-    'cidade' => $dados_array[9],
-    'bairro' => $dados_array[10],
-    'estado' => $dados_array[11]
+    'cpf' => $dados_array[2]
 ];
 
 }

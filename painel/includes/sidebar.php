@@ -1,304 +1,428 @@
 <?php
 $empresas = explode(';', $_SESSION['empresas']);
-?>
 
-<div class="sidebar bg-dark text-white p-3">
-    <h4 class="text-center">Painel</h4>
-    <ul class="nav flex-column small">
+$query = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
+while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $tipo_cadastro = $select['tipo'];
+}
 
-        <!-- INÍCIO -->
-        <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuInicio" role="button" aria-expanded="false" aria-controls="menuInicio">
-                <span><i class="bi bi-grid me-2"></i> Início</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuInicio">
-                <a href="javascript:void(0)" onclick='window.open("agenda.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-calendar-check me-2"></i> Agenda
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("autorizacao.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-calendar2-minus me-2"></i> Solicitações Pendentes
-                </a>
-            </div>
-        </li>
+$tutorialAtivo2 = isset($_SESSION['configuracao']) && $_SESSION['configuracao'] == 1;
 
-        <!-- CADASTROS -->
-        <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuCadastros" role="button" aria-expanded="false" aria-controls="menuCadastros">
-                <span><i class="bi bi-people-fill me-2"></i> Cadastros</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuCadastros">
-                <a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-person-badge me-2"></i> Clientes
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("cadastro_registro.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-person-add me-2"></i> Novo Cliente
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("crm.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-person-bounding-box me-2"></i> CRM
-                </a>
-            </div>
-        </li>
+if ($tutorialAtivo2): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            iniciarTutorial();
+        });
+    </script>
+<?php endif; ?>
 
-        <!-- CONSULTAS -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuConsultas" role="button" aria-expanded="false" aria-controls="menuConsultas">
-                <span><i class="bi bi-calendar3 me-2"></i> Consultas</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuConsultas">
-                <a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-eye-fill me-2"></i> Consultas
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-calendar-plus me-2"></i> Cadastrar Consultas
-                </a>
-                <a href="javascript:void(0)" onclick="abrirLembrete();" class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-send-plus-fill me-2"></i> Enviar Lembretes
-                </a>
-            </div>
-        </li>
-
-        <!-- ANAMNESE -->
-        <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuAnamnese" role="button" aria-expanded="false" aria-controls="menuAnamnese">
-                <span><i class="bi bi-journal-medical me-2"></i> Anamnese</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-2" id="menuAnamnese">
-                <a href="javascript:void(0)" onclick='window.open("anamnese_criar_modelo.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-file-earmark-medical me-2"></i> Criar Modelo
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("anamnese_modelos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-clipboard2-pulse me-2"></i> Modelos
-                </a>
-            </div>
-        </li>
-
-        <!-- PRONTUARIO -->
-        <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuProntuario" role="button" aria-expanded="false" aria-controls="menuProntuario">
-                <span><i class="bi bi-clipboard2-pulse me-2"></i> Prontuário</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-2" id="menuProntuario">
-                <a href="javascript:void(0)" onclick='window.open("prontuario_criar_modelo.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-file-earmark-medical me-2"></i> Criar Modelo
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("prontuario_modelos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-file-medical me-2"></i> Modelos
-                </a>
-            </div>
-        </li>
-
-        <!-- VIDEOS -->
-        <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuVideo" role="button" aria-expanded="false" aria-controls="menuVideo">
-                <span><i class="bi bi-film me-2"></i> Videos</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuVideo">
-                <a href="javascript:void(0)" onclick='window.open("videos.php?id_job=Ver","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-youtube me-2"></i> Ver Videos
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("videos.php?id_job=Adicionar","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-youtube me-2"></i> Adicionar Videos
-                </a>
-            </div>
-        </li>
-
-        <!-- DISPONIBILIDADE -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuDisponibilidade" role="button" aria-expanded="false" aria-controls="menuDisponibilidade">
-                <span><i class="bi bi-calendar-event-fill me-2"></i> Disponibilidade</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuDisponibilidade">
-                <a href="javascript:void(0)" onclick='window.open("disponibilidade.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-eye me-2"></i> Disponibilidade
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("disponibilidade_fechar.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-door-closed-fill me-2"></i> Fechar Agenda
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("disponibilidade_abrir.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-door-open-fill me-2"></i> Abrir Agenda
-                </a>
-            </div>
-        </li>
-
-        <!-- HISTÓRICO -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuHistorico" role="button" aria-expanded="false" aria-controls="menuHistorico">
-                <span><i class="bi bi-clock-history me-2"></i> Histórico</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuHistorico">
-                <a href="javascript:void(0)" onclick='window.open("historico.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-clock-history me-2"></i> Histórico
-                </a>
-            </div>
-        </li>
-
-        <!-- FINANCEIRO -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuFinanceiro" role="button" aria-expanded="false" aria-controls="menuFinanceiro">
-                <span><i class="bi bi-cash-stack me-2"></i> Financeiro</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuFinanceiro">
-                <a href="javascript:void(0)" onclick='window.open("controle_financeiro_app/index.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bank me-2"></i> Painel Adm
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-coin me-2"></i> Custos Fixos
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("tratamentos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-file-earmark-medical me-2"></i> Serviços
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("ver_valores.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-currency-dollar me-2"></i> Valores
-                </a>
-            </div>
-        </li>
-
-        <!-- ESTOQUE -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuEstoque" role="button" aria-expanded="false" aria-controls="menuEstoque">
-                <span><i class="bi bi-archive me-2"></i> Estoque</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuEstoque">
-                <a href="javascript:void(0)" onclick='window.open("estoque_ver.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bag-dash me-2"></i> Ver Estoque
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("estoque_produtos.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bag-plus me-2"></i> Produtos
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("estoque_entradas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-arrow-bar-right me-2"></i> Entradas
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("estoque_saidas.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-arrow-bar-left me-2"></i> Saidas
-                </a>
-            </div>
-        </li>
-
-        <!-- RELATÓRIOS -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuRelatorios" role="button" aria-expanded="false" aria-controls="menuRelatorios">
-                <span><i class="bi bi-bar-chart-fill me-2"></i> Relatórios</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuRelatorios">
-                <a href="javascript:void(0)" onclick='window.open("relatorios.php", "iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-bar-chart-fill me-2"></i> Relatórios
-                </a>
-            </div>
-        </li>
-
-        <!-- CONFIGURAÇÕES -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuConfiguracoes" role="button" aria-expanded="false" aria-controls="menuConfiguracoes">
-                <span><i class="bi bi-gear-fill me-2"></i> Configurações</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuConfiguracoes">
-                <a href="javascript:void(0)" onclick='window.open("config_empresa.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-building-gear me-2"></i> Empresa
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("config_msg.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-database-gear me-2"></i> Mensagens
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("config_agenda.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-journal-bookmark me-2"></i> Agenda
-                </a>
-                <a href="javascript:void(0)" onclick="abrirWhatsapp();" class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-whatsapp me-2"></i> Whatsapp
-                </a>
-            </div>
-        </li>
-
-        <!-- PROFILE -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuProfile" role="button" aria-expanded="false" aria-controls="menuProfile">
-                <span><i class="bi bi-person-square me-2"></i> Profile</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuProfile">
-                <a href="javascript:void(0)" onclick='window.open("profile.php?id_job=Profile","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-person-check me-2"></i> Profile
-                </a>
-                <a href="javascript:void(0)" onclick='window.open("profile.php?id_job=Senha","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-lock me-2"></i> Senha
-                </a>
-            </div>
-        </li>
-        
-        <?php if (count($empresas) > 1){ ?>
-        <!-- Seleção -->
-        <li class="nav-item mt-2">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center"
-               data-bs-toggle="collapse" href="#menuSelecao" role="button" aria-expanded="false" aria-controls="menuSelecao">
-                <span><i class="bi bi-check2-circle me-2"></i> Empresas</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse ps-3" id="menuSelecao">
-                <a href="javascript:void(0)" onclick='window.open("selecao.php","iframe-home");' class="nav-link text-white d-flex align-items-center">
-                    <i class="bi bi-check2-square me-2"></i> Selecionar
-                </a>
-            </div>
-        </li>
-        <?php } ?>
-
-    </ul>
+<!-- Header da Sidebar -->
+<div class="sidebar-header">
+    <div class="sidebar-logo">
+        <i class="bi bi-building-exclamation"></i>
+        <?php echo $config_empresa; ?>
+    </div>
+    <div class="sidebar-subtitle">
+        Painel Administrativo
+    </div>
 </div>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-</head>
-<body>
+<!-- Navegação da Sidebar -->
+<nav data-step="1" class="sidebar-nav">
+    <!-- INÍCIO -->
+    <div data-step="2" class="nav-section">
+        <div class="nav-section-title">Dashboard</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("agenda.php","iframe-home");' class="nav-link active" data-step="2">
+                    <i class="bi bi-calendar-check nav-link-icon"></i>
+                    <span class="nav-link-text">Agenda</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("autorizacao.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-calendar2-minus nav-link-icon"></i>
+                    <span class="nav-link-text">Solicitações Pendentes</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- CADASTROS -->
+    <div data-step="3" class="nav-section">
+        <div class="nav-section-title">Cadastros</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home");' class="nav-link" data-step="3">
+                    <i class="bi bi-person-badge nav-link-icon"></i>
+                    <span class="nav-link-text">Clientes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("cadastro_registro.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-person-add nav-link-icon"></i>
+                    <span class="nav-link-text">Novo Cliente</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("crm.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-person-bounding-box nav-link-icon"></i>
+                    <span class="nav-link-text">CRM</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- CONSULTAS -->
+    <div data-step="4" class="nav-section">
+        <div class="nav-section-title">Consultas</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("reservas_editar.php","iframe-home");' class="nav-link" data-step="4">
+                    <i class="bi bi-eye-fill nav-link-icon"></i>
+                    <span class="nav-link-text">Consultas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Painel","iframe-home");' class="nav-link">
+                    <i class="bi bi-calendar-plus nav-link-icon"></i>
+                    <span class="nav-link-text">Cadastrar Consultas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick="abrirLembrete();" class="nav-link">
+                    <i class="bi bi-send-plus-fill nav-link-icon"></i>
+                    <span class="nav-link-text">Enviar Lembretes</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- PRONTUÁRIOS -->
+    <div data-step="5" class="nav-section">
+        <div class="nav-section-title">Prontuários</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("anamnese_criar_modelo.php","iframe-home");' class="nav-link" data-step="5">
+                    <i class="bi bi-file-earmark-medical nav-link-icon"></i>
+                    <span class="nav-link-text">Criar Anamnese</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("anamnese_modelos.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-clipboard2-pulse nav-link-icon"></i>
+                    <span class="nav-link-text">Modelos Anamnese</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("prontuario_criar_modelo.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-journal-medical nav-link-icon"></i>
+                    <span class="nav-link-text">Criar Prontuário</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("prontuario_modelos.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-journals nav-link-icon"></i>
+                    <span class="nav-link-text">Modelos Prontuário</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- DISPONIBILIDADE -->
+    <div data-step="6" class="nav-section">
+        <div class="nav-section-title">Disponibilidade</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("disponibilidade.php","iframe-home");' class="nav-link" data-step="5">
+                    <i class="bi bi-eye nav-link-icon"></i>
+                    <span class="nav-link-text">Disponibilidade</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("disponibilidade_fechar.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-door-closed-fill nav-link-icon"></i>
+                    <span class="nav-link-text">Fechar Agenda</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("disponibilidade_abrir.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-door-open-fill nav-link-icon"></i>
+                    <span class="nav-link-text">Abrir Agenda</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- FINANCEIRO -->
+    <div data-step="7" class="nav-section">
+        <div class="nav-section-title">Financeiro</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("controle_financeiro_app/index.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-bank nav-link-icon"></i>
+                    <span class="nav-link-text">Contabilidade</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("relatorios.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-graph-up nav-link-icon"></i>
+                    <span class="nav-link-text">Relatórios</span>
+                </a>
+            </li>
+            <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("transacoes.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-credit-card nav-link-icon"></i>
+                    <span class="nav-link-text">Transações</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("../mercadopago/index.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-cash-coin nav-link-icon"></i>
+                    <span class="nav-link-text">Renovar Plano</span>
+                </a>
+            </li>
+            <?php } ?>
+        </ul>
+    </div>
+
+    <!-- SERVIÇOS -->
+    <div data-step="8" class="nav-section">
+        <div class="nav-section-title">Serviços</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("ver_valores.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-cash-stack nav-link-icon"></i>
+                    <span class="nav-link-text">Serviços</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("tratamentos.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-file-earmark-medical nav-link-icon"></i>
+                    <span class="nav-link-text">Cadastrar Serviço</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("custos.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-coin nav-link-icon"></i>
+                    <span class="nav-link-text">Cadastrar Custos</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ESTOQUE -->
+    <div data-step="9" class="nav-section">
+        <div class="nav-section-title">Estoque</div>
+        <ul class="nav-list">
+        <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("estoque_ver.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-bag-dash nav-link-icon"></i>
+                    <span class="nav-link-text">Saldo</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("estoque_produtos.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-box nav-link-icon"></i>
+                    <span class="nav-link-text">Produtos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("estoque_entradas.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-box-arrow-in-down nav-link-icon"></i>
+                    <span class="nav-link-text">Entradas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("estoque_saidas.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-box-arrow-up nav-link-icon"></i>
+                    <span class="nav-link-text">Saídas</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- VIDEOS -->
+    <div data-step="10" class="nav-section">
+        <div class="nav-section-title">Videos</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("videos.php?id_job=Ver","iframe-home");' class="nav-link">
+                    <i class="bi bi-film nav-link-icon"></i>
+                    <span class="nav-link-text">Ver Videos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("videos.php?id_job=Adicionar","iframe-home");' class="nav-link">
+                    <i class="bi bi-youtube nav-link-icon"></i>
+                    <span class="nav-link-text">Adicionar Videos</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- CONFIGURAÇÕES -->
+    <div data-step="11" class="nav-section">
+        <div class="nav-section-title">Configurações</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("config_empresa.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-building-gear nav-link-icon"></i>
+                    <span class="nav-link-text">Empresa</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("config_msg.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-database-gear nav-link-icon"></i>
+                    <span class="nav-link-text">Mensagens</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("config_agenda.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-journal-bookmark nav-link-icon"></i>
+                    <span class="nav-link-text">Agenda</span>
+                </a>
+            </li>
+            <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("config_landing.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-file-break nav-link-icon"></i>
+                    <span class="nav-link-text">Landing Page</span>
+                </a>
+            </li>
+            <?php } ?>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick="abrirWhatsapp();" class="nav-link">
+                    <i class="bi bi-whatsapp nav-link-icon"></i>
+                    <span class="nav-link-text">Whatsapp</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- SUPORTE -->
+    <div data-step="12" class="nav-section">
+        <div class="nav-section-title">Suporte</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick="iniciarTutorial()" class="nav-link">
+                    <i class="bi bi-question-circle nav-link-icon"></i>
+                    <span class="nav-link-text">Tutorial</span>
+                </a>
+            </li>
+            <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("tickets.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-headset nav-link-icon"></i>
+                    <span class="nav-link-text">Tickets</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("ticket_novo.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-patch-question nav-link-icon"></i>
+                    <span class="nav-link-text">Novo Ticket</span>
+                </a>
+            </li>
+            <?php } ?>
+        </ul>
+    </div>
+
+    <!-- PROFILE -->
+    <div data-step="13" class="nav-section">
+        <div class="nav-section-title">Profile</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("profile.php?id_job=Profile","iframe-home");' class="nav-link">
+                    <i class="bi bi-person-check nav-link-icon"></i>
+                    <span class="nav-link-text">Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("profile.php?id_job=Senha","iframe-home");' class="nav-link">
+                    <i class="bi bi-lock nav-link-icon"></i>
+                    <span class="nav-link-text">Senha</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- PAINEL OWNER -->
+    <?php if($tipo_cadastro == 'Owner' && $_SESSION['site_puro'] == 'chronoclick'){ ?>
+    <div class="nav-section">
+        <div class="nav-section-title">Owner</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("tickets_adm.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-question nav-link-icon"></i>
+                    <span class="nav-link-text">Tickets</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("owner_cadastros.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-person-bounding-box nav-link-icon"></i>
+                    <span class="nav-link-text">Cadastros</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("owner_transacoes.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-wallet2 nav-link-icon"></i>
+                    <span class="nav-link-text">Financeiro</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <?php } ?>
+
+    <!-- SELEÇÃO -->
+    <?php if (count($empresas) > 1){ ?>
+    <div class="nav-section">
+        <div class="nav-section-title">Empresas</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("selecao.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-check2-square nav-link-icon"></i>
+                    <span class="nav-link-text">Selecionar</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <?php } ?>
+</nav>
 
 <script>
-  function abrirLembrete() {
+// Função para abrir lembrete (mantida para compatibilidade)
+function abrirLembrete() {
     // Exibe o popup de carregamento
     exibirPopup();
-
-    // Abre a página lembrete.php em uma nova janela ou iframe
+    // Abre a página lembrete.php no iframe
     window.open("lembrete.php", "iframe-home");
-  }
+}
 
-  function exibirPopup() {
+function exibirPopup() {
     Swal.fire({
-      icon: 'warning',
-      title: 'Carregando...',
-      text: 'Aguarde enquanto enviamos os Lembretes!',
-      timer: 10000,
-      showCancelButton: false,
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      willOpen: () => {
-        Swal.showLoading();
-      }
+        icon: 'warning',
+        title: 'Carregando...',
+        text: 'Aguarde enquanto enviamos os Lembretes!',
+        timer: 10000,
+        timerProgressBar: true,
+        showConfirmButton: false
     });
-  }
+}
+
+// Adicionar indicador visual de link ativo
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Remover classe active de todos os links
+            navLinks.forEach(l => l.classList.remove('active'));
+            // Adicionar classe active ao link clicado
+            this.classList.add('active');
+        });
+    });
+});
 </script>
 
 <script>
@@ -315,7 +439,7 @@ $empresas = explode(';', $_SESSION['empresas']);
       icon: 'warning',
       title: 'Carregando...',
       text: 'Aguarde enquanto configuramos a interface!',
-      timer: 6000,
+      timer: 8000,
       showCancelButton: false,
       showConfirmButton: false,
       allowOutsideClick: false,
@@ -325,6 +449,3 @@ $empresas = explode(';', $_SESSION['empresas']);
     });
   }
 </script>
-
-</body>
-</html>

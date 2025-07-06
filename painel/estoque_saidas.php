@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -24,15 +25,15 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Saidas de Estoque</h2>
+                <h2>Saidas de Estoque <i class="bi bi-question-square-fill"onclick="ajudaEstoqueProdutosSaidas()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
 
             <label>Produto</label>
-            <select name="produto" required>
+            <select data-step="2" name="produto" required>
             <?php
                 $query = $conexao->prepare("SELECT * FROM estoque_item WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY produto DESC");
                 $query->execute(['id' => 1]);
@@ -48,21 +49,21 @@ require('verifica_login.php');
                 </select>
 
                 <label>Quantidade</label>
-                <input type="number" name="produto_quantidade" min="1" max="9999" step="1" required>
+                <input data-step="3" type="number" name="produto_quantidade" min="1" max="9999" step="1" required>
 
                 <label>Lote</label>
-                <input type="text" name="produto_lote" minlength="1" maxlength="50" >
+                <input data-step="4" type="text" name="produto_lote" minlength="1" maxlength="50">
 
                 <label>Validade</label>
-                <input type="date" name="produto_validade" >
+                <input data-step="5" type="date" name="produto_validade" value="<?php echo $hoje; ?>">
                             
             <input type="hidden" name="id_job" value="lancar_saida" />
-            <div class="card-group btn"><button type="submit">Registrar Saida</button></div>
+            <div data-step="6" class="card-group btn"><button type="submit">Registrar Saida</button></div>
 
             </div>
     </form>
     <br><br>
-    <table>
+    <table data-step="7">
             <thead>
                 <tr>
                     <th>Data</th>

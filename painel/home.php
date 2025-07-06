@@ -2,6 +2,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega a data passada via GET
 
@@ -38,9 +39,16 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
         $dataSelecionada_formatada = date('d/m/Y', strtotime($dataSelecionada));
         
         if ($checkin_qtd == 0) {
-            echo "<legend>Sem Atendimentos para o dia $dataSelecionada_formatada</legend>";
+            echo '<legend>Sem Atendimentos para o dia ' . $dataSelecionada_formatada . ' <i class="bi bi-question-square-fill"onclick="ajudaAgendaDia()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></legend>';
+            ?>
+    <span data-step="1"></span>
+    <span data-step="2"></span>
+    <span data-step="3"></span>
+    <span data-step="4"></span>
+    <span data-step="5"></span>
+            <?php
         } else {
-                echo "<legend>Atendimentos do dia $dataSelecionada_formatada [ {$checkin_qtd} ]</legend>";
+                echo '<legend>Atendimentos do dia ' . $dataSelecionada_formatada . '[ ' . $checkin_qtd . ' ] <i class="bi bi-question-square-fill"onclick="ajudaAgendaDia()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></legend>';
 
         }
         $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp");
@@ -81,29 +89,34 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
             $atendimento_dia = $select_checkins['atendimento_dia'];
             $atendimento_dia = strtotime("$atendimento_dia");
             $atendimento_hora = $select_checkins['atendimento_hora'];
-            $atendimento_hora = strtotime("$atendimento_hora");
             $local_consulta = $select_checkins['local_consulta'];
             $id = $select_checkins['id'];
             $status_consulta = $select_checkins['status_consulta'];
+            $tipo_consulta = $select_checkins['tipo_consulta'];
 
             foreach ($painel_users_array as $item) {
                 if ($item['email'] === $doc_email) {
                     $doc_nome = $item['nome'];
                 }
             }
+
+            $atendimento_hora_2 = date('H:i', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
+            if($tipo_consulta == 'Consulta x2'){
+                $atendimento_hora_2 = date('H:i', strtotime($atendimento_hora_2 . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
+            }
         ?>
-            <div class="appointment">
-                <?php echo date('d/m/Y', $atendimento_dia) ?> às <?php echo date('H:i\h', $atendimento_hora) ?>
-                [ <?php echo $local_consulta; ?> ]
-                <a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'>
+            <div data-step="1" class="appointment">
+            <b data-step="2"><?php echo date('d/m/Y', $atendimento_dia) ?> das <?php echo date('H:i\h', strtotime($atendimento_hora)) ?> ate <?php echo $atendimento_hora_2 ?>
+                [ <?php echo $local_consulta; ?> ]</b>
+                <a data-step="3" href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>","iframe-home")'>
                     <button>Acessar Detalhes</button>
                 </a>
-                <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>","iframe-home")'>
+                <a data-step="4" href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>","iframe-home")'>
                     <button><?php echo $doc_nome ?></button>
                 </a>
                 <?php
                 if($status_consulta == 'Confirmada' || $status_consulta == 'Em Andamento'){ ?>
-                <div class="actions">
+                <div data-step="5" class="actions">
                     <a href="javascript:void(0)" onclick='window.open("reservas_finalizar.php?id_consulta=<?php echo $id_consulta ?>&id_job=EmAndamento","iframe-home")'>
                         <button>Finalizar</button>
                     </a>
@@ -120,7 +133,7 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
                     <?php } ?>
                 </div>
                 <?php }else{
-                    echo "<button>$status_consulta</button>";
+                    echo "<button data-step='5'>$status_consulta</button>";
                 } ?>
             </div>
         <?php } ?>

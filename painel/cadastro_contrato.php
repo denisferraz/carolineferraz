@@ -88,13 +88,13 @@ if($nascimento == '' || $profissao == '' || $cep == '' || $rua == '' || $numero 
 
             <div class="card-group">
             <br>
-            <label><b>Valor</b></label>
+            <label><b>Termos de Pagamento</b></label>
             <input type="text" name="procedimento_valor" minlength="10" maxlength="155" placeholder="R$ parcelado em x de R$ sem juros" required>
             <br>
             <label><b>Intervalo entre Sessões</b></label>
             <input type="number" name="procedimento_dias" min="1" max="365" placeholder="15" required>
             <br>
-            <label><b>Procedimento</b></label>
+            <label><b>Descrição do Procedimento</b></label>
             <textarea class="textarea-custom" name="procedimentos" rows="5" cols="44" minlength="10" maxlength="300" placeholder="Procedimentos... (utilize o <br> para pular linha)" required></textarea>
             <br><br>
             <input type="hidden" name="nome" value="<?php echo $nome ?>">

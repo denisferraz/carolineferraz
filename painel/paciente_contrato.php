@@ -8,6 +8,8 @@ require('verifica_login.php');
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
 $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $_SESSION['email']));
 
+$token_emp = $_SESSION['token_emp'];
+
 $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -108,7 +110,7 @@ $procedimento_local = 'Salvador';
 <p class="text-title">1. CONTRATANTE:</p>
 <b><?php echo $nome ?></b>, portador do Documento de Identidade RG nº <b><?php echo $rg ?></b>, inscrito no CPF sob o nº <b><?php echo $cpf ?></b>, nascido(a) em <b><?php echo date('d/m/Y', strtotime("$nascimento")) ?></b>, <b><?php echo $profissao ?></b>, residente e domiciliado na <b><?php echo $endereco ?></b>.<br>
 <br><p class="text-title">2. CONTRATADA:</p>
-<b>Caroline Chagas Ferraz</b>, portadora do Documento de Identidade RG nº. <b>0969045425</b>, inscrito no CPF sob o nº <b>033.266.355.83</b>, nascida em <b>15/09/1988</b>, <b>Farmaceutica</b>, residene e domiciliado na <b>Colonia da Boa União, s/ nº - Cond Porto Sol Residencal Clube, Casa D13, Abrantes - Camaçari/BA, CEP: 42.821-798</b>.<br>
+Razão Social <b><?php echo $config_empresa ?></b>, CNPJ nº. <b><?php echo $config_cnpj ?></b>, endereço <b><?php echo $config_endereco ?></b>.<br>
 
 <br><p>As partes resolvem firmar o presente CONTRATO DE PRESTAÇÃO DE SERVIÇOS, nos seguintes termos:</p>
 
@@ -151,20 +153,17 @@ $procedimento_local = 'Salvador';
 
 <br><p class="text-title">CLÁUSULA 7 – DISPOSIÇÕES GERAIS</p>
 <p>7.1. As sessões serão previamente agendadas conforme disponibilidade das partes</p>
-<p>7.2. Qualquer alteração deverá ser comunicada com antecedência através do WhatsApp <b>(71) 99129-3370</b>.</p>
+<p>7.2. Qualquer alteração deverá ser comunicada com antecedência através do WhatsApp <b><?php echo $config_telefone; ?></b>.</p>
 
-<br><p class="text-title">CLÁUSULA 8 – FORO</p>
-<p>8.1. Para dirimir quaisquer questões decorrentes deste contrato, fica eleito o foro da comarca de <b>Lauro de Freitas-BA</b>, com renúncia a qualquer outro, por mais privilegiado que seja.</p>
-
-<br><p class="text-title">CLÁUSULA 9 – FORMALIZAÇÃO DO CONTRATO</p>
-<p>9.1 . O presente contrato poderá ser assinado digitalmente, por meio de plataformas de assinatura eletrônica, com a mesma validade jurídica.</p>
-<p>9.2. Ao assinar este contrato, ambas as partes concordam com os termos aqui estabelecidos, comprometendo-se a cumpri-los integralmente.</p>
+<br><p class="text-title">CLÁUSULA 8 – FORMALIZAÇÃO DO CONTRATO</p>
+<p>8.1 . O presente contrato poderá ser assinado digitalmente, por meio de plataformas de assinatura eletrônica, com a mesma validade jurídica.</p>
+<p>8.2. Ao assinar este contrato, ambas as partes concordam com os termos aqui estabelecidos, comprometendo-se a cumpri-los integralmente.</p>
 
 <b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
 <br>
 <center>
 <?php if($assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo $token ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $_SESSION['token_emp'] ?>/<?php echo $cpf_ass ?>-<?php echo $token ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
@@ -182,10 +181,18 @@ ______________________________________________________<br>
 <?php }else{ ?>
 <h3>(Não Assinado)</h3>
 <?php } ?>
-<img src="../assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
+<?php
+$caminho_imagem = "../assinaturas/$token_emp/$token_emp.png";
+if (file_exists($caminho_imagem)) {
+    echo '<img src="'.$caminho_imagem.'" alt="'.$config_empresa.'"><br>';
+?>
 ______________________________________________________<br>
-<b>Caroline Chagas Ferraz</b>
+<b><?php echo $config_empresa ?></b>
 <h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$procedimento_data")) ?>)</h3>
+<?php }else{ ?>
+  ______________________________________________________<br>
+<h3>(Não Assinado)</h3>
+<?php } ?>
 </center>
 </fieldset>
 <br>
@@ -217,7 +224,7 @@ while($select3 = $query3->fetch(PDO::FETCH_ASSOC)){
 <b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$aditivo_procedimento_data")) ?></b><br>
 <center>
 <?php if($aditivo_assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo $token ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
+<img src="../assinaturas/<?php echo $_SESSION['token_emp'] ?>/<?php echo $cpf_ass ?>-<?php echo $token ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
 
 ______________________________________________________<br>
 <?php }else{ ?>
@@ -229,106 +236,24 @@ ______________________________________________________<br>
 <?php }else{ ?>
 <h3>(Não Assinado)</h3>
 <?php } ?>
-<img src="../assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
-______________________________________________________<br>
-<b>Caroline Chagas Ferraz</b>
-<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$aditivo_procedimento_data")) ?>)</h3>
-</center>
 <?php
-}
+if (file_exists($caminho_imagem)) {
+    echo '<img src="'.$caminho_imagem.'" alt="'.$config_empresa.'"><br>';
 ?>
+______________________________________________________<br>
+<b><?php echo $config_empresa ?></b>
+<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$procedimento_data")) ?>)</h3>
+<?php }else{ ?>
+  ______________________________________________________<br>
+<h3>(Não Assinado)</h3>
+<?php } ?>
+</center>
+<?php } ?>
 </fieldset>
 <br>
 <?php
 }
 ?>
-<fieldset>
-<center>
-<p class="text-title">TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO</p>
-<p class="text-title">MICROAGULHAMENTO E/OU INTRADERMOTERAPIA CAPILAR</p><br>
-</center>
-
-<p class="text-title">DA TÉCNICA:</p>
-<p><ul>
-    <li><b>APRESENTAÇÃO</b>
-     <p>As terapias capilares não se firmam em um único tipo de procedimento para todos os pacientes, bem como as substâncias ativas a serem prescritas para uso home care e usadas em consultório também variam de indivíduo para indivíduo, a fim de atender as necessidades de cuidado de cada um. Sendo assim, cada paciente tem seu protocolo exclusivo de tratamento, que é definido, apresentado e explicado em detalhes pelo profissional que o assiste, na primeira Consulta. O mesmo pode vir a mudar durante o andamento do tratamento, e o paciente será avisado caso as mudanças ocorram.</p>
-     <p>Os procedimentos minimamente invasivos realizados para tratamento capilar são o Microagulhamento e a Mesoterapia.</p>
-     <p> O Microagulhamento consiste na aplicação de um aparelho chamado dermógrafo sobre área a ser tratada , com o objetivo de drug delivery, ou seja, que as substâncias ativas ali aplicadas, penetrem diretamente até o local de ação desejado, o folículo piloso, localizado na derme.</p>
-     <p>A Mesoterapia ou Intradermoterapia consiste em microinjeções pontuais, realizadas com seringa e agulha, diretamente na área a ser tratada. O objetivo da técnica é que as substâncias ativas sejam depositadas na derme e estabeleçam ação local. Quanto às substâncias injetadas, eis as que são geralmente usadas em tais procedimentos: fatores de crescimento, minoxidil, finasterida, dutasterida, aminoácidos, vitaminas e lidocaína. A escolha de uso de cada uma delas cabe ao profissional que acompanha o caso.</p>
-     </li>
-     <li><b>REALIZAÇÃO DOPROCEDIMENTO</b>
-         <p>O procedimento é realizado em um intervalo de 30 a 60 dias, em geral.
- No caso do microagulhamento, um cartucho de agulhas estéril é acoplado ao dermógrafo para promover a entrega das substâncias na pele. 
-No caso da intradermoterapia, a aplicação das substâncias se dá pela injeção intradérmica feita com seringa e agulha. 
-</p>
-     </li>
-     <li><b>RESULTADOS</b>
-         <p>É imprescindível que o paciente compreenda que não há garantia de resultado, uma vez que se trata de um organismo vivo, influenciado por diversas variáveis, externas e internas, passível de respostas que independem do tratamento proposto e executado. A garantia é de que o profissional em questão dispõe dos melhores meios, sempre pautados em evidências científicas, para buscar o melhor resultado ao paciente. É importante que o tratamento seja seguido da forma proposta e pelo tempo proposto, que foi explicitado durante a consulta, bem como o intervalo sugerido entre as sessões seja respeitado, a fim de obter o melhor resultado possível.</p>
-     </li>
-     <li><b>CONTRAINDICAÇÕES AO PROCEDIMENTO</b> 
-         <p>Gestantes (salvo consentimento médico);<br>
-Diabéticos descompensados; <br>
-Antecedentes de AVC;<br>
- Histórico de eventos tromboembólicos;<br>
-Sensibilidade a uma substância ativa utilizada;<br>
- HIV+;<br>
-Cardiopatas;<br>
-Doenças sistêmicas autoimunes;<br>
-</p>
-     </li>
-     <li><b>POSSÍVEIS COMPLICAÇÕES E EFEITOS COLATERAIS DO PROCEDIMENTO</b>
-         <p>Fibroses; <br>
-Infecções;<br>
- Reação vasovagal; <br>
-Anafilaxia (reação alérgica aguda); <br>
-Dor aguda;<br>
- Edema; <br>
-Sensibilidade exacerbada;<br>
- Eritema passageiro;<br>
-</p>
-     </li>
-</ul></p>
-<p class="text-title">DAS DECLARAÇÕES DO PACIENTE:</p>
-<p><ul>
-    <li>
-        Declaro ser verdadeiro tudo que informei ao profissional durante a avaliação e que não omiti nenhuma informação relacionada à minha saúde que possa vir a comprometer o resultado do tratamento ou ocasionar complicações. Estou ciente que preciso estar saudável para realizar este procedimento e que qualquer alteração em meu estado de saúde será relatada ao profissional imediatamente.
-    </li>
-    <li>
-        Declaro que li este Termo de Consentimento e compreendi tudo que aqui está redigido, bem como tudo que foi explicado pela profissional durante a consulta, sobre minha condição e o tratamento proposto. Todas minhas dúvidas também foram esclarecidas.
-    </li>
-    <li>
-        Autorizo ser fotografado(a) a fim de acompanhamento do tratamento e também para possível divulgação de marketing nas redes sociais do profissional, sem que minha identidade seja exposta e revelada. 
-    </li>
-    <li>
-        Tenho ciência e compreensão dos riscos e possíveis complicações que podem surgir devido ao procedimento. 
-    </li>
-    <li>
-        É de meu conhecimento que é impossível prever e garantir resultados a partir do tratamento proposto, mas que o profissional se dispõe a usar os meios científicos possíveis para buscar atingir o fim desejado, assim como eu me proponho a seguir o protocolo de tratamento proposto.
-    </li>
-</ul></p>
-
-
-<b><?php echo $procedimento_local ?>, <?php echo date('d/m/Y', strtotime("$procedimento_data")) ?></b><br>
-<center>
-<?php if($assinado == 'Sim'){?>
-<img src="../assinaturas/<?php echo $cpf_ass ?>-<?php echo $token ?>-<?php echo date('YmdHis', strtotime("$assinado_data")) ?>.png" alt="<?php echo $nome ?>"><br>
-
-______________________________________________________<br>
-<?php }else{ ?>
-    ______________________________________________________<br>
-<?php } ?>
-<b><?php echo $nome ?></b>
-<?php if($assinado == 'Sim'){?>
-<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$assinado_data")) ?>)</h3>
-<?php }else{ ?>
-<h3>(Não Assinado)</h3>
-<?php } ?>
-<img src="../assinaturas/carolferraz.png" alt="<?php echo $config_empresa ?>"><br>
-______________________________________________________<br>
-<b>Caroline Chagas Ferraz</b>
-<h3>(Assinado - <?php echo date('d/m/Y \à\s H:i:s\h', strtotime("$procedimento_data")) ?>)</h3>
-</center>
-</fieldset>
 </div>
 <script>
 const canvas = document.querySelector('#canvas');

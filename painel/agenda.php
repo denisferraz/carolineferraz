@@ -1,6 +1,7 @@
 <?php
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $mes = isset($_GET['mes']) ? (int)$_GET['mes'] : date('m');
 $ano = isset($_GET['ano']) ? (int)$_GET['ano'] : date('Y');
@@ -76,11 +77,7 @@ if ($mesProximo > 12) {
     $anoProximo++;
 }
 
-if($css_path == 'css/style_escuro.css'){
-$font_color = '#fff';
-}else{
 $font_color = '#222';
-}
 
 $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND id >= :id");
 $query->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'id' => 0));
@@ -143,7 +140,7 @@ body {
 <body>
 
 <div class="calendario-container">
-    <div class="calendario-header">
+    <div class="calendario-header" data-step="2">
     <a href="?mes=<?= $mesAnterior ?>&ano=<?= $anoAnterior ?>" title="Mês Anterior" style="font-size: 1.5rem;">
     <i style="color: <?php echo $font_color; ?>;" class="bi bi-arrow-left-square-fill"></i></a>
         <form method="get">
@@ -164,8 +161,8 @@ body {
         <i style="color: <?php echo $font_color; ?>;" class="bi bi-arrow-right-square-fill"></i></a>
     </div>
     <div style="display: flex; justify-content: center;">
-  <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; border-radius: 4px; padding: 5px; justify-content: center; max-width: 800px;">
-    <div style="display: flex; align-items: center; gap: 0.5rem;">
+  <div data-step="3" style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; border-radius: 4px; padding: 5px; justify-content: center; max-width: 800px;">  
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
       <div class='passado' style="width: 20px; height: 20px; border-radius: 4px;"></div>
       <span style="color: <?php echo $font_color; ?>;">Dias Passados</span>
     </div>
@@ -189,9 +186,10 @@ body {
       <div class='feriado' style="width: 20px; height: 20px; border-radius: 4px;"></div>
       <span style="color: <?php echo $font_color; ?>;">Feriado</span>
     </div>
+    <i class="bi bi-question-square-fill"onclick="ajudaAgenda()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i>
   </div>
 </div>
-        <div class="calendario">
+        <div class="calendario" data-step="1">
             <?php
             $dias_semana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
             foreach ($dias_semana as $index => $dia) {
@@ -229,7 +227,7 @@ body {
             $classe_extra = 'hoje';
         }
         
-        $query = $conexao->query("SELECT doc_email, atendimento_hora, status_consulta FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
+        $query = $conexao->query("SELECT doc_email, atendimento_hora, status_consulta, tipo_consulta FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$data_atual}' ORDER BY atendimento_hora ASC");
         if($query->rowCount() > 0){
             
             //Veriica se é passado, presente, futuro
@@ -240,11 +238,12 @@ body {
                 $classe_extra = 'futuro';
             }
         }
-        echo "<div class='dia {$classe_extra}' style='cursor: pointer;'>";
+        echo "<div data-step='4' class='dia {$classe_extra}' style='cursor: pointer;'>";
         echo "<a href='home.php?data=$data_atual' style='display: block; color: inherit; text-decoration: none; height: 100%; width: 100%;'>";
         echo "<div class='numero'>$dia_atual</div>";  // Número do dia
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $status_consulta = $row['status_consulta'];
+            $tipo_consulta = $row['tipo_consulta'];
             foreach ($painel_users_array as $item) {
                 if ($item['email'] === $row['doc_email']) {
                     $doc_nome = $item['nome'];
@@ -257,7 +256,7 @@ body {
                 $class_evento = 'evento_nao';
             }
             $hora = substr($row['atendimento_hora'], 0, 5);
-            echo "<span class='{$class_evento}'>{$hora}h - {$doc_nome}</span>";
+            echo "<div style='display: flex; gap: 2px;'><span class='{$class_evento}'>{$hora}h - {$doc_nome}</span></div>";
         }
 
         echo "</a>";
@@ -277,7 +276,7 @@ body {
 
     document.addEventListener("touchend", function(e) {
         endX = e.changedTouches[0].screenX;
-        handleSwipe();
+        //handleSwipe();
     });
 
     function handleSwipe() {

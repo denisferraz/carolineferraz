@@ -40,6 +40,7 @@ $query_lancamento->execute(array('id' => $id));
 while($select_lancamento = $query_lancamento->fetch(PDO::FETCH_ASSOC)){
 $valor = $select_lancamento['valor'];
 $quantidade = $select_lancamento['quantidade'];
+$tipo = $select_lancamento['tipo'];
 $quando = date('d/m/Y');
 $produto = "[Estornado] " . $select_lancamento['produto'];
 
@@ -51,16 +52,21 @@ $produto2 = $select_produto['id'];
 
 }
 
-$query = $conexao->prepare("UPDATE lancamentos_atendimento SET valor = '0', produto = '{$produto}', quantidade = '0', feitopor = '{$feitopor}' WHERE id = :id");
-$query->execute(array('id' => $id));
-
 $produto_lote = 'Painel';
 $produto_validade = $hoje;
 
 $produto_quantidade = $quantidade * -1;
 
-$stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->execute([$_SESSION['token_emp'], $lanc_data, 69, $produto, 'nao', number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $valor * (-1))), 2, '.', ''), '', $feitopor]);
+if($tipo == 'Estoque'){
+$query = $conexao->prepare("DELETE FROM lancamentos_atendimento WHERE id = :id");
+$query->execute(array('id' => $id));
+}else{
+$query = $conexao->prepare("UPDATE lancamentos_atendimento SET valor = '0', produto = '{$produto}', quantidade = '0', feitopor = '{$feitopor}' WHERE id = :id");
+$query->execute(array('id' => $id));
+
+$stmt = $conexao->prepare("INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->execute([$_SESSION['token_emp'], $lanc_data, 69, $produto, 'nao', $valor * (-1), '', $feitopor]);
+}
 
 if($query_produto->rowcount() >= 1){
 $query = $conexao->prepare("INSERT INTO estoque (produto, tipo, quantidade, lote, validade, token_emp) VALUES (:produto, :tipo, :quantidade, :lote, :validade, :token_emp)");

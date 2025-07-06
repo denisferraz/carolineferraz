@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $tipo = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['tipo'] ?? 'Painel') : 'Painel';
 
@@ -30,9 +31,9 @@ unset($_SESSION['error_reserva']);
 <body>
 
     <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Confirmar o Cancelamento</h2>
+                <h2>Confirmar o Cancelamento <i class="bi bi-question-square-fill"onclick="ajudaConsultaCancelar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <?php if ($error_reserva): ?>
@@ -78,14 +79,18 @@ foreach ($painel_users_array as $select_check2){
             <div class="card-group">
 
             <?php if($tipo == 'Painel'){ ?>
+            <div data-step="2">
             <label>Nome [ <?php echo $doc_nome ?> ]</label>
             <label>E-mail [ <?php echo $doc_email ?> ]</label>
+            </div>
             <?php } ?>
-            
+            <br>
+            <div data-step="3">
             <label>Atendimento Dia [ <?php echo date('d/m/Y', strtotime($atendimento_dia)) ?> ]</label>
             <input value="<?php echo $atendimento_dia ?>" type="hidden" name="atendimento_dia">
-            <label>Atendimento Hora [ <?php echo date('H:i', $atendimento_hora) ?> ]</label>
+            <label>Atendimento Hora [ <?php echo date('H:i\h', $atendimento_hora) ?> ]</label>
             <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="hidden" name="atendimento_hora">
+            </div>
 
             <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
@@ -95,9 +100,9 @@ foreach ($painel_users_array as $select_check2){
             <input type="hidden" name="id_job" value="<?php echo $select['tipo_consulta'] ?>">
             <input type="hidden" name="feitapor" value="<?php echo $tipo; ?>">
             <br><br>
-            <div class="title"><b>[Aviso]</b> Afirmo que o cancelamento é irreversivel e com isso irei perder a garantia de disponibilidade</div><br>
+            <div data-step="4" class="title"><b>[Aviso]</b> Afirmo que o cancelamento é irreversivel e com isso irei perder a garantia de disponibilidade</div><br>
             <br>
-            <div class="card-group-red btn"><button type="submit">Cancelar</button></div>
+            <div data-step="5" class="card-group-red btn"><button type="submit">Cancelar</button></div>
 
             </div>
 <?php

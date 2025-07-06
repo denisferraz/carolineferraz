@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<div class="bg-light p-3 shadow-sm d-flex justify-content-between align-items-center">
-    <h5 class="m-0">Painel do Paciente</h5>
-
-    <div class="d-flex align-items-center gap-2">
-        <span class="text-secondary"><?= $usuario ?></span>
-        <a href="logout.php" class="btn btn-outline-danger btn-sm">Sair</a>
-    </div>
-</div>
-
+    </span> <a href="logout.php" style="font-size: 1rem; margin-left: 10px; background-color: darkred; color: white; padding: 4px 8px; border-radius: 5px;">Sair</a>
 </body>
 </html>

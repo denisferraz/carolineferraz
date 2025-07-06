@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 // CONFIGURAÇÕES
 $mesSelecionado = $_GET['mes'] ?? date('m');
@@ -112,22 +113,10 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
     }
 }
 
-if($tema == 'escuro'){
-$bg_body = '#121212';
-$bg_cabecalho = '#1f1f1f';
-$bg_cabecalho_hover = '#2c2c3e';
-$bg_horario = 'green';
-}else if($tema == 'claro'){
-$bg_body = '#cecece';
-$bg_cabecalho = '#6c6b6b';
-$bg_cabecalho_hover = '#4b4b4b';
-$bg_horario = 'black';
-}else{
 $bg_body = '#cae4fa';
 $bg_cabecalho = '#6a8caf';
 $bg_cabecalho_hover = '#274567';
 $bg_horario = 'darkblue';
-}
 ?>
 
 <style>
@@ -135,7 +124,7 @@ $bg_horario = 'darkblue';
     padding: 10px;
     margin-top: 20px;
     background: <?php echo $bg_body; ?>;
-    color: #ccc;
+    color: black;
   }
   .calendario {
     display: grid;
@@ -180,7 +169,7 @@ $bg_horario = 'darkblue';
   }
 </style>
 
-<form method="GET" class="seletor-mes">
+<form data-step="2" method="GET" class="seletor-mes">
   <select name="mes">
     <?php for ($m = 1; $m <= 12; $m++): ?>
       <option value="<?= $m ?>" <?= $m == $mesSelecionado ? 'selected' : '' ?>>
@@ -195,10 +184,10 @@ $bg_horario = 'darkblue';
     <?php endfor; ?>
   </select>
 
-  <button type="submit">Atualizar</button>
+  <button type="submit">Atualizar</button> <i class="bi bi-question-square-fill"onclick="ajudaDisponibilidade()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i>
 </form>
 
-<div class="calendario">
+<div data-step="1" class="calendario">
   <?php
   $diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   foreach ($diasSemana as $dia) {
@@ -214,12 +203,12 @@ $bg_horario = 'darkblue';
     $data = date('Y-m-d', mktime(0, 0, 0, $mesSelecionado, $dia, $anoSelecionado));
     $temHorarios = !empty($disponibilidades[$data]);
     $classe = $temHorarios ? 'com-horarios' : 'sem-horarios';
-    echo "<div class='dia $classe' onclick='mostrarHorarios(\"$data\", this)'>{$dia}</div>";
+    echo "<div data-step=\"3\" class='dia $classe' onclick='mostrarHorarios(\"$data\", this)'>{$dia}</div>";
   }
   ?>
 </div>
 
-<div id="horarios" class="horarios-do-dia" style="display: none;">
+<div data-step="4" id="horarios" class="horarios-do-dia" style="display: none;">
   <h3 id="titulo-data"></h3>
   <ul id="lista-horarios"></ul>
 </div>

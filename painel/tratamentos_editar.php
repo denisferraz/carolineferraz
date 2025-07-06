@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $tratamento_id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
 
@@ -38,15 +39,15 @@ $tratamento = $select['tratamento'];
 <body>
 
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Adicione Custos ao <?php echo $tratamento; ?></h2>
+                <h2>Adicione Custos ao <?php echo $tratamento; ?> <i class="bi bi-question-square-fill"onclick="ajudaServicosCadastrarCustos()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <br>
             <label><b>Custo:  
-                <select name="custo_id">
+                <select data-step="2" name="custo_id">
                 <?php
             $query2 = $conexao->prepare("SELECT * FROM custos WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY custo_descricao ASC");
             $query2->execute(array('id' =>0));
@@ -66,10 +67,10 @@ $tratamento = $select['tratamento'];
                 <?php } ?>
                 </select></b></label><br>
             <label>Quantidade</label>
-            <input min="1" max="999" type="number" name="quantidade" value="1" required>
+            <input data-step="3" min="1" max="999" type="number" name="quantidade" value="1" required>
             <input type="hidden" name="tratamento_id" value="<?php echo $tratamento_id; ?>" />
             <input type="hidden" name="id_job" value="lancar_custo_tratamento" />
-            <div class="card-group btn"><button type="submit">Incluir Custo</button></div>
+            <div data-step="4" class="card-group btn"><button type="submit">Incluir Custo</button></div>
 
             </div>
         </div>
@@ -83,12 +84,12 @@ $tratamento = $select['tratamento'];
                 <fieldset>
                     <legend align="center"><b>Custos do Serviço: <?php echo $tratamento; ?></b></legend>
                     <br>
-                    <table border="1px" align="center">
+                    <table data-step="5" border="1px" align="center">
                         <tr>
                             <td align="center"><b>Custo</b></td>
                             <td align="center"><b>Valor</b></td>
                             <td align="center"><b>Quantidade</b></td>
-                            <td align="center"><b>Excluir</b></td>
+                            <td data-step="6" align="center"><b>Excluir</b></td>
                         </tr>
 <?php
 $query = $conexao->prepare("SELECT * FROM custos_tratamentos WHERE token_emp = '{$_SESSION['token_emp']}' AND tratamento_id = :tratamento_id ORDER BY id DESC");

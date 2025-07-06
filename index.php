@@ -3,9 +3,9 @@
 require('config/database.php');
 
 //Ajustar Telefone
-$ddd = substr($config_telefone, 0, 2);
-$prefixo = substr($config_telefone, 2, 5);
-$sufixo = substr($config_telefone, 7);
+$ddd = substr($config_telefone_chronoclick, 0, 2);
+$prefixo = substr($config_telefone_chronoclick, 2, 5);
+$sufixo = substr($config_telefone_chronoclick, 7);
 $telefone = "($ddd) $prefixo-$sufixo";
 
 
@@ -18,13 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
    
            if ($envio_whatsapp === 'ativado' && $MsgContato = 'MsgContato') {
-               $doc_telefonewhats = "55$config_telefone";
-               $msg_whatsapp = "Olá $config_empresa, alguém mandou uma mensagem pra você pelo seu site.\n\n".
+               $doc_telefonewhats = "55$config_telefone_chronoclick";
+               $msg_whatsapp = "Olá $config_empresa_chronoclick, alguém mandou uma mensagem pra você pelo seu site.\n\n".
                    "Nome: $doc_nome\n".
                    "Telefone: $doc_telefone\n".
                    "Mensagem: $message\n";
    
-               enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+               enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, 'carolineferraz');
            }
 }
 ?>
@@ -269,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="text-center mt-4">
                 <p>Estes resultados demonstram a eficácia dos nossos tratamentos especializados. Os resultados individuais podem variar de acordo com cada caso.</p>
-                <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20agendar%20minha%20avaliação!" class="btn btn-secondary mt-2">Agende sua Consulta</a>
+                <a href="https://wa.me/55<?php echo $config_telefone_chronoclick; ?>?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20agendar%20minha%20avaliação!" class="btn btn-secondary mt-2">Agende sua Consulta</a>
             </div>
         </div>
     </section>
@@ -334,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div>
                                 <h4 class="mb-1">Endereço</h4>
-                                <p><?php echo $config_endereco; ?></p>
+                                <p><?php echo $config_endereco_chronoclick; ?></p>
                             </div>
                         </div>
                         
@@ -354,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div>
                                 <h4 class="mb-1">Email</h4>
-                                <p><?php echo $config_email; ?></p>
+                                <p><?php echo $config_email_chronoclick; ?></p>
                             </div>
                         </div>
                         
@@ -370,7 +370,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         <h4 class="mt-4 mb-2">Redes Sociais</h4>
                         <div class="social-links">
-                            <a href="https://wa.me/5571991293370?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20tirar%20algumas%20duvidas!" target="_blank" class="social-link" aria-label="WhatsApp">
+                            <a href="https://wa.me/55<?php echo $config_telefone_chronoclick; ?>?text=Ola%20Carol%20tudo%20bem?%20Gostaria%20de%20tirar%20algumas%20duvidas!" target="_blank" class="social-link" aria-label="WhatsApp">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                             <a href="https://www.instagram.com/carolferraz.tricologia" target="_blank" class="social-link" aria-label="Instagram">

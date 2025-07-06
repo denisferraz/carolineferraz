@@ -76,11 +76,7 @@ if ($mesProximo > 12) {
     $anoProximo++;
 }
 
-if($css_path == 'css/style_escuro.css'){
-$font_color = '#fff';
-}else{
 $font_color = '#222';
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $id_job = mysqli_real_escape_string($conn_msqli, $_GET['id_job']);
 
@@ -108,29 +109,29 @@ endforeach;
 <body>
 
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Adicionar Video</h2>
+                <h2>Adicionar Video <i class="bi bi-question-square-fill"onclick="ajudaVideosAdd()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <label>Titulo do Video</label>
-            <input minlength="5" maxlength="150" type="text" name="video_titulo" placeholder="Nome do Video" required>
+            <input data-step="2" minlength="5" maxlength="150" type="text" name="video_titulo" placeholder="Nome do Video" required>
             <label>Link do Video</label>
-            <input minlength="5" maxlength="1500" type="text" name="video_link" placeholder="https://youtube.com" required>
+            <input data-step="3" minlength="5" maxlength="1500" type="text" name="video_link" placeholder="https://youtube.com" required>
             <input type="hidden" name="id_job" value="adicionar_link" />
-            <div class="card-group btn"><button type="submit">Adicionar Link</button></div>
+            <div data-step="4" class="card-group btn"><button type="submit">Adicionar Link</button></div>
 
             </div>
     </form>
     <br><br>
-    <table>
+    <table data-step="5">
             <thead>
                 <tr>
                     <th>Titulo</th>
                     <th>Link</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th data-step="6">Editar</th>
+                    <th data-step="7">Excluir</th>
                 </tr>
             </thead>
             <tbody>

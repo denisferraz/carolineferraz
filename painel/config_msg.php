@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <html lang="pt-br">
@@ -54,13 +54,13 @@ function inserirVariavel(texto) {
 <body>
 
 <form class="form" action="acao.php" method="POST">
-<div class="card">
+<div data-step="1" class="card">
 <div class="card-top">
-                <h2>Edite abaixo as Configurações de Menagens</h2>
+                <h2>Edite abaixo as Configurações de Menagens <i class="bi bi-question-square-fill"onclick="ajudaConfigMsg()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 <div class="card-group">
 
-<div style="margin-bottom: 10px;">
+<div data-step="2" style="margin-bottom: 10px;">
     <b>Utilize as Variaveis abaixo conforme necessidade:</b><br><br>
     <button type="button" onclick="inserirVariavel('{NOME}')">{NOME}</button>
     <button type="button" onclick="inserirVariavel('{TELEFONE}')">{TELEFONE}</button>
@@ -79,16 +79,18 @@ function inserirVariavel(texto) {
 <br>
 
     <label>Mensagem Confirmação</label>
-    <textarea class="textarea-custom" name="config_msg_confirmacao" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_confirmacao)); ?></textarea><br><br>
+    <textarea data-step="3" class="textarea-custom" name="config_msg_confirmacao" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_confirmacao)); ?></textarea><br><br>
     <label>Mensagem Cancelamento</label>
-    <textarea class="textarea-custom" name="config_msg_cancelamento" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_cancelamento)); ?></textarea><br><br>
+    <textarea data-step="4" class="textarea-custom" name="config_msg_cancelamento" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_cancelamento)); ?></textarea><br><br>
     <label>Mensagem Finalização</label>
-    <textarea class="textarea-custom" name="config_msg_finalizar" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_finalizar)); ?></textarea><br><br>
+    <textarea data-step="5" class="textarea-custom" name="config_msg_finalizar" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_finalizar)); ?></textarea><br><br>
     <label>Mensagem Lembrete</label>
-    <textarea class="textarea-custom" name="config_msg_lembrete" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_lembrete)); ?></textarea><br><br>
+    <textarea data-step="6" class="textarea-custom" name="config_msg_lembrete" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_lembrete)); ?></textarea><br><br>
     <label>Mensagem Aniversario</label>
-    <textarea class="textarea-custom" name="config_msg_aniversario" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_aniversario)); ?></textarea><br><br>
-    <br><label><b>Formas de Comunicação:</b></label>
+    <textarea data-step="7" class="textarea-custom" name="config_msg_aniversario" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_aniversario)); ?></textarea><br><br>
+    <br>
+    <div data-step="8">
+    <label><b>Formas de Comunicação:</b></label>
     <label>Whatsapp <b>(<?php echo $envio_whatsapp ?>)</b>
         <select name="envio_whatsapp">
     <?php foreach (['ativado', 'desativado'] as $option) {
@@ -102,10 +104,11 @@ function inserirVariavel(texto) {
         $selected = ($option == $envio_email) ? 'selected' : '';
         echo "<option value='$option' $selected>$option</option>";
     } ?>
-        </select></label><br><br>
+        </select></label>
+    </div><br><br>
     <label><b>Configuração Envio Lembretes Automatico</b></label>
     <br><label>Hora do Envio</label>
-    <select name="lembrete_hora" required>
+    <select data-step="9" name="lembrete_hora" required>
     <?php
     for ($h = 0; $h < 24; $h++) {
         $hora_formatada = str_pad($h, 2, '0', STR_PAD_LEFT) . ':00';
@@ -114,7 +117,9 @@ function inserirVariavel(texto) {
     }
     ?>
     </select>
-    <br><br><label>Dias da Semana</label><br>
+    <br><br>
+    <div data-step="10">
+    <label>Dias da Semana</label><br>
     <input id="is_segunda" type="checkbox" name="is_segunda" <?php if($is_segunda == 1){?>checked<?php } ?>>
     <label for="is_segunda">Segunda-Feira</label>
     <br>
@@ -135,9 +140,10 @@ function inserirVariavel(texto) {
     <br>
     <input id="is_domingo" type="checkbox" name="is_domingo" <?php if($is_domingo == 1){?>checked<?php } ?>>
     <label for="is_domingo">Domingo</label>
+    </div>
     <br>
     <input type="hidden" name="id_job" value="editar_configuracoes_msg">
-    <div class="card-group btn"><button type="submit">Atualizar Dados</button></div>
+    <div data-step="11" class="card-group btn"><button type="submit">Atualizar Dados</button></div>
 </div>
 </div>
 </form>

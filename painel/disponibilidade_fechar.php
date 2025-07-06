@@ -2,6 +2,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 ?>
 <!DOCTYPE html>
@@ -22,19 +23,19 @@ require('verifica_login.php');
 </head>
 <body>
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Fechar Agenda</h2>
+                <h2>Fechar Agenda <i class="bi bi-question-square-fill"onclick="ajudaDisponibilidadeFechar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
             <div class="card-group">
                 <label>Data Início</label>
-                <input type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_inicio" required>
+                <input data-step="2" type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_inicio" required>
 
                 <label>Data Fim</label>
-                <input type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_fim" required>
+                <input data-step="3" type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_fim" required>
 
                 <label>Hora Início</label>
-                <select class="form-control" name="hora_inicio">
+                <select data-step="4" class="form-control" name="hora_inicio">
                     <?php
                     $atendimento_hora_comeco = strtotime("$config_atendimento_hora_comeco");
                     $atendimento_hora_fim = strtotime("$config_atendimento_hora_fim");
@@ -49,7 +50,7 @@ require('verifica_login.php');
                 </select>
 
                 <label>Hora Fim</label>
-                <select class="form-control" name="hora_fim">
+                <select data-step="5" class="form-control" name="hora_fim">
                     <?php
                     $atendimento_hora_comeco = strtotime("$config_atendimento_hora_comeco");
                     $atendimento_hora_fim = strtotime("$config_atendimento_hora_fim");
@@ -63,12 +64,7 @@ require('verifica_login.php');
                     ?>
                 </select>
 
-                <label>Local Atendimento</label>
-                <select name="atendimento_local">
-                    <option value="Lauro de Freitas">Lauro de Freitas</option>
-                    <option value="Salvador">Salvador</option>
-                </select><br><br>
-
+                <div data-step="6">
                 <label>Dias da Semana</label>
                 <input id="dia_segunda" type="checkbox" name="dia_segunda" checked>
                 <label for="dia_segunda">Segunda-Feira</label>
@@ -84,10 +80,12 @@ require('verifica_login.php');
                 <label for="dia_sabado">Sábado</label>
                 <input id="dia_domingo" type="checkbox" name="dia_domingo" checked>
                 <label for="dia_domingo">Domingo</label>
+                </div>
 
                 <input type="hidden" name="id_job" value="disponibilidade_fechar" />
+                <input type="hidden" name="atendimento_local" value="N/A" />
                 <div class="card-group btn">
-                    <button type="submit">Fechar Agenda</button>
+                    <button data-step="7" type="submit">Fechar Agenda</button>
                 </div>
             </div>
         </div>

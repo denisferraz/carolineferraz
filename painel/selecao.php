@@ -1,7 +1,10 @@
 <?php
 session_start();
 require('../config/database.php');
+
+if($_SESSION['vencido']){
 require('verifica_login.php');
+}
 
 if (!isset($_SESSION['token_emp'])) {
     die("Erro: Sessão 'token_emp' não definida.");
@@ -61,22 +64,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['empresa'])) {
 <div class="form-box">
     <h2>Selecione a empresa</h2>
     <form method="POST">
-        <select name="empresa" required>
-            <option value="" disabled selected>-- Escolha uma empresa --</option>
-            <?php
-            foreach ($empresas as $empresa_token) {
-                $empresa_token = trim($empresa_token);
+    <select name="empresa" required>
+        <option value="" disabled selected>-- Escolha uma empresa --</option>
+        <?php
+        foreach ($empresas as $empresa_token) {
+            $empresa_token = trim($empresa_token);
 
-                $query = $conexao->prepare("SELECT config_empresa FROM configuracoes WHERE token_emp = :token");
-                $query->execute(['token' => $empresa_token]);
-                $empresa = $query->fetch(PDO::FETCH_ASSOC);
+            $query = $conexao->prepare("SELECT config_empresa FROM configuracoes WHERE token_emp = :token");
+            $query->execute(['token' => $empresa_token]);
+            $empresa = $query->fetch(PDO::FETCH_ASSOC);
 
-                // Fallback caso não encontre (opcional)
-                $nome_empresa = $empresa ? $empresa['config_empresa'] : $empresa_token;
-            ?>
-                <option value="<?= $empresa_token ?>"><?= $nome_empresa ?></option>
-            <?php } ?>
-        </select>
+            // Só mostra se encontrou a empresa
+            if ($empresa) {
+                $nome_empresa = $empresa['config_empresa'];
+                ?>
+                <option value="<?= htmlspecialchars($empresa_token) ?>">
+                    <?= htmlspecialchars($nome_empresa) ?>
+                </option>
+                <?php
+            }
+        }
+        ?>
+    </select>
         <button type="submit">Confirmar</button>
     </form>
 </div>

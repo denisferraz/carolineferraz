@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php'); 
+require_once('tutorial.php');
 
 $custo_id = mysqli_real_escape_string($conn_msqli, $_GET['id']);
 
@@ -30,17 +31,17 @@ $custo_descricao = $select['custo_descricao'];
 <body>
 
 <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Edite abaixo seu Custo</h2>
+                <h2>Edite abaixo seu Custo <i class="bi bi-question-square-fill"onclick="ajudaServicosCadastrarCustosFixosEditar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <br>
             <label>Valor</label>
-            <input value="<?php echo $custo_valor ?>" minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
+            <input data-step="2" value="<?php echo $custo_valor ?>" minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
             <br><br><label>Tipo do Custo: 
-            <select name="custo_tipo">
+            <select data-step="3" name="custo_tipo">
                 <option value="Insumos" <?= $custo_tipo == 'Insumos' ? 'selected' : '' ?>>Insumos</option>
                 <option value="Gasolina" <?= $custo_tipo == 'Gasolina' ? 'selected' : '' ?>>Gasolina</option>
                 <option value="Estacionamento" <?= $custo_tipo == 'Estacionamento' ? 'selected' : '' ?>>Estacionamento</option>
@@ -58,10 +59,10 @@ $custo_descricao = $select['custo_descricao'];
                 <option value="Outros" <?= $custo_tipo == 'Outros' ? 'selected' : '' ?>>Outros</option>
             </select></label><br>
             <label>Descrição Custo</label>
-                <textarea class="textarea-custom" name="custo_descricao" rows="5" cols="43" required><?php echo $custo_descricao ?></textarea><br>
+                <textarea data-step="4" class="textarea-custom" name="custo_descricao" rows="5" cols="43" required><?php echo $custo_descricao ?></textarea><br>
                 <input type="hidden" name="custo_id" value="<?php echo $custo_id; ?>" />
                 <input type="hidden" name="id_job" value="editar_custos" />
-            <div class="card-group btn"><button type="submit">Editar Custo</button></div>
+            <div data-step="5" class="card-group btn"><button type="submit">Editar Custo</button></div>
 
             </div>
         </div>

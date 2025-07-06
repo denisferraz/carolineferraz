@@ -4,6 +4,7 @@ $espacador = '' ;
 }else{
 $espacador = '../' ;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -44,11 +45,11 @@ $espacador = '../' ;
                         <i class="fas fa-chart-bar"></i> Relatórios
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="<?php echo $espacador; ?>pages/contas.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'contas.php' ? 'active' : ''; ?>">
                         <i class="fas fa-list"></i> Contas
                     </a>
-                </li>
+                </li> -->
             </ul>
             <div class="nav-toggle">
                 <span class="bar"></span>
@@ -59,5 +60,5 @@ $espacador = '../' ;
     </nav>
 
     <main class="main-content">
-        <div class="container"><?php echo isset($pageTitle) ? '<h1 class="page-title">' . $pageTitle . '</h1>' : ''; ?>
+        <div data-step="1" class="container"><?php echo isset($pageTitle) ? '<h1 class="page-title">' . $pageTitle . ' <i class="bi bi-question-square-fill"onclick="ajudaContabilidade' . $pageTitle . '()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h1>' : ''; ?>
 

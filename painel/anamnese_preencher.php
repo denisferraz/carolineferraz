@@ -2,11 +2,12 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-//error_reporting(0);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
 
 $modelo_id = $_GET['modelo_id'] ?? 0;
 $paciente_id = $_GET['paciente_id'] ?? 0;
@@ -110,9 +111,9 @@ $nome = $dados_array[0];
 <body>
 
 <form class="form" action="anamnese_salvar.php" method="POST">
-  <div class="card">
+  <div data-step="1" class="card">
     <div class="card-top">
-      <h2><?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($nome); ?></h2>
+      <h2><?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($nome); ?> <i class="bi bi-question-square-fill"onclick="ajudaAnamnesePreencher()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
     </div>
 
     <input type="hidden" name="modelo_id" value="<?php echo $modelo_id; ?>">
@@ -122,13 +123,13 @@ $nome = $dados_array[0];
       $resposta_salva = $respostas_salvas[$p['id']] ?? '';
     ?>
       <div class="card-group">
-        <label><?php echo htmlspecialchars($p['pergunta']); ?></label>
+        <label data-step="2"><?php echo htmlspecialchars($p['pergunta']); ?></label>
 
         <?php if ($p['tipo'] === 'text' || $p['tipo'] === 'number'): ?>
-          <input type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>">
+          <input data-step="3" type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>">
 
           <?php elseif ($p['tipo'] === 'radio'): ?>
-          <div class="opcoes-horizontal">
+          <div data-step="3" class="opcoes-horizontal">
             <?php foreach (explode(';', $p['opcoes']) as $op): 
               $opTrim = trim($op);
               $imgPath = "../imagens/{$_SESSION['token_emp']}/{$p['id']}_".strtolower(preg_replace('/\s+/', '_', $opTrim)).".png";
@@ -145,7 +146,7 @@ $nome = $dados_array[0];
           </div>
 
         <?php elseif ($p['tipo'] === 'select'): ?>
-          <select name="respostas[<?php echo $p['id']; ?>][]" multiple>
+          <select data-step="3" name="respostas[<?php echo $p['id']; ?>][]" multiple>
             <?php $respostas_array = explode(';', $resposta_salva); ?>
             <?php foreach (explode(';', $p['opcoes']) as $op): 
               $opTrim = trim($op); ?>
@@ -156,7 +157,7 @@ $nome = $dados_array[0];
           </select>
 
         <?php elseif ($p['tipo'] === 'checkbox'): ?>
-          <div class="opcoes-horizontal">
+          <div data-step="3" class="opcoes-horizontal">
             <?php $respostas_array = explode(';', $resposta_salva); ?>
             <?php foreach (explode(';', $p['opcoes']) as $op): 
               $opTrim = trim($op); ?>
@@ -189,7 +190,7 @@ $nome = $dados_array[0];
     <?php endif; ?>
 
     <div class="card-group btn">
-      <button type="submit">Salvar Respostas</button>
+      <button data-step="4" type="submit">Salvar Respostas</button>
     </div>
   </div>
 </form>

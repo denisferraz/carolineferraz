@@ -2,6 +2,7 @@
 
 session_start();
 require('config/database.php');
+require('painel/configuracao.php');
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
@@ -163,10 +164,10 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
         }
     }
 
-    //Caso seja procedimento de 2h (Consulta Capilar)
-    if($id_job == 'Consulta Capilar'){
+    //Caso seja procedimento de 2h (Consulta x2)
+    if($id_job == 'Consulta x2'){
     
-        $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
+        $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
 
         $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
         $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
@@ -188,7 +189,7 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
         }
         }
 
-    if($id_job == 'Consulta Capilar'){
+    if($id_job == 'Consulta x2'){
     $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
     $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
     }
@@ -212,12 +213,12 @@ if($envio_whatsapp == 'ativado'){
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
     
     $doc_telefonewhats = "55$config_telefone";
-    $msg_whastapp = "Olá $config_empresa\n\n".
+    $msg_whatsapp = "Olá $config_empresa\n\n".
     "$doc_nome agendou uma $id_job para $local_consulta - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n".
     "Telefone: $doc_telefone\n".
     "E-mail: $doc_email";
     
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
+    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
     
     }
     //Fim Envio Whatsapp
@@ -262,8 +263,8 @@ if($envio_whatsapp == 'ativado'){
         $query = $conexao->prepare("UPDATE consultas SET status_consulta = :status_consulta, data_cancelamento = :data_cancelamento, confirmacao_cancelamento = :confirmacao_cancelamento WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id = :id_consulta");
         $query->execute(array('status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'confirmacao_cancelamento' => $confirmacao_cancelamento ,'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta));
         
-        if($id_job == 'Consulta Capilar'){
-        $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
+        if($id_job == 'Consulta x2'){
+        $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
         $query_2 = $conexao->prepare("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
         $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
         }
@@ -449,10 +450,10 @@ if($envio_whatsapp == 'ativado'){
                 exit();
             }
 
-        //Caso seja procedimento de 2h (Consulta Capilar)
-        if($id_job == 'Consulta Capilar'){
+        //Caso seja procedimento de 2h (Consulta x2)
+        if($id_job == 'Consulta x2'){
 
-            $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
+            $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
 
             $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
             $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta));
@@ -476,9 +477,9 @@ if($envio_whatsapp == 'ativado'){
             $query = $conexao->prepare("UPDATE consultas SET token = :token, status_consulta = 'A Confirmar' WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta AND doc_email = :doc_email");
             $query->execute(array('token' => $token,'id_consulta' => $id_consulta, 'doc_email' => $doc_email));
 
-            if($id_job == 'Consulta Capilar'){
+            if($id_job == 'Consulta x2'){
 
-            $atendimento_hora_mais = date('H:i:s', strtotime("$atendimento_hora") + 3600);
+            $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
 
             $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
             $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
@@ -496,26 +497,26 @@ if($envio_whatsapp == 'ativado'){
         $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
         $doc_telefonewhats = "5571997417190";
-        $msg_whastapp = "Olá $config_empresa\n\n".
+        $msg_whatsapp = "Olá $config_empresa\n\n".
         "$doc_nome solicitou uma alteração para $local_consulta - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n\n".
         "Para Aceitar clique abaixo:\n".
         "$site_atual/painel/reservas_solicitacao.php?alt_status=Aceita&token=$token\n\n".
         "Para Recusar clique abaixo:\n".
         "$site_atual/painel/reservas_solicitacao.php?alt_status=Recusada&token=$token";
 
-        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
 
         }
 //Fim Envio Whatsapp
 
-        $_SESSION['error_reserva'] = 'Como faltam <b>menos do que 24h</b> para o seu <b>Horário Original</b>, uma <b>solicitação</b> foi enviada para Caroline Ferraz. Em breve entraremos em contato.';
+        $_SESSION['error_reserva'] = 'Como faltam <b>menos do que 24h</b> para o seu <b>Horário Original</b>, uma <b>solicitação</b> foi enviada para a gente confirmar. Em breve entraremos em contato.';
         header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
         exit();
         }
         //Fim do Aguarda retorno em casos de alterações antes das 24h
 
-            if($id_job == 'Consulta Capilar'){
-            $atendimento_hora_anterior_mais = date('H:i:s', strtotime("$atendimento_hora_anterior") + 3600);
+            if($id_job == 'Consulta x2'){
+            $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
             $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
             $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
             }
@@ -726,9 +727,9 @@ if($envio_whatsapp == 'ativado'){
 if($envio_whatsapp == 'ativado'){
 
     $doc_telefonewhats = "55$doc_telefone";
-    $msg_whastapp = $msg_texto;
+    $msg_whatsapp = $msg_texto;
     
-    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
+    $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
     
     }
     //Fim Envio Whatsapp

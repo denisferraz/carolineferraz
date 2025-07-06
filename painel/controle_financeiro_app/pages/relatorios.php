@@ -96,7 +96,7 @@ try {
 }
 ?>
 
-<div class="card mb-4">
+<div data-step="2" class="card mb-4">
     <div class="card-header">
         <h3 class="card-title">Período de Análise</h3>
     </div>
@@ -119,7 +119,7 @@ try {
 
 <!-- Resumo Geral -->
 <div class="grid grid-3 mb-4">
-    <div class="stats-card">
+    <div data-step="3" class="stats-card">
         <div class="stats-icon receita">
             <i class="fas fa-arrow-up"></i>
         </div>
@@ -127,7 +127,7 @@ try {
         <div class="stats-label">Receitas no Período</div>
     </div>
     
-    <div class="stats-card">
+    <div data-step="4" class="stats-card">
         <div class="stats-icon despesa">
             <i class="fas fa-arrow-down"></i>
         </div>
@@ -135,7 +135,7 @@ try {
         <div class="stats-label">Despesas no Período</div>
     </div>
     
-    <div class="stats-card">
+    <div data-step="5" class="stats-card">
         <div class="stats-icon saldo">
             <i class="fas fa-balance-scale"></i>
         </div>
@@ -148,7 +148,7 @@ try {
 
 <div class="grid grid-2">
     <!-- Resumo por Grupo -->
-    <div class="card">
+    <div data-step="6" class="card">
         <div class="card-header">
             <h3 class="card-title">Resumo por Categoria</h3>
         </div>
@@ -192,7 +192,7 @@ try {
     </div>
     
     <!-- Maiores Lançamentos -->
-    <div class="card">
+    <div data-step="7" class="card">
         <div class="card-header">
             <h3 class="card-title">Maiores Lançamentos</h3>
         </div>
@@ -235,7 +235,7 @@ try {
 
 <!-- Evolução Mensal -->
 <?php if (!empty($evolucaoMensal)): ?>
-<div class="card mt-4">
+<div data-step="8" class="card mt-4">
     <div class="card-header">
         <h3 class="card-title">Evolução Mensal</h3>
     </div>
@@ -384,3 +384,7 @@ const chart = new Chart(ctx, {
 
 <?php include '../includes/footer.php'; ?>
 
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="../../js/tutorial.js"></script>

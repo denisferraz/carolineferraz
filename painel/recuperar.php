@@ -4,20 +4,20 @@ require('../config/database.php');
 
 if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
     echo "<script>
-    alert('Você não tem permissão para acessar esta pagina.')
-    window.location.replace('..index.php')
+    alert('Você não tem permissão para acessar esta página.');
+    window.location.replace('../index.html');
     </script>";
     exit();
+
  }
 
 if(empty($_POST['email']) || empty($_POST['cpf'])){
-    header('Location: ../index.php');
+    header('Location: ../index.html');
     exit();
 }
 
 
 require '../vendor/autoload.php';
-use Dompdf\Dompdf;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -68,8 +68,8 @@ $row = $query->rowCount();
     $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
-        $token = $select['token'];
         $id = $select['id'];
+        $token = $select['token'];
 
     // Para descriptografar os dados
     $dados = base64_decode($dados_painel_users);
@@ -108,8 +108,9 @@ if($row == 1 && $cpf_encontrado == 'sim'){
     $dados_criptografados = openssl_encrypt($dados_token, $metodo, $chave, 0, $iv);
     $dados_final = base64_encode($dados_criptografados);
 
-    //Incio Envio Whatsapp
-    if($envio_whatsapp == 'ativado'){
+    //Incio Envio Whatsapp=
+
+        $client_id = '1';
 
         $doc_telefonewhats = "55$telefone";
         $msg_whastapp = "Olá $nome\n\n".
@@ -118,11 +119,9 @@ if($row == 1 && $cpf_encontrado == 'sim'){
         "$site_atual/recuperar.php?token=$dados_final\n\n".
         "Caso contrario, certifique-se de proteger sua conta!";
 
-        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp);
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whastapp, $client_id);
 
-    }//Fim Whatsapp
-
-    if($envio_email == 'ativado'){
+    //Fim Whatsapp
 
     $link_alterar = "<a href=\"$site_atual/recuperar.php?token=$dados_final\"'>Recuperar</a>";
     
@@ -139,11 +138,11 @@ if($row == 1 && $cpf_encontrado == 'sim'){
         $mail->SMTPSecure = "$mail_SMTPSecure";
         $mail->Port = "$mail_Port";
 
-        $mail->setFrom("$config_email", "$config_empresa");
+        $mail->setFrom("$config_email_chronoclick", "$config_empresa_chronoclick");
         $mail->addAddress("$email", "$nome");
         
         $mail->isHTML(true);                                 
-        $mail->Subject = "$config_empresa - Recuperar Senha";
+        $mail->Subject = "$config_empresa_chronoclick - Recuperar Senha";
       // INICIO MENSAGEM  
         $mail->Body = "
     
@@ -154,10 +153,10 @@ if($row == 1 && $cpf_encontrado == 'sim'){
         $link_alterar<br><br>
         Caso contrario, certifique-se de proteger sua conta!
         </fieldset><br><fieldset>
-        <legend><b><u>$config_empresa</u></legend>
-        <p>CNPJ: $config_cnpj</p>
-        <p>$config_telefone - $config_email</p>
-        <p>$config_endereco</p></b>
+        <legend><b><u>$config_empresa_chronoclick</u></legend>
+        <p>CNPJ: $config_cnpj_chronoclick</p>
+        <p>$config_telefone_chronoclick - $config_email_chronoclick</p>
+        <p>$config_endereco_chronoclick</p></b>
         </fieldset>
         
         "; // FIM MENSAGEM
@@ -165,10 +164,12 @@ if($row == 1 && $cpf_encontrado == 'sim'){
             $mail->send();
     
         } catch (Exception $e) {
-    
+            echo json_encode([
+                'success' => false,
+                'message' => 'Erro ao enviar o e-mail: ' . $mail->ErrorInfo
+            ]);
+            exit();
         }
-    
-    }//Fim Envio de Email
 
     $query = $conexao->prepare("UPDATE painel_users SET codigo = '1' WHERE email = :email");
     $query->execute(array('email' => $email));
@@ -180,8 +181,8 @@ if($row == 1 && $cpf_encontrado == 'sim'){
     exit();
 }else{
     echo json_encode([
-        'success' => true,
-        'message' => 'Você ira receber em seu e-mail/Whatsapp o link para recuperar!'
+        'success' => false,
+        'message' => 'Email/CPF não localizado!'
     ]);
     exit();
 }

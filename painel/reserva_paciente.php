@@ -137,7 +137,7 @@ if($qtd_tratamentos == 0){
 $pastas = ['Tratamento', 'Evolucao', 'Orientacao', 'Laudos', 'Contratos', 'Outros'];
 $numFilesTotal = 0;
 foreach ($pastas as $pasta) {
-    $dir = '../arquivos/' . $token_profile . '/' . $pasta;
+    $dir = '../arquivos/' . $_SESSION['token_emp']. '/' . $token_profile . '/' . $pasta;
     $files = glob($dir . '/*.pdf');
     $numFiles = count($files);
 

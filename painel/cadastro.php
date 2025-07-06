@@ -3,6 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $hoje = date('Y-m-d');
 
@@ -89,8 +90,8 @@ $estado = $select['estado'];
 
 </head>
 <body>
-<div class="card">
-<div class="top-menu">
+<div data-step="1" class="card">
+<div data-step="4" class="top-menu">
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Consultas","iframe-home")'>
     <i class="bi bi-calendar-check"></i> <span>Consultas</span>
   </a>
@@ -107,7 +108,7 @@ $estado = $select['estado'];
     <i class="bi bi-file-earmark-text"></i> <span>Contratos</span>
   </a>
 </div>
-<div class="top-menu">
+<div data-step="5" class="top-menu">
   <a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Anamnese","iframe-home")'>
     <i class="bi bi-clipboard-heart"></i> <span>Anamnese</span>
   </a>
@@ -148,10 +149,10 @@ $sufixo = substr($telefone, 7);
 $telefone = "($ddd)$prefixo-$sufixo";
 ?>
 <fieldset>
-<legend><h2>Cadastro <u><?php echo $nome ?></u></h2></legend>
+<legend><h2>Cadastro <u><?php echo $nome ?></u> <i class="bi bi-question-square-fill"onclick="ajudaCadastro()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 
-<label><b>Nome: </b><?php echo $nome ?></label> <a href="javascript:void(0)" onclick='window.open("cadastro_editar.php?email=<?php echo $doc_email ?>","iframe-home")'><button>Editar</button></a><br>
-<button class="btn-excluir" type="button" onclick="toggleCampos()" id="btn-toggle">Ver Dados</button>
+<label><b>Nome: </b><?php echo $nome ?></label> <a data-step="2" href="javascript:void(0)" onclick='window.open("cadastro_editar.php?email=<?php echo $doc_email ?>","iframe-home")'><button>Editar</button></a><br>
+<button data-step="3" class="btn-excluir" type="button" onclick="toggleCampos()" id="btn-toggle">Ver Dados</button>
 <div id="camposExtras" style="display: none; margin-top: 10px;">
 <label><b>Email: </b><?php echo $doc_email ?></label><br>
 <label><b>Telefone: </b><?php echo $telefone ?></label><br>
@@ -183,24 +184,24 @@ $sessao_total = 1;
 
 $progress = $sessao_atual/$sessao_total*100;
 ?>
-<center><a href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&id=<?php echo $id_tratamento ?>","iframe-home")' class="btn-black">+ Nova Sessão</a></center>
-<fieldset>
-<legend><h2>Historico Sessões</h2></legend>
+<center><a data-step="3.2" href="javascript:void(0)" onclick='window.open("cadastro_tratamento.php?id_job=enviar&email=<?php echo $doc_email ?>&id=<?php echo $id_tratamento ?>","iframe-home")' class="btn-black">+ Nova Sessão</a></center>
+<fieldset data-step="3.1">
+<legend><h2>Historico de Sessões <i class="bi bi-question-square-fill"onclick="ajudaCadastroSessoes()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 <center>
-<div id="progress-bar">
+<div data-step="3.3" id="progress-bar">
 <div class="filled" style="width: <?php echo $progress; ?>%;"></div>
 <div class="text"><b>Sessões:</b> <?php echo $sessao_atual ?>/<?php echo $sessao_total ?></div>
 </div>
 <br><br>
 <table>
-    <tr>
+    <tr data-step="3.4">
         <td align="center"><b>Descrição</b></td>
         <td align="center"><b>Inicio</b></td>
         <td align="center"><b>Sessão</b></td>
         <td align="center"><b>Status</b></td>
-        <td align="center"><b>Cadastrar Sessão</b></td>
-        <td align="center"><b>Finalizar</b></td>
-        <td align="center"><b>Excluir</b></td>
+        <td align="center"><b data-step="3.5">Cadastrar Sessão</b></td>
+        <td align="center"><b data-step="3.6">Finalizar</b></td>
+        <td align="center"><b data-step="3.7">Excluir</b></td>
     </tr>
 <?php
 $check_tratamento_row = $conexao->prepare("SELECT * FROM tratamento WHERE token_emp = '{$_SESSION['token_emp']}' AND email = :email GROUP BY token ORDER BY id DESC");
@@ -281,15 +282,15 @@ if($comentario == ''){
 <!-- Arquivos -->
 <?php if($id_job == 'Arquivos'){ ?>
 <!-- Arquivos -->
-<fieldset>
-<legend><h2>Arquivos</h2></legend>
-<a href="javascript:void(0)" onclick='window.open("arquivos.php?email=<?php echo $doc_email ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
+<fieldset data-step="5.1">
+<legend><h2>Arquivos <i class="bi bi-question-square-fill"onclick="ajudaCadastroArquivos()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
+<a data-step="5.2" href="javascript:void(0)" onclick='window.open("arquivos.php?email=<?php echo $doc_email ?>","iframe-home")'><div class="card-group-black btn"><button>Enviar Arquivos</button></div></a>
 <br>
 <?php
 $pastas = ['Tratamento', 'Evolucao', 'Orientacao', 'Laudos', 'Contratos', 'Outros'];
 
 foreach ($pastas as $pasta) {
-    $dir = '../arquivos/' . $token_profile . '/' . $pasta;
+    $dir = '../arquivos/' . $_SESSION['token_emp']. '/' . $token_profile . '/' . $pasta;
     $files = glob($dir . '/*.pdf');
     $numFiles = count($files);
 
@@ -336,13 +337,13 @@ foreach ($pastas as $pasta) {
 <?php if($id_job == 'Consultas'){ ?>
 <!-- Consultas -->
 <center>
-<a href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Nova Consulta</a>
+<a data-step="2.2" href="javascript:void(0)" onclick='window.open("reservas_cadastrar.php?id_job=Cadastro&email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Nova Consulta</a>
 </center>
-<fieldset>
-<legend><h2>Historico de Consultas</h2></legend>
+<fieldset data-step="2.1">
+<legend><h2>Historico de Consultas <i class="bi bi-question-square-fill"onclick="ajudaCadastroConsultas()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 <center>
 <table widht="100%" border="1px" style="color:white">
-    <tr>
+    <tr data-step="2.4">
         <td align="center"><b>Ver</b></td>
         <td align="center"><b>Data</b></td>
         <td align="center"><b>Hora</b></td>
@@ -368,12 +369,18 @@ $history_local = $history['local_consulta'];
 $history_data = $history['atendimento_dia'];
 $history_hora = $history['atendimento_hora'];
 $history_status = $history['status_consulta'];
+$history_tipo = $history['tipo_consulta'];
 $id_consulta = $history['id'];
+
+$history_hora_2 = date('H:i', strtotime($history_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
+if($history_tipo == 'Consulta x2'){
+  $history_hora_2 = date('H:i', strtotime($history_hora_2 . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
+}
 ?>
     <tr>
-        <td align="center"><a href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>&id_job=iframe","iframe-home")'><button>Ver</button></a></td>
+        <td align="center"><a data-step="2.3" href="javascript:void(0)" onclick='window.open("reserva.php?id_consulta=<?php echo $id_consulta ?>&id_job=iframe","iframe-home")'><button>Ver</button></a></td>
         <td align="center"><?php echo date('d/m/Y', strtotime("$history_data")) ?></td>
-        <td align="center"><?php echo date('H:i\h', strtotime("$history_hora")) ?></td>
+        <td align="center"><?php echo date('H:i\h', strtotime("$history_hora")) ?> as <?php echo date('H:i\h', strtotime("$history_hora_2")) ?></td>
         <td align="center"><?php echo $history_local; ?></td>
         <td align="center"><?php echo $history_status; ?></td>
     </tr>
@@ -394,26 +401,26 @@ if($nascimento == '' || $profissao == '' || $cep == '' || $rua == '' || $numero 
 }
 ?>
 <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
-        <div class="card">
+        <div data-step="13.1" class="card">
             <div class="card-top">
-                <h2>Cadastre o Contrato de <u><?php echo $nome ?></u></h2>
+                <h2>Cadastre o Contrato de <u><?php echo $nome ?></u> <i class="bi bi-question-square-fill"onclick="ajudaCadastroContratoAdd()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <br>
             <label><b>Termos de Pagamento</b></label>
-            <input type="text" name="procedimento_valor" minlength="10" maxlength="155" placeholder="R$0.00 parcelado em x de R$0.00 sem juros" required>
+            <input data-step="13.2" type="text" name="procedimento_valor" minlength="10" maxlength="155" placeholder="R$0.00 parcelado em x de R$0.00 sem juros" required>
             <br>
             <label><b>Intervalo entre Sessões</b></label>
-            <input type="number" name="procedimento_dias" min="1" max="365" placeholder="15" required>
+            <input data-step="13.3" type="number" name="procedimento_dias" min="1" max="365" placeholder="15" required>
             <br>
             <label><b>Descrição do Procedimento</b></label>
-            <textarea class="textarea-custom" name="procedimentos" rows="5" cols="44" minlength="10" maxlength="300" placeholder="Procedimentos... (utilize o <br> para pular linha)" required></textarea>
+            <textarea data-step="13.4" class="textarea-custom" name="procedimentos" rows="5" cols="44" minlength="10" maxlength="300" placeholder="Procedimentos... (utilize o <br> para pular linha)" required></textarea>
             <br><br>
             <input type="hidden" name="nome" value="<?php echo $nome ?>">
             <input type="hidden" name="email" value="<?php echo $doc_email ?>">
             <input type="hidden" name="id_job" value="cadastro_contrato" />
-            <div class="card-group btn"><button type="submit">Enviar Contrato</button></div>
+            <div data-step="13.5" class="card-group btn"><button type="submit">Enviar Contrato</button></div>
 
             </div>
         </div>
@@ -422,16 +429,16 @@ if($nascimento == '' || $profissao == '' || $cep == '' || $rua == '' || $numero 
 <?php if($id_job == 'Contratos'){ ?>
 <!-- Contratos -->
 <center>
-<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Contrato","iframe-home")' class="btn-black">+ Novo Contrato</a>
+<a data-step="6.2" href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?php echo $doc_email ?>&id_job=Contrato","iframe-home")' class="btn-black">+ Novo Contrato</a>
 </center>
-<fieldset>
-<legend><h2>Contratos</h2></legend>
-<table>
+<fieldset data-step="6.1">
+<legend><h2>Contratos <i class="bi bi-question-square-fill"onclick="ajudaCadastroContratos()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
+<table data-step="6.3">
     <tr>
         <td align="center"><b>Contrato</b></td>
         <td align="center"><b>Assinado</b></td>
         <td align="center"><b>Quando</b></td>
-        <td align="center"><b>Excluir</b></td>
+        <td align="center"><b data-step="6.4">Excluir</b></td>
     </tr>
 <center>
 <?php
@@ -472,16 +479,16 @@ if($row_check_contratos == 0){
 <?php if($id_job == 'Anamnese'){ ?>
 <!-- Anamnese -->
 <center>
-<a href="javascript:void(0)" onclick='window.open("anamnese_criar_modelo.php","iframe-home")' class="btn-black">+ Nova Anamnese</a>
+<a data-step="7.2" href="javascript:void(0)" onclick='window.open("anamnese_criar_modelo.php","iframe-home")' class="btn-black">+ Nova Anamnese</a>
 </center>
-<fieldset>
-<legend><h2>Selecione a Anamese</h2></legend>
-<table>
+<fieldset data-step="7.1">
+<legend><h2>Selecione a Anamese <i class="bi bi-question-square-fill"onclick="ajudaCadastroAnamnese()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
+<table data-step="7.3">
     <thead>
         <tr>
             <th>Data Criado</th>
             <th>Nome</th>
-            <th>Ver/Preencher</th>
+            <th data-step="7.4">Ver/Preencher</th>
         </tr>
     </thead>
     <tbody>
@@ -508,16 +515,16 @@ if($row_check_contratos == 0){
 <?php if($id_job == 'Prontuario'){ ?>
 <!-- Prontuario -->
 <center>
-<a href="javascript:void(0)" onclick='window.open("prontuario_criar_modelo.php","iframe-home")' class="btn-black">+ Novo Prontuário</a>
+<a data-step="8.2" href="javascript:void(0)" onclick='window.open("prontuario_criar_modelo.php","iframe-home")' class="btn-black">+ Novo Prontuário</a>
 </center>
-<fieldset>
-<legend><h2>Selecione o Prontuario</h2></legend>
-<table>
+<fieldset data-step="8.1">
+<legend><h2>Selecione o Prontuario <i class="bi bi-question-square-fill"onclick="ajudaCadastroProntuario()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
+<table data-step="8.3">
     <thead>
         <tr>
             <th>Data Criado</th>
             <th>Nome</th>
-            <th>Ver</th>
+            <th data-step="8.4">Ver</th>
         </tr>
     </thead>
     <tbody>
@@ -543,7 +550,7 @@ if($row_check_contratos == 0){
 <?php } ?>
 <?php if($id_job == 'Lancamentos'){ ?>
 <!-- Lançamentos -->
-<fieldset>
+<fieldset data-step="4.1">
 <?php
 $check = $conexao->prepare("SELECT sum(valor) FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email");
 $check->execute(array('doc_email' => $doc_email));
@@ -551,15 +558,16 @@ while($total_lanc = $check->fetch(PDO::FETCH_ASSOC)){
 $valor = $total_lanc['sum(valor)'];
 }
 ?>
-<legend><h2>Lançamentos Totais [ R$<?php echo number_format($valor ?? 0, 2, ',', '.')?> ]</h2></legend>
+<legend><h2>Lançamentos Totais [ R$<?php echo number_format($valor ?? 0, 2, ',', '.')?> ] <i class="bi bi-question-square-fill"onclick="ajudaCadastroLancamentos()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 
 <table widht="100%" border="1px" style="color:white">
     <tr>
-        <td width="60%" align="center"><b>Data - Descrição do Lançamento</b></td>
-        <td width="10%" align="center"><b>Quantidade</b></td>
-        <td width="20%" align="center"><b>Valor</b></td>
-        <td width="20%" align="center"><b>Subtotal</b></td>
-        <td width="25%" align="center"><b>Estornar</b></td>
+        <td align="center"><b>Data</b></td>
+        <td align="center"><b>Descrição do Lançamento</b></td>
+        <td align="center"><b>Quantidade</b></td>
+        <td align="center"><b>Valor</b></td>
+        <td align="center"><b>Subtotal</b></td>
+        <td data-step="4.3" align="center"><b>Estornar</b></td>
     </tr>
 <?php 
 $query_lanc = $conexao->prepare("SELECT * FROM lancamentos_atendimento WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email ORDER BY quando, id DESC");
@@ -571,28 +579,35 @@ $quantidade = $select_lancamento['quantidade'];
 $produto = $select_lancamento['produto'];
 $valor = $select_lancamento['valor'];
 $id = $select_lancamento['id'];
+$tipo = $select_lancamento['tipo'];
+
+if($tipo == 'Estoque'){
+$descricao_tipo = ' [Baixa de Estoque] ';
+}else{
+$descricao_tipo = '';
+}
 ?>
 <tr>
-    <td><?php echo date('d/m/Y', $quando) ?> - <?php echo $produto ?></td>
-    <td align="center"><?php echo $quantidade ?></td>
+    <td><?php echo date('d/m/Y', $quando) ?></td>
+    <td align="left"><?php echo $descricao_tipo ?><?php echo $produto ?></td>
+    <td><?php echo $quantidade ?></td>
     <?php
         if(similar_text($produto,'Pagamento em') >= 11){ ?>
-    <td align="center"><b>-</b></td>
-    <td align="center"><b>R$<?php echo number_format($valor ,2,",",".") ?></b></td>
-    <td align="center"><b>-</b></td>
+    <td><b>-</b></td>
+    <td><b>R$<?php echo number_format($valor ,2,",",".") ?></b></td>
+    <td><b>-</b></td>
     <?php }else if($valor > 0){  ?>
-    <td align="center">R$<?php echo number_format( ($valor / $quantidade) ,2,",",".") ?></td>
-    <td align="center">R$<?php echo number_format($valor ,2,",",".") ?></td>
-    <?php
-        if($status_consulta == 'Finalizada' || $status_consulta == 'Cancelada'){
-    ?>
-    <td align="center"><b>-</b></td>
+    <td>R$<?php echo number_format( ($valor / $quantidade) ,2,",",".") ?></td>
+    <td>R$<?php echo number_format($valor ,2,",",".") ?></td>
+    <td><button type="button" class="btn-excluir" onclick="window.open('lancamentos_ex.php?id=<?= $id ?>&email=<?= $doc_email ?>','iframe-home')">Estornar</button></td>
+    <?php }else if($tipo == 'Estoque'){  ?>
+    <td><b>-</b></td>
+    <td><b>-</b></td>
+    <td><button type="button" class="btn-excluir" onclick="window.open('lancamentos_ex.php?id=<?= $id ?>&email=<?= $doc_email ?>','iframe-home')">Excluir</button></td>
     <?php }else{ ?>
-    <td align="center"><button type="button" class="btn-excluir" onclick="window.open('lancamentos_ex.php?id=<?= $id ?>&email=<?= $doc_email ?>','iframe-home')">Estornar</button></td>
-    <?php }}else{ ?>
-    <td align="center"><b>-</b></td>
-    <td align="center"><b>-</b></td>
-    <td align="center"><b>-</b></td>
+    <td><b>-</b></td>
+    <td><b>-</b></td>
+    <td><b>-</b></td>
     <?php } ?>
 </tr>
 
@@ -600,21 +615,21 @@ $id = $select_lancamento['id'];
 
 </table>
 <br><br>
-<center>
-<a href="javascript:void(0)" onclick="escolherTipoLancamento()" class="btn-black">Lançar</a>
+<center><div data-step="4.2">
+<a data-step="4.2.1" href="javascript:void(0)" onclick="escolherTipoLancamento()" class="btn-black">Lançar</a>
 <a href="javascript:void(0)" onclick='window.open("lancamentos_pgto.php?doc_email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Pagar</a>
-<a href="javascript:void(0)" onclick='window.open("imprimir_rps.php?doc_email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Extratos</a>
-</center>
+<a href="javascript:void(0)" onclick='window.open("imprimir_rps.php?doc_email=<?php echo $doc_email ?>","iframe-home")' class="btn-black">Recibo</a>
+</div></center>
 </fieldset>
 <?php } ?>
 
 <?php if($id_job == 'Evolucao'){ ?>
 <!-- Evolucao -->
 <center>
-<a href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?= $doc_email ?>&id_job=Evolucao_Add","iframe-home")' class="btn-black">+ Nova Evolução</a>
+<a data-step="9.2" href="javascript:void(0)" onclick='window.open("cadastro.php?email=<?= $doc_email ?>&id_job=Evolucao_Add","iframe-home")' class="btn-black">+ Nova Evolução</a>
 </center>
-<fieldset>
-<legend><h2>Evoluções de <?= $nome ?></h2></legend>
+<fieldset data-step="9.1">
+<legend><h2>Evoluções de <?= $nome ?> <i class="bi bi-question-square-fill"onclick="ajudaCadastroEvolucao()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 <?php 
 
 $evolucoes = $conexao->prepare("SELECT * FROM evolucoes WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = ? ORDER BY data DESC");
@@ -629,7 +644,7 @@ $evolucoes->execute([$doc_email]);
         <form method="POST" action="excluir_evolucao.php" onsubmit="return confirm('Tem certeza que deseja excluir esta evolução?');" style="margin-top: 10px;">
             <input type="hidden" name="id_evolucao" value="<?= $ev['id'] ?>">
             <input type="hidden" name="doc_email" value="<?= $doc_email ?>">
-            <button type="submit" class="btn-excluir">
+            <button data-step="9.3" type="submit" class="btn-excluir">
                 Excluir
             </button>
         </form>
@@ -639,8 +654,8 @@ $evolucoes->execute([$doc_email]);
 <?php } ?>
 <?php if($id_job == 'Evolucao_Add'){ ?>
 <!-- Prontuario -->
-<fieldset>
-<legend><h2>Evolução</h2></legend>
+<fieldset data-step="12.1">
+<legend><h2>Evolução <i class="bi bi-question-square-fill"onclick="ajudaCadastroEvolucaoAdd()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 <form class="form" action="acao.php" method="POST">
 <div class="card">
 
@@ -648,10 +663,10 @@ $evolucoes->execute([$doc_email]);
     <input type="hidden" name="doc_email" value="<?= $doc_email ?>">
     <input type="hidden" name="profissional" value="<?= $config_empresa ?>">
     <label>Anotação:</label>
-    <textarea class="textarea-custom" name="anotacao" rows="5" cols="43" required></textarea><br><br>
+    <textarea data-step="12.2" class="textarea-custom" name="anotacao" rows="5" cols="43" required></textarea><br><br>
 
     <input type="hidden" name="id_job" value="Prontuario_Add">
-    <div class="card-group btn"><button type="submit">Salvar Evolução</button></div>
+    <div data-step="12.3" class="card-group btn"><button type="submit">Salvar Evolução</button></div>
 </div>
 </div>
 </form>
@@ -660,10 +675,10 @@ $evolucoes->execute([$doc_email]);
 <?php if($id_job == 'Receituario'){ ?>
 <!-- Receituario -->
 <center>
-<a href="javascript:void(0)" onclick='window.open("receituario_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Nova Receita</a>
+<a data-step="10.2" href="javascript:void(0)" onclick='window.open("receituario_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Nova Receita</a>
 </center>
-<fieldset>
-<legend><h2>Receitas</h2></legend>
+<fieldset data-step="10.1">
+<legend><h2>Receitas <i class="bi bi-question-square-fill"onclick="ajudaCadastroReceitas()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 <?php
 $receitas = $conexao->prepare("SELECT * FROM receituarios WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
 $receitas->execute([
@@ -681,14 +696,14 @@ $conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $r['conteudo']);?>
     <form method="POST" action="receituario_excluir.php" onsubmit="return confirm('Deseja excluir este receituário?');">
         <input type="hidden" name="id" value="<?= $r['id'] ?>">
         <input type="hidden" name="email" value="<?= $doc_email ?>">
-        <button class="btn-excluir">Excluir</button>
+        <button data-step="10.3" class="btn-excluir">Excluir</button>
     </form>
     <!-- Botão de imprimir -->
     <form method="GET" action="imprimir.php" target="_blank" style="display: inline-block;">
         <input type="hidden" name="id" value="<?= $r['id'] ?>">
         <input type="hidden" name="email" value="<?= $doc_email ?>">
         <input type="hidden" name="id_job" value="Receita">
-        <button type="submit">Imprimir</button>
+        <button data-step="10.4" type="submit">Imprimir</button>
     </form>
 </div>
 <?php endforeach; ?>
@@ -697,10 +712,10 @@ $conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $r['conteudo']);?>
 <?php if($id_job == 'Atestado'){ ?>
 <!-- Atestado -->
 <center>
-<a href="javascript:void(0)" onclick='window.open("atestado_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Novo Atestado</a>
+<a data-step="11.2" href="javascript:void(0)" onclick='window.open("atestado_criar.php?email=<?= $doc_email ?>","iframe-home")' class="btn-black">+ Novo Atestado</a>
 </center>
-<fieldset>
-<legend><h2>Atestados Médicos</h2></legend>
+<fieldset data-step="11.1">
+<legend><h2>Atestados Médicos <i class="bi bi-question-square-fill"onclick="ajudaCadastroAtestado()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 <?php
 $atestados = $conexao->prepare("SELECT * FROM atestados WHERE token_emp = :token_emp AND doc_email = :email ORDER BY criado_em DESC");
 $atestados->execute([
@@ -718,14 +733,14 @@ $conteudo = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $a['conteudo']);?>
     <form method="POST" action="atestado_excluir.php" onsubmit="return confirm('Deseja excluir este atestado?');">
         <input type="hidden" name="id" value="<?= $a['id'] ?>">
         <input type="hidden" name="email" value="<?= $doc_email ?>">
-        <button class="btn-excluir">Excluir</button>
+        <button data-step="11.3" class="btn-excluir">Excluir</button>
     </form>
     <!-- Botão de imprimir -->
     <form method="GET" action="imprimir.php" target="_blank" style="display: inline-block;">
         <input type="hidden" name="id" value="<?= $a['id'] ?>">
         <input type="hidden" name="email" value="<?= $doc_email ?>">
         <input type="hidden" name="id_job" value="Atestado">
-        <button type="submit">Imprimir</button>
+        <button data-step="11.4" type="submit">Imprimir</button>
     </form>
 </div>
 <?php endforeach; ?>
@@ -769,17 +784,31 @@ function escolherTipoLancamento() {
     Swal.fire({
         title: 'Escolha o tipo de lançamento',
         icon: 'question',
-        showDenyButton: true,
         showCancelButton: true,
-        confirmButtonText: 'Produto',
-        denyButtonText: 'Serviço',
+        showConfirmButton: false, // Esconde o botão padrão
         cancelButtonText: 'Cancelar',
-    }).then((result) => {
-        let email = '<?= $doc_email ?>';
-        if (result.isConfirmed) {
-            window.open('reservas_lancamentos.php?doc_email=' + encodeURIComponent(email) + '&id_job=Produto', 'iframe-home');
-        } else if (result.isDenied) {
-            window.open('reservas_lancamentos.php?doc_email=' + encodeURIComponent(email) + '&id_job=Serviço', 'iframe-home');
+        html: `
+            <button id="btn-produto" class="swal2-confirm swal2-styled" style="margin: 5px;">Produto</button>
+            <button id="btn-servico" class="swal2-deny swal2-styled" style="margin: 5px;">Serviço</button>
+            <button id="btn-estoque" class="swal2-cancel swal2-styled" style="margin: 5px;">Baixa de Estoque</button>
+        `,
+        didOpen: () => {
+            const email = '<?= $doc_email ?>';
+
+            document.getElementById('btn-produto').addEventListener('click', () => {
+                window.open('reservas_lancamentos.php?doc_email=' + encodeURIComponent(email) + '&id_job=Produto', 'iframe-home');
+                Swal.close();
+            });
+
+            document.getElementById('btn-servico').addEventListener('click', () => {
+                window.open('reservas_lancamentos.php?doc_email=' + encodeURIComponent(email) + '&id_job=Serviço', 'iframe-home');
+                Swal.close();
+            });
+
+            document.getElementById('btn-estoque').addEventListener('click', () => {
+                window.open('reservas_lancamentos.php?doc_email=' + encodeURIComponent(email) + '&id_job=BaixaEstoque', 'iframe-home');
+                Swal.close();
+            });
         }
     });
 }

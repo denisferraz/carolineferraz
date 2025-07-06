@@ -2,6 +2,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
+require_once('tutorial.php');
 
 $hoje = date('Y-m-d');
 $token = md5(date("YmdHismm"));
@@ -107,7 +108,7 @@ unset($_SESSION['error_reserva']);
                 if (data.sucesso) {
                     Swal.fire({
                         title: 'CPF encontrado!',
-                        html: `Cliente: <strong>${data.telefone}</strong><br>Email: <strong>${data.email}</strong><br><br>Deseja importar os dados?`,
+                        html: `Cliente: <strong>${data.nome}</strong><br>Email: <strong>${data.email}</strong><br><br>Deseja importar os dados?`,
                         icon: 'success',
                         allowOutsideClick: false,
                         confirmButtonText: 'Importar dados'
@@ -138,12 +139,60 @@ unset($_SESSION['error_reserva']);
             });
         }
 
+        function buscarCadastroEmail() {
+            const input = document.getElementById('doc_email');
+            const emailLimpo = input.value;
+
+            fetch('buscar_cadastro.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'email=' + emailLimpo
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.sucesso) {
+                    Swal.fire({
+                        title: 'Email encontrado!',
+                        html: `Cliente: <strong>${data.nome}</strong><br>CPF: <strong>${data.doc_cpf}</strong><br><br>Deseja importar os dados?`,
+                        icon: 'success',
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Importar dados'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Aqui você pode preencher os campos automaticamente
+                            preencherCamposCliente(data);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Email não encontrado!',
+                        text: 'Deseja cadastrar um novo cliente ou continuar sem cadastro?',
+                        icon: 'warning',
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Cadastrar cliente'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redireciona ou abre modal para cadastro
+                            window.location.href = 'cadastro_registro.php?email=' + emailLimpo;
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                Swal.fire('Erro na busca do Email', '', 'error');
+            });
+        }
+
         function preencherCamposCliente(data) {
             // Aqui você pode preencher campos no formulário com os dados do cliente
             // Exemplo:
             document.querySelector('[name="doc_nome"]').value = data.nome;
             document.querySelector('[name="doc_email"]').value = data.email;
             document.querySelector('[name="doc_telefone"]').value = data.telefone;
+            document.querySelector('[name="doc_cpf"]').value = data.doc_cpf;
             // adicione mais conforme seus campos
         }
         </script>
@@ -151,9 +200,9 @@ unset($_SESSION['error_reserva']);
 </head>
 <body>
     <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Cadastrar Nova Consulta</h2>
+                <h2>Cadastrar Nova Consulta <i class="bi bi-question-square-fill"onclick="ajudaConsultaCadastrar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <?php if ($error_reserva): ?>
@@ -164,12 +213,12 @@ unset($_SESSION['error_reserva']);
 
             <div class="card-group">
                 <label>Dia do Atendimento</label>
-                <input type="date" name="atendimento_dia" min="<?php echo $hoje ?>" max="<?php echo $config_atendimento_dia_max ?>" required>
+                <input data-step="2" type="date" name="atendimento_dia" min="<?php echo $hoje ?>" max="<?php echo $config_atendimento_dia_max ?>" required>
             </div>
 
             <div class="card-group">
                 <label>Horário</label>
-                <select name="atendimento_hora">
+                <select data-step="3" name="atendimento_hora">
                         <?php
                         $atendimento_hora_comeco =  strtotime("$config_atendimento_hora_comeco");
                         $atendimento_hora_fim =  strtotime("$config_atendimento_hora_fim");
@@ -188,27 +237,25 @@ unset($_SESSION['error_reserva']);
             </div>
 
             <?php if($tipo == 'Painel'){ ?>
+
+            <div class="card-group">
+                <label>Email</label>
+                <input data-step="4" type="email" id="doc_email" name="doc_email" minlength="10" maxlength="35" value="<?php echo $email ?>" placeholder="exemplo@exemplo.com" onchange="buscarCadastroEmail()" required>
+            </div>
+
             <div class="card-group">
                 <label>CPF</label>
-                <input type="text" id="doc_cpf" name="doc_cpf" value="<?php echo $cpf ?>" class="form-control" minlength="11" maxlength="14"
-                    placeholder="000.000.000-00"
-                    onkeypress="formatar('###.###.###-##', this)"
-                    onchange="buscarCadastroCPF()" required>
+                <input data-step="5" type="text" id="doc_cpf" name="doc_cpf" value="<?php echo $cpf ?>" class="form-control" minlength="11" maxlength="14" placeholder="000.000.000-00" onkeypress="formatar('###.###.###-##', this)" onchange="buscarCadastroCPF()" required>
             </div>
 
             <div class="card-group">
                 <label>Nome</label>
-                <input type="text" name="doc_nome" minlength="5" maxlength="30" value="<?php echo $nome ?>" placeholder="Nome e Sobrenome" required>
-            </div>
-
-            <div class="card-group">
-                <label>Email</label>
-                <input type="email" name="doc_email" minlength="10" maxlength="35" value="<?php echo $email ?>" placeholder="exemplo@exemplo.com" required>
+                <input data-step="6" type="text" name="doc_nome" minlength="5" maxlength="30" value="<?php echo $nome ?>" placeholder="Nome e Sobrenome" required>
             </div>
 
             <div class="card-group">
                 <label>Telefone</label>
-                <input type="text" name="doc_telefone" minlength="9" maxlength="18" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
+                <input data-step="7" type="text" name="doc_telefone" minlength="9" maxlength="18" value="<?php echo $telefone ?>" placeholder="(00)00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
             </div>
 
             <?php }else{ ?>
@@ -220,21 +267,17 @@ unset($_SESSION['error_reserva']);
 
             <div class="card-group">
                 <label>Tipo de Consulta</label>
-                <select name="id_job">
-                    <option value="Nova Sessão">Nova Sessão</option>
+                <select data-step="8" name="id_job">
+                    <option value="Nova Consulta">Nova Consulta</option>
                     <option value="Consulta Retorno">Consulta Retorno</option>
-                    <option value="Avaliação Capilar">Avaliação Capilar</option>
-                    <option value="Consulta Capilar">Consulta Capilar</option>
+                    <option value="Consulta x2">Consulta x2</option>
                     <option value="Consulta Online">Consulta Online</option>
                 </select>
             </div>
 
             <div class="card-group">
                 <label>Local da Consulta</label>
-                <select name="atendimento_local">
-                    <option value="Lauro de Freitas">Lauro de Freitas</option>
-                    <option value="Salvador">Salvador</option>
-                </select>
+                <input data-step="9" type="text" name="atendimento_local" maxlength="50" placeholder="Local Atendimento">
             </div>
 
             <div class="card-group">
@@ -246,17 +289,17 @@ unset($_SESSION['error_reserva']);
             <?php if($tipo == 'Painel'){ ?>
             <div class="card-group">
                 <input id="overbook" type="checkbox" name="overbook">
-                <label for="overbook">Forçar Overbook</label>
+                <label data-step="10" for="overbook">Forçar Overbook</label>
             </div>
 
             <div class="card-group">
                 <input id="overbook_data" type="checkbox" name="overbook_data">
-                <label for="overbook_data">Forçar Data/Horário</label>
+                <label data-step="11" for="overbook_data">Forçar Data/Horário</label>
             </div>
             <?php } ?>
 
             <div class="card-group btn">
-                <button type="submit">Confirmar Consulta</button>
+                <button data-step="12" type="submit">Confirmar Consulta</button>
             </div>
         </div>
     </form>

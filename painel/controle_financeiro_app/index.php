@@ -73,9 +73,8 @@ try {
     $error = "Erro ao carregar dados: " . $e->getMessage();
 }
 ?>
-
 <div class="grid grid-3 mb-4">
-    <div class="stats-card">
+    <div data-step="2" class="stats-card">
         <div class="stats-icon receita">
             <i class="fas fa-arrow-up"></i>
         </div>
@@ -83,7 +82,7 @@ try {
         <div class="stats-label">Total de Receitas</div>
     </div>
     
-    <div class="stats-card">
+    <div data-step="3" class="stats-card">
         <div class="stats-icon despesa">
             <i class="fas fa-arrow-down"></i>
         </div>
@@ -91,7 +90,7 @@ try {
         <div class="stats-label">Total de Despesas</div>
     </div>
     
-    <div class="stats-card">
+    <div data-step="4" class="stats-card">
         <div class="stats-icon saldo">
             <i class="fas fa-balance-scale"></i>
         </div>
@@ -103,7 +102,7 @@ try {
 </div>
 
 <div class="grid grid-2">
-    <div class="card">
+    <div data-step="5" class="card">
         <div class="card-header">
             <h3 class="card-title">Últimos Lançamentos</h3>
             <a href="pages/lancamentos.php" class="btn btn-primary btn-sm">
@@ -150,7 +149,7 @@ try {
         <?php endif; ?>
     </div>
     
-    <div class="card">
+    <div data-step="6" class="card">
         <div class="card-header">
             <h3 class="card-title">Resumo por Categoria</h3>
             <a href="pages/relatorios.php" class="btn btn-secondary btn-sm">
@@ -190,7 +189,6 @@ try {
         <?php endif; ?>
     </div>
 </div>
-
 <style>
 .badge {
     padding: 0.25rem 0.5rem;
@@ -221,3 +219,7 @@ try {
 
 <?php include 'includes/footer.php'; ?>
 
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="../js/tutorial.js"></script>

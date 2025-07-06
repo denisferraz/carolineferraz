@@ -145,7 +145,7 @@ try {
     </div>
 <?php endif;?>
 
-<div class="card mb-4">
+<div data-step="2" class="card mb-4">
     <div class="card-header">
         <h3 class="card-title">Filtros</h3>
     </div>
@@ -189,7 +189,7 @@ try {
 </div>
 
 <div class="card">
-    <div class="card-header">
+    <div data-step="3" class="card-header">
         <h3 class="card-title">Lançamentos</h3>
         <button onclick="openModal('modalLancamento')" class="btn btn-primary">
             <i class="fas fa-plus"></i> Novo Lançamento
@@ -198,7 +198,7 @@ try {
     
     <?php if (!empty($lancamentos)): ?>
         <div class="table-container">
-            <table class="table" id="tabelaLancamentos">
+            <table data-step="4" class="table" id="tabelaLancamentos">
                 <thead>
                     <tr>
                         <th>Data</th>
@@ -206,7 +206,7 @@ try {
                         <th>Codigo</th>
                         <th>Grupo</th>
                         <th>Valor</th>
-                        <th>Ações</th>
+                        <th data-step="5">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -395,3 +395,7 @@ document.querySelector('[onclick="openModal(\'modalLancamento\')"]').addEventLis
 
 <?php include '../includes/footer.php'; ?>
 
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="../../js/tutorial.js"></script>

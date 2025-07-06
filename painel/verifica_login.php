@@ -19,7 +19,8 @@ if(!$_SESSION['email']){
 }
 
 // Define o caminho do CSS
-$css_path = "css/style_colorido.css";
+$css_path = "css/style_2.css";
+$css_path_2 = "css/style.css";
 
 foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESSION['token_emp']}'") as $row) {
     $config_empresa = $row['config_empresa'];
@@ -56,3 +57,44 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESS
     $is_domingo = $row['is_domingo'];
     $lembrete_auto_time = $row['lembrete_auto_time'];
 }
+
+if($site_puro == 'chronoclick'){
+
+$query2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token AND tipo != 'Paciente'");
+$query2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token_emp']));
+while ($select = $query2->fetch(PDO::FETCH_ASSOC)) {
+$plano_validade = $select['plano_validade'];
+$client_id = $select['id'];
+}
+
+$query3 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token");
+$query3->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token']));
+while ($select2 = $query3->fetch(PDO::FETCH_ASSOC)) {
+$tipo_cadastro = $select2['tipo'];
+}
+
+$hoje = date('Y-m-d');
+$data_validade = $plano_validade;
+$dias_restantes = (strtotime($data_validade) - strtotime($hoje)) / 86400;
+
+if ($tipo_cadastro == 'Paciente' && $dias_restantes <= 0 && $site_puro == 'chronoclick') {
+    $_SESSION['vencido'] = true;
+    echo "<script>
+        alert('Seu acesso venceu! Fale com a Empresa.');
+        window.top.location.replace('painel_renovar.php')
+        </script>";
+        exit();
+}
+
+if ($tipo_cadastro != 'Owner' && $dias_restantes <= 0 && $site_puro == 'chronoclick') {
+    echo "<script>
+    alert('Seu acesso venceu! Renove agora mesmo!!')
+    window.location.replace('painel_renovar.php')
+    </script>";
+    exit();
+}
+
+}else{
+    $dias_restantes = 365;
+}
+?>

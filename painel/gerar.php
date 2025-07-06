@@ -48,7 +48,7 @@ $conditionGrey->setConditionType(Conditional::CONDITION_CELLIS)
 $spreadsheet->getProperties()
 ->setCreator("Denis Ferraz")
 ->setLastModifiedBy("Denis Ferraz")
-->setTitle("Sistema de Agendamento - Caroline Ferraz");
+->setTitle("Sistema de Agendamento - ChronoClick");
 
 $security = $spreadsheet->getSecurity();
 $security->setLockWindows(true);

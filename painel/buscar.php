@@ -1,12 +1,12 @@
 <?php
 
-//ini_set('display_errors', 0 );
-//error_reporting(0);
+ini_set('display_errors', 0 );
+error_reporting(0);
 
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +60,7 @@ body {
     }
 ?>
 
-<fieldset>
+<fieldset data-step="1">
 <?php
 if($historico_qtd == 0){
     ?>
@@ -68,7 +68,7 @@ if($historico_qtd == 0){
     <?php
 }else{
     ?>
-<legend><h2>Historico de [ <?php echo $palavra ?> ]</h2></legend>
+<legend><h2>Historico de [ <?php echo $palavra ?> ] <i class="bi bi-question-square-fill"onclick="ajudaHistoricoVer()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2></legend>
 <?php
 }
 while($select_historico = $query_historico->fetch(PDO::FETCH_ASSOC)){
@@ -77,9 +77,10 @@ while($select_historico = $query_historico->fetch(PDO::FETCH_ASSOC)){
     $oque = $select_historico['oque'];
     ?>
 
-
+<div data-step="2">
 <?php echo $quem ?>: <?php echo $oque ?><br>
 <small>no dia <b><?php echo date('d/m/Y', strtotime($quando)) ?></b> as <b><?php echo date('H:i:s\h', strtotime($quando)) ?></b></small>
+</div>
 <br>
 <br>
 

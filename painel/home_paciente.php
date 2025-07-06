@@ -79,8 +79,8 @@ $painel_users_array = [];
             $atendimento_dia = $select_checkins['atendimento_dia'];
             $atendimento_dia = strtotime("$atendimento_dia");
             $atendimento_hora = $select_checkins['atendimento_hora'];
-            $atendimento_hora = strtotime("$atendimento_hora");
             $local_reserva = $select_checkins['local_reserva'];
+            $tipo_consulta = $select_checkins['tipo_consulta'];
             $id = $select_checkins['id'];
 
             foreach ($painel_users_array as $item) {
@@ -88,9 +88,14 @@ $painel_users_array = [];
                     $doc_nome = $item['nome'];
                 }
             }
+
+            $atendimento_hora_2 = date('H:i', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
+            if($tipo_consulta == 'Consulta x2'){
+                $atendimento_hora_2 = date('H:i', strtotime($atendimento_hora_2 . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
+            }
         ?>
             <div class="appointment">
-                <button><?php echo $doc_nome ?> | <?php echo date('d/m/Y', $atendimento_dia) ?> às <?php echo date('H:i\h', $atendimento_hora) ?></button>
+                <button><?php echo $doc_nome ?> | <?php echo date('d/m/Y', $atendimento_dia) ?> das <?php echo date('H:i\h', strtotime($atendimento_hora)) ?> as <?php echo $atendimento_hora_2 ?></button>
                 <button><?php echo $local_reserva; ?></button>
                 <div class="actions">
                 <?php echo "<button>$status_consulta</button>"; ?>

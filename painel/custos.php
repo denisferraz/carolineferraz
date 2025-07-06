@@ -3,7 +3,7 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php'); 
-
+require_once('tutorial.php');
 ?>
 
 <!DOCTYPE html>
@@ -25,16 +25,16 @@ require('verifica_login.php');
 <body>
 
     <form class="form" action="acao.php" method="POST">
-        <div class="card">
+        <div data-step="1" class="card">
             <div class="card-top">
-                <h2>Cadastrar Custos Fixos</h2>
+                <h2>Cadastrar Custos Fixos <i class="bi bi-question-square-fill"onclick="ajudaServicosCadastrarCustosFixos()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
             </div>
 
             <div class="card-group">
             <label>Valor</label>
-            <input minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
+            <input data-step="2" minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
             <label>Tipo do Custo</label>
-            <select name="custo_tipo" required>
+            <select data-step="3" name="custo_tipo" required>
                 <option value="Insumos">Insumos</option>
                 <option value="Gasolina">Gasolina</option>
                 <option value="Estacionamento">Estacionamento</option>
@@ -54,21 +54,21 @@ require('verifica_login.php');
 
 
                 <label>Descrição Custo Fixo</label>
-                <textarea name="custo_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
+                <textarea data-step="4" name="custo_descricao" class="textarea-custom" rows="5" cols="43" required></textarea><br><br>
                 <input type="hidden" name="id_job" value="lancar_custos" />
-            <div class="card-group btn"><button type="submit">Cadastrar Custo Fixo</button></div>
+            <div data-step="5" class="card-group btn"><button type="submit">Cadastrar Custo Fixo</button></div>
 
             </div>
     </form>
     <br><br>
-    <table>
+    <table data-step="6">
             <thead>
                 <tr>
                     <th>Tipo</th>
                     <th>Valor</th>
                     <th>Descrição</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th data-step="7">Editar</th>
+                    <th data-step="8">Excluir</th>
                 </tr>
             </thead>
             <tbody>
