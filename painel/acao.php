@@ -786,7 +786,7 @@ echo "<script>
         $doc_telefonewhats = "55$doc_telefone";
         $msg_whatsapp = $msg_texto;
         
-        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
         
         }
     
@@ -888,7 +888,7 @@ echo "<script>
         $doc_telefonewhats = "55$doc_telefone";
         $msg_whatsapp = $msg_texto;
         
-        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+        $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
         
         }
     

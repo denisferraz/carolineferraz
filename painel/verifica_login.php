@@ -60,17 +60,12 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESS
 
 if($site_puro == 'chronoclick'){
 
-$query2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token AND tipo != 'Paciente'");
-$query2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token_emp']));
+$query2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token AND email = :email AND tipo != 'Paciente'");
+$query2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token_emp'], 'email' => $_SESSION['email']));
 while ($select = $query2->fetch(PDO::FETCH_ASSOC)) {
 $plano_validade = $select['plano_validade'];
 $client_id = $select['id'];
-}
-
-$query3 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token");
-$query3->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token']));
-while ($select2 = $query3->fetch(PDO::FETCH_ASSOC)) {
-$tipo_cadastro = $select2['tipo'];
+$tipo_cadastro = $select['tipo'];
 }
 
 $hoje = date('Y-m-d');
