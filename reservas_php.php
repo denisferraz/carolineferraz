@@ -81,7 +81,6 @@ if($status_consulta == 'Confirmada' || $status_consulta == 'Confirmado'){
 $status_consulta = 'Confirmada';
 }
 $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
-$doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_cpf']));
 $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 $horario = '';
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);

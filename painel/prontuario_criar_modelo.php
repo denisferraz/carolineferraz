@@ -31,77 +31,84 @@ if (isset($_GET['id_modelo'])) {
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title><?= $modelo_id ? "Editar Modelo" : "Criar Prontuario" ?></title>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-  <link rel="stylesheet" href="<?= $css_path ?>" />
-  <style>
-    .card {
-      padding: 2rem;
-      border-radius: 12px;
-      max-width: 700px;
-      margin: 2rem auto;
-      font-family: Arial, sans-serif;
-    }
-    .card h2 {
-      margin-bottom: 1.5rem;
-    }
-    .card-group {
-      margin-bottom: 1.2rem;
-    }
-    .card-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    .card-group input[type="text"],
-    .card-group select {
-      width: 100%;
-      padding: 0.5rem;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .card-group select {
-      appearance: none;
-    }
-    .opcoes-horizontal {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    .opcoes-horizontal label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      cursor: pointer;
-      white-space: nowrap;
-      font-size: 0.95rem;
-    }
-    .btn_2 button {
-      margin-right: 1rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $config_empresa; ?></title>
+    
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    
+    <style>
+        /* Estilos específicos para esta página */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .erro-campo {
+            border-color: var(--health-danger) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+        }
+    </style>
 </head>
 <body>
-  <form data-step="1" id="form-modelo-prontuario" class="card" enctype="multipart/form-data">
-    <h2><?= $modelo_id ? "Editar Modelo de Prontuario" : "Criar Prontuario" ?> <i class="bi bi-question-square-fill"onclick="ajudaProntuario()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
-
-    <div class="card-group">
-      <label for="titulo_modelo">Título do Modelo:</label>
-      <input data-step="2" type="text" name="titulo_modelo" id="titulo_modelo" required value="<?= htmlspecialchars($titulo) ?>" />
+    
+<div class="health-container">
+    <!-- Header da Página -->
+    <div class="health-card health-fade-in">
+        <div class="health-card-header">
+            <h1 class="health-card-title">
+                <i class="bi bi-clipboard2-heart"></i>
+                <?= $modelo_id ? "Editar Modelo de prontuario" : "Criar Ficha de prontuario" ?> <i class="bi bi-question-square-fill"onclick="ajudaProntuario()"title="Ajuda?"style="color: white; cursor: pointer; font-size: 25px;"></i>
+            </h1>
+            <p class="health-card-subtitle">
+                Confirme os dados para salvar este modelo de prontuario
+        </div>
     </div>
+    
+  <form data-step="1" id="form-modelo-prontuario" class="card" enctype="multipart/form-data">
+      
+<div class="form-row">
+                <div class="health-form-group">
 
+      <label class="health-label" for="titulo_modelo">Título do Modelo:</label>
+      <input class="health-input" data-step="2" type="text" name="titulo_modelo" id="titulo_modelo" required value="<?= htmlspecialchars($titulo) ?>" />
+    </div>
+</div>
     <div data-step="3" id="perguntasContainer"></div>
 
     <?php if ($modelo_id): ?>
@@ -109,11 +116,11 @@ if (isset($_GET['id_modelo'])) {
     <?php endif; ?>
 
     <div class="card-group btn_2">
-      <button data-step="6" type="button" onclick="adicionarCampo()">Adicionar Pergunta</button>
-      <button data-step="7" type="button" onclick="salvarModelo()">Salvar Modelo</button>
+      <button data-step="6" class="health-btn health-btn-primary" type="button" onclick="adicionarCampo()"><i class="bi bi-plus-lg"></i> Adicionar Pergunta</button>
+      <button data-step="7" class="health-btn health-btn-success" type="button" onclick="salvarModelo()"><i class="bi bi-check-lg"></i> Salvar Modelo</button>
     </div>
   </form>
-
+</div>
 <script>
   const container = document.getElementById('perguntasContainer');
   const tokenEmp = <?= json_encode($_SESSION['token_emp']) ?>;
@@ -133,28 +140,30 @@ if (isset($_GET['id_modelo'])) {
   const pergunta_id = pergunta && pergunta.id ? pergunta.id : '';
   
   let html = `
-    <div class="card-group" draggable="true">
+ <div class="form-row">
+    <div class="health-form-group" draggable="true">
       <input type="hidden" name="perguntas[${index}][id]" value="${pergunta_id}">
-      <label>Pergunta:</label>
-      <input data-step="4" type="text" name="perguntas[${index}][texto]" required value="${texto.replace(/"/g, '&quot;')}">
-      <label>Tipo:</label>
-      <select data-step="5" name="perguntas[${index}][tipo]" onchange="mostrarOpcoes(this, ${index})">
-        <option value="text" ${tipo === 'text' ? 'selected' : ''}>Texto</option>
+      <label class="health-label">Pergunta:</label>
+      <input class="health-input" data-step="4" type="text" name="perguntas[${index}][texto]" required value="${texto.replace(/"/g, '&quot;')}">
+      <label class="health-label">Tipo:</label>
+      <select required class="health-select" data-step="5" name="perguntas[${index}][tipo]" onchange="mostrarOpcoes(this, ${index})">
+        <option value="text" ${tipo === 'text' ? 'selected' : ''}>Texto Pequeno</option>
+        <option value="textarea" ${tipo === 'textarea' ? 'selected' : ''}>Texto Grande</option>
         <option value="number" ${tipo === 'number' ? 'selected' : ''}>Número</option>
         <option value="radio" ${tipo === 'radio' ? 'selected' : ''}>Escolha Única</option>
         <option value="checkbox" ${tipo === 'checkbox' ? 'selected' : ''}>Múltipla Seleção</option>
         <option value="select" ${tipo === 'select' ? 'selected' : ''}>Lista</option>
       </select>
       <div id="opcoes-${index}" style="display: ${['radio','checkbox','select'].includes(tipo) ? 'block' : 'none'}">
-      <label>Opções (separadas por ;)</label>
-      <input type="text" name="perguntas[${index}][opcoes]" value="${opcoes.replace(/"/g, '&quot;')}">
+      <label class="health-label">Opções (separadas por ;)</label>
+      <input required class="health-input" type="text" name="perguntas[${index}][opcoes]" value="${opcoes.replace(/"/g, '&quot;')}">
   `;
 
   // Mostrar campo upload para imagens em radio e checkbox
   if (tipo === 'radio' || tipo === 'checkbox') {
     html += `
-      <label>Imagens para as opções (ordem correspondente)</label>
-      <input type="file" name="perguntas[${index}][imagens][]" multiple accept="image/png, image/jpeg">
+      <label class="health-label">Imagens para as opções (ordem correspondente)</label>
+      <input class="health-input" type="file" name="perguntas[${index}][imagens][]" multiple accept="image/png, image/jpeg"><br>
       <small>As imagens devem estar na mesma ordem das opções (separadas por ponto e vírgula)</small>
     `;
   }

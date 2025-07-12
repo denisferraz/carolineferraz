@@ -39,82 +39,78 @@ $nome = $dados_array[0];
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Ficha de Anamnese <?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($nome); ?></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  <link rel="stylesheet" href="<?php echo $css_path ?>">
-  <style>
-    .card {
-        width: 100%;
-        max-width: 500px;
-    }
-
-    .card-group {
-        margin-bottom: 1rem;
-    }
-
-    .card-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-    }
-
-    .card-group input[type="text"],
-    .card-group input[type="number"],
-    .card-group select {
-        width: 100%;
-        padding: 0.5rem;
-        border: none;
-        border-radius: 5px;
-    }
-
-    .opcoes-horizontal {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.opcoes-horizontal label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    cursor: pointer;
-    white-space: nowrap;
-    font-size: 0.95rem;
-    width: auto; /* IMPORTANTE: não deixar ocupar 100% */
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.opcoes-horizontal input[type="radio"] {
-    margin: 0;
-}
-
-    .btn {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .btn button {
-        padding: 0.7rem 1.5rem;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $config_empresa; ?></title>
+    
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    
+    <style>
+        /* Estilos específicos para esta página */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .erro-campo {
+            border-color: var(--health-danger) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+        }
+    </style>
 </head>
 <body>
 
-<form class="form" action="prontuario_salvar.php" method="POST">
-  <div data-step="1" class="card">
-    <div class="card-top">
-      <h2><?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($nome); ?> <i class="bi bi-question-square-fill"onclick="ajudaProntuarioPreencher()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
+<div class="health-container">
+    <!-- Header da Página -->
+    <div class="health-card health-fade-in">
+        <div class="health-card-header">
+            <h1 class="health-card-title">
+                <i class="bi bi-clipboard2-heart"></i>
+                <?php echo htmlspecialchars($modelo['titulo']); ?> - <?php echo htmlspecialchars($nome); ?> <i class="bi bi-question-square-fill"onclick="ajudaProntuarioPreencher()"title="Ajuda?"style="color: white; cursor: pointer; font-size: 25px;"></i>
+            </h1>
+            <p class="health-card-subtitle">
+                Confirme os dados para salvar estas respostas deste modelo
+        </div>
     </div>
+    
+<form class="form" action="prontuario_salvar.php" method="POST">
+
+<div class="form-row">
+    <div class="health-form-group">
 
     <input type="hidden" name="modelo_id" value="<?php echo $modelo_id; ?>">
     <input type="hidden" name="paciente_id" value="<?php echo $paciente_id; ?>">
@@ -122,11 +118,10 @@ $nome = $dados_array[0];
     <?php foreach ($perguntas as $p): 
       $resposta_salva = $respostas_salvas[$p['id']] ?? '';
     ?>
-      <div class="card-group">
-        <label data-step="2"><?php echo htmlspecialchars($p['pergunta']); ?></label>
+        <label class="health-label" data-step="2"><b><?php echo htmlspecialchars($p['pergunta']); ?></b></label>
 
         <?php if ($p['tipo'] === 'text' || $p['tipo'] === 'number'): ?>
-          <input data-step="3" type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>">
+          <input class="health-input" data-step="3" type="<?php echo $p['tipo']; ?>" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($resposta_salva); ?>">
 
           <?php elseif ($p['tipo'] === 'radio'): ?>
           <div data-step="3" class="opcoes-horizontal">
@@ -134,7 +129,7 @@ $nome = $dados_array[0];
               $opTrim = trim($op);
               $imgPath = "../imagens/{$_SESSION['token_emp']}/{$p['id']}_".strtolower(preg_replace('/\s+/', '_', $opTrim)).".png";
             ?>
-              <label>
+              <label class="health-label">
                 <input type="radio" name="respostas[<?php echo $p['id']; ?>]" value="<?php echo htmlspecialchars($opTrim); ?>" <?php if ($resposta_salva === $opTrim) echo 'checked'; ?>>
                 <?php echo htmlspecialchars($opTrim); ?>
                 <?php if (file_exists($imgPath)): ?>
@@ -146,7 +141,7 @@ $nome = $dados_array[0];
           </div>
 
         <?php elseif ($p['tipo'] === 'select'): ?>
-          <select data-step="3" name="respostas[<?php echo $p['id']; ?>][]" multiple>
+          <select class="health-select" data-step="3" name="respostas[<?php echo $p['id']; ?>][]" multiple>
             <?php $respostas_array = explode(';', $resposta_salva); ?>
             <?php foreach (explode(';', $p['opcoes']) as $op): 
               $opTrim = trim($op); ?>
@@ -164,7 +159,7 @@ $nome = $dados_array[0];
               <?php
                 $imgPath = "../imagens/{$_SESSION['token_emp']}/{$p['id']}_".strtolower(preg_replace('/\s+/', '_', $opTrim)).".png";
               ?>
-              <label>
+              <label class="health-label">
                 <input type="checkbox" name="respostas[<?php echo $p['id']; ?>][]" value="<?php echo htmlspecialchars($opTrim); ?>" <?php if (in_array($opTrim, $respostas_array)) echo 'checked'; ?>>
                 <?php echo htmlspecialchars($opTrim); ?>
                 <?php if (file_exists($imgPath)): ?>
@@ -174,8 +169,11 @@ $nome = $dados_array[0];
               </label>
             <?php endforeach; ?>
           </div>
-        <?php endif; ?>
-      </div>
+
+          <?php elseif ($p['tipo'] === 'textarea'): ?>
+            <textarea class="health-input" data-step="3" rows="4" name="respostas[<?php echo $p['id']; ?>]"><?php echo htmlspecialchars($resposta_salva); ?></textarea>
+
+        <?php endif; ?><br><br>
     <?php endforeach; ?>
 
     <?php if (isset($_GET['salvo']) && $_GET['salvo'] == 1): ?>
@@ -189,10 +187,9 @@ $nome = $dados_array[0];
     </script>
     <?php endif; ?>
 
-    <div class="card-group btn">
-      <button data-step="4" type="submit">Salvar Respostas</button>
+      <button data-step="4" class="health-btn health-btn-success" type="submit"><i class="bi bi-check-lg"></i> Salvar Respostas</button>
+          </div>
     </div>
-  </div>
 </form>
 
 <script>

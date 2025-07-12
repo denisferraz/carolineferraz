@@ -22,26 +22,82 @@ $custo_descricao = $select['custo_descricao'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <title>Editar Custo</title>
+    <title><?php echo $config_empresa; ?></title>
+    
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        /* Estilos específicos para esta página */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .erro-campo {
+            border-color: var(--health-danger) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+        }
 
-    <link rel="stylesheet" href="<?php echo $css_path ?>">
+        .btn-sm {
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--font-size-xs);
+        }
+    </style>
 </head>
 <body>
 
-<form class="form" action="acao.php" method="POST">
-        <div data-step="1" class="card">
-            <div class="card-top">
-                <h2>Edite abaixo seu Custo <i class="bi bi-question-square-fill"onclick="ajudaServicosCadastrarCustosFixosEditar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
-            </div>
-
-            <div class="card-group">
-            <br>
-            <label>Valor</label>
-            <input data-step="2" value="<?php echo $custo_valor ?>" minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
-            <br><br><label>Tipo do Custo: 
-            <select data-step="3" name="custo_tipo">
+<div class="health-container">
+    <!-- Header da Página -->
+    <div class="health-card health-fade-in">
+        <div class="health-card-header">
+            <h1 class="health-card-title">
+                <i class="bi bi-coin"></i>
+                Editar Custo Fixo <i class="bi bi-question-square-fill"onclick="ajudaServicosCadastrarCustosFixosEditar()"title="Ajuda?"style="color: white; cursor: pointer; font-size: 25px;"></i>
+            </h1>
+            <p class="health-card-subtitle">
+                Confirme os dados para editar esta configuração
+            </p>
+        </div>
+    </div>
+<form data-step="1" class="form" action="acao.php" method="POST">
+    <div class="form-row">
+                <div class="health-form-group">
+                    
+            <label class="health-label">Valor</label>
+            <input class="health-input" data-step="2" value="<?php echo $custo_valor ?>" minlength="1.0" maxlength="9999.9" type="text" pattern="\d+(\.\d{1,2})?" name="custo_valor" placeholder="000.00" required>
+            <label class="health-label">Tipo do Custo</label>
+            <select class="health-select" data-step="3" name="custo_tipo">
                 <option value="Insumos" <?= $custo_tipo == 'Insumos' ? 'selected' : '' ?>>Insumos</option>
                 <option value="Gasolina" <?= $custo_tipo == 'Gasolina' ? 'selected' : '' ?>>Gasolina</option>
                 <option value="Estacionamento" <?= $custo_tipo == 'Estacionamento' ? 'selected' : '' ?>>Estacionamento</option>
@@ -57,12 +113,13 @@ $custo_descricao = $select['custo_descricao'];
                 <option value="Aluguel Equipamentos" <?= $custo_tipo == 'Aluguel Equipamentos' ? 'selected' : '' ?>>Equipamentos [Aluguel]</option>
                 <option value="Compra Equipamentos" <?= $custo_tipo == 'Compra Equipamentos' ? 'selected' : '' ?>>Equipamentos [Compra]</option>
                 <option value="Outros" <?= $custo_tipo == 'Outros' ? 'selected' : '' ?>>Outros</option>
-            </select></label><br>
-            <label>Descrição Custo</label>
-                <textarea data-step="4" class="textarea-custom" name="custo_descricao" rows="5" cols="43" required><?php echo $custo_descricao ?></textarea><br>
+            </select>
+            
+            <label class="health-label">Descrição Custo</label>
+                <textarea class="health-input" data-step="4" class="textarea-custom" name="custo_descricao" rows="5" cols="43" required><?php echo $custo_descricao ?></textarea><br><br>
                 <input type="hidden" name="custo_id" value="<?php echo $custo_id; ?>" />
                 <input type="hidden" name="id_job" value="editar_custos" />
-            <div data-step="5" class="card-group btn"><button type="submit">Editar Custo</button></div>
+            <div data-step="5"><button class="health-btn health-btn-primary" type="submit"><i class="bi bi-pencil"></i> Editar</button></div>
 
             </div>
         </div>

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
@@ -113,128 +112,607 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
     }
 }
 
-$bg_body = '#cae4fa';
-$bg_cabecalho = '#6a8caf';
-$bg_cabecalho_hover = '#274567';
-$bg_horario = 'darkblue';
+// Nomes dos meses em português
+$mesesPortugues = [
+    1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril',
+    5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
+    9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
+];
 ?>
 
-<style>
-  body {
-    padding: 10px;
-    margin-top: 20px;
-    background: <?php echo $bg_body; ?>;
-    color: black;
-  }
-  .calendario {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    padding: 1rem;
-  }
-  .dia, .cabecalho {
-    padding: 10px;
-    text-align: center;
-    border-radius: 8px;
-  }
-  .cabecalho {
-    font-weight: bold;
-    background: <?php echo $bg_cabecalho; ?>;
-  }
-  .dia {
-    background: <?php echo $bg_cabecalho; ?>;
-    cursor: pointer;
-  }
-  .dia:hover {
-    background: <?php echo $bg_cabecalho_hover; ?>;
-  }
-  .com-horarios {
-    border: 2px solid <?php echo $bg_horario; ?>;
-  }
-  .sem-horarios {
-    opacity: 0.6;
-  }
-  .selecionado {
-    background: #4caf50 !important;
-    color: #000;
-  }
-  .seletor-mes {
-    margin-bottom: 1rem;
-  }
-  .horarios-do-dia {
-    margin-top: 1rem;
-    background: <?php echo $bg_cabecalho; ?>;
-    padding: 1rem;
-    border-radius: 8px;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disponibilidade de Horários - ChronoClick</title>
+    
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        /* Estilos específicos para o calendário */
+        .calendar-header {
+            background: linear-gradient(135deg, var(--health-primary), var(--health-info));
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .calendar-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .calendar-subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .month-selector {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .selector-form {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .selector-label {
+            font-weight: 600;
+            color: var(--health-gray-800);
+            font-size: 0.9rem;
+        }
+        
+        .calendar-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .calendar-header-day {
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--health-gray-700);
+            background: var(--health-gray-50);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .calendar-day {
+            padding: 12px 8px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .calendar-day.available {
+            background: var(--health-success-light);
+            color: var(--health-success);
+            border: 2px solid var(--health-success);
+        }
+        
+        .calendar-day.available:hover {
+            background: var(--health-success);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        
+        .calendar-day.unavailable {
+            background: var(--health-gray-100);
+            color: var(--health-gray-400);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .calendar-day.selected {
+            background: var(--health-primary) !important;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .calendar-day.today {
+            border: 2px solid var(--health-warning);
+            font-weight: 700;
+        }
+        
+        .calendar-day.today.available {
+            border: 2px solid var(--health-success);
+            box-shadow: 0 0 0 2px var(--health-warning-light);
+        }
+        
+        .availability-indicator {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--health-success);
+        }
+        
+        .schedule-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--health-info);
+            display: none;
+        }
+        
+        .schedule-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        
+        .schedule-time {
+            background: var(--health-info-light);
+            color: var(--health-info);
+            padding: 12px 16px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            border: 2px solid var(--health-info);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .schedule-time:hover {
+            background: var(--health-info);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .empty-schedule {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--health-gray-500);
+        }
+        
+        .empty-schedule i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .legend {
+            background: var(--health-gray-50);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .legend-title {
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        
+        .legend-items {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .stats-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .stat-card {
+            background: var(--health-gray-50);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--health-primary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--health-gray-600);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .calendar-grid {
+                gap: 4px;
+            }
+            
+            .calendar-day {
+                padding: 8px 4px;
+                min-height: 40px;
+                font-size: 0.9rem;
+            }
+            
+            .selector-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .schedule-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
+            }
+            
+            .legend-items {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
 
-<form data-step="2" method="GET" class="seletor-mes">
-  <select name="mes">
-    <?php for ($m = 1; $m <= 12; $m++): ?>
-      <option value="<?= $m ?>" <?= $m == $mesSelecionado ? 'selected' : '' ?>>
-        <?= date('F', mktime(0, 0, 0, $m, 1)) ?>
-      </option>
-    <?php endfor; ?>
-  </select>
+<div class="health-container">
+    <!-- Header do Calendário -->
+    <div class="calendar-header health-fade-in">
+        <div class="calendar-title">
+            <i class="bi bi-calendar-week"></i>
+            Disponibilidade de Horários
+        </div>
+        <div class="calendar-subtitle">
+            Visualize e gerencie os horários disponíveis para agendamento
+        </div>
+    </div>
 
-  <select name="ano">
-    <?php for ($a = 2023; $a <= 2026; $a++): ?>
-      <option value="<?= $a ?>" <?= $a == $anoSelecionado ? 'selected' : '' ?>><?= $a ?></option>
-    <?php endfor; ?>
-  </select>
+    <!-- Seletor de Mês/Ano -->
+    <div class="month-selector health-fade-in">
+        <form method="GET" class="selector-form">
+            <div class="selector-group">
+                <label class="selector-label">
+                    <i class="bi bi-calendar-month"></i>
+                    Mês
+                </label>
+                <select name="mes" class="health-select">
+                    <?php foreach ($mesesPortugues as $num => $nome): ?>
+                        <option value="<?= $num ?>" <?= $num == $mesSelecionado ? 'selected' : '' ?>>
+                            <?= $nome ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-  <button type="submit">Atualizar</button> <i class="bi bi-question-square-fill"onclick="ajudaDisponibilidade()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i>
-</form>
+            <div class="selector-group">
+                <label class="selector-label">
+                    <i class="bi bi-calendar-year"></i>
+                    Ano
+                </label>
+                <select name="ano" class="health-select">
+                    <?php for ($a = 2023; $a <= 2030; $a++): ?>
+                        <option value="<?= $a ?>" <?= $a == $anoSelecionado ? 'selected' : '' ?>><?= $a ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
 
-<div data-step="1" class="calendario">
-  <?php
-  $diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  foreach ($diasSemana as $dia) {
-    echo "<div class='cabecalho'>{$dia}</div>";
-  }
+            <button type="submit" class="health-btn health-btn-primary">
+                <i class="bi bi-arrow-clockwise"></i>
+                Atualizar
+            </button>
+            
+            <button type="button" class="health-btn health-btn-outline" onclick="ajudaDisponibilidade()" title="Ajuda">
+                <i class="bi bi-question-circle"></i>
+                Ajuda
+            </button>
+        </form>
+    </div>
 
-  $primeiroDiaSemana = date('w', mktime(0, 0, 0, $mesSelecionado, 1, $anoSelecionado));
-  for ($i = 0; $i < $primeiroDiaSemana; $i++) {
-    echo "<div></div>";
-  }
+    <!-- Estatísticas -->
+    <?php
+    $totalDiasDisponiveis = count($disponibilidades);
+    $totalHorariosDisponiveis = array_sum(array_map('count', $disponibilidades));
+    $diasSemHorarios = $numeroDias - $totalDiasDisponiveis;
+    ?>
+    
+    <div class="stats-container health-fade-in">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number"><?= $totalDiasDisponiveis ?></div>
+                <div class="stat-label">Dias Disponíveis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><?= $totalHorariosDisponiveis ?></div>
+                <div class="stat-label">Horários Livres</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><?= $diasSemHorarios ?></div>
+                <div class="stat-label">Dias Indisponíveis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><?= $numeroDias ?></div>
+                <div class="stat-label">Total de Dias</div>
+            </div>
+        </div>
+    </div>
 
-  for ($dia = 1; $dia <= $numeroDias; $dia++) {
-    $data = date('Y-m-d', mktime(0, 0, 0, $mesSelecionado, $dia, $anoSelecionado));
-    $temHorarios = !empty($disponibilidades[$data]);
-    $classe = $temHorarios ? 'com-horarios' : 'sem-horarios';
-    echo "<div data-step=\"3\" class='dia $classe' onclick='mostrarHorarios(\"$data\", this)'>{$dia}</div>";
-  }
-  ?>
-</div>
+    <!-- Calendário -->
+    <div class="calendar-container health-fade-in">
 
-<div data-step="4" id="horarios" class="horarios-do-dia" style="display: none;">
-  <h3 id="titulo-data"></h3>
-  <ul id="lista-horarios"></ul>
+        <!-- Legenda -->
+        <div class="legend">
+            <div class="legend-title">
+                <i class="bi bi-info-circle"></i>
+                Legenda
+            </div>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--health-success);"></div>
+                    <span>Horários disponíveis</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--health-gray-400);"></div>
+                    <span>Sem horários</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--health-warning);"></div>
+                    <span>Hoje</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--health-primary);"></div>
+                    <span>Dia selecionado</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="calendar-grid">
+            <?php
+            $diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            foreach ($diasSemana as $dia) {
+                echo "<div class='calendar-header-day'>{$dia}</div>";
+            }
+
+            $primeiroDiaSemana = date('w', mktime(0, 0, 0, $mesSelecionado, 1, $anoSelecionado));
+            for ($i = 0; $i < $primeiroDiaSemana; $i++) {
+                echo "<div></div>";
+            }
+
+            $hoje = date('Y-m-d');
+            for ($dia = 1; $dia <= $numeroDias; $dia++) {
+                $data = date('Y-m-d', mktime(0, 0, 0, $mesSelecionado, $dia, $anoSelecionado));
+                $temHorarios = !empty($disponibilidades[$data]);
+                $ehHoje = ($data === $hoje);
+                
+                $classes = ['calendar-day'];
+                if ($temHorarios) {
+                    $classes[] = 'available';
+                } else {
+                    $classes[] = 'unavailable';
+                }
+                if ($ehHoje) {
+                    $classes[] = 'today';
+                }
+                
+                $classesStr = implode(' ', $classes);
+                $onclick = $temHorarios ? "mostrarHorarios('$data', this)" : '';
+                
+                echo "<div class='$classesStr'" . ($temHorarios ? " onclick=\"$onclick\"" : "") . ">";
+                echo $dia;
+                if ($temHorarios) {
+                    echo "<div class='availability-indicator'></div>";
+                }
+                echo "</div>";
+            }
+            ?>
+        </div>
+    </div>
+
+    <!-- Painel de Horários -->
+    <div id="schedule-panel" class="schedule-panel health-fade-in">
+        <h3 class="schedule-title" id="schedule-title">
+            <i class="bi bi-clock"></i>
+            <span id="selected-date">Horários Disponíveis</span>
+        </h3>
+        <div id="schedule-content">
+            <div class="schedule-grid" id="schedule-grid"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-  const disponibilidades = <?= json_encode($disponibilidades) ?>;
+const disponibilidades = <?= json_encode($disponibilidades) ?>;
 
-  function mostrarHorarios(data, elemento) {
-    const titulo = document.getElementById('titulo-data');
-    const lista = document.getElementById('lista-horarios');
-    const container = document.getElementById('horarios');
+function mostrarHorarios(data, elemento) {
+    const panel = document.getElementById('schedule-panel');
+    const title = document.getElementById('selected-date');
+    const grid = document.getElementById('schedule-grid');
 
-    const dataObj = new Date(data);
-    dataObj.setDate(dataObj.getDate() + 1); // Ajuste visual para fuso
-    titulo.textContent = 'Horários de ' + dataObj.toLocaleDateString('pt-BR');
+    // Formatar data para exibição
+    const dataObj = new Date(data + 'T00:00:00');
+    const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    title.textContent = `Horários para ${dataFormatada}`;
 
     const horarios = disponibilidades[data] || [];
-    lista.innerHTML = horarios.length
-      ? horarios.map(h => `<li>${h}h</li>`).join('')
-      : '<li>Nenhum horário disponível</li>';
-
-    container.style.display = 'block';
-
-    document.querySelectorAll('.dia').forEach(el => el.classList.remove('selecionado'));
-    if (elemento) {
-      elemento.classList.add('selecionado');
+    
+    if (horarios.length > 0) {
+        grid.innerHTML = horarios.map(horario => 
+            `<div class="schedule-time" onclick="selecionarHorario('${data}', '${horario}')">
+                <i class="bi bi-clock"></i>
+                ${horario}h
+            </div>`
+        ).join('');
+    } else {
+        grid.innerHTML = `
+            <div class="empty-schedule">
+                <i class="bi bi-calendar-x"></i>
+                <div>Nenhum horário disponível para esta data</div>
+            </div>
+        `;
     }
-  }
+
+    // Remover seleção anterior e adicionar nova
+    document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+    if (elemento) {
+        elemento.classList.add('selected');
+    }
+
+    // Mostrar painel com animação
+    panel.style.display = 'block';
+    setTimeout(() => {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+}
+
+function selecionarHorario(data, horario) {
+    Swal.fire({
+        title: 'Horário Selecionado',
+        html: `
+            <div style="text-align: center; padding: 20px;">
+                <i class="bi bi-calendar-check" style="font-size: 3rem; color: var(--health-success); margin-bottom: 16px;"></i>
+                <h4 style="margin-bottom: 8px;">Data: ${new Date(data + 'T00:00:00').toLocaleDateString('pt-BR')}</h4>
+                <h4 style="color: var(--health-primary);">Horário: ${horario}h</h4>
+            </div>
+        `,
+        icon: 'success',
+        confirmButtonText: 'Agendar Consulta',
+        showCancelButton: true,
+        cancelButtonText: 'Fechar',
+        confirmButtonColor: '#2563eb'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = `reservas_cadastrar.php?data_atendimento=${data}&horario_atendimento=${horario}`;
+            Swal.fire({
+                title: 'Redirecionando...',
+                text: 'Você será direcionado para a página de agendamento.',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+    });
+}
+
+function ajudaDisponibilidade() {
+    Swal.fire({
+        title: 'Como usar o Calendário',
+        html: `
+            <div style="text-align: left; padding: 10px;">
+                <h5><i class="bi bi-1-circle"></i> Navegação</h5>
+                <p>• Use os seletores de mês e ano para navegar</p>
+                <p>• Clique em "Atualizar" para aplicar as mudanças</p>
+                
+                <h5><i class="bi bi-2-circle"></i> Dias Disponíveis</h5>
+                <p>• Dias em <span style="color: var(--health-success);">verde</span> têm horários livres</p>
+                <p>• Dias em <span style="color: var(--health-gray-400);">cinza</span> não têm horários</p>
+                
+                <h5><i class="bi bi-3-circle"></i> Seleção de Horários</h5>
+                <p>• Clique em um dia disponível para ver os horários</p>
+                <p>• Clique em um horário para agendar</p>
+            </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Entendi',
+        confirmButtonColor: '#2563eb'
+    });
+}
+
+// Adicionar efeitos de animação
+document.addEventListener('DOMContentLoaded', function() {
+    // Animar elementos com fade-in
+    const elements = document.querySelectorAll('.health-fade-in');
+    elements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            el.style.transition = 'all 0.6s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+
+    // Destacar dia atual se estiver no mês atual
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth() + 1;
+    const anoAtual = hoje.getFullYear();
+    
+    if (mesAtual == <?= $mesSelecionado ?> && anoAtual == <?= $anoSelecionado ?>) {
+        const diaAtual = hoje.getDate();
+        // O dia atual já é destacado pelo PHP
+    }
+});
 </script>
+
+</body>
+</html>

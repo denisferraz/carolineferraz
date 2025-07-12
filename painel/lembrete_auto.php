@@ -2,6 +2,11 @@
 require('../config/database.php');
 require '../vendor/autoload.php';
 
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -11,28 +16,36 @@ $hora_atual = strtotime('+0 hours', $hora_);
 
 $hoje = date('Y-m-d');
 
-$result_check_config = $conexao->query("SELECT * FROM configuracoes WHERE id > -3");
+
+$result_check_config = $conexao->query("SELECT * FROM configuracoes WHERE id > 0");
 while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
     $token_config = $select_check_config['token_emp'];
-    $config_empresa = $row['config_empresa'];
-    $config_email = $row['config_email'];
-    $config_telefone = $row['config_telefone'];
-    $config_msg_lembrete = $row['config_msg_lembrete'];
-    $envio_whatsapp = $row['envio_whatsapp'];
-    $envio_email = $row['envio_email'];
-    $lembrete_auto_time = $row['lembrete_auto_time'];
-    $is_segunda = $row['is_segunda'];
-    $is_terca = $row['is_terca'];
-    $is_quarta = $row['is_quarta'];
-    $is_quinta = $row['is_quinta'];
-    $is_sexta = $row['is_sexta'];
-    $is_sabado = $row['is_sabado'];
-    $is_domingo = $row['is_domingo'];
+    $config_empresa = $select_check_config['config_empresa'];
+    $config_email = $select_check_config['config_email'];
+    $config_telefone = $select_check_config['config_telefone'];
+    $config_msg_lembrete = $select_check_config['config_msg_lembrete'];
+    $envio_whatsapp = $select_check_config['envio_whatsapp'];
+    $envio_email = $select_check_config['envio_email'];
+    $lembrete_auto_time = $select_check_config['lembrete_auto_time'];
+    $is_segunda = $select_check_config['is_segunda'];
+    $is_terca = $select_check_config['is_terca'];
+    $is_quarta = $select_check_config['is_quarta'];
+    $is_quinta = $select_check_config['is_quinta'];
+    $is_sexta = $select_check_config['is_sexta'];
+    $is_sabado = $select_check_config['is_sabado'];
+    $is_domingo = $select_check_config['is_domingo'];
 
 if (!$lembrete_auto_time || strtotime($lembrete_auto_time) === false) {
-  exit;
+  continue;
 }
 
+$id_check = $conexao->prepare("SELECT id FROM painel_users WHERE token = :token_emp");
+$id_check->execute(array('token_emp' => $token_config));
+$client_id = $id_check->fetchColumn();
+
+if($site_puro != 'chronoclick'){
+  $client_id = 'carolineferraz';
+}
 
 // Pega timestamps
 $hora_config = strtotime($lembrete_auto_time); // timestamp do lembrete
@@ -42,7 +55,7 @@ $intervalo = 15 * 60;
 
 // Verifica se a hora atual está dentro do intervalo
 if (abs($hora_atual - $hora_config) > $intervalo) {
-  exit; // pula esse registro, está fora do intervalo
+  continue; // pula esse registro, está fora do intervalo
 }
 
 $diaSemana = date('w', strtotime($hoje));
@@ -56,7 +69,7 @@ if (
   ($diaSemana == 5 && $is_sexta == 0) ||
   ($diaSemana == 6 && $is_sabado == 0)
 ) {
-  exit;
+  continue;
 }
 
 $datas_envio = [];
@@ -94,7 +107,6 @@ if ($diasemana_numero == 5) { // sexta-feira
   $painel_users_array = [];
     while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
-        $id = $select['id'];
 
     // Para descriptografar os dados
     $dados = base64_decode($dados_painel_users);
@@ -181,14 +193,13 @@ $doc_telefone = $select_check['telefone'];
     }
   //Fim Envio de Email
   
-  
   //Incio Envio Whatsapp
   if($envio_whatsapp == 'ativado'){
-  
+      
       $doc_telefonewhats = "55$doc_telefone";
       $msg_whatsapp = $msg_lembrete_texto;
       
-      $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+      $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
   
     }
       //Fim Envio Whatsapp
@@ -213,7 +224,7 @@ $doc_telefone = $select_check['telefone'];
   
   $doc_telefonewhats = "55$config_telefone";
   
-  $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+  $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
   
 }
   //Fim Envio Whatsapp

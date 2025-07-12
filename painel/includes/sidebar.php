@@ -64,12 +64,12 @@ if ($tutorialAtivo2): ?>
                     <span class="nav-link-text">Novo Cliente</span>
                 </a>
             </li>
-            <li class="nav-item">
+             <!-- <li class="nav-item">
                 <a href="javascript:void(0)" onclick='window.open("crm.php","iframe-home");' class="nav-link">
                     <i class="bi bi-person-bounding-box nav-link-icon"></i>
                     <span class="nav-link-text">CRM</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
 
@@ -348,7 +348,7 @@ if ($tutorialAtivo2): ?>
     </div>
 
     <!-- PAINEL OWNER -->
-    <?php if($tipo_cadastro == 'Owner' && $_SESSION['site_puro'] == 'chronoclick'){ ?>
+    <?php if($tipo_cadastro == 'Owner'){ ?>
     <div class="nav-section">
         <div class="nav-section-title">Owner</div>
         <ul class="nav-list">
@@ -368,6 +368,12 @@ if ($tutorialAtivo2): ?>
                 <a href="javascript:void(0)" onclick='window.open("owner_transacoes.php","iframe-home");' class="nav-link">
                     <i class="bi bi-wallet2 nav-link-icon"></i>
                     <span class="nav-link-text">Financeiro</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick="abrirBackup();" class="nav-link">
+                    <i class="bi bi-database-down nav-link-icon"></i>
+                    <span class="nav-link-text">Backup</span>
                 </a>
             </li>
         </ul>
@@ -391,23 +397,39 @@ if ($tutorialAtivo2): ?>
 </nav>
 
 <script>
-// Função para abrir lembrete (mantida para compatibilidade)
+
+function exibirPopup(id_job) {
+
+    if (id_job === 'lembrete') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Carregando...',
+            text: 'Aguarde enquanto enviamos os Lembretes!',
+            timer: 10000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    } else {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Salvando...',
+            text: 'Aguarde enquanto salvamos o seu Backup!',
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    }
+}
+
+
 function abrirLembrete() {
-    // Exibe o popup de carregamento
-    exibirPopup();
-    // Abre a página lembrete.php no iframe
+    exibirPopup('lembrete');
     window.open("lembrete.php", "iframe-home");
 }
 
-function exibirPopup() {
-    Swal.fire({
-        icon: 'warning',
-        title: 'Carregando...',
-        text: 'Aguarde enquanto enviamos os Lembretes!',
-        timer: 10000,
-        timerProgressBar: true,
-        showConfirmButton: false
-    });
+function abrirBackup() {
+    exibirPopup('backup');
+    window.open("backup_automatico.php?id_job=Painel", "iframe-home");
 }
 
 // Adicionar indicador visual de link ativo

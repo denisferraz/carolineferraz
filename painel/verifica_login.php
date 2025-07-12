@@ -91,5 +91,6 @@ if ($tipo_cadastro != 'Owner' && $dias_restantes <= 0 && $site_puro == 'chronocl
 
 }else{
     $dias_restantes = 365;
+    $client_id = 'carolineferraz';
 }
 ?>

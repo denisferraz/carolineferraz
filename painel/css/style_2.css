@@ -559,12 +559,6 @@ tr:hover {
   color: var(--cor-texto-inverso);
 }
 
-a.whatsapp-link {
-  color: #25D366;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 a.whatsapp-link:hover {
   text-decoration: underline;
 }

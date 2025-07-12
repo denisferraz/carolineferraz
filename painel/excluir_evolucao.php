@@ -12,5 +12,5 @@ if ($id && $doc_email) {
 }
 
 // Redireciona de volta para o prontuário
-header("Location: cadastro.php?id_job=Prontuario&email=" . urlencode($doc_email));
+header("Location: cadastro.php?id_job=Evolucao&email=" . urlencode($doc_email));
 exit;

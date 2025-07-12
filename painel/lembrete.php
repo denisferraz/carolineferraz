@@ -39,6 +39,14 @@ date_default_timezone_set('America/Sao_Paulo');
   
   if ($stmt->rowCount() > 0) {
 
+$id_check = $conexao->prepare("SELECT id FROM painel_users WHERE token = :token_emp");
+$id_check->execute(array('token_emp' => $_SESSION['token_emp']));
+$client_id = $id_check->fetchColumn();
+
+if($site_puro != 'chronoclick'){
+  $client_id = 'carolineferraz';
+}
+
   while($select_check = $stmt->fetch(PDO::FETCH_ASSOC)){
   $atendimento_dia= $select_check['atendimento_dia'];
   $atendimento_hora = $select_check['atendimento_hora'];
@@ -145,7 +153,7 @@ $doc_telefone = $select_check['telefone'];
       $doc_telefonewhats = "55$doc_telefone";
       $msg_whatsapp = $msg_lembrete_texto;
       
-      $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+      $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
   
     }
       //Fim Envio Whatsapp
@@ -170,7 +178,7 @@ $doc_telefone = $select_check['telefone'];
   
   $doc_telefonewhats = "55$config_telefone";
   
-  $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp);
+  $whatsapp = enviarWhatsapp($doc_telefonewhats, $msg_whatsapp, $client_id);
   
 }
   //Fim Envio Whatsapp

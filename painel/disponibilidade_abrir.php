@@ -10,32 +10,82 @@ require_once('tutorial.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <title>Abrir Agenda</title>
-    <link rel="stylesheet" href="<?php echo $css_path ?>">
+    <title><?php echo $config_empresa; ?></title>
+    
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
     <style>
-        .card {
-            width: 100%;
-            max-width: 500px;
+        /* Estilos específicos para esta página */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .erro-campo {
+            border-color: var(--health-danger) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
         }
     </style>
 </head>
 <body>
+    
+<div class="health-container">
+    <!-- Header da Página -->
+    <div class="health-card health-fade-in">
+        <div class="health-card-header">
+            <h1 class="health-card-title">
+                <i class="bi bi-door-open-fill"></i>
+                Abrir Agenda <i class="bi bi-question-square-fill"onclick="ajudaDisponibilidadeAbrir()"title="Ajuda?"style="color: white; cursor: pointer; font-size: 25px;"></i>
+            </h1>
+            <p class="health-card-subtitle">
+                Preencha os dados abaixo para abrir a sua agenda no periodo informado
+            </p>
+        </div>
+    </div>
     <form class="form" action="acao.php" method="POST">
-        <div data-step="1" class="card">
-            <div class="card-top">
-                <h2>Abrir Agenda <i class="bi bi-question-square-fill"onclick="ajudaDisponibilidadeAbrir()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
-            </div>
-            <div class="card-group">
-                <label>Data Início</label>
-                <input data-step="2" type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_inicio" required>
+<div class="form-section health-fade-in">
+            <div class="form-row">
+                <div class="health-form-group">
+                    
+                <label class="health-label">Data Início</label>
+                <input class="health-input" data-step="2" type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_inicio" required>
 
-                <label>Data Fim</label>
-                <input data-step="3" type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_fim" required>
+                <label class="health-label">Data Fim</label>
+                <input class="health-input" data-step="3" type="date" max="<?php echo $config_atendimento_dia_max ?>" name="fechar_fim" required>
 
-                <label>Hora Início</label>
-                <select data-step="4" class="form-control" name="hora_inicio">
+                <label class="health-label">Hora Início</label>
+                <select class="health-select" data-step="4" class="form-control" name="hora_inicio">
                     <?php
                     $atendimento_hora_comeco = strtotime("$config_atendimento_hora_comeco");
                     $atendimento_hora_fim = strtotime("$config_atendimento_hora_fim");
@@ -49,8 +99,8 @@ require_once('tutorial.php');
                     ?>
                 </select>
 
-                <label>Hora Fim</label>
-                <select data-step="5" class="form-control" name="hora_fim">
+                <label class="health-label">Hora Fim</label>
+                <select class="health-select" data-step="5" class="form-control" name="hora_fim">
                     <?php
                     $atendimento_hora_comeco = strtotime("$config_atendimento_hora_comeco");
                     $atendimento_hora_fim = strtotime("$config_atendimento_hora_fim");
@@ -63,30 +113,28 @@ require_once('tutorial.php');
                     }
                     ?>
                 </select>
-
+                <br><br>
                 <div data-step="6">
-                <label>Dias da Semana</label>
+                <label class="health-label">Dias da Semana</label>
                 <input id="dia_segunda" type="checkbox" name="dia_segunda" checked>
-                <label for="dia_segunda">Segunda-Feira</label>
+                <label for="dia_segunda">Segunda-Feira</label><br>
                 <input id="dia_terca" type="checkbox" name="dia_terca" checked>
-                <label for="dia_terca">Terça-Feira</label>
+                <label for="dia_terca">Terça-Feira</label><br>
                 <input id="dia_quarta" type="checkbox" name="dia_quarta" checked>
-                <label for="dia_quarta">Quarta-Feira</label>
+                <label for="dia_quarta">Quarta-Feira</label><br>
                 <input id="dia_quinta" type="checkbox" name="dia_quinta" checked>
-                <label for="dia_quinta">Quinta-Feira</label>
+                <label for="dia_quinta">Quinta-Feira</label><br>
                 <input id="dia_sexta" type="checkbox" name="dia_sexta" checked>
-                <label for="dia_sexta">Sexta-Feira</label>
+                <label for="dia_sexta">Sexta-Feira</label><br>
                 <input id="dia_sabado" type="checkbox" name="dia_sabado" checked>
-                <label for="dia_sabado">Sábado</label>
+                <label for="dia_sabado">Sábado</label><br>
                 <input id="dia_domingo" type="checkbox" name="dia_domingo" checked>
                 <label for="dia_domingo">Domingo</label>
                 </div>
-
+                <br>
                 <input type="hidden" name="id_job" value="disponibilidade_abrir" />
                 <input type="hidden" name="atendimento_local" value="N/A" />
-                <div class="card-group btn">
-                    <button data-step="7" type="submit">Abrir Agenda</button>
-                </div>
+                <div data-step="7"><button class="health-btn health-btn-primary" type="submit"><i class="bi bi-check-lg"></i> Abrir Agenda</button></div>
             </div>
         </div>
     </form>

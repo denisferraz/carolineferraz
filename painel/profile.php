@@ -84,14 +84,57 @@ $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Cliente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <link rel="stylesheet" href="<?php echo $css_path ?>">
+    <title><?php echo $config_empresa; ?></title>
+    
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
     <style>
-        .card {
-            width: 100%;
-            max-width: 500px;
+        /* Estilos específicos para esta página */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .erro-campo {
+            border-color: var(--health-danger) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+        }
+
+        .btn-sm {
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--font-size-xs);
         }
     </style>
     <script>
@@ -120,136 +163,108 @@ $id_job = isset($conn_msqli) ? mysqli_real_escape_string($conn_msqli, $_GET['id_
 </head>
 <body>
 
-    <?php if($id_job == 'Senha'){ ?>
-    <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
-        <div class="card">
-            <div class="card-top">
-                <h2>Alterar Senha</h2>
+<div class="health-container">
+    <!-- Header da Página -->
+    <div class="health-card health-fade-in">
+        <div class="health-card-header">
+            <h1 class="health-card-title">
+                <i class="bi bi-person-check"></i>
+                Editar <?php echo $id_job; ?>
+            </h1>
+            <p class="health-card-subtitle">
+                Confirme os dados para editar seu cadastro
+            </p>
+        </div>
+    </div>
+
+    <div class="form-section-title">
+                <div data-step="2">
+                <i class="bi bi-person-vcard"></i> <?php echo $doc_cpf ?><br>
+                <i class="bi bi-envelope"></i> <?php echo $email ?><br>
+                </div>
             </div>
 
+<form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
+    <?php if($id_job == 'Senha'){ ?>
+
             <?php if ($error_reserva): ?>
-            <div class="card-top">
-                <h3><?php echo $error_reserva; ?></h3>
+            <div class="form-row">
+                <h2><?php echo $error_reserva; ?></h2>
             </div>
             <?php endif; ?>
 
-            <div class="card-group">
-                <label>CPF</label><?php echo $doc_cpf ?>
-                <input type="hidden" name="doc_cpf" value="<?php echo $cpf ?>">
-            </div>
+            <div class="form-row">
+                <div class="health-form-group">
 
-            <div class="card-group">
-                <label>Email</label><?php echo $email ?>
-                <input type="hidden" name="doc_email" minlength="10" value="<?php echo $email ?>">
-            </div>
+                <label class="health-label">Senha Antiga</label>
+                <input class="health-input" type="password" name="senha_antes" minlength="5" maxlength="30" required>
 
-            <div class="card-group">
-                <label>Senha Antiga</label>
-                <input type="password" name="senha_antes" minlength="5" maxlength="30" required>
-            </div>
+                <label class="health-label">Senha Nova</label>
+                <input class="health-input" type="password" name="senha_nova" minlength="5" maxlength="30" required>
 
-            <div class="card-group">
-                <label>Senha Nova</label>
-                <input type="password" name="senha_nova" minlength="5" maxlength="30" required>
-            </div>
+                <label class="health-label">Confirmar Senha Nova</label>
+                <input class="health-input" type="password" name="senha_nova_conf" minlength="5" maxlength="30" required>
 
-            <div class="card-group">
-                <label>Confirmar Senha Nova</label>
-                <input type="password" name="senha_nova_conf" minlength="5" maxlength="30" required>
-            </div>
-
-            <div class="card-group">
                 <input type="hidden" name="id_job" value="cadastro_editar_senha">
-                <input type="hidden" name="feitopor" value="Paciente">
+                <input class="health-input" type="hidden" name="feitopor" value="Paciente">
+                </div>
             </div>
-
-            <div class="card-group btn">
-                <button type="submit">Confirmar</button>
-            </div>
-        </div>
-    </form>
 
     <?php }else if($id_job == 'Profile'){ ?>
 
-    <form class="form" action="acao.php" method="POST" onsubmit="exibirPopup()">
-    <div class="card">
-        <div class="card-top">
-            <h2>Editar Cadastro</h2>
-        </div>
+        <div class="form-row">
+                <div class="health-form-group">
 
-        <div class="card-group">
-            <label>CPF</label><?php echo $doc_cpf ?>
-            <input type="hidden" name="doc_cpf" value="<?php echo $cpf ?>">
-        </div>
+            <label class="health-label">Nome</label>
+            <input class="health-input" type="text" name="doc_nome" minlength="5" maxlength="30" value="<?php echo $doc_nome ?>" placeholder="Nome e Sobrenome" required>
 
-        <div class="card-group">
-            <label>Email</label><?php echo $email ?>
-            <input type="hidden" name="doc_email" minlength="10" value="<?php echo $email ?>">
-        </div>
+            <label class="health-label">Telefone</label>
+            <input class="health-input" type="text" name="doc_telefone" minlength="11" maxlength="18" value="<?php echo $telefone ?>" placeholder="00-00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
 
-        <div class="card-group">
-            <label>Nome</label>
-            <input type="text" name="doc_nome" minlength="5" maxlength="30" value="<?php echo $doc_nome ?>" placeholder="Nome e Sobrenome" required>
-        </div>
+            <label class="health-label">RG</label>
+            <input class="health-input" type="text" name="doc_rg" maxlength="18" value="<?php echo $doc_rg ?>" placeholder="00000" required>
 
-        <div class="card-group">
-            <label>Telefone</label>
-            <input type="text" name="doc_telefone" minlength="11" maxlength="18" value="<?php echo $telefone ?>" placeholder="00-00000-0000" OnKeyPress="formatar('##-#####-####', this)" required>
-        </div>
+            <label class="health-label">Nascimento</label>
+            <input class="health-input" type="date" name="nascimento" min="<?php echo $min_nasc ?>" max="<?php echo $max_nasc ?>" value="<?php echo $data_nascimento ?>" required>
 
-        <div class="card-group">
-            <label>RG</label>
-            <input type="text" name="doc_rg" maxlength="18" value="<?php echo $doc_rg ?>" placeholder="00000" required>
-        </div>
-
-        <div class="card-group">
-            <label>Nascimento</label>
-            <input type="date" name="nascimento" min="<?php echo $min_nasc ?>" max="<?php echo $max_nasc ?>" value="<?php echo $data_nascimento ?>" required>
-        </div>
-
-        <div class="card-group">
-            <label>Profissão</label>
-            <input type="text" name="profissao" maxlength="25" value="<?php echo $profissao ?>" placeholder="Profissão" required>
-        </div>
+            <label class="health-label">Profissão</label>
+            <input class="health-input" type="text" name="profissao" maxlength="25" value="<?php echo $profissao ?>" placeholder="Profissão" required>
 
         <br>
-        <div class="card-group">
-        <label><b>Endereço Completo</b></label>
-        </div>
+        <label class="health-label"><b>Endereço Completo</b></label>
         <br>
-        <div class="card-group">
-        <label for="endereco_cep">[<b>CEP</b>]</label>
-        <input type="text" id="endereco_cep" name="endereco_cep" value="<?php echo $cep ?>" placeholder="CEP..." required><br>
-        </div><div class="card-group">
-        <label for="endereco_rua">[<b>Rua</b>]</label>
-        <input type="text" id="endereco_rua" maxlength="50" value="<?php echo $rua ?>" name="endereco_rua" placeholder="Rua..." required><br>
-        </div><div class="card-group">
-        <label for="endereco_n">[<b>Numero</b>]</label>
-        <input type="text" id="endereco_n" maxlength="50" value="<?php echo $numero ?>" name="endereco_n" placeholder="Numero..." required><br>
-        </div><div class="card-group">
-        </div><div class="card-group">
-        <label for="endereco_bairro">[<b>Bairro</b>]</label>
-        <input type="text" id="endereco_bairro" maxlength="50" value="<?php echo $bairro ?>" name="endereco_bairro" placeholder="Bairro..." required><br>
-        </div><div class="card-group">
-        <label for="endereco_cidade">[<b>Cidade</b>]</label>
-        <input type="text" id="endereco_cidade" maxlength="50" value="<?php echo $cidade ?>" name="endereco_cidade" placeholder="Cidade..." required><br>
-        </div><div class="card-group">
-        <label for="endereco_uf">[<b>Estado</b>]</label>
-        <input type="text" id="endereco_uf" maxlength="50" value="<?php echo $estado ?>" name="endereco_uf" placeholder="Estado..." required><br>
-        </div>
 
-        <div class="card-group">
+        <label class="health-label" for="endereco_cep">[<b>CEP</b>]</label>
+        <input class="health-input" type="text" id="endereco_cep" name="endereco_cep" value="<?php echo $cep ?>" placeholder="CEP..." required><br>
+
+        <label class="health-label" for="endereco_rua">[<b>Rua</b>]</label>
+        <input class="health-input" type="text" id="endereco_rua" maxlength="50" value="<?php echo $rua ?>" name="endereco_rua" placeholder="Rua..." required><br>
+
+        <label class="health-label" for="endereco_n">[<b>Numero</b>]</label>
+        <input class="health-input" type="text" id="endereco_n" maxlength="50" value="<?php echo $numero ?>" name="endereco_n" placeholder="Numero..." required><br>
+
+        <label class="health-label" for="endereco_bairro">[<b>Bairro</b>]</label>
+        <input class="health-input" type="text" id="endereco_bairro" maxlength="50" value="<?php echo $bairro ?>" name="endereco_bairro" placeholder="Bairro..." required><br>
+
+        <label class="health-label" for="endereco_cidade">[<b>Cidade</b>]</label>
+        <input class="health-input" type="text" id="endereco_cidade" maxlength="50" value="<?php echo $cidade ?>" name="endereco_cidade" placeholder="Cidade..." required><br>
+
+        <label class="health-label" for="endereco_uf">[<b>Estado</b>]</label>
+        <input class="health-input" type="text" id="endereco_uf" maxlength="50" value="<?php echo $estado ?>" name="endereco_uf" placeholder="Estado..." required><br>
+
             <input type="hidden" name="id_job" value="cadastro_editar">
             <input type="hidden" name="feitopor" value="Paciente">
-        </div>
-
-        <div class="card-group btn">
-            <button type="submit">Confirmar</button>
-        </div>
+            </div>
     </div>
-    </form>
 
     <?php } ?>
+
+    <input type="hidden" name="doc_cpf" value="<?php echo $cpf ?>">
+    <input type="hidden" name="doc_email" minlength="10" value="<?php echo $email ?>">
+
+    <div><button class="health-btn health-btn-success" type="submit"><i class="bi bi-check-lg"></i> Atualizar Dados</button></div>
+    </form>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

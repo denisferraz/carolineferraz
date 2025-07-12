@@ -1,0 +1,53 @@
+<?php
+session_start();
+require('../config/database.php');
+require('verifica_login.php');
+
+?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Despesas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo $css_path ?>">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Minhas Despesas</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Valor</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $query = $conexao->prepare("SELECT * FROM despesas WHERE token_emp = '{$_SESSION['token_emp']}' AND id >= :id ORDER BY despesa_dia DESC");
+                $query->execute(['id' => 1]);
+
+                while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+                    $despesa_dia = date('d/m/Y', strtotime($select['despesa_dia']));
+                    $despesa_tipo = $select['despesa_tipo'];
+                    $despesa_valor = 'R$' . number_format($select['despesa_valor'], 2, ',', '.');
+                    $despesa_descricao = $select['despesa_descricao'];
+                ?>
+                <tr>
+                    <td data-label="Data"><?php echo $despesa_dia; ?></td>
+                    <td data-label="Tipo"><?php echo $despesa_tipo; ?></td>
+                    <td data-label="Valor"><?php echo $despesa_valor; ?></td>
+                    <td data-label="Descrição"><?php echo $despesa_descricao; ?></td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

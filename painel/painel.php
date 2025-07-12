@@ -75,7 +75,7 @@ $dias_restantes = (strtotime($data_validade) - strtotime($hoje)) / 86400;
         <aside class="sidebar" id="sidebar">
             <?php if($tipo_acesso == 'Paciente' && isset($_SESSION['emp_selecao']) || $_SESSION['vencido']){
                 include 'includes/sidebar_paciente.php';
-            }else if(!isset($_SESSION['emp_selecao'])){
+            }else if(!isset($_SESSION['emp_selecao']) && $site_puro == 'chronoclick'){
                 include 'includes/sidebar_selecao.php';
             }else if($tipo_acesso == 'Owner' || ($configuracao >= 1 && $dias_restantes > 0) || $site_puro != 'chronoclick'){
                 include 'includes/sidebar.php';

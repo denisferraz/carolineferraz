@@ -16,28 +16,77 @@ unset($_SESSION['error_reserva']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <title><?php echo $config_empresa; ?></title>
+    
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <title>Cancelar Consulta</title>
-    <link rel="stylesheet" href="<?php echo $css_path ?>">
+    
     <style>
-        .card {
-            width: 100%;
-            max-width: 500px;
+        /* Estilos específicos para esta página */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--health-primary);
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .erro-campo {
+            border-color: var(--health-danger) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
         }
     </style>
 </head>
 <body>
 
+<div class="health-container">
+    <!-- Header da Página -->
+    <div class="health-card health-fade-in">
+        <div class="health-card-header">
+            <h1 class="health-card-title">
+                <i class="bi bi-calendar2-minus"></i>
+                Cancelar Consulta
+            </h1>
+            <p class="health-card-subtitle">
+                Confirme os dados para cancelar esta consulta
+            </p>
+        </div>
+    </div>
+    
     <form class="form" action="../reservas_php.php" method="POST" onsubmit="exibirPopup()">
-        <div data-step="1" class="card">
-            <div class="card-top">
-                <h2>Confirmar o Cancelamento <i class="bi bi-question-square-fill"onclick="ajudaConsultaCancelar()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
-            </div>
 
             <?php if ($error_reserva): ?>
-            <div class="card-top">
+            <div class="form-row">
                 <h3><?php echo $error_reserva; ?></h3>
             </div>
             <?php endif; ?>
@@ -76,21 +125,20 @@ foreach ($painel_users_array as $select_check2){
   $doc_telefone = $select_check2['telefone'];
 }
 ?>
-            <div class="card-group">
+<div class="form-section health-fade-in">
+            <div class="form-section-title">
+                <div data-step="2">
+                <i class="bi bi-person-vcard"></i> <?php echo $doc_nome ?><br>
+                <i class="bi bi-envelope"></i> <?php echo $doc_email ?><br>
+                <i class="bi bi-calendar"></i> <?php echo date('d/m/Y', strtotime($atendimento_dia)) ?> as <?php echo date('H:i\h', $atendimento_hora) ?>
+                </div>
+            </div>
+    
+    <div class="form-row">
+                <div class="health-form-group">
 
-            <?php if($tipo == 'Painel'){ ?>
-            <div data-step="2">
-            <label>Nome [ <?php echo $doc_nome ?> ]</label>
-            <label>E-mail [ <?php echo $doc_email ?> ]</label>
-            </div>
-            <?php } ?>
-            <br>
-            <div data-step="3">
-            <label>Atendimento Dia [ <?php echo date('d/m/Y', strtotime($atendimento_dia)) ?> ]</label>
             <input value="<?php echo $atendimento_dia ?>" type="hidden" name="atendimento_dia">
-            <label>Atendimento Hora [ <?php echo date('H:i\h', $atendimento_hora) ?> ]</label>
             <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="hidden" name="atendimento_hora">
-            </div>
 
             <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
@@ -102,14 +150,15 @@ foreach ($painel_users_array as $select_check2){
             <br><br>
             <div data-step="4" class="title"><b>[Aviso]</b> Afirmo que o cancelamento é irreversivel e com isso irei perder a garantia de disponibilidade</div><br>
             <br>
-            <div data-step="5" class="card-group-red btn"><button type="submit">Cancelar</button></div>
+            <div data-step="5"><button class="health-btn health-btn-danger" type="submit"><i class="bi bi-x-lg"></i> Cancelar</button></div>
 
-            </div>
+            </div></div>
 <?php
 }
 ?>
         </div>
     </form>
+</div>
     <script>
     function exibirPopup() {
         Swal.fire({

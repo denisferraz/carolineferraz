@@ -9,37 +9,143 @@ require_once('tutorial.php');
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Saldo Estoque</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $config_empresa; ?></title>
     
-    <!-- CSS externo do sistema -->
-    <link rel="stylesheet" href="<?php echo $css_path ?>">
+    <!-- CSS Tema Saúde -->
+    <link rel="stylesheet" href="css/health_theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
-    <!-- CSS inline para destaque -->
     <style>
-        .linha-alerta {
-            background-color: #fff3cd;
-            color: #664d03;
-            font-weight: bold;
+        /* Estilos específicos para esta página */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--health-primary);
         }
-        table {
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--health-gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .erro-campo {
+            border-color: var(--health-danger) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+        }
+
+        .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin-top: 16px;
         }
-        table th, table td {
-            padding: 8px;
-            border: 1px solid #ccc;
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--health-gray-900);
+        }
+
+        .data-table th {
             text-align: center;
         }
+        
+        .data-table th {
+            background: var(--health-gray-300);
+            font-weight: 600;
+            color: var(--health-gray-800);
+        }
+        
+        .data-table tr:hover {
+            background: var(--health-gray-200);
+        }
+
+        .valor-sugestao {
+            background: var(--health-success-light);
+            color: var(--health-success);
+        }
+        
+        .valor-margem {
+            background: var(--health-warning-light);
+            color: var(--health-warning);
+        }
+        
+        .valor-taxas {
+            background: var(--health-danger-light);
+            color: var(--health-danger);
+        }
+        
+        .valor-total {
+            background: var(--health-info-light);
+            color: var(--health-info);
+        }
+        
+        .linha-alerta {
+            background-color: #f8d7da; /* vermelho claro de fundo */
+            color: #721c24;           /* vermelho escuro para o texto */
+            font-weight: bold;
+        }
+
+    @media (max-width: 768px) {
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-responsive .data-table {
+            min-width: 600px; /* ou o mínimo necessário para sua tabela não quebrar */
+        }
+
+        .data-table th, .data-table td {
+            padding: 8px;
+            font-size: 0.8rem;
+        }
+    }
     </style>
 </head>
 <body>
 
-<div data-step="1" class="container">
-    <h2>Saldo Estoque <i class="bi bi-question-square-fill"onclick="ajudaEstoqueVer()"title="Ajuda?"style="color: darkred; cursor: pointer; font-size: 25px;"></i></h2>
-
-    <table>
+<div class="section-content health-fade-in">
+    <!-- Header da Página -->
+    <div class="health-card health-fade-in">
+        <div class="health-card-header">
+            <h1 class="health-card-title">
+                <i class="bi bi-bag-dash"></i>
+                Saldo de Estoque <i class="bi bi-question-square-fill"onclick="ajudaEstoqueVer()"title="Ajuda?"style="color: white; cursor: pointer; font-size: 25px;"></i>
+            </h1>
+            <p class="health-card-subtitle">
+                Veja abaixo o seu saldo atual de estoque
+            </p>
+        </div>
+    </div>
+    
+<div class="table-responsive">
+    <table data-step="1" class="data-table">
         <thead>
             <tr>
                 <th data-step="2">Produto</th>
