@@ -34,6 +34,7 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
     $is_sexta = $select_check_config['is_sexta'];
     $is_sabado = $select_check_config['is_sabado'];
     $is_domingo = $select_check_config['is_domingo'];
+    $config_antecedencia = $select_check_config['config_antecedencia'];
 
 if (!$lembrete_auto_time || strtotime($lembrete_auto_time) === false) {
   continue;
@@ -73,16 +74,15 @@ if (
 }
 
 $datas_envio = [];
-
 if ($diasemana_numero == 5) { // sexta-feira
-    $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // sábado
-    $datas_envio[] = date('Y-m-d', strtotime('+2 day')); // domingo
-    $datas_envio[] = date('Y-m-d', strtotime('+3 day')); // segunda
+  $datas_envio[] = date('Y-m-d', strtotime("+{$config_antecedencia} day"));         // sábado
+  $datas_envio[] = date('Y-m-d', strtotime("+" . ($config_antecedencia + 1) . " day")); // domingo
+  $datas_envio[] = date('Y-m-d', strtotime("+" . ($config_antecedencia + 2) . " day")); // segunda
 } elseif ($diasemana_numero == 6) { // sábado
-    $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // domingo
-    $datas_envio[] = date('Y-m-d', strtotime('+2 day')); // segunda
+  $datas_envio[] = date('Y-m-d', strtotime("+{$config_antecedencia} day"));         // domingo
+  $datas_envio[] = date('Y-m-d', strtotime("+" . ($config_antecedencia + 1) . " day")); // segunda
 } else {
-    $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // dia seguinte
+  $datas_envio[] = date('Y-m-d', strtotime("+{$config_antecedencia} day"));         // dia seguinte
 }
 
   $atendimentos_dia = '';

@@ -176,6 +176,8 @@ function inserirVariavel(texto) {
     }
     ?>
     </select>
+    <label class="health-label">Dias de antecedencia da Consulta</label>
+    <input class="health-input" data-step="2" type="number" min="1" name="config_antecedencia" value="<?php echo $config_antecedencia; ?>" required>
     <br><br>
     <div data-step="10">
     <label class="health-label">Dias da Semana</label><br>

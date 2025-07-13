@@ -18,15 +18,31 @@ $hoje = date('Y-m-d');
 <body>
 
 <?php
-$query = $conexao->query("SELECT * FROM painel_users WHERE id >= 1 AND tipo != 'Paciente' AND plano_escolhido != 'Removido'");
-$query_row = $query->rowCount();
+$query = $conexao->prepare("
+SELECT 
+    p.dados_painel_users, 
+    p.email, 
+    p.token, 
+    c.plano_validade 
+FROM 
+    painel_users p
+LEFT JOIN 
+    configuracoes c ON c.token_emp = p.token
+WHERE 
+    p.id >= 1 AND p.tipo != 'Paciente'
+GROUP BY 
+    p.token
+");
+$query->execute();
+$query_row = $query->rowcount();
 
 $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
         $email = $select['email'];
-        $plano_validade = $select['plano_validade'];
         $token = $select['token'];
+        $plano_validade = $select['plano_validade'];
+
 
     // Para descriptografar os dados
     $dados = base64_decode($dados_painel_users);

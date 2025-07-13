@@ -161,6 +161,7 @@ if($id_job == 'editar_configuracoes_agenda'){
     $envio_whatsapp = mysqli_real_escape_string($conn_msqli, $_POST['envio_whatsapp']);
     $envio_email = mysqli_real_escape_string($conn_msqli, $_POST['envio_email']);
     $lembrete_auto_time = mysqli_real_escape_string($conn_msqli, $_POST['lembrete_hora']);
+    $config_antecedencia = mysqli_real_escape_string($conn_msqli, $_POST['config_antecedencia']);
 
     if(isset($_POST['is_segunda'])){
     $is_segunda = 1;
@@ -198,8 +199,8 @@ if($id_job == 'editar_configuracoes_agenda'){
     $is_domingo = 0;
     }
 
-    $query = $conexao->prepare("UPDATE configuracoes SET config_msg_confirmacao = :config_msg_confirmacao, config_msg_cancelamento = :config_msg_cancelamento, config_msg_finalizar = :config_msg_finalizar, config_msg_lembrete = :config_msg_lembrete, config_msg_aniversario = :config_msg_aniversario, envio_whatsapp = :envio_whatsapp, envio_email = :envio_email, is_segunda = :is_segunda, is_terca = :is_terca, is_quarta = :is_quarta, is_quinta = :is_quinta, is_sexta = :is_sexta, is_sabado = :is_sabado, is_domingo = :is_domingo, lembrete_auto_time = :lembrete_auto_time WHERE token_emp = '{$_SESSION['token_emp']}'");
-    $query->execute(array('config_msg_confirmacao' => $msg_confirmacao, 'config_msg_cancelamento' => $msg_cancelamento, 'config_msg_finalizar' => $msg_finalizar, 'config_msg_lembrete' => $msg_lembrete, 'config_msg_aniversario' => $msg_aniversario, 'envio_whatsapp' => $envio_whatsapp, 'envio_email' => $envio_email, 'is_segunda' => $is_segunda, 'is_terca' => $is_terca, 'is_quarta' => $is_quarta, 'is_quinta' => $is_quinta, 'is_sexta' => $is_sexta, 'is_sabado' => $is_sabado, 'is_domingo' => $is_domingo, 'lembrete_auto_time' => $lembrete_auto_time));
+    $query = $conexao->prepare("UPDATE configuracoes SET config_msg_confirmacao = :config_msg_confirmacao, config_msg_cancelamento = :config_msg_cancelamento, config_msg_finalizar = :config_msg_finalizar, config_msg_lembrete = :config_msg_lembrete, config_msg_aniversario = :config_msg_aniversario, envio_whatsapp = :envio_whatsapp, envio_email = :envio_email, is_segunda = :is_segunda, is_terca = :is_terca, is_quarta = :is_quarta, is_quinta = :is_quinta, is_sexta = :is_sexta, is_sabado = :is_sabado, is_domingo = :is_domingo, lembrete_auto_time = :lembrete_auto_time, config_antecedencia = :config_antecedencia WHERE token_emp = '{$_SESSION['token_emp']}'");
+    $query->execute(array('config_msg_confirmacao' => $msg_confirmacao, 'config_msg_cancelamento' => $msg_cancelamento, 'config_msg_finalizar' => $msg_finalizar, 'config_msg_lembrete' => $msg_lembrete, 'config_msg_aniversario' => $msg_aniversario, 'envio_whatsapp' => $envio_whatsapp, 'envio_email' => $envio_email, 'is_segunda' => $is_segunda, 'is_terca' => $is_terca, 'is_quarta' => $is_quarta, 'is_quinta' => $is_quinta, 'is_sexta' => $is_sexta, 'is_sabado' => $is_sabado, 'is_domingo' => $is_domingo, 'lembrete_auto_time' => $lembrete_auto_time, 'config_antecedencia' => $config_antecedencia));
         
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
     $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => 'Alterou as Configurações', 'token_emp' => $_SESSION['token_emp']));   
@@ -1293,8 +1294,8 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     $token_profile = mysqli_real_escape_string($conn_msqli, $_POST['token_profile']);
     $plano_validade = mysqli_real_escape_string($conn_msqli, $_POST['plano_validade']);
 
-    $query = $conexao->prepare("UPDATE painel_users SET plano_validade = :plano_validade WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-    $query->execute(array('token_emp' => '%;'.$token_profile.';%', 'email' => $doc_email, 'plano_validade' => $plano_validade));
+    $query = $conexao->prepare("UPDATE configuracoes SET plano_validade = :plano_validade WHERE token_emp = :token_emp");
+    $query->execute(array('token_emp' => $token_profile, 'plano_validade' => $plano_validade));
 
         echo "<script>
         alert('Cadastro Alterado com Sucesso')
@@ -1404,9 +1405,38 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
 
     $sala = mysqli_real_escape_string($conn_msqli, $_POST['sala']);
     $descricao = mysqli_real_escape_string($conn_msqli, $_POST['descricao']);
+    
+    $foto = $_FILES['foto'];
 
+    // Apenas valida o tipo, como você já fez
+    $tipos_permitidos = ['image/jpeg', 'image/jpg'];
+    if (!in_array($foto['type'], $tipos_permitidos)) {
+        echo "<script>
+            alert('Selecione apenas arquivos do tipo JPG ou JPEG');
+            window.location.replace('config_salas.php');
+        </script>";
+        exit();
+    }
+
+    // Caminho base
+    $dirAtual = '../imagens/' . $_SESSION['token_emp'] . '/salas/';
+
+    // Cria diretório, se necessário
+    if (!is_dir($dirAtual)) {
+        mkdir($dirAtual, 0777, true);
+    }
+
+    // Insere no banco primeiro
     $query = $conexao->prepare("INSERT INTO salas (token_emp, sala, descricao, quantidade, status_sala) VALUES (:token_emp, :sala, :descricao, 1, 'Habilitar')");
-    $query->execute(array('token_emp' => $_SESSION['token_emp'], 'sala' => $sala, 'descricao' => $descricao));  
+    $query->execute(['token_emp' => $_SESSION['token_emp'], 'sala' => $sala, 'descricao' => $descricao]);
+    $id = $conexao->lastInsertId();
+
+    // Define o caminho final com extensão .jpg
+    $caminhoFinal = $dirAtual . $id . '.jpg';
+
+    // Move o arquivo (sem if)
+    move_uploaded_file($foto['tmp_name'], $caminhoFinal);
+
 
     if($_SESSION['configuracao'] == 0){
         echo "<script>
@@ -1416,7 +1446,7 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
         exit();
     }else{
         echo "<script>
-        alert('Sala Cadastrada com sucesso')
+        alert('Sala Cadastrada com sucesso $id')
         window.location.replace('config_salas.php')
         </script>";
         exit();  

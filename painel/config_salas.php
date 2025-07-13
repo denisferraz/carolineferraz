@@ -138,7 +138,7 @@ require_once('tutorial.php');
             </p>
         </div>
     </div>
-    <form data-step="1" class="form" action="acao.php" method="POST">
+    <form data-step="1" class="form" action="acao.php" method="POST" enctype="multipart/form-data">
 
     <div class="form-row">
                 <div class="health-form-group">
@@ -146,7 +146,9 @@ require_once('tutorial.php');
             <label class="health-label">Sala *</label>
             <input class="health-input" data-step="2" minlength="5" maxlength="100" type="text" name="sala" placeholder="Nome da Sala" required>
             <label class="health-label">Descrição *</label>
-            <textarea class="health-input" data-step="3" class="textarea-custom" name="descricao" rows="5" cols="43" required> </textarea>
+            <textarea class="health-input" data-step="3" class="textarea-custom" name="descricao" rows="5" cols="43" required> </textarea><br>
+            <label class="health-label">Foto da Sala (JPG/JPEG)</label>
+            <input class="health-input" type="file" name="foto" accept="image/jpeg,image/jpg">
             <br><br>
             <input type="hidden" name="id_job" value="config_salas_Cadastrar" />
             <div data-step="4"><button class="health-btn health-btn-success" type="submit"><i class="bi bi-check-lg"></i> Cadastrar</button></div>
@@ -182,9 +184,23 @@ require_once('tutorial.php');
                 $id_job = 'Habilitar';
                 $class_status = 'success';
             }
+
+            $basePath = "../imagens/{$_SESSION['token_emp']}/salas/";
+            $imgJpg = $basePath . $id . '.jpg';
+            $imgJpeg = $basePath . $id . '.jpeg';
+
+            if (file_exists($imgJpg)) {
+                $imgSrc = $imgJpg;
+            } elseif (file_exists($imgJpeg)) {
+                $imgSrc = $imgJpeg;
+            } else {
+                $imgSrc = '../images/logo.png'; // opcional
+            }
         ?>
         <tr>
-            <td data-label="Sala"><?php echo $sala; ?></td>
+            <td data-label="Sala">
+            <img src="<?php echo $imgSrc; ?>" alt="Foto da Sala" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+            <br><?php echo $sala; ?></td>
             <td data-label="Descrição"><?php echo $descricao; ?></td>
             <td data-label="Habilitar/Desabilitar">
                 <form method="post" action="acao.php" target="iframe-home" style="margin: 0;">

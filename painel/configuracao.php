@@ -46,6 +46,7 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESS
     $is_sabado = $row['is_sabado'];
     $is_domingo = $row['is_domingo'];
     $lembrete_auto_time = $row['lembrete_auto_time'];
+    $config_antecedencia = $row['config_antecedencia'];
     $plano_validade = $row['plano_validade'];
 }
 

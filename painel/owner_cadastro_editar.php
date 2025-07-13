@@ -5,7 +5,18 @@ require('verifica_login.php');
 
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 
-$query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+$query = $conexao->prepare("
+SELECT 
+    p.dados_painel_users, 
+    p.token, 
+    c.plano_validade 
+FROM 
+    painel_users p
+LEFT JOIN 
+    configuracoes c ON c.token_emp = p.token
+WHERE 
+    p.email = :email
+");
 $query->execute(array('email' => $email));
 $painel_users_array = [];
     while($select = $query->fetch(PDO::FETCH_ASSOC)){

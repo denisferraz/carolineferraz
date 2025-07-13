@@ -410,6 +410,447 @@
   font-weight: 500;
 }
 
+
+/* === LAYOUT GERAL === */
+.health-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--health-bg-secondary);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* === CARDS MÉDICOS === */
+.health-card {
+  background: var(--health-bg-primary);
+  border-radius: var(--health-radius);
+  box-shadow: var(--health-shadow-md);
+  border: 1px solid var(--health-gray-200);
+  overflow: hidden;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.health-card:hover {
+  box-shadow: var(--health-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.health-card-header {
+  background: linear-gradient(135deg, var(--health-primary) 0%, var(--health-primary-light) 100%);
+  color: white;
+  padding: 20px 24px;
+  border-bottom: none;
+}
+
+.health-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.health-card-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin: 8px 0 0;
+}
+
+.health-card-body {
+  padding: 24px;
+}
+
+/* === BOTÕES MÉDICOS === */
+.health-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--health-radius-sm);
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.health-btn-primary {
+  background: var(--health-primary);
+  color: white;
+}
+
+.health-btn-primary:hover {
+  background: var(--health-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--health-shadow-md);
+}
+
+.health-btn-success {
+  background: var(--health-success);
+  color: white;
+}
+
+.health-btn-success:hover {
+  background: #047857;
+  transform: translateY(-1px);
+}
+
+.health-btn-warning {
+  background: var(--health-warning);
+  color: white;
+}
+
+.health-btn-warning:hover {
+  background: #b45309;
+  transform: translateY(-1px);
+}
+
+.health-btn-danger {
+  background: var(--health-danger);
+  color: white;
+}
+
+.health-btn-danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.health-btn-outline {
+  background: transparent;
+  color: var(--health-primary);
+  border: 2px solid var(--health-primary);
+}
+
+.health-btn-outline:hover {
+  background: var(--health-primary);
+  color: white;
+}
+
+.health-btn-gray {
+  background: var(--health-gray-500);
+  color: black;
+}
+
+.health-btn-gray:hover {
+  background: var(--health-gray-900);
+  color: white;
+}
+
+/* === FORMULÁRIOS MÉDICOS === */
+.health-form-group {
+  margin-bottom: 20px;
+}
+
+.health-label {
+  display: block;
+  font-weight: bold;
+  color: var(--health-gray-900);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.health-input {
+  width: 90%;
+  padding: 12px 16px;
+  border: 2px solid var(--health-gray-300);
+  border-radius: var(--health-radius-sm);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.health-input:focus {
+  outline: none;
+  border-color: var(--health-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.health-select {
+  width: 90%;
+  padding: 12px 16px;
+  border: 2px solid var(--health-gray-300);
+  border-radius: var(--health-radius-sm);
+  font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+}
+
+.health-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--health-gray-300);
+  border-radius: var(--health-radius-sm);
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/* === TABELAS MÉDICAS === */
+.health-table-container {
+  background: white;
+  border-radius: var(--health-radius);
+  box-shadow: var(--health-shadow-md);
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.health-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.health-table th {
+  background: var(--health-gray-100);
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--health-gray-700);
+  border-bottom: 2px solid var(--health-gray-200);
+  font-size: 0.9rem;
+}
+
+.health-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--health-gray-200);
+  color: var(--health-gray-600);
+  font-size: 0.9rem;
+}
+
+.health-table tbody tr:hover {
+  background: var(--health-bg-accent);
+}
+
+.health-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* === BADGES DE STATUS === */
+.health-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.health-badge-success {
+  background: rgba(5, 150, 105, 0.1);
+  color: var(--health-success);
+  border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.health-badge-warning {
+  background: rgba(217, 119, 6, 0.1);
+  color: var(--health-warning);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+.health-badge-danger {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--health-danger);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.health-badge-info {
+  background: rgba(8, 145, 178, 0.1);
+  color: var(--health-info);
+  border: 1px solid rgba(8, 145, 178, 0.2);
+}
+
+/* === ALERTAS MÉDICOS === */
+.health-alert {
+  padding: 16px 20px;
+  border-radius: var(--health-radius-sm);
+  margin: 16px 0;
+  border-left: 4px solid;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.health-alert-success {
+  background: rgba(5, 150, 105, 0.05);
+  border-left-color: var(--health-success);
+  color: #065f46;
+}
+
+.health-alert-warning {
+  background: rgba(217, 119, 6, 0.05);
+  border-left-color: var(--health-warning);
+  color: #92400e;
+}
+
+.health-alert-danger {
+  background: rgba(220, 38, 38, 0.05);
+  border-left-color: var(--health-danger);
+  color: #991b1b;
+}
+
+.health-alert-info {
+  background: rgba(8, 145, 178, 0.05);
+  border-left-color: var(--health-info);
+  color: #155e75;
+}
+
+/* === GRID RESPONSIVO === */
+.health-grid {
+  display: grid;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.health-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.health-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.health-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* === ESTATÍSTICAS MÉDICAS === */
+.health-stat-card {
+  background: white;
+  padding: 24px;
+  border-radius: var(--health-radius);
+  box-shadow: var(--health-shadow-md);
+  text-align: center;
+  border-left: 4px solid var(--health-primary);
+  transition: all 0.3s ease;
+}
+
+.health-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--health-shadow-lg);
+}
+
+.health-stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--health-primary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.health-stat-label {
+  font-size: 0.9rem;
+  color: var(--health-gray-600);
+  font-weight: 500;
+}
+
+
+a.whatsapp-link:hover {
+  text-decoration: underline;
+}
+
+.whatsapp-link i {
+  color: #25D366;
+  margin-right: 5px;
+  font-size: 1.1rem;
+}
+
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+  .health-container {
+    padding: 16px;
+  }
+  
+  .health-card-header {
+    padding: 16px 20px;
+  }
+  
+  .health-card-body {
+    padding: 20px;
+  }
+  
+  .health-grid {
+    gap: 16px;
+  }
+  
+  .health-grid-2,
+  .health-grid-3,
+  .health-grid-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .health-table-container {
+    overflow-x: auto;
+  }
+  
+  .health-btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* === ANIMAÇÕES SUAVES === */
+@keyframes healthFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.health-fade-in {
+  animation: healthFadeIn 0.6s ease-out;
+}
+
+/* === ÍCONES MÉDICOS === */
+.health-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-icon-lg {
+  width: 32px;
+  height: 32px;
+  font-size: 1.5rem;
+}
+
+/* === LOADING MÉDICO === */
+.health-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--health-primary);
+}
+
+.health-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--health-gray-200);
+  border-top: 3px solid var(--health-primary);
+  border-radius: 50%;
+  animation: healthSpin 1s linear infinite;
+}
+
+@keyframes healthSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
 /* === RESPONSIVIDADE === */
 @media (max-width: 768px) {
   .health-container {

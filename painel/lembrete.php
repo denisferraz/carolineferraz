@@ -19,14 +19,14 @@ date_default_timezone_set('America/Sao_Paulo');
   $datas_envio = [];
   
   if ($diasemana_numero == 5) { // sexta-feira
-      $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // sábado
-      $datas_envio[] = date('Y-m-d', strtotime('+2 day')); // domingo
-      $datas_envio[] = date('Y-m-d', strtotime('+3 day')); // segunda
+    $datas_envio[] = date('Y-m-d', strtotime("+{$config_antecedencia} day"));         // sábado
+    $datas_envio[] = date('Y-m-d', strtotime("+" . ($config_antecedencia + 1) . " day")); // domingo
+    $datas_envio[] = date('Y-m-d', strtotime("+" . ($config_antecedencia + 2) . " day")); // segunda
   } elseif ($diasemana_numero == 6) { // sábado
-      $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // domingo
-      $datas_envio[] = date('Y-m-d', strtotime('+2 day')); // segunda
+    $datas_envio[] = date('Y-m-d', strtotime("+{$config_antecedencia} day"));         // domingo
+    $datas_envio[] = date('Y-m-d', strtotime("+" . ($config_antecedencia + 1) . " day")); // segunda
   } else {
-      $datas_envio[] = date('Y-m-d', strtotime('+1 day')); // dia seguinte
+    $datas_envio[] = date('Y-m-d', strtotime("+{$config_antecedencia} day"));         // dia seguinte
   }
 
   $atendimentos_dia = '';

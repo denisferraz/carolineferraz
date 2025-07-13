@@ -57,6 +57,7 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESS
     $is_domingo = $row['is_domingo'];
     $lembrete_auto_time = $row['lembrete_auto_time'];
     $plano_validade = $row['plano_validade'];
+    $config_antecedencia = $row['config_antecedencia'];
 }
 
 if($site_puro == 'chronoclick'){
