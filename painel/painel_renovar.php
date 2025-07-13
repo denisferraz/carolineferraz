@@ -2,24 +2,10 @@
 session_start();
 require('../config/database.php');
 
-$query = $conexao->query("SELECT * FROM painel_users WHERE email = '{$_SESSION['email']}'");
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $configuracao = $select['configuracao'];
-    $plano_validade = $select['plano_validade'];
-    $tipo_cadastro = $select['tipo'];
-}
-
 // Define o caminho do CSS
 $css_path = "css/style_2.css";
 $css_path_2 = "css/style.css";
 
-if($site_puro == 'chronoclick'){
-$hoje = date('Y-m-d');
-$data_validade = $plano_validade;
-$dias_restantes = (strtotime($data_validade) - strtotime($hoje)) / 86400;
-}else{
-    $dias_restantes = 365;
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

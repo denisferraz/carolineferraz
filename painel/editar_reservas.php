@@ -81,6 +81,7 @@ $atendimento_hora = $select['atendimento_hora'];
 $atendimento_dia = $select['atendimento_dia'];
 $doc_email = $select['doc_email'];
 $local_reserva = $select['local_consulta'];
+$sala = $select['atendimento_sala'];
 
 $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
 $query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
@@ -175,6 +176,19 @@ foreach ($painel_users_array as $select3){
             <option value="Salvador" <?= ($local_reserva == 'Salvador') ? 'selected' : '' ?>>Salvador</option>
         </select>
     <?php } ?>
+    <label class="health-label"><b>Sala da Consulta: </label>
+        <select class="health-select" data-step="7" name="atendimento_sala" required>
+        <?php 
+        $query = $conexao->prepare("SELECT sala, id FROM salas WHERE token_emp = :token_emp AND status_sala = 'Habilitar'");
+        $query->execute(array('token_emp' => $_SESSION['token_emp']));
+        while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+            $selected = ($sala == $select['id']) ? 'selected' : '';
+        ?>
+        <option value="<?php echo $select['id']; ?>" <?php echo $selected; ?>>
+            <?php echo $select['sala']; ?>
+        </option>
+        <?php } ?>
+    </select>
     <br><br>
     <?php if($tipo == 'Painel'){ ?>
     <input id="overbook" type="checkbox" name="overbook">

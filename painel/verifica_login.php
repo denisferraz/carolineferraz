@@ -56,6 +56,7 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESS
     $is_sabado = $row['is_sabado'];
     $is_domingo = $row['is_domingo'];
     $lembrete_auto_time = $row['lembrete_auto_time'];
+    $plano_validade = $row['plano_validade'];
 }
 
 if($site_puro == 'chronoclick'){
@@ -63,9 +64,9 @@ if($site_puro == 'chronoclick'){
 $query2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token AND email = :email AND tipo != 'Paciente'");
 $query2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token_emp'], 'email' => $_SESSION['email']));
 while ($select = $query2->fetch(PDO::FETCH_ASSOC)) {
-$plano_validade = $select['plano_validade'];
 $client_id = $select['id'];
 $tipo_cadastro = $select['tipo'];
+$configuracao = $select['configuracao'];
 }
 
 $hoje = date('Y-m-d');

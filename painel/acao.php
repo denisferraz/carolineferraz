@@ -22,7 +22,7 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
 //error_reporting(E_ALL);
 error_reporting(0);
 
-$id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
+$id_job = mysqli_real_escape_string($conn_msqli, $_POST["id_job"]);
 $historico_data = date('Y-m-d H:i:s');
 
 $result_check = $conexao->query("SELECT * FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = '{$_SESSION['email']}'");
@@ -112,7 +112,7 @@ if($id_job == 'editar_configuracoes_agenda'){
     if($_SESSION['configuracao'] == 0){
         echo "<script>
         alert('Configurações Editadas com sucesso. Continue com sua configuração!')
-        window.location.replace('config_landing.php')
+        window.location.replace('config_salas.php')
         </script>";
         exit();
     }else{
@@ -339,7 +339,7 @@ while($close <= $reserva_close){
     //Hora Inicio
     while($close_hora <= $hora_close){
 
-    $query = $conexao->query("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES ('{$close_dias}', '{$close_horas}', '{$_SESSION['token_emp']}')");
+    $query = $conexao->query("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp, atendimento_sala) VALUES ('{$close_dias}', '{$close_horas}', '{$_SESSION['token_emp']}', 0)");
 
     $close_hora++;
     $close_horas = date('H:i:s', strtotime("$close_horas") + ($config_atendimento_hora_intervalo * 60));
@@ -390,7 +390,7 @@ while($close <= $reserva_close){
     //Hora Inicio
     while($close_hora <= $hora_close){
 
-    $query = $conexao->query("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$close_dias}' AND atendimento_hora = '{$close_horas}'");
+    $query = $conexao->query("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$close_dias}' AND atendimento_hora = '{$close_horas}' AND atendimento_sala = 0");
 
     $close_hora++;
     $close_horas = date('H:i:s', strtotime("$close_horas") + ($config_atendimento_hora_intervalo * 60));
@@ -707,14 +707,16 @@ echo "<script>
     $atendimento_hora = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora']);
     $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
     $tipo_consulta = mysqli_real_escape_string($conn_msqli, $_POST['tipo_consulta']);
+    $sala = mysqli_real_escape_string($conn_msqli, $_POST['sala']);
+    $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['local_consulta']);
     
     $data_email = date('d/m/Y \-\ H:i:s');
     $atendimento_dia_str = date('d/m/Y',  strtotime($atendimento_dia));
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
       
     $msg_replace = str_replace(
-        ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}'],    // o que procurar
-        [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta],  // o que colocar no lugar
+        ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}', '{SALA}', '{LOCAL}'],    // o que procurar
+        [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta, $sala, $local_consulta],  // o que colocar no lugar
         $config_msg_confirmacao
     );
       
@@ -808,6 +810,8 @@ echo "<script>
     $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
     $atendimento_dia = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia']);
     $atendimento_hora = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora']);
+    $sala = mysqli_real_escape_string($conn_msqli, $_POST['sala']);
+    $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['local_consulta']);
     
     //Envio de Email	
     
@@ -816,8 +820,8 @@ echo "<script>
     $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
       
     $msg_replace = str_replace(
-        ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}'],    // o que procurar
-        [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta],  // o que colocar no lugar
+        ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}', '{SALA}', '{LOCAL}'],    // o que procurar
+        [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta, $sala, $local_consulta],  // o que colocar no lugar
         $config_msg_lembrete
     );
       
@@ -1295,5 +1299,162 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
         alert('Cadastro Alterado com Sucesso')
         window.location.replace('owner_cadastro_editar.php?email=$doc_email')
         </script>";
+
+}else if($id_job == 'cadastro_novo_admin'){
+
+    $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
+    $doc_cpf = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_cpf']));
+    $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
+    $doc_telefone = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_telefone']));
+    $doc_nascimento = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_nascimento']));
+    $senha = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['senha']));
+    $conf_senha = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['conf_senha']));
+    $token = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['token']));
+
+    if($senha != $conf_senha){
+        echo "<script>
+        alert('Senhas não conferem!')
+        window.location.replace('admin.php?id_job=Novo')
+        </script>";
+        exit();
+    }
+
+    function validaCPF($doc_cpf) {
+     
+        // Extrai somente os números
+        $doc_cpf = preg_replace( '/[^0-9]/is', '', $doc_cpf );
+         
+        // Verifica se foi informado todos os digitos corretamente
+        if (strlen($doc_cpf) != 11) {
+            return false;
+        }
+    
+        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+        if (preg_match('/(\d)\1{10}/', $doc_cpf)) {
+            return false;
+        }
+    
+        // Faz o calculo para validar o CPF
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $doc_cpf[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($doc_cpf[$c] != $d) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
+    if(validaCPF($doc_cpf) == false){
+        echo "<script>
+        alert('CPF Invalido')
+        window.location.replace('admin.php?id_job=Novo')
+        </script>";
+        exit();
+    }
+
+    $crip_senha = md5($senha);
+
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email AND token = :token");
+    $query->execute(array('token_emp' => '%;'.$token.';%', 'email' => $doc_email, 'token' => $token));
+    $row_check = $query->rowCount();
+    
+    if($row_check == 1){
+        echo "<script>
+        alert('Acesso ja Cadastrado!')
+        window.location.replace('admin.php?id_job=Novo')
+        </script>";
+        exit();
+    }
+    
+    $query = $conexao->prepare("SELECT * FROM painel_users WHERE email = :email");
+    $query->execute(array('email' => $doc_email));
+    $row_check = $query->rowCount();
+    
+
+    //$dados_painel_users = $nome.';'.$rg.';'.$cpf.';'.$telefone.';'.$profissao.';'.$nascimento.';'.$cep.';'.$rua.';'.$numero.';'.$cidade.';'.$bairro.';'.$estado;
+    $dados_painel_users = $doc_nome.';'.''.';'.$doc_cpf.';'.$doc_telefone.';'.''.';'.$nascimento.';'.''.';'.''.';'.''.';'.''.';'.''.';'.'';
+    $dados_criptografados = openssl_encrypt($dados_painel_users, $metodo, $chave, 0, $iv);
+    $dados_final = base64_encode($dados_criptografados);
+
+    if($row_check == 1){
+        
+    while($select = $query->fetch(PDO::FETCH_ASSOC)){
+    $token_emp = $select['token_emp'] . ';' . $_SESSION['token_emp'];
+    }
+        
+    $query = $conexao->prepare("UPDATE painel_users SET token_emp = :token_emp, token = :token WHERE email = :email");
+    $query->execute(array('email' => $doc_email, 'token_emp' => $token_emp, 'token' => $token));
+    
+    }else{
+    $query = $conexao->prepare("INSERT INTO painel_users (email, dados_painel_users, tipo, senha, token, codigo, tentativas, origem, token_emp) VALUES (:email, :dados_painel_users, 'Admin', :senha, :token, '0', '1', :origem, :token_emp)");
+    $query->execute(array('email' => $doc_email, 'dados_painel_users' => $dados_final, 'token' => $token, 'senha' => $crip_senha, 'origem' => $origem, 'token_emp' => $token));  
+    }
+
+    echo "<script>
+    alert('Acesso Cadastrado Sucesso!')
+    window.location.replace('admin.php?id_job=Acessos')
+    </script>";
+
+}else if($id_job == 'config_salas_Cadastrar'){
+
+    $sala = mysqli_real_escape_string($conn_msqli, $_POST['sala']);
+    $descricao = mysqli_real_escape_string($conn_msqli, $_POST['descricao']);
+
+    $query = $conexao->prepare("INSERT INTO salas (token_emp, sala, descricao, quantidade, status_sala) VALUES (:token_emp, :sala, :descricao, 1, 'Habilitar')");
+    $query->execute(array('token_emp' => $_SESSION['token_emp'], 'sala' => $sala, 'descricao' => $descricao));  
+
+    if($_SESSION['configuracao'] == 0){
+        echo "<script>
+        alert('Configurações Editadas com sucesso. Continue com sua configuração!')
+        window.location.replace('config_landing.php')
+        </script>";
+        exit();
+    }else{
+        echo "<script>
+        alert('Sala Cadastrada com sucesso')
+        window.location.replace('config_salas.php')
+        </script>";
+        exit();  
+    }
+
+}else if($id_job == 'config_salas_Excluir'){
+
+    $id = mysqli_real_escape_string($conn_msqli, $_POST['id']);
+
+    $query = $conexao->prepare("UPDATE salas set status_sala = 'Removida' WHERE id = :id AND token_emp = :token_emp");
+    $query->execute(array('token_emp' => $_SESSION['token_emp'], 'id' => $id));  
+
+    echo "<script>
+    alert('Sala Excluida com Sucesso!')
+    window.location.replace('config_salas.php')
+    </script>";
+
+}else if($id_job == 'config_salas_Desabilitar'){
+
+    $id = mysqli_real_escape_string($conn_msqli, $_POST['id']);
+
+    $query = $conexao->prepare("UPDATE salas set status_sala = 'Desabilitar' WHERE id = :id AND token_emp = :token_emp");
+    $query->execute(array('token_emp' => $_SESSION['token_emp'], 'id' => $id));  
+
+    echo "<script>
+    alert('Sala Desabilitada com Sucesso!')
+    window.location.replace('config_salas.php')
+    </script>";
+
+}else if($id_job == 'config_salas_Habilitar'){
+
+    $id = mysqli_real_escape_string($conn_msqli, $_POST['id']);
+
+    $query = $conexao->prepare("UPDATE salas set status_sala = 'Habilitar' WHERE id = :id AND token_emp = :token_emp");
+    $query->execute(array('token_emp' => $_SESSION['token_emp'], 'id' => $id));  
+
+    echo "<script>
+    alert('Sala Habilitada com Sucesso!')
+    window.location.replace('config_salas.php')
+    </script>";
 
 }

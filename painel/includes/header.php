@@ -41,13 +41,6 @@ $query2->execute([
     }
 }
 
-$query3 = $conexao->prepare("SELECT * FROM painel_users WHERE token = :token AND tipo != 'Paciente' AND email = :email");
-$query3->execute(array('token' => $_SESSION['token'], 'email' => $_SESSION['email']));
-while ($select2 = $query3->fetch(PDO::FETCH_ASSOC)) {
-    $plano_validade = $select2['plano_validade'];
-    $tipo_cadastro = $select2['tipo'];
-}
-
 if($_SESSION['site_puro'] == 'chronoclick'){
 $hoje = date('Y-m-d');
 $dias_restantes = (strtotime($plano_validade) - strtotime($hoje)) / 86400;

@@ -808,3 +808,15 @@ function ajudaConfigLanding() {
         { id: "14", intro: "Após ter preenchido as informações, clique em <b>Atualizar Dados</b>."}
     ]);
 }
+
+function ajudaSalas() {
+    iniciarAjuda([
+        { id: "1", intro: "Aqui você consegue Gerenciar as configuração da(s) sua(s) <b>Salas</b>. Lembre-se que toda e qualquer alteração tem efeito automatico, e todas as informações relacionadas a estas configurações, serão alteradas."},
+        { id: "2", intro: "Aqui você preenche com o <b>Nome</b> da sua sala, que ira aparecer nas consultas para você selecionar."},
+        { id: "3", intro: "Aqui você preenche com a <b>Descrição</b> da sua sala, que ira aparecer caso você opte por agendamento externo, para que seus pacientes consigam verificar qual sala eles querem."},
+        { id: "4", intro: "Após você preencher tudo, clique em <b>Cadastrr</b>."},
+        { id: "5", intro: "Aqui você tem acesso a toda as suas salas criadas e aos respectivos status das mesmas."},
+        { id: "6", intro: "Aqui você pode <b>Habilitar/Desabilitar</b> a sala em questão. Onde irão aparecer tanto para você, quanto para o seu paciente na hora de agendar uma consulta."},
+        { id: "7", intro: "Aqui você pode <b>Excluir</b> a sala em questão, onde não sera mais possivel editar nem ajustar a mesma."}
+    ]);
+}

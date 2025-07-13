@@ -53,6 +53,7 @@ unset($_SESSION['error_reserva']);
     <!-- CSS Tema Saúde -->
     <link rel="stylesheet" href="css/health_theme.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         .form-section {
@@ -297,13 +298,29 @@ unset($_SESSION['error_reserva']);
                         Local da Consulta *
                     </label>
                         <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
-                        <input data-step="9" type="text" name="atendimento_local" maxlength="50" placeholder="Local Atendimento" required>
+                        <input class="health-input" data-step="9" type="text" name="atendimento_local" maxlength="50" placeholder="Local Atendimento" required>
                         <?php }else{ ?>
-                        <select data-step="9" name="atendimento_local" class="health-select" required>
+                        <select class="health-select" data-step="9" name="atendimento_local" required>
                             <option value="Lauro de Freitas">Lauro de Freitas</option>
                             <option value="Salvador">Salvador</option>
                         </select>
                         <?php } ?>
+                </div>
+
+                <div class="health-form-group">
+                    <label class="health-label" for="atendimento_sala">
+                        <i class="bi bi-geo-alt"></i>
+                        Sala da Consulta *
+                    </label>
+                        <select class="health-select" data-step="9" name="atendimento_sala" required>
+                            <?php 
+                            $query = $conexao->prepare("SELECT sala, id FROM salas WHERE token_emp = :token_emp AND status_sala = 'Habilitar'");
+                            $query->execute(array('token_emp' => $_SESSION['token_emp']));
+                            while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+                            ?>
+                            <option value="<?php echo $select['id']; ?>"><?php echo $select['sala']; ?></option>
+                            <?php } ?>
+                        </select>
                 </div>
             </div>
             
@@ -408,6 +425,28 @@ function preencherPacienteSelecionado(email, nome, telefone) {
     document.querySelector('.form-section.health-fade-in').insertAdjacentHTML('afterbegin', html);
 }
 
+</script>
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const email = document.querySelector('input[name="doc_email"]').value.trim();
+    const nome = document.querySelector('input[name="doc_nome"]').value.trim();
+
+    if (email === '' || nome === '') {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Selecione um paciente',
+            text: 'Você precisa selecionar um paciente antes de continuar.',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        });
+
+        // Scroll até a seção do paciente (opcional)
+        document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+        return false;
+    }
+});
 </script>
 
 </body>

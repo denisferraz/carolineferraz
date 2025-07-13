@@ -16,12 +16,11 @@ use Dompdf\Dompdf;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-error_reporting(0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+//error_reporting(0);
 
-$limite_dia = 1;
 $atendimento_dia = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_dia']);
 $atendimento_hora = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora']);
 $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
@@ -35,8 +34,8 @@ $hoje = date('Y-m-d');
 $historico_data = date('Y-m-d H:i:s');
 if($feitapor == 'Painel'){
 $email = $_SESSION['email'];
-$result_historico = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
-$result_historico->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
+$result_historico = $conexao->prepare("SELECT * FROM painel_users WHERE token = :token_emp AND email = :email");
+$result_historico->execute(array('token_emp' => $_SESSION['token_emp'], 'email' => $email));
 $painel_users_array = [];
     while($select = $result_historico->fetch(PDO::FETCH_ASSOC)){
         $dados_painel_users = $select['dados_painel_users'];
@@ -53,17 +52,8 @@ $painel_users_array = [];
         'email' => $select['email'],
         'token' => $select['token'],
         'nome' => $dados_array[0],
-        'rg' => $dados_array[1],
         'cpf' => $dados_array[2],
         'telefone' => $dados_array[3],
-        'profissao' => $dados_array[4],
-        'nascimento' => $dados_array[5],
-        'cep' => $dados_array[6],
-        'rua' => $dados_array[7],
-        'numero' => $dados_array[8],
-        'cidade' => $dados_array[9],
-        'bairro' => $dados_array[10],
-        'estado' => $dados_array[11]
     ];
 
 }
@@ -85,6 +75,20 @@ $token = mysqli_real_escape_string($conn_msqli, $_POST['token']);
 $horario = '';
 $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
 $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
+$atendimento_sala = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_sala']);
+
+$query = $conexao->prepare("SELECT sala, quantidade FROM salas WHERE token_emp = :token_emp AND id = :id");
+$query->execute(['token_emp' => $_SESSION['token_emp'], 'id' => $atendimento_sala]);
+$dados = $query->fetch(PDO::FETCH_ASSOC);
+
+if ($dados) {
+    $atendimento_sala_nome = $dados['sala'];
+    $quantidade = $dados['quantidade'];
+} else {
+    $atendimento_sala_nome = 'Indefinido';
+    $quantidade = 0;
+}
+
 
     //Exclusao de Dias
 
@@ -144,14 +148,14 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
     //Verificar horarios de atendimento
 
 //Exclusao de dias
-    $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
-    $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
-    $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
-    $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
+    $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND atendimento_sala = :atendimento_sala"); 
+    $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_sala' => $atendimento_sala));
+    $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND (atendimento_sala = :atendimento_sala OR atendimento_sala = 0)"); 
+    $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_sala' => $atendimento_sala));
 
     $total_consultas = $check_consultas->rowcount() + $check_disponibilidade->rowcount();
 
-    if(!isset($_POST['overbook']) && ($total_consultas + 1) > $limite_dia){
+    if(!isset($_POST['overbook']) && ($total_consultas + 1) > $quantidade){
         if($feitapor == 'Paciente'){
             $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data/horario!';
             header("Location: painel/reservas_cadastrar.php?id_job=Site&tipo=Paciente");
@@ -168,14 +172,14 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
     
         $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
 
-        $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+        $check_consultas = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND atendimento_sala = :atendimento_sala"); 
         $check_consultas->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
-        $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora"); 
+        $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND (atendimento_sala = :atendimento_sala OR atendimento_sala = 0)"); 
         $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
 
         $total_consultas = $check_consultas->rowcount() + $check_disponibilidade->rowcount();
         
-        if(!isset($_POST['overbook']) && ($total_consultas + 1) > $limite_dia){
+        if(!isset($_POST['overbook']) && ($total_consultas + 1) > $quantidade){
             if($feitopor == 'Site'){
                 $_SESSION['error_reserva'] = 'Sem Disponibilidade para esta data/horario!';
                 header("Location: painel/reservas_cadastrar.php?id_job=Site&tipo=Paciente");
@@ -189,16 +193,16 @@ $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_loc
         }
 
     if($id_job == 'Consulta x2'){
-    $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
-    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
+    $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, atendimento_sala, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :atendimento_sala, :token_emp)");
+    $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'atendimento_sala' => $atendimento_sala, 'token_emp' => $_SESSION['token_emp']));
     }
 
     if($status_consulta == 'Confirmada'){
-    $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta, :token_emp)");
-    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta, 'token_emp' => $_SESSION['token_emp']));
+    $query_2 = $conexao->prepare("INSERT INTO consultas (atendimento_dia, atendimento_hora, tipo_consulta, status_consulta, doc_email, data_cancelamento, confirmacao_cancelamento, feitapor, token, local_consulta, atendimento_sala, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :tipo_consulta, :status_consulta, :doc_email, :data_cancelamento, 'Ativa', :feitapor, :token, :local_consulta, :atendimento_sala, :token_emp)");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'tipo_consulta' => $id_job, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'data_cancelamento' => $historico_data, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta, 'atendimento_sala' => $atendimento_sala, 'token_emp' => $_SESSION['token_emp']));
     }else{
-    $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = :tipo_consulta, local_consulta = :local_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email AND id = :id_consulta");
-    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'token' => $token, 'tipo_consulta' => $id_job, 'local_consulta' => $local_consulta));
+    $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, status_consulta = :status_consulta, token = :token, tipo_consulta = :tipo_consulta, local_consulta = :local_consulta, atendimento_sala = :atendimento_sala  WHERE token_emp = '{$_SESSION['token_emp']}' AND doc_email = :doc_email AND id = :id_consulta");
+    $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'doc_email' => $doc_email, 'status_consulta' => $status_consulta, 'token' => $token, 'tipo_consulta' => $id_job, 'local_consulta' => $local_consulta, 'atendimento_sala' => $atendimento_sala));
     }
     if($feitapor != 'Paciente'){
     $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
@@ -213,7 +217,7 @@ if($envio_whatsapp == 'ativado'){
     
     $doc_telefonewhats = "55$config_telefone";
     $msg_whatsapp = "Olá $config_empresa\n\n".
-    "$doc_nome agendou uma $id_job para $local_consulta - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n".
+    "$doc_nome agendou uma $id_job para $local_consulta na sala $atendimento_sala_nome - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n".
     "Telefone: $doc_telefone\n".
     "E-mail: $doc_email";
     
@@ -240,6 +244,7 @@ if($envio_whatsapp == 'ativado'){
 
     $id_job = mysqli_real_escape_string($conn_msqli, $_POST['id_job']);
     $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
+    $atendimento_sala = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_sala']);
     
     if($atendimento_dia < $hoje){
         $_SESSION['error_reserva'] = 'Não é possivel Cancelar esta Consulta!';
@@ -264,8 +269,8 @@ if($envio_whatsapp == 'ativado'){
         
         if($id_job == 'Consulta x2'){
         $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
-        $query_2 = $conexao->prepare("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");
-        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais));
+        $query_2 = $conexao->prepare("DELETE FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND atendimento_sala = :atendimento_sala");
+        $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'atendimento_sala' => $atendimento_sala));
         }
 
         if($feitapor != 'Paciente'){
@@ -372,6 +377,8 @@ if($envio_whatsapp == 'ativado'){
         $atendimento_hora_anterior = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora_anterior']);
         $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_local']);
         $id_consulta = mysqli_real_escape_string($conn_msqli, $_POST['id_consulta']);
+        $atendimento_sala = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_sala']);
+        $doc_nome = mysqli_real_escape_string($conn_msqli, $_POST['doc_nome']);
 
         if($atendimento_dia < $hoje){
             $_SESSION['error_reserva'] = 'Não é possivel Alterar esta Consulta!';
@@ -421,12 +428,11 @@ if($envio_whatsapp == 'ativado'){
         $feitapor = $historico_quem;
             }
 
-        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'NoShow' OR status_consulta = 'Em Andamento')");
-        $result_check->execute(array('id_consulta' => $id_consulta,'doc_email' => $doc_email));
+        $result_check = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta AND doc_email = :doc_email AND (status_consulta = 'Confirmada' OR status_consulta = 'NoShow' OR status_consulta = 'Em Andamento') AND atendimento_sala = :atendimento_sala");
+        $result_check->execute(array('id_consulta' => $id_consulta,'doc_email' => $doc_email, 'atendimento_sala' => $atendimento_sala));
         $row_check = $result_check->rowCount();
 
         while($select = $result_check->fetch(PDO::FETCH_ASSOC)){
-            $doc_nome = $select['doc_nome'];
             $atendimento_dia_original = $select['atendimento_dia'];
             }
 
@@ -435,15 +441,15 @@ if($envio_whatsapp == 'ativado'){
                 header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
                 exit();
             }
-            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
-            $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta));
+            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta AND atendimento_sala = :atendimento_sala");   
+            $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora,'id_consulta' => $id_consulta, 'atendimento_sala' => $atendimento_sala));
             
-            $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora");   
-            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora));
+            $check_disponibilidade = $conexao->prepare("SELECT * FROM disponibilidade WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND (atendimento_sala = :atendimento_sala OR atendimento_sala = 0)");   
+            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_sala' => $atendimento_sala));
 
             $check_total = $check_consulta->rowcount() + $check_disponibilidade->rowcount();
 
-             if(!isset($_POST['overbook']) && ($check_total + 1) > $limite_dia){
+             if(!isset($_POST['overbook']) && ($check_total + 1) > $quantidade){
                 $_SESSION['error_reserva'] = 'Não temos disponibilidade para este horario e data!';
                 header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
                 exit();
@@ -454,15 +460,15 @@ if($envio_whatsapp == 'ativado'){
 
             $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
 
-            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
-            $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta));
+            $check_consulta = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta AND atendimento_sala = :atendimento_sala");   
+            $check_consulta->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta, 'atendimento_sala' => $atendimento_sala));
             
-            $check_disponibilidade = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta");   
-            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta));
+            $check_disponibilidade = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = :atendimento_dia AND atendimento_hora = :atendimento_hora AND id != :id_consulta AND (atendimento_sala = :atendimento_sala OR atendimento_sala = 0)");   
+            $check_disponibilidade->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais,'id_consulta' => $id_consulta, 'atendimento_sala' => $atendimento_sala));
 
             $check_total = $check_consulta->rowcount() + $check_disponibilidade->rowcount();
 
-            if(!isset($_POST['overbook']) && ($check_total + 1) > $limite_dia){
+            if(!isset($_POST['overbook']) && ($check_total + 1) > $quantidade){
                 $_SESSION['error_reserva'] = 'Não temos disponibilidade para este horario e data!';
                 header("Location: painel/editar_reservas.php?id_consulta=$id_consulta&tipo=$feitapor");
                 exit();
@@ -480,13 +486,13 @@ if($envio_whatsapp == 'ativado'){
 
             $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
 
-            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
+            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, atendimento_sala, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :atendimento_sala, :token_emp)");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'atendimento_sala' => $atendimento_sala, 'token_emp' => $_SESSION['token_emp']));
 
             }
 
-            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job, token_emp) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, 'Pendente', :id_job, :token_emp)");
-            $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job, 'token_emp' => $_SESSION['token_emp']));
+            $query = $conexao->prepare("INSERT INTO alteracoes (token, atendimento_dia, atendimento_hora, atendimento_dia_anterior, atendimento_hora_anterior, alt_status, id_job, atendimento_sala, token_emp) VALUES (:token, :atendimento_dia, :atendimento_hora, :atendimento_dia_anterior, :atendimento_hora_anterior, 'Pendente', :id_job, :atendimento_sala, :token_emp)");
+            $query->execute(array('token' => $token, 'atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'atendimento_dia_anterior' => $atendimento_dia_anterior, 'atendimento_hora_anterior' => $atendimento_hora_anterior, 'id_job' => $id_job, 'atendimento_sala' => $atendimento_sala, 'token_emp' => $_SESSION['token_emp']));
 
 
         //Incio Envio Whatsapp
@@ -497,7 +503,7 @@ if($envio_whatsapp == 'ativado'){
 
         $doc_telefonewhats = "5571997417190";
         $msg_whatsapp = "Olá $config_empresa\n\n".
-        "$doc_nome solicitou uma alteração para $local_consulta - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n\n".
+        "$doc_nome solicitou uma alteração para $local_consulta na sala $atendimento_sala - Data: $atendimento_dia_str ás: $atendimento_hora_str\n\n\n".
         "Para Aceitar clique abaixo:\n".
         "$site_atual/painel/reservas_solicitacao.php?alt_status=Aceita&token=$token\n\n".
         "Para Recusar clique abaixo:\n".
@@ -516,11 +522,11 @@ if($envio_whatsapp == 'ativado'){
 
             if($id_job == 'Consulta x2'){
             $atendimento_hora_mais = date('H:i:s', strtotime($atendimento_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
-            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :token_emp)");
-            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'token_emp' => $_SESSION['token_emp']));
+            $query = $conexao->prepare("INSERT INTO disponibilidade (atendimento_dia, atendimento_hora, atendimento_sala, token_emp) VALUES (:atendimento_dia, :atendimento_hora, :atendimento_sala, :token_emp)");
+            $query->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora_mais, 'atendimento_sala' => $atendimento_sala, 'token_emp' => $_SESSION['token_emp']));
             }
-            $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_consulta = 'Confirmada', local_consulta = :local_consulta WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
-            $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta));
+            $query_2 = $conexao->prepare("UPDATE consultas SET atendimento_dia = :atendimento_dia, atendimento_hora = :atendimento_hora, feitapor = :feitapor, token = :token, status_consulta = 'Confirmada', local_consulta = :local_consulta, atendimento_sala = :atendimento_sala WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
+            $query_2->execute(array('atendimento_dia' => $atendimento_dia, 'atendimento_hora' => $atendimento_hora, 'id_consulta' => $id_consulta, 'feitapor' => $feitapor, 'token' => $token, 'local_consulta' => $local_consulta, 'atendimento_sala' => $atendimento_sala));
             if($feitapor != 'Paciente'){
             $query_historico = $conexao->prepare("INSERT INTO historico_atendimento (quando, quem, unico, oque, token_emp) VALUES (:historico_data, :historico_quem, :historico_unico_usuario, :oque, :token_emp)");
             $query_historico->execute(array('historico_data' => $historico_data, 'historico_quem' => $historico_quem, 'historico_unico_usuario' => $historico_unico_usuario, 'oque' => "Alterou a consulta $id_consulta", 'token_emp' => $_SESSION['token_emp']));  

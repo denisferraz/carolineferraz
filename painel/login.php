@@ -11,7 +11,7 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
  }
 
 if(empty($_POST['email']) || empty($_POST['password'])){
-    header('Location: ../index.html');
+    header('Location: ../index.php');
     exit();
 }
 

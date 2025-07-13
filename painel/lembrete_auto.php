@@ -101,6 +101,15 @@ if ($diasemana_numero == 5) { // sexta-feira
   $token = $select_check['token'];
   $doc_email = $select_check['doc_email'];
   $tipo_consulta = $select_check['tipo_consulta'];
+  $local_consulta = $select_check['local_consulta'];
+  $sala = $select_check['sala'];
+
+  $query_sala = $conexao->prepare("SELECT sala FROM salas WHERE token_emp = :token_emp AND id = :id");
+  $query_sala->execute([
+      'token_emp' => $token_config,
+      'id' => $id
+  ]);
+  $sala_nome = $query_sala->fetchColumn() ?: 'Sala não encontrada';
 
   $result_check = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
   $result_check->execute(array('token_emp' => '%;'.$token_config.';%', 'email' => $doc_email));
@@ -131,8 +140,8 @@ $doc_telefone = $select_check['telefone'];
   $atendimento_hora_str = date('H:i\h',  strtotime($atendimento_hora));
 
   $msg_lembrete = str_replace(
-      ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}'],    // o que procurar
-      [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta],  // o que colocar no lugar
+      ['{NOME}', '{TELEFONE}', '{EMAIL}', '{DATA}', '{HORA}', '{TIPO}', '{SALA}', '{LOCAL}'],    // o que procurar
+      [$doc_nome, $doc_telefone, $doc_email, $atendimento_dia_str, $atendimento_hora_str, $tipo_consulta, $sala_nome, $local_consulta],  // o que colocar no lugar
       $config_msg_lembrete
   );
 

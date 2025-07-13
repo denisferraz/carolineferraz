@@ -13,7 +13,7 @@ $token_emp = mysqli_real_escape_string($conn_msqli, $_GET['token']);
         $tabelasPermitidas = ['alteracoes', 'atestados', 'configuracoes', 'consultas', 'contrato', 'custos', 'custos_tratamentos', 'despesas',
         'disponibilidade', 'estoque', 'estoque_item', 'evolucoes', 'historico_atendimento', 'lancamentos', 'lancamentos_atendimento',
         'lancamentos_recorrentes', 'mensagens', 'modelos_anamnese', 'modelos_prontuario', 'perguntas_modelo', 'perguntas_modelo_prontuario',
-        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos'];
+        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos', 'salas'];
 
         // Valida se a tabela informada é permitida
         if (!in_array($tabela, $tabelasPermitidas)) {
@@ -28,7 +28,7 @@ $token_emp = mysqli_real_escape_string($conn_msqli, $_GET['token']);
     $nomesDasTabelas = ['alteracoes', 'atestados', 'configuracoes', 'consultas', 'contrato', 'custos', 'custos_tratamentos', 'despesas',
                         'disponibilidade', 'estoque', 'estoque_item', 'evolucoes', 'historico_atendimento', 'lancamentos', 'lancamentos_atendimento',
                         'lancamentos_recorrentes', 'mensagens', 'modelos_anamnese', 'modelos_prontuario', 'perguntas_modelo', 'perguntas_modelo_prontuario',
-                        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos'];
+                        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos', 'salas'];
 
     foreach ($nomesDasTabelas as $tabela) {
         excluirPorToken($conexao, $tabela, $token_emp);

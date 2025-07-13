@@ -284,6 +284,12 @@ if ($tutorialAtivo2): ?>
                     <span class="nav-link-text">Agenda</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("config_salas.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-house-add nav-link-icon"></i>
+                    <span class="nav-link-text">Salas</span>
+                </a>
+            </li>
             <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
             <li class="nav-item">
                 <a href="javascript:void(0)" onclick='window.open("config_landing.php","iframe-home");' class="nav-link">
@@ -346,6 +352,27 @@ if ($tutorialAtivo2): ?>
             </li>
         </ul>
     </div>
+
+    <!-- ADMIN -->
+    <?php if($tipo_cadastro != 'Paciente'){ ?>
+    <div class="nav-section">
+        <div class="nav-section-title">Administrador</div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("admin.php?id_job=Acessos","iframe-home");' class="nav-link">
+                    <i class="bi bi-person-gear nav-link-icon"></i>
+                    <span class="nav-link-text">Acessos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("admin.php?id_job=Novo","iframe-home");' class="nav-link">
+                    <i class="bi bi-person-plus nav-link-icon"></i>
+                    <span class="nav-link-text">Novo Acesso</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <?php } ?>
 
     <!-- PAINEL OWNER -->
     <?php if($tipo_cadastro == 'Owner'){ ?>

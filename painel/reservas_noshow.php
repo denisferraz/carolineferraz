@@ -82,14 +82,32 @@ require_once('tutorial.php');
 <?php
 $id_consulta = mysqli_real_escape_string($conn_msqli, $_GET['id_consulta']);
 
-$query = $conexao->prepare("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND id = :id_consulta");
-$query->execute(array('id_consulta' => $id_consulta));
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-$doc_email = $select['doc_email'];
-$atendimento_dia = $select['atendimento_dia'];
-$atendimento_hora = $select['atendimento_hora'];
-$atendimento_hora = strtotime("$atendimento_hora");
+$query = $conexao->prepare("
+    SELECT 
+        consultas.tipo_consulta, 
+        consultas.doc_email, 
+        consultas.atendimento_sala, 
+        consultas.atendimento_dia, 
+        consultas.atendimento_hora, 
+        salas.sala AS sala_nome 
+    FROM consultas 
+    LEFT JOIN salas ON consultas.atendimento_sala = salas.id 
+    WHERE consultas.token_emp = :token AND consultas.id = :id_consulta
+");
+$query->execute([
+    'token' => $_SESSION['token_emp'],
+    'id_consulta' => $id_consulta
+]);
+
+while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
+    $tipo_consulta = $select['tipo_consulta'];
+    $doc_email = $select['doc_email'];
+    $sala = $select['sala'];
+    $atendimento_dia = $select['atendimento_dia'];
+    $atendimento_hora = strtotime($select['atendimento_hora']);
+    $sala_nome = $select['sala_nome'];
 }
+
     $query_check2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND email = :email");
     $query_check2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'email' => $doc_email));
     $painel_users_array = [];
@@ -117,6 +135,7 @@ foreach ($painel_users_array as $select_check2){
                 <div data-step="2">
                 <i class="bi bi-person-vcard"></i> <?php echo $doc_nome ?><br>
                 <i class="bi bi-envelope"></i> <?php echo $doc_email ?><br>
+                <i class="bi bi-house-check"></i> <?php echo $sala_nome ?><br>
                 <i class="bi bi-calendar"></i> <?php echo date('d/m/Y', strtotime($atendimento_dia)) ?> as <?php echo date('H:i\h', $atendimento_hora) ?>
                 </div>
             </div>
@@ -126,6 +145,7 @@ foreach ($painel_users_array as $select_check2){
                     
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
             <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
+            <input type="hidden" name="sala" value="<?php echo $sala ?>">
             <input value="<?php echo $atendimento_dia ?>" type="hidden" name="atendimento_dia">
             <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="hidden" name="atendimento_hora">
             

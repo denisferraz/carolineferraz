@@ -80,6 +80,8 @@ $conn_msqli = mysqli_connect(Host, Usuario, Senha, DB) or die ('Não foi possive
 // Função para Enviar Mensagem no WhatsApp via API do Facebook
 function enviarWhatsapp($telefone, $mensagem, $client_id) {
 
+    global $site_puro;
+
     // Normaliza o telefone: remove espaços, traços, parênteses
     $telefone = preg_replace('/[^0-9]/', '', $telefone);
 

@@ -755,6 +755,11 @@ foreach ($painel_users_array as $select){
                             $history_status = $history['status_consulta'];
                             $history_tipo = $history['tipo_consulta'];
                             $id_consulta = $history['id'];
+                            $sala = $history['atendimento_sala'];
+
+                            $query_sala = $conexao->prepare("SELECT sala FROM salas WHERE token_emp = :token_emp AND id = :id");
+                            $query_sala->execute(['token_emp' => $_SESSION['token_emp'], 'id' => $sala]);
+                            $sala_nome = $query_sala->fetchColumn() ?: 'Sala não encontrada';
 
                             $history_hora_2 = date('H:i', strtotime($history_hora . ' + ' . $config_atendimento_hora_intervalo . ' minutes'));
                             if($history_tipo == 'Consulta x2'){
@@ -785,7 +790,7 @@ foreach ($painel_users_array as $select){
                         <tr>
                             <td><?php echo date('d/m/Y', strtotime($history_data)); ?></td>
                             <td><?php echo date('H:i\h', strtotime($history_hora)) . ' às ' . date('H:i\h', strtotime($history_hora_2)); ?></td>
-                            <td><?php echo htmlspecialchars($history_local); ?></td>
+                            <td><?php echo htmlspecialchars($history_local); ?> - <?php echo htmlspecialchars($sala_nome); ?></td>
                             <td>
                                 <span class="status-badge <?php echo $status_class; ?>">
                                     <?php echo htmlspecialchars($history_status); ?>

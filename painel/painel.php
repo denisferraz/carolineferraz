@@ -7,19 +7,12 @@ require('verifica_login.php');
 $css_path = "css/style_2.css";
 $css_path_2 = "css/style.css";
 
-$query = $conexao->query("SELECT * FROM painel_users WHERE token = '{$_SESSION['token']}' AND email = '{$_SESSION['email']}'");
-while($select = $query->fetch(PDO::FETCH_ASSOC)){
-    $tipo_acesso = $select['tipo'];
-    $plano_validade = $select['plano_validade'];
-    $configuracao = $select['configuracao'];
-}
-
-if($tipo_acesso == 'Admin' && $_SESSION['token'] == $_SESSION['token_emp']){
-    $tipo_acesso = 'Admin';
-}else if($tipo_acesso == 'Owner'){
-    $tipo_acesso = 'Owner';
+if($tipo_cadastro == 'Admin' && $_SESSION['token'] == $_SESSION['token_emp']){
+    $tipo_cadastro = 'Admin';
+}else if($tipo_cadastro == 'Owner'){
+    $tipo_cadastro = 'Owner';
 }else{
-    $tipo_acesso = 'Paciente';
+    $tipo_cadastro = 'Paciente';
 }
 
 if($site_puro == 'chronoclick'){
@@ -73,11 +66,11 @@ $dias_restantes = (strtotime($data_validade) - strtotime($hoje)) / 86400;
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <?php if($tipo_acesso == 'Paciente' && isset($_SESSION['emp_selecao']) || $_SESSION['vencido']){
+            <?php if($tipo_cadastro == 'Paciente' && isset($_SESSION['emp_selecao']) || $_SESSION['vencido']){
                 include 'includes/sidebar_paciente.php';
             }else if(!isset($_SESSION['emp_selecao']) && $site_puro == 'chronoclick'){
                 include 'includes/sidebar_selecao.php';
-            }else if($tipo_acesso == 'Owner' || ($configuracao >= 1 && $dias_restantes > 0) || $site_puro != 'chronoclick'){
+            }else if($tipo_cadastro == 'Owner' || ($configuracao >= 1 && $dias_restantes > 0) || $site_puro != 'chronoclick'){
                 include 'includes/sidebar.php';
             } else if($configuracao == 0 && $dias_restantes > 0) {
                 include 'includes/sidebar_config.php';
@@ -108,7 +101,7 @@ $dias_restantes = (strtotime($data_validade) - strtotime($hoje)) / 86400;
             </div>
             
             <div class="header-right">
-                <?php if($tipo_acesso == 'Paciente' && isset($_SESSION['emp_selecao']) && ($_SESSION['vencido'] || $site_puro != 'chronoclick')){
+                <?php if($tipo_cadastro == 'Paciente' && isset($_SESSION['emp_selecao']) && ($_SESSION['vencido'] || $site_puro != 'chronoclick')){
                     include 'includes/header_paciente.php'; 
                 }else if($site_puro != 'chronoclick' || isset($_SESSION['emp_selecao'])){
                     include 'includes/header.php';
@@ -128,9 +121,9 @@ $dias_restantes = (strtotime($data_validade) - strtotime($hoje)) / 86400;
                 if (!isset($_SESSION['emp_selecao']) && $site_puro == 'chronoclick') {
                     // Redireciona para seleção de empresa
                     ?><iframe name="iframe-home" id="iframe-home" src="selecao.php"></iframe><?php
-                } else if ($tipo_acesso == 'Paciente') {
+                } else if ($tipo_cadastro == 'Paciente') {
                     ?><iframe name="iframe-home" id="iframe-home" src="agenda_paciente.php"></iframe><?php
-                } else if ($tipo_acesso == 'Owner' || ($tipo_acesso == 'Admin' && $configuracao >= 1 && $dias_restantes > 0) || $site_puro != 'chronoclick') {
+                } else if ($tipo_cadastro == 'Owner' || ($tipo_cadastro == 'Admin' && $configuracao >= 1 && $dias_restantes > 0) || $site_puro != 'chronoclick') {
                     ?><iframe name="iframe-home" id="iframe-home" src="agenda.php"></iframe><?php
                 } else if ($configuracao == 0 && $dias_restantes > 0 && $site_puro == 'chronoclick') {
                     ?><iframe name="iframe-home" id="iframe-home" src="config_empresa.php"></iframe><?php

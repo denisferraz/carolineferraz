@@ -106,8 +106,27 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
 <body>
     <?php
     // Busca os atendimentos para o dia selecionado
-    $query_checkin = $conexao->query("SELECT * FROM consultas WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$dataSelecionada}' ORDER BY atendimento_dia, atendimento_hora ASC");
-    $checkin_qtd = $query_checkin->rowCount();
+    $query_checkin = $conexao->prepare("
+    SELECT 
+        consultas.id, 
+        consultas.tipo_consulta, 
+        consultas.doc_email, 
+        consultas.atendimento_sala, 
+        consultas.atendimento_dia, 
+        consultas.atendimento_hora, 
+        consultas.local_consulta, 
+        consultas.status_consulta, 
+        salas.sala AS sala_nome 
+    FROM consultas 
+    LEFT JOIN salas ON consultas.atendimento_sala = salas.id 
+    WHERE consultas.token_emp = :token AND consultas.atendimento_dia = :atendimento_dia 
+    ORDER BY consultas.atendimento_dia, consultas.atendimento_hora ASC
+");
+$query_checkin->execute([
+    'token' => $_SESSION['token_emp'],
+    'atendimento_dia' => $dataSelecionada
+]);
+$checkin_qtd = $query_checkin->rowCount();
     ?>
 
     <!-- Lista de Consultas -->
@@ -178,6 +197,7 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
                     $doc_email = $select_checkin['doc_email'];
                     $id_consulta = $select_checkin['id'];
                     $tipo_consulta = $select_checkin['tipo_consulta'];
+                    $sala_nome = $select_checkin['sala_nome'];
             
                         foreach ($painel_users_array as $item) {
                             if ($item['email'] === $doc_email) {
@@ -220,7 +240,7 @@ $dataSelecionada = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d'); // Pega
                     <!-- Local -->
                     <div class="appointment-treatment">
                         <i class="bi bi-geo-alt"></i>
-                        <?php echo htmlspecialchars($local_consulta); ?>
+                        <?php echo htmlspecialchars($local_consulta); ?> - <?php echo htmlspecialchars($sala_nome); ?>
                     </div>
                     
                     <!-- Ações -->

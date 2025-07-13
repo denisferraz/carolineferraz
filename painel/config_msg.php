@@ -121,6 +121,8 @@ function inserirVariavel(texto) {
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('{EMAIL}')">{EMAIL}</button><br><br>
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('{DATA}')">{DATA}</button>
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('{HORA}')">{HORA}</button>
+    <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('{SALA}')">{SALA}</button>
+    <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('{LOCAL}')">{LOCAL}</button>
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('{TIPO}')">{TIPO}</button>
 <br><br>
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('😊')">😊</button>
@@ -129,6 +131,9 @@ function inserirVariavel(texto) {
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('✅')">✅</button>
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('🔔')">🔔</button>
     <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('📅')">📅</button>
+    <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('📍')">📍</button>
+    <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('🗺️')">🗺️</button>
+    <button class="health-btn health-btn-outline btn-sm" type="button" onclick="inserirVariavel('🚩')">🚩</button>
 </div>
 <br>
 
