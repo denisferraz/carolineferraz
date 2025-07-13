@@ -812,6 +812,7 @@ echo "<script>
     $atendimento_hora = mysqli_real_escape_string($conn_msqli, $_POST['atendimento_hora']);
     $sala = mysqli_real_escape_string($conn_msqli, $_POST['sala']);
     $local_consulta = mysqli_real_escape_string($conn_msqli, $_POST['local_consulta']);
+    $tipo_consulta = mysqli_real_escape_string($conn_msqli, $_POST['tipo_consulta']);
     
     //Envio de Email	
     
