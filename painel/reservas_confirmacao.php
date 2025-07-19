@@ -153,7 +153,7 @@ foreach ($painel_users_array as $select_check2){
                     
             <input type="hidden" name="doc_nome" value="<?php echo $doc_nome ?>">
             <input type="hidden" name="doc_email" value="<?php echo $doc_email ?>">
-            <input type="hidden" name="sala" value="<?php echo $sala ?>">
+            <input type="hidden" name="sala" value="<?php echo $sala_nome ?>">
             <input type="hidden" name="local_consulta" value="<?php echo $local_consulta ?>">
             <input value="<?php echo $atendimento_dia ?>" type="hidden" name="atendimento_dia">
             <input value="<?php echo date('H:i', $atendimento_hora) ?>" type="hidden" name="atendimento_hora">

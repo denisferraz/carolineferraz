@@ -10,7 +10,12 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
     exit();
  }
 
-if(empty($_POST['email']) || empty($_POST['password'])){
+if((empty($_POST['email']) || empty($_POST['password']) && $site_puro == 'chronoclick')){
+    header('Location: ../index.html');
+    exit();
+}
+
+if((empty($_POST['email']) || empty($_POST['password']) && $site_puro == 'carolineferraz')){
     header('Location: ../index.php');
     exit();
 }

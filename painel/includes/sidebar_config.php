@@ -1,5 +1,5 @@
 <?php
-$tutorialAtivo = isset($_SESSION['configuracao']) && $_SESSION['configuracao'] == 0;
+//$tutorialAtivo = isset($_SESSION['configuracao']) && $_SESSION['configuracao'] == 0;
 ?>
 
 <!-- Header da Sidebar -->

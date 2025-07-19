@@ -35,14 +35,11 @@ while($select_check_config = $result_check_config->fetch(PDO::FETCH_ASSOC)){
     $is_sabado = $select_check_config['is_sabado'];
     $is_domingo = $select_check_config['is_domingo'];
     $config_antecedencia = $select_check_config['config_antecedencia'];
+    $client_id = $select_check_config['id'];
 
 if (!$lembrete_auto_time || strtotime($lembrete_auto_time) === false) {
   continue;
 }
-
-$id_check = $conexao->prepare("SELECT id FROM painel_users WHERE token = :token_emp");
-$id_check->execute(array('token_emp' => $token_config));
-$client_id = $id_check->fetchColumn();
 
 if($site_puro != 'chronoclick'){
   $client_id = 'carolineferraz';

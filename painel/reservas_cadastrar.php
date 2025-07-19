@@ -12,6 +12,7 @@ $tipo = isset($_GET['tipo']) ? $_GET['tipo'] : 'Painel';
 
 $data_atendimento = isset($_GET['data_atendimento']) ? $_GET['data_atendimento'] : $hoje;
 $horario_atendimento = isset($_GET['horario_atendimento']) ? $_GET['horario_atendimento'] : '';
+$atendimento_sala = isset($_GET['atendimento_sala']) ? $_GET['atendimento_sala'] : '';
 
 $email = $nome = $telefone = '';
 
@@ -318,7 +319,7 @@ unset($_SESSION['error_reserva']);
                             $query->execute(array('token_emp' => $_SESSION['token_emp']));
                             while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
                             ?>
-                            <option value="<?php echo $select['id']; ?>"><?php echo $select['sala']; ?></option>
+                            <option value="<?php echo $select['id']; ?>" <?php echo ($select['sala'] == $atendimento_sala) ? 'selected' : ''; ?>><?php echo $select['sala']; ?></option>
                             <?php } ?>
                         </select>
                 </div>
@@ -433,7 +434,6 @@ document.querySelector('form').addEventListener('submit', function(e) {
 
     if (email === '' || nome === '') {
         e.preventDefault();
-
         Swal.fire({
             icon: 'warning',
             title: 'Selecione um paciente',
@@ -442,10 +442,20 @@ document.querySelector('form').addEventListener('submit', function(e) {
             confirmButtonColor: '#3085d6'
         });
 
-        // Scroll até a seção do paciente (opcional)
         document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
         return false;
     }
+
+    // Exibir alerta de carregamento e permitir o envio do formulário
+    Swal.fire({
+        title: 'Processando agendamento...',
+        html: 'Por favor, aguarde.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 });
 </script>
 

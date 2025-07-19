@@ -2,7 +2,8 @@
 session_start();
 require('../config/database.php');
 require('verifica_login.php');
-require_once('tutorial.php');
+
+$token_emp = $_SESSION['token_emp'];
 
 // CONFIGURAÇÕES
 $mesSelecionado = $_GET['mes'] ?? date('m');
@@ -72,6 +73,13 @@ $diasPermitidos = [
     6 => $dia_sabado,   // Sábado
 ];
 
+// Total de salas habilitadas
+$stmtSalas = $conexao->prepare("SELECT SUM(quantidade) AS total_salas 
+                                FROM salas 
+                                WHERE token_emp = :token_emp AND status_sala = 'Habilitar'");
+$stmtSalas->execute([':token_emp' => $token_emp]);
+$totalSalas = $stmtSalas->fetchColumn();
+
 // GERAÇÃO DAS DISPONIBILIDADES
 $disponibilidades = [];
 $numeroDias = cal_days_in_month(CAL_GREGORIAN, $mesSelecionado, $anoSelecionado);
@@ -93,20 +101,94 @@ for ($dia = 1; $dia <= $numeroDias; $dia++) {
         // Query de verificação
         $check_disponibilidade = $conexao->query(
             "SELECT * FROM disponibilidade 
-             WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$dataAtual}' 
+             WHERE token_emp = '{$token_emp}' AND atendimento_dia = '{$dataAtual}' 
              AND atendimento_hora = '{$atendimento_horas}'"
         );
 
         $check_consultas = $conexao->query(
           "SELECT * FROM consultas 
-           WHERE token_emp = '{$_SESSION['token_emp']}' AND atendimento_dia = '{$dataAtual}' 
+           WHERE token_emp = '{$token_emp}' AND atendimento_dia = '{$dataAtual}' 
            AND atendimento_hora = '{$atendimento_horas}' 
            AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')"
       );
 
-        if ($check_disponibilidade->rowCount() == 0 && $check_consultas->rowCount() == 0) {
-            $disponibilidades[$dataAtual][] = date('H:i', $horario); // ou H:i:s
+      $totalConsultas = $check_consultas->rowCount();
+
+      // Buscar todas as salas habilitadas
+$stmtSalas = $conexao->prepare("SELECT id, sala, quantidade, descricao FROM salas WHERE token_emp = :token_emp AND status_sala = 'Habilitar'");
+$stmtSalas->execute([':token_emp' => $token_emp]);
+$salas = $stmtSalas->fetchAll(PDO::FETCH_ASSOC);
+
+// Inicializa estrutura
+$disponibilidades = [];
+
+for ($dia = 1; $dia <= $numeroDias; $dia++) {
+    $dataAtual = date('Y-m-d', mktime(0, 0, 0, $mesSelecionado, $dia, $anoSelecionado));
+    $diaSemana = date('w', strtotime($dataAtual));
+    if (empty($diasPermitidos[$diaSemana])) continue;
+
+    $horario = strtotime($atendimento_hora_comeco);
+    $fim = strtotime($atendimento_hora_fim);
+    $intervalo = $atendimento_hora_intervalo * 60;
+
+    while ($horario < $fim) {
+        $horaFormatada = date('H:i', $horario);
+        
+        foreach ($salas as $sala) {
+            $salaId = $sala['id'];
+            $salaNome = $sala['sala'];
+            $quantidade = $sala['quantidade'];
+            $descricao = $sala['descricao'];
+
+            $basePath = "../imagens/{$token_emp}/salas/";
+            $imgJpg = $basePath . $salaId . '.jpg';
+            $imgJpeg = $basePath . $salaId . '.jpeg';
+
+            if (file_exists($imgJpg)) {
+                $imgSrc = $imgJpg;
+            } elseif (file_exists($imgJpeg)) {
+                $imgSrc = $imgJpeg;
+            } else {
+                $imgSrc = '../images/logo.png'; // opcional
+            }
+
+            // Verificar se já existem consultas para essa sala/hora
+            $stmt = $conexao->prepare("
+                SELECT COUNT(*) FROM consultas 
+                WHERE token_emp = :token 
+                  AND atendimento_dia = :dia 
+                  AND atendimento_hora = :hora 
+                  AND atendimento_sala = :id_sala 
+                  AND (status_consulta = 'Confirmada' OR status_consulta = 'Em Andamento')
+            ");
+            $stmt->execute([
+                ':token' => $token_emp,
+                ':dia' => $dataAtual,
+                ':hora' => $horaFormatada,
+                ':id_sala' => $salaId
+            ]);
+            $totalConsultas = $stmt->fetchColumn();
+
+            if ($totalConsultas < $quantidade) {
+                // Inicializa o array da sala se ainda não existir
+                if (!isset($disponibilidades[$dataAtual][$salaNome])) {
+                    $disponibilidades[$dataAtual][$salaNome] = [
+                        'info' => [
+                            'descricao' => $descricao,
+                            'imagem' => $imgSrc
+                        ],
+                        'horarios' => []
+                    ];
+                }
+
+                // Adiciona o horário
+                $disponibilidades[$dataAtual][$salaNome]['horarios'][] = $horaFormatada;
+            }
         }
+
+        $horario += $intervalo;
+    }
+}          
 
         $horario += $intervalo;
     }
@@ -118,6 +200,7 @@ $mesesPortugues = [
     5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
     9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
 ];
+
 ?>
 
 <!DOCTYPE html>
@@ -125,10 +208,11 @@ $mesesPortugues = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disponibilidade de Horários - ChronoClick</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon.png">
+    <title>Disponibilidade de Horários - <?php echo $config_empresa; ?></title>
     
     <!-- CSS Tema Saúde -->
-    <link rel="stylesheet" href="css/health_theme.css">
+    <link rel="stylesheet" href="../painel/css/health_theme.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
     <!-- Scripts -->
@@ -288,21 +372,26 @@ $mesesPortugues = [
         }
         
         .schedule-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 12px;
+            display: flex !important;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         
         .schedule-time {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background: var(--health-info-light);
             color: var(--health-info);
-            padding: 12px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
             text-align: center;
             font-weight: 600;
             border: 2px solid var(--health-info);
             transition: all 0.3s ease;
             cursor: pointer;
+            min-width: 80px;
+            white-space: nowrap;
         }
         
         .schedule-time:hover {
@@ -425,10 +514,10 @@ $mesesPortugues = [
     <div class="calendar-header health-fade-in">
         <div class="calendar-title">
             <i class="bi bi-calendar-week"></i>
-            Disponibilidade de Horários
+            Disponibilidade de Horários <?php echo $config_empresa; ?>
         </div>
         <div class="calendar-subtitle">
-            Visualize e gerencie os horários disponíveis para agendamento
+            Visualize os horários disponiveis para agendamento
         </div>
     </div>
 
@@ -461,15 +550,18 @@ $mesesPortugues = [
                 </select>
             </div>
 
+            <input type="hidden" name="profissional" value="<?php echo $profissional; ?>">
+
             <button type="submit" class="health-btn health-btn-primary">
                 <i class="bi bi-arrow-clockwise"></i>
                 Atualizar
             </button>
-            
+
             <button type="button" class="health-btn health-btn-outline" onclick="ajudaDisponibilidade()" title="Ajuda">
                 <i class="bi bi-question-circle"></i>
                 Ajuda
             </button>
+
         </form>
     </div>
 
@@ -479,27 +571,6 @@ $mesesPortugues = [
     $totalHorariosDisponiveis = array_sum(array_map('count', $disponibilidades));
     $diasSemHorarios = $numeroDias - $totalDiasDisponiveis;
     ?>
-    
-    <div class="stats-container health-fade-in">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number"><?= $totalDiasDisponiveis ?></div>
-                <div class="stat-label">Dias Disponíveis</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number"><?= $totalHorariosDisponiveis ?></div>
-                <div class="stat-label">Horários Livres</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number"><?= $diasSemHorarios ?></div>
-                <div class="stat-label">Dias Indisponíveis</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number"><?= $numeroDias ?></div>
-                <div class="stat-label">Total de Dias</div>
-            </div>
-        </div>
-    </div>
 
     <!-- Calendário -->
     <div class="calendar-container health-fade-in">
@@ -545,7 +616,8 @@ $mesesPortugues = [
             $hoje = date('Y-m-d');
             for ($dia = 1; $dia <= $numeroDias; $dia++) {
                 $data = date('Y-m-d', mktime(0, 0, 0, $mesSelecionado, $dia, $anoSelecionado));
-                $temHorarios = !empty($disponibilidades[$data]);
+                $dataAnteriorHoje = strtotime($data) < strtotime($hoje);
+                $temHorarios = !$dataAnteriorHoje && !empty($disponibilidades[$data]);
                 $ehHoje = ($data === $hoje);
                 
                 $classes = ['calendar-day'];
@@ -585,7 +657,7 @@ $mesesPortugues = [
 </div>
 
 <script>
-const disponibilidades = <?= json_encode($disponibilidades) ?>;
+const disponibilidades = <?php echo json_encode($disponibilidades); ?>;
 
 function mostrarHorarios(data, elemento) {
     const panel = document.getElementById('schedule-panel');
@@ -603,23 +675,66 @@ function mostrarHorarios(data, elemento) {
 
     title.textContent = `Horários para ${dataFormatada}`;
 
-    const horarios = disponibilidades[data] || [];
-    
-    if (horarios.length > 0) {
-        grid.innerHTML = horarios.map(horario => 
-            `<div class="schedule-time" onclick="selecionarHorario('${data}', '${horario}')">
-                <i class="bi bi-clock"></i>
-                ${horario}h
-            </div>`
-        ).join('');
+    let salasHorarios = disponibilidades[data] || {};
+
+    // Se for hoje, filtrar horários passados
+    const hoje = new Date();
+    const dataSelecionada = new Date(data + 'T00:00:00');
+
+    if (
+        dataSelecionada.getFullYear() === hoje.getFullYear() &&
+        dataSelecionada.getMonth() === hoje.getMonth() &&
+        dataSelecionada.getDate() === hoje.getDate()
+    ) {
+        const horaAtual = hoje.getHours();
+        const minutoAtual = hoje.getMinutes();
+
+        // Filtrar horários futuros por sala
+        for (const sala in salasHorarios) {
+            salasHorarios[sala].horarios = salasHorarios[sala].horarios.filter(horario => {
+                const [h, m] = horario.split(':').map(Number);
+                return h > horaAtual || (h === horaAtual && m > minutoAtual);
+            });
+        }
+    }
+
+    let html = '';
+
+    const salasComHorarios = Object.entries(salasHorarios).filter(([_, dados]) => dados.horarios.length > 0);
+
+    if (salasComHorarios.length > 0) {
+        for (const [sala, dados] of salasComHorarios) {
+            const info = dados.info;
+            const horariosSala = dados.horarios;
+
+            html += `
+                <div style="margin-bottom: 24px; border-left: 4px solid var(--health-primary); padding-left: 12px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
+                        <img src="${info.imagem}" alt="${sala}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: var(--health-primary);">🛋 ${sala}</div>
+                            <div style="font-size: 0.9rem; color: var(--health-gray-600);">${info.descricao}</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${horariosSala.map(h => `
+                            <div class="schedule-time" onclick="selecionarHorario('${data}', '${h}', '${sala}')">
+                                <i class="bi bi-clock"></i> ${h}h
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
     } else {
-        grid.innerHTML = `
+        html = `
             <div class="empty-schedule">
                 <i class="bi bi-calendar-x"></i>
                 <div>Nenhum horário disponível para esta data</div>
-            </div>
-        `;
+            </div>`;
     }
+
+    grid.innerHTML = html;
 
     // Remover seleção anterior e adicionar nova
     document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
@@ -634,7 +749,7 @@ function mostrarHorarios(data, elemento) {
     }, 100);
 }
 
-function selecionarHorario(data, horario) {
+function selecionarHorario(data, horario, salanome) {
     Swal.fire({
         title: 'Horário Selecionado',
         html: `
@@ -642,6 +757,7 @@ function selecionarHorario(data, horario) {
                 <i class="bi bi-calendar-check" style="font-size: 3rem; color: var(--health-success); margin-bottom: 16px;"></i>
                 <h4 style="margin-bottom: 8px;">Data: ${new Date(data + 'T00:00:00').toLocaleDateString('pt-BR')}</h4>
                 <h4 style="color: var(--health-primary);">Horário: ${horario}h</h4>
+                <h4 style="color: var(--health-warning);">Sala: ${salanome}</h4>
             </div>
         `,
         icon: 'success',
@@ -651,7 +767,7 @@ function selecionarHorario(data, horario) {
         confirmButtonColor: '#2563eb'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = `reservas_cadastrar.php?data_atendimento=${data}&horario_atendimento=${horario}`;
+            window.location.href = `reservas_cadastrar.php?data_atendimento=${data}&horario_atendimento=${horario}&atendimento_sala=${salanome}`;
             Swal.fire({
                 title: 'Redirecionando...',
                 text: 'Você será direcionado para a página de agendamento.',
@@ -660,30 +776,6 @@ function selecionarHorario(data, horario) {
                 showConfirmButton: false
             });
         }
-    });
-}
-
-function ajudaDisponibilidade() {
-    Swal.fire({
-        title: 'Como usar o Calendário',
-        html: `
-            <div style="text-align: left; padding: 10px;">
-                <h5><i class="bi bi-1-circle"></i> Navegação</h5>
-                <p>• Use os seletores de mês e ano para navegar</p>
-                <p>• Clique em "Atualizar" para aplicar as mudanças</p>
-                
-                <h5><i class="bi bi-2-circle"></i> Dias Disponíveis</h5>
-                <p>• Dias em <span style="color: var(--health-success);">verde</span> têm horários livres</p>
-                <p>• Dias em <span style="color: var(--health-gray-400);">cinza</span> não têm horários</p>
-                
-                <h5><i class="bi bi-3-circle"></i> Seleção de Horários</h5>
-                <p>• Clique em um dia disponível para ver os horários</p>
-                <p>• Clique em um horário para agendar</p>
-            </div>
-        `,
-        icon: 'info',
-        confirmButtonText: 'Entendi',
-        confirmButtonColor: '#2563eb'
     });
 }
 
@@ -712,6 +804,30 @@ document.addEventListener('DOMContentLoaded', function() {
         // O dia atual já é destacado pelo PHP
     }
 });
+
+function ajudaDisponibilidade() {
+    Swal.fire({
+        title: 'Como usar o Calendário',
+        html: `
+            <div style="text-align: left; padding: 10px;">
+                <h5><i class="bi bi-1-circle"></i> Navegação</h5>
+                <p>• Use os seletores de mês e ano para navegar</p>
+                <p>• Clique em "Atualizar" para aplicar as mudanças</p>
+                
+                <h5><i class="bi bi-2-circle"></i> Dias Disponíveis</h5>
+                <p>• Dias em <span style="color: var(--health-success);">verde</span> têm horários livres</p>
+                <p>• Dias em <span style="color: var(--health-gray-400);">cinza</span> não têm horários</p>
+                
+                <h5><i class="bi bi-3-circle"></i> Seleção de Horários</h5>
+                <p>• Clique em um dia disponível para ver os horários</p>
+                <p>• Clique em um horário para agendar</p>
+            </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Entendi',
+        confirmButtonColor: '#2563eb'
+    });
+}
 </script>
 
 </body>

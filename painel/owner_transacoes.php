@@ -73,21 +73,18 @@ require('verifica_login.php');
                         $status_venda_texto = ucfirst($status_venda);
                     }
 
-                $query2 = $conexao->prepare("SELECT * FROM painel_users WHERE id >= :id ORDER BY id DESC");
+                $query2 = $conexao->prepare("SELECT config_empresa FROM configuracoes WHERE id >= :id ORDER BY id DESC");
                 $query2->execute(['id' => $client_id]);
 
                 $painel = $query2->fetch(PDO::FETCH_ASSOC);
 
                 // Para descriptografar os dados
-                $dados_painel_users = $painel['dados_painel_users'];
-                $dados = base64_decode($dados_painel_users);
-                $dados_decifrados = openssl_decrypt($dados, $metodo, $chave, 0, $iv);
-                $dados_array = explode(';', $dados_decifrados);
-                $nome = $dados_array[0];
+                $config_empresa = $painel['config_empresa'];
+
                 ?>
                 <tr>
                     <td data-label="Data"><?php echo $created; ?></td>
-                    <td data-label="Cadastro"><?php echo $nome; ?></td>
+                    <td data-label="Cadastro"><?php echo $config_empresa; ?></td>
                     <td data-label="Status" class="<?php echo $class_status; ?>"><?php echo $status_venda_texto; ?></td>
                     <td data-label="Valor"><?php echo $valor; ?></td>
                     <td data-label="Bandeira"><?php echo ucfirst($bandeira); ?></td>

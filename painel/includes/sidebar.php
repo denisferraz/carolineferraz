@@ -6,7 +6,7 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $tipo_cadastro = $select['tipo'];
 }
 
-$tutorialAtivo2 = isset($_SESSION['configuracao']) && $_SESSION['configuracao'] == 1;
+//$tutorialAtivo2 = isset($_SESSION['configuracao']) && $_SESSION['configuracao'] == 1;
 
 if ($tutorialAtivo2): ?>
     <script>
@@ -311,12 +311,12 @@ if ($tutorialAtivo2): ?>
     <div data-step="12" class="nav-section">
         <div class="nav-section-title">Suporte</div>
         <ul class="nav-list">
-            <li class="nav-item">
+           <!--  <li class="nav-item">
                 <a href="javascript:void(0)" onclick="iniciarTutorial()" class="nav-link">
                     <i class="bi bi-question-circle nav-link-icon"></i>
                     <span class="nav-link-text">Tutorial</span>
                 </a>
-            </li>
+            </li> -->
             <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
             <li class="nav-item">
                 <a href="javascript:void(0)" onclick='window.open("tickets.php","iframe-home");' class="nav-link">
@@ -395,6 +395,12 @@ if ($tutorialAtivo2): ?>
                 <a href="javascript:void(0)" onclick='window.open("owner_transacoes.php","iframe-home");' class="nav-link">
                     <i class="bi bi-wallet2 nav-link-icon"></i>
                     <span class="nav-link-text">Financeiro</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("owner_selecao.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-check2-square nav-link-icon"></i>
+                    <span class="nav-link-text">Selecionar Empresas</span>
                 </a>
             </li>
             <li class="nav-item">

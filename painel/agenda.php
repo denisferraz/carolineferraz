@@ -155,6 +155,7 @@ while($stat = $queryStats->fetch(PDO::FETCH_ASSOC)) {
     
     <style>
         /* Estilos específicos para a agenda mensal com cores distintas */
+        
         .agenda-header {
             background: linear-gradient(135deg, var(--health-primary), var(--health-info));
             color: white;
@@ -271,6 +272,8 @@ while($stat = $queryStats->fetch(PDO::FETCH_ASSOC)) {
             grid-template-columns: repeat(7, 1fr);
             gap: 8px;
             margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
         }
         
         .calendar-header-day {
@@ -633,7 +636,7 @@ while($stat = $queryStats->fetch(PDO::FETCH_ASSOC)) {
                 </div>
             </div>
         </div>
-        <br><br>
+        <br>
         <div class="table-responsive">
         <div class="calendar-grid">
             <?php

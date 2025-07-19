@@ -13,7 +13,12 @@ if ( $_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERV
 
 session_start();
 
-if(!$_SESSION['email']){
+if(!$_SESSION['email'] && $site_puro == 'chronoclick'){
+    header('Location: ../index.html');
+    exit();
+}
+
+if(!$_SESSION['email'] && $site_puro == 'carolineferraz'){
     header('Location: ../index.php');
     exit();
 }
@@ -58,14 +63,14 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESS
     $lembrete_auto_time = $row['lembrete_auto_time'];
     $plano_validade = $row['plano_validade'];
     $config_antecedencia = $row['config_antecedencia'];
+    $client_id = $row['id'];
 }
 
 if($site_puro == 'chronoclick'){
 
-$query2 = $conexao->prepare("SELECT * FROM painel_users WHERE CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token AND email = :email AND tipo != 'Paciente'");
-$query2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token_emp'], 'email' => $_SESSION['email']));
+$query2 = $conexao->prepare("SELECT * FROM painel_users WHERE (tipo = 'Owner' AND token = :token) OR (CONCAT(';', token_emp, ';') LIKE :token_emp AND token = :token AND email = :email AND tipo != 'Paciente')");
+$query2->execute(array('token_emp' => '%;'.$_SESSION['token_emp'].';%', 'token' => $_SESSION['token'], 'email' => $_SESSION['email']));
 while ($select = $query2->fetch(PDO::FETCH_ASSOC)) {
-$client_id = $select['id'];
 $tipo_cadastro = $select['tipo'];
 $configuracao = $select['configuracao'];
 }

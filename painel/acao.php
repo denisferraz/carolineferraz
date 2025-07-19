@@ -1446,7 +1446,7 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
         exit();
     }else{
         echo "<script>
-        alert('Sala Cadastrada com sucesso $id')
+        alert('Sala Cadastrada com sucesso!')
         window.location.replace('config_salas.php')
         </script>";
         exit();  
@@ -1487,5 +1487,61 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     alert('Sala Habilitada com Sucesso!')
     window.location.replace('config_salas.php')
     </script>";
+
+}else if($id_job == 'config_salas_Editar'){
+
+    $sala = mysqli_real_escape_string($conn_msqli, $_POST['sala']);
+    $descricao = mysqli_real_escape_string($conn_msqli, $_POST['descricao']);
+    $id_sala = mysqli_real_escape_string($conn_msqli, $_POST['id_sala']);
+    
+    $foto = $_FILES['foto'];
+
+    // Apenas valida o tipo, como você já fez
+    $tipos_permitidos = ['image/jpeg', 'image/jpg'];
+    if (!in_array($foto['type'], $tipos_permitidos)) {
+        echo "<script>
+            alert('Selecione apenas arquivos do tipo JPG ou JPEG');
+            window.location.replace('config_salas.php');
+        </script>";
+        exit();
+    }
+
+    // Caminho base
+    $dirAtual = '../imagens/' . $_SESSION['token_emp'] . '/salas/';
+
+    // Cria diretório, se necessário
+    if (!is_dir($dirAtual)) {
+        mkdir($dirAtual, 0777, true);
+    }
+
+    $id = $id_sala;
+
+    // Define o caminho final com extensão .jpg
+    $caminhoFinal = $dirAtual . $id . '.jpg';
+
+    if (file_exists($caminhoFinal)) {
+        unlink($caminhoFinal); // remove o antigo
+    }
+
+    // Move o arquivo (sem if)
+    move_uploaded_file($foto['tmp_name'], $caminhoFinal);
+
+    $query = $conexao->prepare("UPDATE salas SET sala = :sala, descricao = :descricao WHERE token_emp = :token_emp AND id = :id_sala");
+    $query->execute(['token_emp' => $_SESSION['token_emp'], 'sala' => $sala, 'descricao' => $descricao, 'id_sala' => $id_sala]);
+
+
+    if($_SESSION['configuracao'] == 0){
+        echo "<script>
+        alert('Configurações Editadas com sucesso. Continue com sua configuração!')
+        window.location.replace('config_landing.php')
+        </script>";
+        exit();
+    }else{
+        echo "<script>
+        alert('Sala Editada com sucesso!')
+        window.location.replace('config_salas.php')
+        </script>";
+        exit();  
+    }
 
 }
