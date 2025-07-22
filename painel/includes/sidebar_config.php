@@ -38,15 +38,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="javascript:void(0)" onclick='window.open("config_salas.php","iframe-home");' class="nav-link">
-                    <i class="bi bi-house-add nav-link-icon"></i>
-                    <span class="nav-link-text">Salas</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a href="javascript:void(0)" onclick='window.open("config_landing.php","iframe-home");' class="nav-link">
                     <i class="bi bi-file-break nav-link-icon"></i>
                     <span class="nav-link-text">Landing Page</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("config_salas.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-house-add nav-link-icon"></i>
+                    <span class="nav-link-text">Salas</span>
                 </a>
             </li>
         </ul>

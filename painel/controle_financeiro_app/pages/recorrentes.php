@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['action'])) {
             switch ($_POST['action']) {
                 case 'add':
+                    //Lançar Recorrente
                     $stmt = $pdo->prepare("
                         INSERT INTO lancamentos_recorrentes (token_emp, data_lancamento, repeticoes, periodo, conta_id, descricao, valor, observacoes, feitopor)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -31,6 +32,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         sanitize($_POST['observacoes']),
                         $feitopor
                     ]);
+
+                    //Validar se POST HOJE for TRUE
+                    if(isset($_POST['lancar_hoje'])){
+                    $stmt = $pdo->prepare("
+                        INSERT INTO lancamentos (token_emp, data_lancamento, conta_id, descricao, recorrente, valor, observacoes, feitopor)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([
+                        $_SESSION['token_emp'],
+                        $_POST['data_lancamento'],
+                        $_POST['conta_id'],
+                        sanitize($_POST['descricao']),
+                        'nao',
+                        number_format(floatval(str_replace(['R$', '.', ','], ['', '', '.'], $_POST['valor'])), 2, '.', ''),
+                        sanitize($_POST['observacoes']),
+                        $feitopor
+                    ]);
+                }
+
                     $message = 'Recorrente adicionado com sucesso!';
                     $messageType = 'success';
                     break;
@@ -322,6 +342,12 @@ try {
             <div class="form-group">
                 <label class="form-label">Observações</label>
                 <textarea name="observacoes" id="observacoes" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+            <label class="form-label">Lançar hoje? </label>
+            <input id="lancar_hoje" type="checkbox" name="lancar_hoje">
+            <label for="lancar_hoje">Confirmar</label>
             </div>
             
             <div class="d-flex justify-between">

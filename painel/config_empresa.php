@@ -86,7 +86,7 @@ require_once('tutorial.php');
     <label class="health-label">CNPJ/CPF</label>
     <input class="health-input" data-step="5" type="text" minlength="2" maxlength="18" name="config_cnpj" value="<?php echo $config_cnpj; ?>" required>
     <label class="health-label">Endereco</label>
-    <textarea class="health-input" data-step="6" class="textarea-custom" name="config_endereco" rows="5" cols="43" required><?php echo $config_endereco ?></textarea><br><br>
+    <textarea class="health-input" data-step="6" class="textarea-custom" name="config_endereco" rows="5" cols="43"><?php echo $config_endereco ?></textarea><br><br>
     <br><br>
     <input type="hidden" name="id_job" value="editar_configuracoes_empresa">
     <div data-step="7"><button class="health-btn health-btn-success" type="submit"><i class="bi bi-check-lg"></i> Atualizar Dados</button></div>

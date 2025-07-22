@@ -64,6 +64,7 @@ foreach ($conexao->query("SELECT * FROM configuracoes WHERE token_emp = '{$_SESS
     $plano_validade = $row['plano_validade'];
     $config_antecedencia = $row['config_antecedencia'];
     $client_id = $row['id'];
+    $config_crm_followup = $row['config_crm_followup'];
 }
 
 if($site_puro == 'chronoclick'){

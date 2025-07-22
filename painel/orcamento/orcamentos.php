@@ -1,10 +1,11 @@
 <?php
 session_start();
-require('../config/database.php');
-require('verifica_login.php');
+require('../../config/database.php');
+require('../verifica_login.php');
 
+$stmt = $conexao->query("SELECT * FROM orcamentos WHERE token_emp = '{$_SESSION['token_emp']}' ORDER BY data_criacao DESC");
+$orcamentos = $stmt->fetchAll();
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,10 +14,10 @@ require('verifica_login.php');
     <title><?php echo $config_empresa; ?></title>
     
     <!-- CSS Tema Saúde -->
-    <link rel="stylesheet" href="css/health_theme.css">
+    <link rel="stylesheet" href="../css/health_theme.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
-    <style>
+<style>
         /* Estilos específicos para esta página */
         .form-section {
             background: white;
@@ -66,7 +67,7 @@ require('verifica_login.php');
         .data-table th,
         .data-table td {
             padding: 12px;
-            text-align: center;
+            text-align: left;
             border-bottom: 1px solid var(--health-gray-900);
         }
         
@@ -116,97 +117,52 @@ require('verifica_login.php');
             font-size: 0.8rem;
         }
     }
-        .status-aprovado {
-            color: #00c853; /* verde */
-            font-weight: bold;
-        }
-
-        .status-recusado {
-            color: #e53935; /* vermelho */
-            font-weight: bold;
-        }
-
-        .status-pendente {
-            color: #fbc02d; /* amarelo */
-            font-weight: bold;
-        }
-
     </style>
 </head>
 <body>
+
 <div class="section-content health-fade-in">
     <!-- Header da Página -->
     <div class="health-card health-fade-in">
         <div class="health-card-header">
             <h1 class="health-card-title">
-                <i class="bi bi-credit-card"></i>
-                Transações Financeiras
+                <i class="bi bi-card-checklist"></i>
+                Orçamentos Cadastrados
             </h1>
             <p class="health-card-subtitle">
-                Veja abaixo todas as transações feitas pelos seus clientes
+                Veja abaixo todos os orçamentos gerados e acompanhe os status de cada um
             </p>
         </div>
     </div>
-<div class="table-responsive">
+    <div class="table-responsive">
     <table data-step="4" class="data-table">
-            <thead>
-                <tr>
+                <thead>
+                    <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
                     <th>Data</th>
-                    <th>Cadastro</th>
-                    <th>Status</th>
-                    <th>Valor</th>
-                    <th>Bandeira</th>
-                    <th>Cartão</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $query = $conexao->prepare("SELECT * FROM payment WHERE id >= :id ORDER BY id DESC");
-                $query->execute(['id' => 1]);
-
-                while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
-                    $created = date('d/m/Y \- H:i:s\h ', strtotime($select['created']));
-                    $status_venda = $select['status_venda'];
-                    $valor = 'R$' . number_format($select['valor'], 2, ',', '.');
-                    $bandeira = $select['bandeira'];
-                    $cartao = 'XXXX-' . $select['cartao'];
-                    $client_id = $select['client_id'];
-
-                    $class_status = '';
-                    if ($status_venda === 'approved') {
-                        $status_venda_texto = 'Aprovado';
-                        $class_status = 'status-aprovado';
-                    } elseif ($status_venda === 'rejected') {
-                        $status_venda_texto = 'Recusado';
-                        $class_status = 'status-recusado';
-                    } elseif ($status_venda === 'pending') {
-                        $status_venda_texto = 'Pendente';
-                        $class_status = 'status-pendente';
-                    } else {
-                        $status_venda_texto = ucfirst($status_venda);
-                    }
-
-                $query2 = $conexao->prepare("SELECT config_empresa FROM configuracoes WHERE id >= :id ORDER BY id DESC");
-                $query2->execute(['id' => $client_id]);
-
-                $painel = $query2->fetch(PDO::FETCH_ASSOC);
-
-                // Para descriptografar os dados
-                $config_empresa = $painel['config_empresa'];
-
-                ?>
-                <tr>
-                    <td data-label="Data"><?php echo $created; ?></td>
-                    <td data-label="Cadastro"><?php echo $config_empresa; ?></td>
-                    <td data-label="Status" class="<?php echo $class_status; ?>"><?php echo $status_venda_texto; ?></td>
-                    <td data-label="Valor"><?php echo $valor; ?></td>
-                    <td data-label="Bandeira"><?php echo ucfirst($bandeira); ?></td>
-                    <td data-label="Cartão"><?php echo $cartao; ?></td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div></div>
+                    <th>Total</th>
+                    <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($orcamentos as $orc): ?>
+        <tr>
+            <td><?= $orc['nome'] ?></td>
+            <td><?= $orc['email'] ?></td>
+            <td><?= $orc['telefone'] ?></td>
+            <td><?= date('d/m/Y H:i', strtotime($orc['data_criacao'])) ?></td>
+            <td>R$ <?= number_format($orc['total'], 2, ',', '.') ?></td>
+            <td>
+                <a href="editar_orcamento.php?id=<?= $orc['id'] ?>"><button type="submit" class="health-btn health-btn-primary"><i class="bi bi-pencil"></i>Editar</button></a>
+                <a href="gerar_pdf.php?id=<?= $orc['id'] ?>" target="_blank"><button type="submit" class="health-btn health-btn-success"><i class="bi bi-file-pdf"></i>PDF</button></a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+                </tbody>
+            </table>
+    </div>
 
 </body>
 </html>

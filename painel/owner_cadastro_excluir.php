@@ -4,16 +4,21 @@ session_start();
 require('../config/database.php');
 require('verifica_login.php');
 
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+error_reporting(0);
+
 $email = mysqli_real_escape_string($conn_msqli, $_GET['email']);
 $token_emp = mysqli_real_escape_string($conn_msqli, $_GET['token']);
 
 
     function excluirPorToken($conexao, $tabela, $token_emp) {
         // Lista de tabelas permitidas (evita SQL injection)
-        $tabelasPermitidas = ['alteracoes', 'atestados', 'configuracoes', 'consultas', 'contrato', 'custos', 'custos_tratamentos', 'despesas',
+        $tabelasPermitidas = ['alteracoes', 'atestados', 'configuracoes', 'consultas', 'contrato', 'custos', 'custos_tratamentos',
         'disponibilidade', 'estoque', 'estoque_item', 'evolucoes', 'historico_atendimento', 'lancamentos', 'lancamentos_atendimento',
         'lancamentos_recorrentes', 'mensagens', 'modelos_anamnese', 'modelos_prontuario', 'perguntas_modelo', 'perguntas_modelo_prontuario',
-        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos', 'salas'];
+        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos', 'salas', 'interacoes', 'orcamentos'];
 
         // Valida se a tabela informada é permitida
         if (!in_array($tabela, $tabelasPermitidas)) {
@@ -25,10 +30,10 @@ $token_emp = mysqli_real_escape_string($conn_msqli, $_GET['token']);
         $query->execute(['token_emp' => $token_emp]);
     }
 
-    $nomesDasTabelas = ['alteracoes', 'atestados', 'configuracoes', 'consultas', 'contrato', 'custos', 'custos_tratamentos', 'despesas',
+    $nomesDasTabelas = ['alteracoes', 'atestados', 'configuracoes', 'consultas', 'contrato', 'custos', 'custos_tratamentos',
                         'disponibilidade', 'estoque', 'estoque_item', 'evolucoes', 'historico_atendimento', 'lancamentos', 'lancamentos_atendimento',
                         'lancamentos_recorrentes', 'mensagens', 'modelos_anamnese', 'modelos_prontuario', 'perguntas_modelo', 'perguntas_modelo_prontuario',
-                        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos', 'salas'];
+                        'profissionais', 'receituarios', 'respostas_anamnese', 'respostas_prontuario', 'tratamento', 'tratamentos', 'videos', 'salas', 'interacoes', 'orcamentos'];
 
     foreach ($nomesDasTabelas as $tabela) {
         excluirPorToken($conexao, $tabela, $token_emp);

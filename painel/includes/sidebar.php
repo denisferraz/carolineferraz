@@ -6,12 +6,12 @@ while($select = $query->fetch(PDO::FETCH_ASSOC)){
     $tipo_cadastro = $select['tipo'];
 }
 
-//$tutorialAtivo2 = isset($_SESSION['configuracao']) && $_SESSION['configuracao'] == 1;
+$tutorialAtivo2 = isset($_SESSION['configuracao']) && $_SESSION['configuracao'] == 1;
 
 if ($tutorialAtivo2): ?>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            iniciarTutorial();
+            abrirMenuMobileSeNecessario();
         });
     </script>
 <?php endif; ?>
@@ -48,9 +48,9 @@ if ($tutorialAtivo2): ?>
         </ul>
     </div>
 
-    <!-- CADASTROS -->
+    <!-- CLIENTES -->
     <div data-step="3" class="nav-section">
-        <div class="nav-section-title">Cadastros</div>
+        <div class="nav-section-title">Clientes</div>
         <ul class="nav-list">
             <li class="nav-item">
                 <a href="javascript:void(0)" onclick='window.open("cadastros.php","iframe-home");' class="nav-link" data-step="3">
@@ -64,12 +64,18 @@ if ($tutorialAtivo2): ?>
                     <span class="nav-link-text">Novo Cliente</span>
                 </a>
             </li>
-             <!-- <li class="nav-item">
-                <a href="javascript:void(0)" onclick='window.open("crm.php","iframe-home");' class="nav-link">
-                    <i class="bi bi-person-bounding-box nav-link-icon"></i>
-                    <span class="nav-link-text">CRM</span>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("orcamento/index.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-card-list nav-link-icon"></i>
+                    <span class="nav-link-text">Novo Orçamento</span>
                 </a>
-            </li> -->
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("orcamento/orcamentos.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-card-checklist nav-link-icon"></i>
+                    <span class="nav-link-text">Orçamentos</span>
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -242,6 +248,37 @@ if ($tutorialAtivo2): ?>
             </li>
         </ul>
     </div>
+    
+    <!-- CRM -->
+    <div data-step="3" class="nav-section">
+        <div class="nav-section-title">CRM</div>
+        <ul class="nav-list">
+              <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("crm/crm.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-info-square nav-link-icon"></i>
+                    <span class="nav-link-text">CRM</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("crm/crm_estatisticas.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-bar-chart nav-link-icon"></i>
+                    <span class="nav-link-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("crm/agendamentos.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-calendar-plus nav-link-icon"></i>
+                    <span class="nav-link-text">Agendamentos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" onclick='window.open("crm/palavras_chaves.php","iframe-home");' class="nav-link">
+                    <i class="bi bi-gear nav-link-icon"></i>
+                    <span class="nav-link-text">Configurações</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
     <!-- VIDEOS -->
     <div data-step="10" class="nav-section">
@@ -308,16 +345,16 @@ if ($tutorialAtivo2): ?>
     </div>
 
     <!-- SUPORTE -->
+    <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
     <div data-step="12" class="nav-section">
         <div class="nav-section-title">Suporte</div>
         <ul class="nav-list">
-           <!--  <li class="nav-item">
-                <a href="javascript:void(0)" onclick="iniciarTutorial()" class="nav-link">
+           <!-- <li class="nav-item">
+                <a href="javascript:void(0)" onclick="iniciarTutorial()" class="nav-link manter-aberto">
                     <i class="bi bi-question-circle nav-link-icon"></i>
                     <span class="nav-link-text">Tutorial</span>
                 </a>
             </li> -->
-            <?php if($_SESSION['site_puro'] == 'chronoclick'){ ?>
             <li class="nav-item">
                 <a href="javascript:void(0)" onclick='window.open("tickets.php","iframe-home");' class="nav-link">
                     <i class="bi bi-headset nav-link-icon"></i>
@@ -330,9 +367,9 @@ if ($tutorialAtivo2): ?>
                     <span class="nav-link-text">Novo Ticket</span>
                 </a>
             </li>
-            <?php } ?>
         </ul>
     </div>
+    <?php } ?>
 
     <!-- PROFILE -->
     <div data-step="13" class="nav-section">

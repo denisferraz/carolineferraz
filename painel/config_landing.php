@@ -117,15 +117,15 @@ while ($select = $query->fetch(PDO::FETCH_ASSOC)) {
     <label class="health-label">Nome pagina Externa</label>
     <input class="health-input" data-step="7" type="text" minlength="5" maxlength="50" name="config_landing" value="<?php echo $id; ?>" required>
     <label class="health-label">Especialidade</label>
-    <input class="health-input" data-step="8" type="text" maxlength="100" name="config_especialidade" value="<?php echo $especialidade; ?>" required>
+    <input class="health-input" data-step="8" type="text" maxlength="100" name="config_especialidade" value="<?php echo $especialidade; ?>">
     <label class="health-label">Descriçao</label>
-    <textarea class="health-input" data-step="9" class="textarea-custom" name="config_descricao" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $descricao)); ?></textarea><br><br>
+    <textarea class="health-input" data-step="9" class="textarea-custom" name="config_descricao" rows="5" cols="43"><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $descricao)); ?></textarea><br><br>
     <label class="health-label">Instagram</label>
-    <input class="health-input" data-step="10" type="text" maxlength="100" name="config_instagram" value="<?php echo $instagram; ?>" required>
+    <input class="health-input" data-step="10" type="text" maxlength="100" name="config_instagram" value="<?php echo $instagram; ?>">
     <label class="health-label">Facebook</label>
-    <input class="health-input" data-step="11" type="text" maxlength="100" name="config_facebook" value="<?php echo $facebook; ?>" required>
+    <input class="health-input" data-step="11" type="text" maxlength="100" name="config_facebook" value="<?php echo $facebook; ?>">
     <label class="health-label">Endereço</label>
-    <input class="health-input" data-step="12" type="text" maxlength="155" name="config_endereco" value="<?php echo $endereco; ?>" required>
+    <input class="health-input" data-step="12" type="text" maxlength="155" name="config_endereco" value="<?php echo $endereco; ?>">
     <br><br>
     <label class="health-label">Foto (apenas JPG)</label>
     <input class="health-input" data-step="13" type="file" name="config_foto" accept=".jpg,.jpeg">

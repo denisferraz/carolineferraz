@@ -112,7 +112,7 @@ if($id_job == 'editar_configuracoes_agenda'){
     if($_SESSION['configuracao'] == 0){
         echo "<script>
         alert('Configurações Editadas com sucesso. Continue com sua configuração!')
-        window.location.replace('config_salas.php')
+        window.location.replace('config_landing.php')
         </script>";
         exit();
     }else{
@@ -1437,20 +1437,11 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
     // Move o arquivo (sem if)
     move_uploaded_file($foto['tmp_name'], $caminhoFinal);
 
-
-    if($_SESSION['configuracao'] == 0){
-        echo "<script>
-        alert('Configurações Editadas com sucesso. Continue com sua configuração!')
-        window.location.replace('config_landing.php')
-        </script>";
-        exit();
-    }else{
         echo "<script>
         alert('Sala Cadastrada com sucesso!')
         window.location.replace('config_salas.php')
         </script>";
-        exit();  
-    }
+        exit();
 
 }else if($id_job == 'config_salas_Excluir'){
 
@@ -1543,5 +1534,71 @@ if (preg_match('/^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/', $link_you
         </script>";
         exit();  
     }
+
+}else if($id_job == 'palavras_chaves'){
+
+    $palavra_chave = mysqli_real_escape_string($conn_msqli, $_POST['palavra_chave']);
+    $etapa_destino = mysqli_real_escape_string($conn_msqli, $_POST['etapa']);
+    $palavra_chave_id = isset($_POST['palavra_chave_id']) ? mysqli_real_escape_string($conn_msqli, $_POST['palavra_chave_id']) : 'nao';
+
+    if($palavra_chave_id == 'nao'){
+
+    $query = $conexao->prepare("INSERT INTO regras_etapa (token_emp, palavra_chave, etapa_destino) VALUES (:token_emp, :palavra_chave, :etapa_destino)");
+    $query->execute(['token_emp' => $_SESSION['token_emp'], 'palavra_chave' => $palavra_chave, 'etapa_destino' => $etapa_destino]);
+
+    echo "<script>
+        alert('Palavra Chave inserida com Sucesso')
+        window.location.replace('crm/palavras_chaves.php')
+        </script>";
+        exit();
+
+    }else{
+
+    $query = $conexao->prepare("UPDATE regras_etapa SET palavra_chave = :palavra_chave, etapa_destino = :etapa_destino WHERE token_emp = :token_emp AND id = :palavra_chave_id");
+    $query->execute(['token_emp' => $_SESSION['token_emp'], 'palavra_chave' => $palavra_chave, 'etapa_destino' => $etapa_destino, 'palavra_chave_id' => $palavra_chave_id]);
+
+    echo "<script>
+        alert('Palavra Chave editada com Sucesso')
+        window.location.replace('crm/palavras_chaves.php')
+        </script>";
+        exit();
+    }
+
+}else if($id_job == 'editar_configuracoes_crm'){
+
+    $config_crm_followup = mysqli_real_escape_string($conn_msqli, $_POST['config_crm_followup']);
+
+
+    $query = $conexao->prepare("UPDATE configuracoes SET config_crm_followup = :config_crm_followup WHERE token_emp = :token_emp");
+    $query->execute(['token_emp' => $_SESSION['token_emp'], 'config_crm_followup' => $config_crm_followup]);
+
+    echo "<script>
+        alert('Mensagem Follow Up editada')
+        window.location.replace('crm/palavras_chaves.php')
+        </script>";
+        exit();
+
+}else if($id_job == 'cadastro_msg_owner'){
+
+    $doc_email = mysqli_real_escape_string($conn_msqli, $_POST['doc_email']);
+    $doc_telefonewhats = preg_replace('/[^\d]/', '',mysqli_real_escape_string($conn_msqli, $_POST['doc_telefone']));
+    $msg = $_POST['msg'];
+
+    $client_id = 1;
+
+    $msg_replace = $msg;
+      
+    $msg_string = str_replace(["\\r\\n", "\\n", "\\r"], "\n", $msg_replace);
+
+    $msg_html = nl2br(htmlspecialchars($msg_string)); //Email
+    $msg_whatsapp = $msg_string; // Whatsapp
+
+    $whatsapp = enviarWhatsapp('55'.$doc_telefonewhats, $msg_whatsapp, $client_id);
+
+    echo "<script>
+        alert('Mensagem Followup Enviada com Sucesso')
+        window.location.replace('owner_cadastros.php')
+        </script>";
+        exit();
 
 }

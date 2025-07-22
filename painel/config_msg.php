@@ -138,15 +138,15 @@ function inserirVariavel(texto) {
 <br>
 
     <label class="health-label">Mensagem Confirmação</label>
-    <textarea class="health-input" data-step="3" class="textarea-custom" name="config_msg_confirmacao" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_confirmacao)); ?></textarea><br><br>
+    <textarea class="health-input" data-step="3" name="config_msg_confirmacao" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_confirmacao)); ?></textarea><br><br>
     <label class="health-label">Mensagem Cancelamento</label>
-    <textarea class="health-input" data-step="4" class="textarea-custom" name="config_msg_cancelamento" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_cancelamento)); ?></textarea><br><br>
+    <textarea class="health-input" data-step="4" name="config_msg_cancelamento" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_cancelamento)); ?></textarea><br><br>
     <label class="health-label">Mensagem Finalização</label>
-    <textarea class="health-input" data-step="5" class="textarea-custom" name="config_msg_finalizar" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_finalizar)); ?></textarea><br><br>
+    <textarea class="health-input" data-step="5" name="config_msg_finalizar" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_finalizar)); ?></textarea><br><br>
     <label class="health-label">Mensagem Lembrete</label>
-    <textarea class="health-input" data-step="6" class="textarea-custom" name="config_msg_lembrete" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_lembrete)); ?></textarea><br><br>
+    <textarea class="health-input" data-step="6" name="config_msg_lembrete" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_lembrete)); ?></textarea><br><br>
     <label class="health-label">Mensagem Aniversario</label>
-    <textarea class="health-input" data-step="7" class="textarea-custom" name="config_msg_aniversario" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_aniversario)); ?></textarea><br><br>
+    <textarea class="health-input" data-step="7" name="config_msg_aniversario" rows="5" cols="43" required><?php echo htmlspecialchars(str_replace(["\\r", "\\n"], ["", "\n"], $config_msg_aniversario)); ?></textarea><br><br>
     <br>
     <div data-step="8">
     <label class="health-label"><b>Formas de Comunicação:</b></label>

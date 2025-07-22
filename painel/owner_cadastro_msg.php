@@ -35,29 +35,14 @@ $painel_users_array = [];
         'id' => $id,
         'email' => $email,
         'nome' => $dados_array[0],
-        'cpf' => $dados_array[2],
         'telefone' => $dados_array[3],
     ]; 
 }
 
 foreach ($painel_users_array as $select){
 $doc_nome = $select['nome'];
-$cpf = $select['cpf'];
 $telefone = $select['telefone'];
 }
-
-//Ajustar CPF
-$parte1 = substr($cpf, 0, 3);
-$parte2 = substr($cpf, 3, 3);
-$parte3 = substr($cpf, 6, 3);
-$parte4 = substr($cpf, 9);
-$doc_cpf = "$parte1.$parte2.$parte3-$parte4";
-
-//Ajustar Telefone
-$ddd = substr($telefone, 0, 2);
-$prefixo = substr($telefone, 2, 5);
-$sufixo = substr($telefone, 7);
-$telefone = "$ddd-$prefixo-$sufixo";
 
 ?>
 
@@ -71,9 +56,6 @@ $telefone = "$ddd-$prefixo-$sufixo";
     <!-- CSS Tema Saúde -->
     <link rel="stylesheet" href="css/health_theme.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     
     <style>
         /* Estilos específicos para esta página */
@@ -115,44 +97,56 @@ $telefone = "$ddd-$prefixo-$sufixo";
             border-color: var(--health-danger) !important;
             box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
         }
+
+        .btn-sm {
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--font-size-xs);
+        }
     </style>
 </head>
 <body>
-
 <div class="health-container">
     <!-- Header da Página -->
     <div class="health-card health-fade-in">
         <div class="health-card-header">
             <h1 class="health-card-title">
                 <i class="bi bi-person"></i>
-                Editar Cadastro
+                Enviar Mensagem de Follow-up
             </h1>
             <p class="health-card-subtitle">
-                Confirme os dados para editar este cadastro
+                Confirme os dados para enviar uma mensagem para este cliente
             </p>
         </div>
     </div>
-
-<div class="form-section health-fade-in">
-    <form class="form" action="acao.php" method="POST">
-
+<form data-step="1" class="form" action="acao.php" method="POST">
     <div class="form-row">
                 <div class="health-form-group">
-                <label class="health-label">Email</label><b><?php echo $email ?></b>
-                <input type="hidden" name="doc_email" minlength="10" value="<?php echo $email ?>">
-                <input type="hidden" name="token_profile" value="<?php echo $token_profile ?>"><br><br>
-                <label class="health-label">Nome</label><b><?php echo $doc_nome ?></b>
-                <input type="hidden" name="doc_email" minlength="10" value="<?php echo $email ?>">
-                <input type="hidden" name="token_profile" value="<?php echo $token_profile ?>"><br><br>
-                <label class="health-label">Plano Validade</label>
-                <input class="health-input" type="date" name="plano_validade" min="<?php echo $hoje ?>" value="<?php echo $plano_validade ?>" required>
+                <label class="health-label">Email</label>
+                <input class="health-input" type="email" name="doc_email" minlength="10" value="<?php echo $email ?>">
+                </div><div class="health-form-group">
+                <label class="health-label">Telefone</label>
+                <input class="health-input" type="text" name="doc_telefone" minlength="10" maxlength="15" value="<?php echo $telefone ?>">
                 </div></div>
-                <input type="hidden" name="id_job" value="cadastro_editar_owner">
+                <div class="form-row">
+                <div class="health-form-group">
+                <label class="health-label">Mensagem</label>
+                <textarea class="health-input" class="health-input" data-step="3" name="msg" rows="5" cols="43" required>
+Bom dia *<?php echo $doc_nome; ?>*, tudo bem?
+
+Aqui quem fala é o *Denis*, sou do time do *Chronoclick*.
+
+Seja muito bem vinda ao seu *Portal de Agendamento*.
+
+Qualquer dúvida ou dificuldade, _não deixe de falar conosco!_
+
+Desejamos *sucesso* nos seus agendamentos!!
+</textarea>
+            </div></div>
+
+                <input type="hidden" name="id_job" value="cadastro_msg_owner">
                 <input type="hidden" name="feitopor" value="Painel">
 
-                <button type="submit" class="health-btn health-btn-success"><i class="bi bi-check-lg"></i> Confirmar</button>
-            </div>
-        </div>
+                <button class="health-btn health-btn-primary" type="submit"><i class="bi bi-envelope"></i> Enviar</button>
     </form>
     </div>
 </body>
