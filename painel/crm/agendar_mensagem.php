@@ -13,11 +13,15 @@ if (!$mensagem || !$data_envio) {
     exit("Dados incompletos.");
 }
 
+//Criptografa a mensagem
+$dados_criptografados = openssl_encrypt($mensagem, $metodo, $chave, 0, $iv);
+$mensagem_cripto = base64_encode($dados_criptografados);
+
 $stmt = $conexao->prepare("
     INSERT INTO agendamentos_automaticos (contato_id, numero, mensagem, agendar_para, token_emp)
     VALUES (?, ?, ?, ?, ?)
 ");
-$stmt->execute([$contato_id, $numero, $mensagem, $data_envio, $token_emp]);
+$stmt->execute([$contato_id, $numero, $mensagem_cripto, $data_envio, $token_emp]);
 
 header("Location: contato.php?id=$contato_id");
 exit;

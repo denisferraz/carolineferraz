@@ -34,6 +34,13 @@
   --health-info: #0891b2;           /* Azul - Informação */
   --health-info-light: #cffafe;     /* Azul claro */
   
+  /* Cores das Etapas do CRM */
+    --stage-novo: #6b7280;
+    --stage-contato: #f59e0b;
+    --stage-negociacao: #3b82f6;
+    --stage-fechado: #10b981;
+    --stage-perdido: #ef4444;
+            
   /* === CORES ESPECÍFICAS PARA LEGENDA DA AGENDA === */
   --agenda-passado: #6b7280;        /* Cinza médio para dias passados */
   --agenda-passado-light: #f3f4f6;  /* Cinza claro para background */

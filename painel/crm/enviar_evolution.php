@@ -14,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $numero = preg_replace('/\D/', '', $_POST['numero']); // limpa o número
     $mensagem = trim($_POST['mensagem']);
 
+    $dados_criptografados = openssl_encrypt($mensagem, $metodo, $chave, 0, $iv);
+    $mensagem_cripto = base64_encode($dados_criptografados);
+
     if($envio_whatsapp == 'ativado'){
     
         $doc_telefonewhats = "55$numero";
@@ -23,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
     }
         $stmt = $pdo->prepare("INSERT INTO interacoes (contato_id, mensagem, origem, token_emp) VALUES (?, ?, 'empresa', ?)");
-        $stmt->execute([$contato_id, $mensagem, $token_emp]);
+        $stmt->execute([$contato_id, $mensagem_cripto, $token_emp]);
 
         $stmt = $pdo->prepare("UPDATE contatos SET etapa = 'Em Contato' WHERE numero = ? AND token_emp = ?");
         $stmt->execute([$numero, $token_emp]);

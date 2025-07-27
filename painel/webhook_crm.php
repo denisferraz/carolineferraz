@@ -20,6 +20,12 @@ $mensagem = $dados['message']['conversation'] ?? null;
 $numeroCompleto = $dados['key']['remoteJid'] ?? null;
 $numeroLimpo = preg_replace('/\D/', '', substr($numeroCompleto, 2, 10));
 
+// Ignorar mensagens de grupos
+if (str_ends_with($numeroCompleto, '@g.us')) {
+    http_response_code(200);
+    exit('Mensagem de grupo - ignorada');
+}
+
 if (strlen($numeroLimpo) === 10) {
     $numero = substr($numeroLimpo, 0, 2) . '9' . substr($numeroLimpo, 2);
 } else {
@@ -36,20 +42,6 @@ if (!$mensagem || !$numero) {
 try {
     $pdo = $conexao;
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $pdo->prepare("
-        INSERT INTO mensagens (token_emp, numero, nome, mensagem)
-        VALUES (?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-            token_emp = VALUES(token_emp), 
-            nome = VALUES(nome), 
-            mensagem = VALUES(mensagem), 
-            processado = NULL, 
-            data_recebida = CURRENT_TIMESTAMP
-    ");
-    $stmt->execute([$token_emp, $numero, $nome, $mensagem]);
-
-    $stmt = $pdo->query("SELECT * FROM mensagens WHERE processado IS NULL AND token_emp = '{$token_emp}'");
     
     // Buscar regras da empresa
     $stmt = $pdo->prepare("SELECT * FROM regras_etapa WHERE token_emp = ?");
@@ -66,52 +58,54 @@ try {
         }
     }
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $numero = $row['numero'];
-        $nome = $row['nome'];
-        $mensagem = $row['mensagem'];
-        $token_emp = $row['token_emp'];
-
         // Verifica se o contato já existe
         $stmtContato = $pdo->prepare("SELECT * FROM contatos WHERE numero = ? AND token_emp = ?");
         $stmtContato->execute([$numero, $token_emp]);
         $contato = $stmtContato->fetch();
+        $contatoId = null; // Define como null por padrão
 
-        if (isset($dados['key']['fromMe']) || $dados['key']['fromMe'] === false) {
-
-        if (!$contato) {
-            // Criar novo contato
-            $stmtInsert = $pdo->prepare("INSERT INTO contatos (numero, nome, token_emp) VALUES (?, ?, ?)");
-            $stmtInsert->execute([$numero, $nome, $token_emp]);
-            $contatoId = $pdo->lastInsertId();
-        } else {
+        // Somente cria novo contato se a mensagem veio do cliente (não foi enviada por você)
+        if (!isset($dados['key']['fromMe']) || $dados['key']['fromMe'] === false) {
+            if (!$contato) {
+                // Criar novo contato
+                $stmtInsert = $pdo->prepare("INSERT INTO contatos (numero, nome, token_emp) VALUES (?, ?, ?)");
+                $stmtInsert->execute([$numero, $nome, $token_emp]);
+                $contatoId = $pdo->lastInsertId();
+            } else {
+                $contatoId = $contato['id'];
+                // Atualizar nome e último contato
+                $stmtUpdate = $pdo->prepare("UPDATE contatos SET nome = ?, ultimo_contato = NOW() WHERE id = ? AND token_emp = ?");
+                $stmtUpdate->execute([$nome, $contatoId, $token_emp]);
+            }
+        } elseif ($contato) {
+            // Se for mensagem enviada por você, usa contato existente (não cria novo)
             $contatoId = $contato['id'];
-            // Atualizar nome e último contato
-            $stmtUpdate = $pdo->prepare("UPDATE contatos SET nome = ?, ultimo_contato = NOW() WHERE id = ? AND token_emp = ?");
-            $stmtUpdate->execute([$nome, $contatoId, $token_emp]);
         }
 
-    }
+        //Criptografa a mensagem
+        $dados_criptografados = openssl_encrypt($mensagem, $metodo, $chave, 0, $iv);
+        $mensagem_cripto = base64_encode($dados_criptografados);
 
-        // Inserir interação
-        if (!isset($dados['key']['fromMe']) || $dados['key']['fromMe'] === true) {
-            //http_response_code(200);
-            //exit('Mensagem enviada - ignorada');
-            $stmtInteracao = $pdo->prepare("INSERT INTO interacoes (contato_id, mensagem, origem, token_emp, data) VALUES (?, ?, 'empresa', ?, ?)");
-        }else{
-            $stmtInteracao = $pdo->prepare("INSERT INTO interacoes (contato_id, mensagem, origem, token_emp, data) VALUES (?, ?, 'cliente', ?, ?)");
-            
-            // Se a mensagem veio do cliente:
-            $stmt = $pdo->prepare("UPDATE contatos SET ultimo_contato_cliente = NOW() WHERE numero = ? AND token_emp = ?");
-            $stmt->execute([$numero, $token_emp]);
+        // Inserir interação, apenas se tiver $contatoId definido
+        if ($contatoId) {
+            if (!isset($dados['key']['fromMe']) || $dados['key']['fromMe'] === true) {
+                $stmtInteracao = $pdo->prepare("INSERT INTO interacoes (contato_id, mensagem, origem, token_emp, data) VALUES (?, ?, 'empresa', ?, ?)");
+            } else {
+                $stmtInteracao = $pdo->prepare("INSERT INTO interacoes (contato_id, mensagem, origem, token_emp, data) VALUES (?, ?, 'cliente', ?, ?)");
+                
+                // Atualizar último contato do cliente
+                $stmt = $pdo->prepare("UPDATE contatos SET ultimo_contato_cliente = NOW() WHERE numero = ? AND token_emp = ?");
+                $stmt->execute([$numero, $token_emp]);
+            }
 
+            // Executar inserção da interação
+            $stmtInteracao->execute([$contatoId, $mensagem_cripto, $token_emp, $data_envio]);
         }
-            $stmtInteracao->execute([$contatoId, $mensagem, $token_emp, $data_envio]);
+
 
         // Marcar mensagem como processada
         $pdo->prepare("UPDATE mensagens SET processado = 1 WHERE id = ? AND token_emp = ?")
             ->execute([$row['id'], $token_emp]);
-    }
 
     http_response_code(200);
     echo json_encode(["status" => "registro atualizado"]);
